@@ -1,4 +1,4 @@
-package com.cobblemon.mdks.fabric;
+package porker.pp_legendarydungeons;
 
 import com.cobblemon.mod.common.api.pokemon.PokemonSpecies;
 import com.cobblemon.mod.common.pokemon.Species;

@@ -12,7 +12,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.cobblemon.mdks.fabric.ProfessorPorkersLegendaryDungeons"
+      "porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons"
     ]
   },
   "depends": {
