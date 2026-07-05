@@ -1,0 +1,1 @@
+execute as @a[nbt={SelectedItem:{id:"minecraft:filled_map", components:{"minecraft:rarity":"rare"}}}] run item replace entity @s weapon.mainhand with minecraft:air

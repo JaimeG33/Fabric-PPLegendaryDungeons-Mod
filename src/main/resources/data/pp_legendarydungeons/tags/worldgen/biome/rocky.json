@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:desert",
+    "minecraft:stony_shore",
+    "minecraft:windswept_gravelly_hills",
+    "minecraft:old_growth_pine_taiga",
+    "minecraft:old_growth_spruce_taiga",
+    "#c:is_mountain/slope",
+    "#c:is_badlands",
+    "#c:is_old_growth",
+    "#c:is_desert"
+  ]
+}

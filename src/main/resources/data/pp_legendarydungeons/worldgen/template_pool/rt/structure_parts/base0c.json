@@ -1,0 +1,16 @@
+{
+  "name": "pp_legendarydungeons:rt/structure_parts/base0c",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "pp_legendarydungeons:rayquaza_tower/structure_parts/base0c",
+        "processors": "minecraft:empty",
+        "override_liquid_settings": "ignore_waterlogging"
+      }
+    }
+  ]
+}

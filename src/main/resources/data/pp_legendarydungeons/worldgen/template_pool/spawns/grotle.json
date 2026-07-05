@@ -1,0 +1,24 @@
+{
+	"name": "pp_legendarydungeons:spawns/grotle",
+	"fallback": "minecraft:empty",
+	"elements": [
+		{
+			"weight": 15,
+			"element": {
+				"element_type": "minecraft:single_pool_element",
+				"projection": "rigid",
+				"location": "pp_legendarydungeons:spawns/reg/grotle",
+				"processors": "minecraft:empty"
+			}
+		},
+		{
+			"weight": 1,
+			"element": {
+				"element_type": "minecraft:single_pool_element",
+				"projection": "rigid",
+				"location": "pp_legendarydungeons:spawns/psh/grotle",
+				"processors": "minecraft:empty"
+			}
+		}
+	]
+}

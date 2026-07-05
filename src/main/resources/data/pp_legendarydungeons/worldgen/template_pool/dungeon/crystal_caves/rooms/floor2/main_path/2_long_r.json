@@ -1,0 +1,15 @@
+{
+	"name": "pp_legendarydungeons:dungeon/crystal_caves/rooms/floor2/main_path/2_long_r",
+	"fallback": "minecraft:empty",
+	"elements": [
+		{
+			"weight": 1,
+			"element": {
+				"element_type": "minecraft:single_pool_element",
+				"projection": "rigid",
+				"location": "pp_legendarydungeons:dungeon/specific/crystal_caves/rooms/floor2/2_long_r",
+				"processors": "minecraft:empty"
+			}
+		}
+	]
+}

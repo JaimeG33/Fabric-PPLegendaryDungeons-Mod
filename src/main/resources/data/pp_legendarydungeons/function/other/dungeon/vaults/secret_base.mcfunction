@@ -1,0 +1,4 @@
+execute as @a at @e[type=minecraft:armor_stand,tag=scs_secret_vault_base] run setblock ~ ~ ~ minecraft:vault{config:{loot_table:"pp_legendarydungeons:vault_secret_base",key_item:{id:"minecraft:ominous_trial_key",components:{"minecraft:item_name":'{"bold":true,"text":"Ancient Key"}',"minecraft:lore":['"This key can be used on the secret vaults"','"within legendary dungeons"'],"minecraft:rarity":"epic","minecraft:custom_model_data":1110001}}},server_data:{state_updating_resumes_at:0},shared_data:{loot_table:"pp_legendarydungeons:vault_secret_base"}} replace
+
+
+execute as @a at @e[type=minecraft:armor_stand,tag=scs_secret_vault_base] run kill @e[type=minecraft:armor_stand,tag=scs_secret_vault_base]

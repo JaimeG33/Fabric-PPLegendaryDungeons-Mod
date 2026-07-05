@@ -1,0 +1,265 @@
+{
+  "pools": [
+    {
+      "rolls": {
+        "min": 1,
+        "max": 3
+      },
+      "bonus_rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "cobblemon:normal_gem",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                      "min":1,
+                      "max":4
+                    }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "cobblemon:fire_gem",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                      "min":1,
+                      "max":4
+                    }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "cobblemon:water_gem",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                      "min":1,
+                      "max":4
+                    }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "cobblemon:grass_gem",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                      "min":1,
+                      "max":4
+                    }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "cobblemon:electric_gem",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                      "min":1,
+                      "max":4
+                    }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "cobblemon:ice_gem",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                      "min":1,
+                      "max":4
+                    }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "cobblemon:fighting_gem",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                      "min":1,
+                      "max":4
+                    }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "cobblemon:poison_gem",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                      "min":1,
+                      "max":4
+                    }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "cobblemon:ground_gem",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                      "min":1,
+                      "max":4
+                    }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "cobblemon:flying_gem",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                      "min":1,
+                      "max":4
+                    }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "cobblemon:psychic_gem",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                      "min":1,
+                      "max":4
+                    }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "cobblemon:bug_gem",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                      "min":1,
+                      "max":4
+                    }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "cobblemon:rock_gem",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                      "min":1,
+                      "max":4
+                    }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "cobblemon:ghost_gem",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                      "min":1,
+                      "max":4
+                    }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "cobblemon:dragon_gem",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                      "min":1,
+                      "max":4
+                    }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "cobblemon:dark_gem",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                      "min":1,
+                      "max":4
+                    }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "cobblemon:steel_gem",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                      "min":1,
+                      "max":4
+                    }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "weight": 1,
+          "name": "cobblemon:fairy_gem",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                      "min":1,
+                      "max":4
+                    }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

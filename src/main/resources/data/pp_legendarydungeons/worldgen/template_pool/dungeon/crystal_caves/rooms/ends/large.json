@@ -1,0 +1,24 @@
+{
+	"name": "pp_legendarydungeons:dungeon/crystal_caves/rooms/ends/large",
+	"fallback": "minecraft:empty",
+	"elements": [
+		{
+			"weight": 1,
+			"element": {
+				"element_type": "minecraft:single_pool_element",
+				"projection": "rigid",
+				"location": "pp_legendarydungeons:dungeon/specific/crystal_caves/rooms/ends/crystals",
+				"processors": "minecraft:empty"
+			}
+		},
+        {
+			"weight": 1,
+			"element": {
+				"element_type": "minecraft:single_pool_element",
+				"projection": "rigid",
+				"location": "pp_legendarydungeons:dungeon/specific/crystal_caves/rooms/ends/strip_mine_start",
+				"processors": "minecraft:empty"
+			}
+		}
+	]
+}

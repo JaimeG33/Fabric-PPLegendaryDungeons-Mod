@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "pp_legendarydungeons:abandoned_research_outpost/002_ap_and_tumblestones",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 30,
+    "separation": 10,
+    "salt": 38575310
+  }
+}
