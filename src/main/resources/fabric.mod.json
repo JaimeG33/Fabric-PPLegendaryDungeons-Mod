@@ -1,14 +1,13 @@
 {
   "schemaVersion": 1,
-  "id": "cobblemon_fabric_mdk",
+  "id": "pp_legendarydungeons",
   "version": "${version}",
-  "name": "Cobblemon Fabric MDK",
-  "description": "A MDK useful for Fabric Development",
+  "name": "Professor Porker's Legendary Dungeons",
+  "description": "A Cobblemon side mod that adds legendary dungeon content, structures, and related gameplay systems.",
   "authors": [
-    "The Cobblemon Team"
+    "Jaime Garcia"
   ],
-  "license": "MIT License",
-  "icon": "assets/example/icon.png",
+  "license": "MIT",
   "environment": "*",
   "entrypoints": {
     "main": [
