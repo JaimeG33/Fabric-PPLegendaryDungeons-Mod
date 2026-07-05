@@ -4,6 +4,15 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+# Minecraft/Fabric dev runtime files
+run/
+
+# IntelliJ local workspace files
+.idea/workspace.xml
+.idea/.name
+*.log
+crash-reports/
+
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml
