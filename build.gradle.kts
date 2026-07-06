@@ -16,6 +16,13 @@ architectury {
 loom {
     silentMojangMappingsLicense()
 
+    runs {
+        named("client") {
+            vmArg("-Xms2G")
+            vmArg("-Xmx6G")
+        }
+    }
+
     mixin {
         defaultRefmapName.set("mixins.${project.name}.refmap.json")
     }
