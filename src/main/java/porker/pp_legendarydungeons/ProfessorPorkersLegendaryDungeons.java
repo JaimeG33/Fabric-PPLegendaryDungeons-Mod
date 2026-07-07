@@ -39,6 +39,6 @@ public class ProfessorPorkersLegendaryDungeons implements ModInitializer {
         // Calls the secret-based scanner.
         SecretTicker.register();
 
-        LOGGER.info("Professor Porker's Legendary Dungeons initialized.");
+        LOGGER.info("Cobblemon: Explore Legendary Dungeons initialized.");
     }
 }

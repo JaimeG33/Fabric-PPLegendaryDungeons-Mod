@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "pp_legendarydungeons",
   "version": "${version}",
-  "name": "Professor Porker's Legendary Dungeons",
+  "name": "Cobblemon: Explore Legendary Dungeons",
   "description": "A Cobblemon side mod that adds legendary dungeon content, structures, and related gameplay systems.",
   "authors": [
     "Jaime Garcia"
@@ -17,6 +17,6 @@
   "depends": {
     "minecraft": "1.21.1",
     "fabric-api": "*",
-    "cobblemon": ">=1.6.1 <=1.8.0"
+    "cobblemon": ">=1.6.1 <1.8.0"
   }
 }

@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "porker.pp_legendarydungeons"
-version = "1.0.0"
+version = "1.0.0-mc1.21.1-cobblemon1.6.1-1.7.3"
 
 architectury {
     platformSetupLoomIde()
