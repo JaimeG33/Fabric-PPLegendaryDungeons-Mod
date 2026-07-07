@@ -25,14 +25,19 @@ import porker.pp_legendarydungeons.summon.SummonContext;
  * Current behavior:
  * - consumes the player's secret unlock by setting player scs_secrets = 0
  * - sets scs_secrets = 1 on pp_rayquaza_conditions as a secret-specific lock
- * - sets event_triggered = 1 on pp_rayquaza_conditions
  * - resets pp_timer = 0 on pp_rayquaza_conditions
- * - sets spawn_once = 1 on pp_summon_rayquaza, or fallback marker
  * - removes the nether star from pp_rayquaza_conditions
  * - adds backup used tags
- * - gives the spawned Rayquaza effects
- * - plays secret sounds
+ * - makes secret Rayquaza persistent
+ * - gives secret Rayquaza Strength II and Resistance II with no particles
+ * - plays secret sounds at the spawn marker
+ * - also plays secret sounds at the condition marker if it is separate
  * - sends a secret message to nearby players
+ *
+ * Important:
+ * This file intentionally does NOT set event_triggered or spawn_once.
+ * Those are normal-Rayquaza locks. Secret Rayquaza uses scs_secrets and
+ * pp_rayquaza_secret_summoned as its own one-time lock.
  */
 public final class RayquazaSecretAftermath implements LegendarySummonAftermath {
     private static final double MESSAGE_RADIUS = 500.0D;
@@ -47,7 +52,9 @@ public final class RayquazaSecretAftermath implements LegendarySummonAftermath {
         ArmorStand conditionMarker = context.conditionMarker();
 
         /*
-         * If a separate pp_summon_rayquaza marker exists, use that for spawn_once.
+         * If a separate pp_summon_rayquaza marker exists, use it for optional
+         * secret-specific marking.
+         *
          * If there is no separate spawn marker, fall back to the condition marker.
          */
         ArmorStand spawnScoreMarker = context.spawnMarker() != null
@@ -72,16 +79,14 @@ public final class RayquazaSecretAftermath implements LegendarySummonAftermath {
             /*
              * Secret-specific lock.
              *
-             * This is separate from event_triggered so future secret logic can
-             * distinguish "secret used" from other event states if needed.
+             * This is separate from event_triggered so normal Rayquaza and secret
+             * Rayquaza can each be used once in the same structure.
              */
             ModScoreboards.setEntityScore(
                     conditionMarker,
                     ModScoreboards.SCS_SECRETS,
                     1
             );
-
-
 
             /*
              * Reset the empty-hand timer.
@@ -108,10 +113,14 @@ public final class RayquazaSecretAftermath implements LegendarySummonAftermath {
         }
 
         if (spawnScoreMarker != null) {
-
-
             /*
              * Optional secret-specific lock on the spawn marker too.
+             *
+             * This does NOT check whether the player can summon.
+             * The player requirement happens in RayquazaSecretNetherStarCondition.
+             *
+             * This is only an extra marker-side note that the secret spawn point
+             * has been used.
              */
             ModScoreboards.setEntityScore(
                     spawnScoreMarker,
@@ -147,26 +156,26 @@ public final class RayquazaSecretAftermath implements LegendarySummonAftermath {
 
     /**
      * Applies special behavior to the spawned secret Rayquaza.
-     *
-     * This mirrors your old datapack idea:
-     * - tag the secret Rayquaza
-     * - make it persistent
-     * - give it combat effects
      */
     private void setupSpawnedSecretRayquaza(PokemonEntity spawnedPokemon) {
         spawnedPokemon.addTag("secret_rayquaza_pokemon");
+        spawnedPokemon.addTag("rayquaza_pokemon");
 
         /*
          * Prevent normal despawn behavior.
          */
         spawnedPokemon.setPersistenceRequired();
 
-        /*
-         * Very long duration instead of command-side "infinite".
-         *
-         * Amplifier 1 = Strength II.
-         * Amplifier 4 = Resistance V.
-         */
+        applyRayquazaCombatEffects(spawnedPokemon);
+    }
+
+    /**
+     * Gives Rayquaza permanent Strength II and Resistance II.
+     *
+     * Amplifier 1 = level II.
+     * The two false values hide potion particles and the visible effect display.
+     */
+    private void applyRayquazaCombatEffects(PokemonEntity spawnedPokemon) {
         spawnedPokemon.addEffect(
                 new MobEffectInstance(
                         MobEffects.DAMAGE_BOOST,
@@ -181,30 +190,43 @@ public final class RayquazaSecretAftermath implements LegendarySummonAftermath {
                 new MobEffectInstance(
                         MobEffects.DAMAGE_RESISTANCE,
                         Integer.MAX_VALUE,
-                        4,
-                        false,
-                        false
-                )
-        );
-
-        /*
-         * Minecraft 1.21 has Wind Charged.
-         * If IntelliJ complains about WIND_CHARGED, remove this effect block.
-         */
-        spawnedPokemon.addEffect(
-                new MobEffectInstance(
-                        MobEffects.WIND_CHARGED,
-                        Integer.MAX_VALUE,
-                        4,
+                        1,
                         false,
                         false
                 )
         );
     }
 
+    /**
+     * Plays the secret Rayquaza summon sounds at both:
+     * - the actual Rayquaza spawn location
+     * - the condition armor stand location, if it is separate
+     *
+     * This lets players near the interaction/condition stand hear the summon,
+     * while still letting players near the actual spawn point hear it too.
+     */
     private void playSecretRayquazaSounds(SummonContext context) {
-        BlockPos pos = context.spawnPos();
+        BlockPos spawnPos = context.spawnPos();
+        playSecretRayquazaSoundsAt(context, spawnPos);
 
+        ArmorStand conditionMarker = context.conditionMarker();
+
+        if (conditionMarker == null) {
+            return;
+        }
+
+        BlockPos conditionPos = conditionMarker.blockPosition();
+
+        /*
+         * Avoid double-playing the same sounds if the condition marker and spawn
+         * marker are the same block/location.
+         */
+        if (!conditionPos.equals(spawnPos)) {
+            playSecretRayquazaSoundsAt(context, conditionPos);
+        }
+    }
+
+    private void playSecretRayquazaSoundsAt(SummonContext context, BlockPos pos) {
         context.level().playSound(
                 null,
                 pos,

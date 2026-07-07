@@ -12,6 +12,7 @@ public final class SecretItemChecks {
     public static boolean hasBlueOrbItem(ArmorStand armorStand) {
         return handMatches(armorStand, stack ->
                 stack.is(Items.LAPIS_BLOCK)
+                        || itemIdEquals(stack, "mega_showdown:blue_orb")
                         || itemIdEquals(stack, "mega_showdown:blueorb")
         );
     }
@@ -19,6 +20,7 @@ public final class SecretItemChecks {
     public static boolean hasRedOrbItem(ArmorStand armorStand) {
         return handMatches(armorStand, stack ->
                 stack.is(Items.REDSTONE_BLOCK)
+                        || itemIdEquals(stack, "mega_showdown:red_orb")
                         || itemIdEquals(stack, "mega_showdown:redorb")
         );
     }

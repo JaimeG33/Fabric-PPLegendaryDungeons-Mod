@@ -110,10 +110,11 @@
           ]
         },
         {
-          "type": "item",
+          "type": "minecraft:tag",
           "weight": 1,
           "quality": 1,
-          "name": "mega_showdown:blank_z",
+          "name": "pp_legendarydungeons:mega_showdown/blank_z_crystals",
+          "expand": true,
           "functions": [
             {
               "function": "set_count",
@@ -125,10 +126,11 @@
           ]
         },
         {
-          "type": "item",
+          "type": "minecraft:tag",
           "weight": 4,
           "quality": 6,
-          "name": "mega_showdown:blank_z",
+          "name": "pp_legendarydungeons:mega_showdown/blank_z_crystals",
+          "expand": true,
           "functions": [
             {
               "function": "set_count",
@@ -140,19 +142,11 @@
           ]
         },
         {
-          "type": "item",
+          "type": "minecraft:tag",
           "weight": 1,
           "quality": 7,
-          "name": "mega_showdown:mega_stone",
-          "functions": [
-            {
-              "function": "set_count",
-              "count": {
-                "min": 1,
-                "max": 1
-              }
-            }
-          ]
+          "name": "pp_legendarydungeons:mega_showdown/blank_mega_stones",
+          "expand": true
         }
         
       ]

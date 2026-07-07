@@ -25,19 +25,11 @@
                 "weight": 15
               },
               {
-                    "type": "item",
-                    "weight": 1,
-                    "name": "mega_showdown:blank-z",
-                    "functions": [
-                        {
-                         "function": "set_count",
-                         "count": {
-                         "min":1,
-                         "max":1
-                                  }
-                        }
-                    ]
-             },
+                "type": "minecraft:tag",
+                "weight": 1,
+                "name": "pp_legendarydungeons:mega_showdown/blank_z_crystals",
+                "expand": true
+              },
              {
                     "type": "item",
                     "weight": 1,

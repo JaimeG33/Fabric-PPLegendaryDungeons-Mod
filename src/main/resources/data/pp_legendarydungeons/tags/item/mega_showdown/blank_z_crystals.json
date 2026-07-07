@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "mega_showdown:blank_z",
+      "required": false
+    },
+    {
+      "id": "mega_showdown:blank-z",
+      "required": false
+    }
+  ]
+}

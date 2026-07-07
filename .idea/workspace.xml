@@ -4,12 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Rayquaza Logic v3.1&#10;now includes the secrets (unsure if good)">
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Rayquaza Logic v3.4&#10;Slight tweak to sound effects of summon">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/item/mega_showdown/blank_mega_stones.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/item/mega_showdown/blank_z_crystals.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/item/mega_showdown/blue_orbs.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/item/mega_showdown/red_orbs.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/LegendarySummonRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/LegendarySummonRegistry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/ProfessorPorkersLegendaryDungeons.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/ProfessorPorkersLegendaryDungeons.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/secrets/SecretItemChecks.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/secrets/SecretItemChecks.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/aftermath/RayquazaAftermath.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/aftermath/RayquazaAftermath.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/aftermath/RayquazaSecretAftermath.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/aftermath/RayquazaSecretAftermath.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/condition/RayquazaEmeraldRemovedCondition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/condition/RayquazaEmeraldRemovedCondition.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/condition/RayquazaSecretNetherStarCondition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/condition/RayquazaSecretNetherStarCondition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/function/rt/secrets/alt_rayquaza.mcfunction" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/function/rt/secrets/alt_rayquaza.mcfunction" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/ancient_battles/gvk/dig_inside_groudon.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/ancient_battles/gvk/dig_inside_groudon.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/ancient_battles/gvk/dig_inside_kyogre.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/ancient_battles/gvk/dig_inside_kyogre.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/rayquaza_tower/chests/loot_table_base.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/rayquaza_tower/chests/loot_table_base.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/rayquaza_tower/pots/mega_showdown/zyg_max_z.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/rayquaza_tower/pots/mega_showdown/zyg_max_z.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/rayquaza_tower/pots/mega_showdown/zyg_max_z_mega.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/rayquaza_tower/pots/mega_showdown/zyg_max_z_mega.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fabric.mod.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fabric.mod.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -260,7 +273,15 @@
       <option name="project" value="LOCAL" />
       <updated>1783398201651</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Rayquaza Logic v3.3&#10;Fixed Secret summon of rayquaza">
+      <option name="closed" value="true" />
+      <created>1783401896351</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1783401896351</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -276,6 +297,7 @@
     <MESSAGE value="Rayquaza Logic v2" />
     <MESSAGE value="Rayquaza Logic v3" />
     <MESSAGE value="Rayquaza Logic v3.1&#10;now includes the secrets (unsure if good)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Rayquaza Logic v3.1&#10;now includes the secrets (unsure if good)" />
+    <MESSAGE value="Rayquaza Logic v3.3&#10;Fixed Secret summon of rayquaza" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rayquaza Logic v3.3&#10;Fixed Secret summon of rayquaza" />
   </component>
 </project>

@@ -5,16 +5,11 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "item",
+          "type": "minecraft:tag",
           "weight": 1,
           "quality": 3,
-          "name": "mega_showdown:blue_orb",
-          "functions": [
-            {
-              "function": "set_count",
-              "count": 1
-            }
-          ]
+          "name": "pp_legendarydungeons:mega_showdown/blue_orbs",
+          "expand": true
         },
         {
           "type": "item",

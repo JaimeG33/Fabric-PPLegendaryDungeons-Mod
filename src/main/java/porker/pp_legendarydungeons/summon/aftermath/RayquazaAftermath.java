@@ -7,6 +7,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import porker.pp_legendarydungeons.setup.ModScoreboards;
 import porker.pp_legendarydungeons.summon.LegendarySummonDefinition;
@@ -22,7 +24,10 @@ import porker.pp_legendarydungeons.summon.SummonContext;
  * - set spawn_once = 1 on pp_summon_rayquaza, or fallback marker
  * - reset pp_timer = 0 on pp_rayquaza_conditions
  * - add pp_rayquaza_summoned tags as an extra backup
- * - play sounds
+ * - make Rayquaza persistent
+ * - give Rayquaza Strength II and Resistance II with no particles
+ * - play sounds at the spawn marker
+ * - also play sounds at the condition marker if it is separate
  * - send a message to nearby players
  *
  * Important:
@@ -34,6 +39,7 @@ public final class RayquazaAftermath implements LegendarySummonAftermath {
     private static final double MESSAGE_RADIUS = 64.0D;
     private static final double MESSAGE_RADIUS_SQUARED = MESSAGE_RADIUS * MESSAGE_RADIUS;
 
+    @Override
     public void run(
             SummonContext context,
             LegendarySummonDefinition definition,
@@ -77,7 +83,7 @@ public final class RayquazaAftermath implements LegendarySummonAftermath {
              * Extra backup prevention.
              *
              * The scoreboard is the main state check, but this tag gives another
-             * layer of protection against duplicate summons.
+             * layer of protection against duplicate normal summons.
              */
             conditionMarker.addTag(definition.usedTag());
         }
@@ -102,13 +108,84 @@ public final class RayquazaAftermath implements LegendarySummonAftermath {
             context.summonMarker().addTag(definition.usedTag());
         }
 
+        setupSpawnedRayquaza(spawnedPokemon);
         playRayquazaSounds(context);
         messageNearbyPlayers(context);
     }
 
-    private void playRayquazaSounds(SummonContext context) {
-        BlockPos pos = context.spawnPos();
+    /**
+     * Applies special behavior to the spawned normal Rayquaza.
+     */
+    private void setupSpawnedRayquaza(PokemonEntity spawnedPokemon) {
+        spawnedPokemon.addTag("normal_rayquaza_pokemon");
+        spawnedPokemon.addTag("rayquaza_pokemon");
 
+        /*
+         * Prevent normal despawn behavior.
+         */
+        spawnedPokemon.setPersistenceRequired();
+
+        applyRayquazaCombatEffects(spawnedPokemon);
+    }
+
+    /**
+     * Gives Rayquaza permanent Strength II and Resistance II.
+     *
+     * Amplifier 1 = level II.
+     * The two false values hide potion particles and the visible effect display.
+     */
+    private void applyRayquazaCombatEffects(PokemonEntity spawnedPokemon) {
+        spawnedPokemon.addEffect(
+                new MobEffectInstance(
+                        MobEffects.DAMAGE_BOOST,
+                        Integer.MAX_VALUE,
+                        1,
+                        false,
+                        false
+                )
+        );
+
+        spawnedPokemon.addEffect(
+                new MobEffectInstance(
+                        MobEffects.DAMAGE_RESISTANCE,
+                        Integer.MAX_VALUE,
+                        1,
+                        false,
+                        false
+                )
+        );
+    }
+
+    /**
+     * Plays the Rayquaza summon sounds at both:
+     * - the actual Rayquaza spawn location
+     * - the condition armor stand location, if it is separate
+     *
+     * This lets players near the interaction/condition stand hear the summon,
+     * while still letting players near the actual spawn point hear it too.
+     */
+    private void playRayquazaSounds(SummonContext context) {
+        BlockPos spawnPos = context.spawnPos();
+        playRayquazaSoundsAt(context, spawnPos);
+
+        ArmorStand conditionMarker = context.conditionMarker();
+
+        if (conditionMarker == null) {
+            return;
+        }
+
+        BlockPos conditionPos = conditionMarker.blockPosition();
+
+        /*
+         * Avoid double-playing the same sounds if the condition marker and spawn
+         * marker are the same block/location.
+         */
+        if (!conditionPos.equals(spawnPos)) {
+            playRayquazaSoundsAt(context, conditionPos);
+        }
+    }
+
+    private void playRayquazaSoundsAt(SummonContext context, BlockPos pos) {
         context.level().playSound(
                 null,
                 pos,

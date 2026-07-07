@@ -5,18 +5,28 @@
 # Step 1: Kyogre / blue orb stand.
 execute if data entity @e[type=minecraft:armor_stand,tag=scs_secret_step1,sort=nearest,limit=1,distance=..100] HandItems[{id:"minecraft:lapis_block"}] unless score @s scs_secrets matches 1..3 run say hi, I have a blue orb in my hand
 execute if data entity @e[type=minecraft:armor_stand,tag=scs_secret_step1,sort=nearest,limit=1,distance=..100] HandItems[{id:"mega_showdown:blueorb"}] unless score @s scs_secrets matches 1..3 run say hi, I have a blue orb in my hand
+execute if data entity @e[type=minecraft:armor_stand,tag=scs_secret_step1,sort=nearest,limit=1,distance=..100] HandItems[{id:"mega_showdown:blue_orb"}] unless score @s scs_secrets matches 1..3 run say hi, I have a blue orb in my hand
+
 execute if data entity @e[type=minecraft:armor_stand,tag=scs_secret_step1,sort=nearest,limit=1,distance=..100] HandItems[{id:"minecraft:lapis_block"}] unless score @s scs_secrets matches 1..3 run playsound entity.wither.spawn master @a[distance=..30]
 execute if data entity @e[type=minecraft:armor_stand,tag=scs_secret_step1,sort=nearest,limit=1,distance=..100] HandItems[{id:"mega_showdown:blueorb"}] unless score @s scs_secrets matches 1..3 run playsound entity.wither.spawn master @a[distance=..30]
+execute if data entity @e[type=minecraft:armor_stand,tag=scs_secret_step1,sort=nearest,limit=1,distance=..100] HandItems[{id:"mega_showdown:blue_orb"}] unless score @s scs_secrets matches 1..3 run playsound entity.wither.spawn master @a[distance=..30]
+
 execute if data entity @e[type=minecraft:armor_stand,tag=scs_secret_step1,sort=nearest,limit=1,distance=..100] HandItems[{id:"minecraft:lapis_block"}] unless score @s scs_secrets matches 1..3 run scoreboard players set @s scs_secrets 1
 execute if data entity @e[type=minecraft:armor_stand,tag=scs_secret_step1,sort=nearest,limit=1,distance=..100] HandItems[{id:"mega_showdown:blueorb"}] unless score @s scs_secrets matches 1..3 run scoreboard players set @s scs_secrets 1
+execute if data entity @e[type=minecraft:armor_stand,tag=scs_secret_step1,sort=nearest,limit=1,distance=..100] HandItems[{id:"mega_showdown:blue_orb"}] unless score @s scs_secrets matches 1..3 run scoreboard players set @s scs_secrets 1
 
 # Step 2: Groudon / red orb stand.
 execute if score @s scs_secrets matches 1 if data entity @e[type=minecraft:armor_stand,tag=scs_secret_step2,sort=nearest,limit=1,distance=..100] HandItems[{id:"minecraft:redstone_block"}] run say hi, I have a red orb in my hand
 execute if score @s scs_secrets matches 1 if data entity @e[type=minecraft:armor_stand,tag=scs_secret_step2,sort=nearest,limit=1,distance=..100] HandItems[{id:"mega_showdown:redorb"}] run say hi, I have a red orb in my hand
+execute if score @s scs_secrets matches 1 if data entity @e[type=minecraft:armor_stand,tag=scs_secret_step2,sort=nearest,limit=1,distance=..100] HandItems[{id:"mega_showdown:red_orb"}] run say hi, I have a red orb in my hand
+
 execute if score @s scs_secrets matches 1 if data entity @e[type=minecraft:armor_stand,tag=scs_secret_step2,sort=nearest,limit=1,distance=..100] HandItems[{id:"minecraft:redstone_block"}] run playsound entity.wither.spawn master @a[distance=..30]
 execute if score @s scs_secrets matches 1 if data entity @e[type=minecraft:armor_stand,tag=scs_secret_step2,sort=nearest,limit=1,distance=..100] HandItems[{id:"mega_showdown:redorb"}] run playsound entity.wither.spawn master @a[distance=..30]
+execute if score @s scs_secrets matches 1 if data entity @e[type=minecraft:armor_stand,tag=scs_secret_step2,sort=nearest,limit=1,distance=..100] HandItems[{id:"mega_showdown:red_orb"}] run playsound entity.wither.spawn master @a[distance=..30]
+
 execute if score @s scs_secrets matches 1 if data entity @e[type=minecraft:armor_stand,tag=scs_secret_step2,sort=nearest,limit=1,distance=..100] HandItems[{id:"minecraft:redstone_block"}] run scoreboard players set @s scs_secrets 2
 execute if score @s scs_secrets matches 1 if data entity @e[type=minecraft:armor_stand,tag=scs_secret_step2,sort=nearest,limit=1,distance=..100] HandItems[{id:"mega_showdown:redorb"}] run scoreboard players set @s scs_secrets 2
+execute if score @s scs_secrets matches 1 if data entity @e[type=minecraft:armor_stand,tag=scs_secret_step2,sort=nearest,limit=1,distance=..100] HandItems[{id:"mega_showdown:red_orb"}] run scoreboard players set @s scs_secrets 2
 
 # Step 3: Deoxys / meteorite item on this secret starter.
 execute if score @s scs_secrets matches 2 if data entity @s HandItems[{id:"minecraft:nether_star"}] run say hi, I have a meteorite in my hand
