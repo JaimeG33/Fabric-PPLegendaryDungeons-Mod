@@ -23,11 +23,12 @@ import java.util.Optional;
  * Instead, the condition stand must have empty hands for a few check cycles.
  *
  * This gives players enough time to swap the emerald block for another item,
- * such as a nether star for the future secret Rayquaza summon.
+ * such as a nether star for the secret Rayquaza summon.
  *
  * Normal Rayquaza requires:
  * - pp_rayquaza_conditions exists near pp_legendary_summon
  * - event_triggered < 1 on pp_rayquaza_conditions
+ * - the nearby player is NOT holding the secret unlock score scs_secrets >= 10
  * - pp_rayquaza_conditions has empty hands
  * - pp_timer reaches EMPTY_HAND_TIMER_THRESHOLD
  * - spawn_once < 1 on pp_summon_rayquaza, or fallback marker
@@ -40,6 +41,13 @@ public final class RayquazaEmeraldRemovedCondition implements LegendarySummonCon
      * before normal Rayquaza summons.
      */
     private static final int EMPTY_HAND_TIMER_THRESHOLD = 3;
+
+    /**
+     * A player with this score has completed the secret sequence and should be
+     * allowed time to place the nether star without accidentally triggering the
+     * normal empty-hand Rayquaza summon.
+     */
+    private static final int SECRET_UNLOCK_SCORE = 10;
 
     @Override
     public Optional<SummonContext> prepareContext(
@@ -65,6 +73,10 @@ public final class RayquazaEmeraldRemovedCondition implements LegendarySummonCon
          *
          * If it is already 1 or higher, this structure has already triggered
          * normal Rayquaza.
+         *
+         * Important:
+         * This should only represent the normal Rayquaza summon.
+         * Secret Rayquaza should use its own secret-specific lock instead.
          */
         if (!ModScoreboards.entityScoreLessThan(
                 rayquazaConditionMarker,
@@ -75,12 +87,40 @@ public final class RayquazaEmeraldRemovedCondition implements LegendarySummonCon
         }
 
         /*
+         * If the nearby player has completed the secret sequence, pause the
+         * normal empty-hand summon.
+         *
+         * This prevents the normal Rayquaza timer from advancing while the player
+         * is trying to swap the emerald block for the nether star.
+         *
+         * After secret Rayquaza successfully spawns, RayquazaSecretAftermath should
+         * reset the player's scs_secrets score back to 0, allowing the normal
+         * summon to be used later if it has not already been used.
+         */
+        if (context.player() != null) {
+            int playerSecretScore = ModScoreboards.getEntityScore(
+                    context.player(),
+                    ModScoreboards.SCS_SECRETS
+            );
+
+            if (playerSecretScore >= SECRET_UNLOCK_SCORE) {
+                ModScoreboards.setEntityScore(
+                        rayquazaConditionMarker,
+                        ModScoreboards.PP_TIMER,
+                        0
+                );
+
+                return Optional.empty();
+            }
+        }
+
+        /*
          * If the condition marker is holding any item, normal Rayquaza should
          * not summon.
          *
          * This includes:
          * - emerald block still present
-         * - nether star for future secret summon
+         * - nether star for the secret summon
          * - any other item
          *
          * Reset pp_timer because the stand is not empty.
@@ -132,7 +172,12 @@ public final class RayquazaEmeraldRemovedCondition implements LegendarySummonCon
         /*
          * spawn_once must also be absent, 0, or below 1.
          *
-         * This prevents the same spawn marker from producing Rayquaza again.
+         * This prevents the same spawn marker from producing normal Rayquaza again.
+         *
+         * Important:
+         * This should only represent the normal Rayquaza summon.
+         * Secret Rayquaza should not rely on this same spawn_once lock if you want
+         * both normal and secret Rayquaza to be available once each.
          */
         if (!ModScoreboards.entityScoreLessThan(
                 spawnScoreMarker,
@@ -176,8 +221,12 @@ public final class RayquazaEmeraldRemovedCondition implements LegendarySummonCon
                                 /*
                                  * Backup repeat prevention.
                                  *
-                                 * The scoreboard values are the main prevention system,
-                                 * but this tag gives an extra safety layer.
+                                 * For the normal Rayquaza definition, this used tag should be:
+                                 * pp_rayquaza_summoned
+                                 *
+                                 * This should not block secret Rayquaza, because secret Rayquaza
+                                 * has its own used tag:
+                                 * pp_rayquaza_secret_summoned
                                  */
                                 && !armorStand.getTags().contains(definition.usedTag())
         );
@@ -218,8 +267,8 @@ public final class RayquazaEmeraldRemovedCondition implements LegendarySummonCon
     /**
      * Normal Rayquaza only triggers when both hands are empty.
      *
-     * This prevents the future secret nether star summon from accidentally
-     * triggering the normal summon.
+     * This prevents the secret nether star summon from accidentally triggering
+     * the normal summon.
      */
     private boolean hasEmptyHands(ArmorStand armorStand) {
         return armorStand.getMainHandItem().isEmpty()

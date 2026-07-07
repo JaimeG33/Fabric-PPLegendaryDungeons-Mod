@@ -81,15 +81,7 @@ public final class RayquazaSecretAftermath implements LegendarySummonAftermath {
                     1
             );
 
-            /*
-             * Lock the main Rayquaza event so normal Rayquaza cannot also spawn
-             * from the same condition marker after secret Rayquaza.
-             */
-            ModScoreboards.setEntityScore(
-                    conditionMarker,
-                    ModScoreboards.EVENT_TRIGGERED,
-                    1
-            );
+
 
             /*
              * Reset the empty-hand timer.
@@ -116,14 +108,7 @@ public final class RayquazaSecretAftermath implements LegendarySummonAftermath {
         }
 
         if (spawnScoreMarker != null) {
-            /*
-             * Prevent the same spawn marker from producing another Rayquaza.
-             */
-            ModScoreboards.setEntityScore(
-                    spawnScoreMarker,
-                    ModScoreboards.SPAWN_ONCE,
-                    1
-            );
+
 
             /*
              * Optional secret-specific lock on the spawn marker too.

@@ -51,7 +51,7 @@ public final class LegendarySummonRegistry {
                     24.0D,
 
                     // Search radius from pp_rayquaza_conditions to pp_summon_rayquaza.
-                    32.0D,
+                    48.0D,
 
                     // Secret Rayquaza condition.
                     new RayquazaSecretNetherStarCondition(),
@@ -89,7 +89,7 @@ public final class LegendarySummonRegistry {
                     24.0D,
 
                     // Search radius from pp_rayquaza_conditions to pp_summon_rayquaza.
-                    32.0D,
+                    48.0D,
 
                     // Normal Rayquaza condition.
                     new RayquazaEmeraldRemovedCondition(),

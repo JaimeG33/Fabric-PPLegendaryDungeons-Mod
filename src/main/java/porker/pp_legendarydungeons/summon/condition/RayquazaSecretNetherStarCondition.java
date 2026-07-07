@@ -71,20 +71,7 @@ public final class RayquazaSecretNetherStarCondition implements LegendarySummonC
             return Optional.empty();
         }
 
-        /*
-         * If event_triggered is already 1 or higher, this Rayquaza summon event
-         * has already been used.
-         *
-         * This helps prevent the secret summon from happening after the normal
-         * summon already happened.
-         */
-        if (!ModScoreboards.entityScoreLessThan(
-                rayquazaConditionMarker,
-                ModScoreboards.EVENT_TRIGGERED,
-                1
-        )) {
-            return Optional.empty();
-        }
+
 
         /*
          * scs_secrets on the condition marker is used as a parallel secret-specific
@@ -133,16 +120,7 @@ public final class RayquazaSecretNetherStarCondition implements LegendarySummonC
          */
         ArmorStand spawnScoreMarker = spawnMarker.orElse(rayquazaConditionMarker);
 
-        /*
-         * spawn_once prevents the same spawn marker from producing Rayquaza again.
-         */
-        if (!ModScoreboards.entityScoreLessThan(
-                spawnScoreMarker,
-                ModScoreboards.SPAWN_ONCE,
-                1
-        )) {
-            return Optional.empty();
-        }
+
 
         BlockPos spawnPos = spawnScoreMarker.blockPosition();
 
