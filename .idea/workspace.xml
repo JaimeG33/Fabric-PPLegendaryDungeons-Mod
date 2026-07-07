@@ -4,16 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Renamed Project to &#10;Cobblemon: Explore Legendary Dungeons">
-      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/FeatureContext.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/FeatureService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/FeatureTicker.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/wtraders/WanderingTraderCommandSpawner.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/wtraders/WanderingTraderFeature.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/maps/LegendaryMapTarget.java" afterDir="false" />
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Maps v1 (test no work)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/ProfessorPorkersLegendaryDungeons.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/ProfessorPorkersLegendaryDungeons.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/worldgen/structure/sky_pillar.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/worldgen/structure/sky_pillar.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/wtraders/WanderingTraderCommandSpawner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/wtraders/WanderingTraderCommandSpawner.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -291,7 +284,15 @@
       <option name="project" value="LOCAL" />
       <updated>1783459640415</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Maps v1 (test no work)">
+      <option name="closed" value="true" />
+      <created>1783466455256</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1783466455256</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -310,6 +311,7 @@
     <MESSAGE value="Rayquaza Logic v3.3&#10;Fixed Secret summon of rayquaza" />
     <MESSAGE value="Rayquaza Logic v3.4&#10;Slight tweak to sound effects of summon&#10;&#10;Also made compatable for cobblemon 1.6.1 and fixed some mega showdown loot tables using tags" />
     <MESSAGE value="Renamed Project to &#10;Cobblemon: Explore Legendary Dungeons" />
-    <option name="LAST_COMMIT_MESSAGE" value="Renamed Project to &#10;Cobblemon: Explore Legendary Dungeons" />
+    <MESSAGE value="Maps v1 (test no work)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Maps v1 (test no work)" />
   </component>
 </project>

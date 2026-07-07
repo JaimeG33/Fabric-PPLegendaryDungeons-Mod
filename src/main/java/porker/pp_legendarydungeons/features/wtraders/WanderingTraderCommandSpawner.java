@@ -1,22 +1,221 @@
 package porker.pp_legendarydungeons.features.wtraders;
 
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.npc.WanderingTrader;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.trading.ItemCost;
+import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.item.trading.MerchantOffers;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.phys.AABB;
 import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
 import porker.pp_legendarydungeons.features.FeatureContext;
+import porker.pp_legendarydungeons.maps.LegendaryMapTarget;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 
 /**
- * Temporary bridge spawner for wandering trader test implementation.
+ * Spawns custom wandering traders for structure feature markers.
  *
- * This intentionally runs a known-working summon command based on the old datapack trader NBT.
- * Once the scanner is confirmed stable, the offer construction can be migrated to fully native Java.
+ * This version does NOT sell the old placeholder/voucher map.
+ *
+ * Instead:
+ * 1. It runs the existing Sky Pillar map loot table at the trader marker.
+ * 2. It captures the generated map ItemStack.
+ * 3. It deletes the temporary dropped item.
+ * 4. It spawns a wandering trader with that generated map already inside its offers.
  */
 public final class WanderingTraderCommandSpawner {
+    private static final float PRICE_MULTIPLIER = 0.05F;
+
     private WanderingTraderCommandSpawner() {
     }
 
     public static boolean spawnSkyPillarTrader(FeatureContext context, ArmorStand traderMarker) {
-        return runCommandAtMarker(context, traderMarker, skyPillarTraderCommand());
+        Optional<ItemStack> generatedMap = generateMapFromLootTable(
+                context,
+                traderMarker,
+                LegendaryMapTarget.SKY_PILLAR
+        );
+
+        if (generatedMap.isEmpty()) {
+            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                    "Could not generate Sky Pillar map at {}. Trader was not spawned.",
+                    traderMarker.blockPosition()
+            );
+            return false;
+        }
+
+        WanderingTrader trader = EntityType.WANDERING_TRADER.create(context.level());
+
+        if (trader == null) {
+            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                    "Could not create wandering trader entity at {}.",
+                    traderMarker.blockPosition()
+            );
+            return false;
+        }
+
+        trader.moveTo(
+                traderMarker.getX(),
+                traderMarker.getY(),
+                traderMarker.getZ(),
+                traderMarker.getYRot(),
+                traderMarker.getXRot()
+        );
+
+        trader.setPersistenceRequired();
+        trader.setDespawnDelay(48000);
+
+        trader.addTag("pp_spawned_feature_trader");
+        trader.addTag("pp_map_trader");
+        trader.addTag("pp_to_skypillar");
+
+        trader.overrideOffers(createSkyPillarOffers(generatedMap.get()));
+
+        context.level().addFreshEntity(trader);
+
+        return true;
+    }
+
+    /**
+     * Uses your existing loot table:
+     * pp_legendarydungeons:maps/find_skypillar
+     *
+     * This lets the loot table's minecraft:exploration_map function generate the real map,
+     * but captures it before the player ever buys it.
+     */
+    private static Optional<ItemStack> generateMapFromLootTable(
+            FeatureContext context,
+            ArmorStand marker,
+            LegendaryMapTarget target
+    ) {
+        AABB searchBox = marker.getBoundingBox().inflate(2.0D);
+
+        Set<UUID> existingItemEntities = new HashSet<>();
+        List<ItemEntity> beforeItems = context.level().getEntitiesOfClass(
+                ItemEntity.class,
+                searchBox,
+                Entity::isAlive
+        );
+
+        for (ItemEntity itemEntity : beforeItems) {
+            existingItemEntities.add(itemEntity.getUUID());
+        }
+
+        boolean commandSucceeded = runCommandAtMarker(
+                context,
+                marker,
+                "loot spawn ~ ~ ~ loot " + target.lootTableId()
+        );
+
+        if (!commandSucceeded) {
+            return Optional.empty();
+        }
+
+        List<ItemEntity> afterItems = context.level().getEntitiesOfClass(
+                ItemEntity.class,
+                searchBox,
+                itemEntity ->
+                        itemEntity.isAlive()
+                                && !existingItemEntities.contains(itemEntity.getUUID())
+                                && !itemEntity.getItem().isEmpty()
+        );
+
+        for (ItemEntity itemEntity : afterItems) {
+            ItemStack generatedStack = itemEntity.getItem().copy();
+            generatedStack.setCount(1);
+
+            itemEntity.discard();
+
+            return Optional.of(generatedStack);
+        }
+
+        return Optional.empty();
+    }
+
+    private static MerchantOffers createSkyPillarOffers(ItemStack generatedSkyPillarMap) {
+        MerchantOffers offers = new MerchantOffers();
+
+        offers.add(new MerchantOffer(
+                new ItemCost(Items.EMERALD, 3),
+                new ItemStack(Items.CHERRY_SAPLING, 5),
+                3,
+                1,
+                PRICE_MULTIPLIER
+        ));
+
+        offers.add(new MerchantOffer(
+                new ItemCost(Items.EMERALD, 32),
+                Optional.of(new ItemCost(modItem("cobblemon:relic_coin"), 32)),
+                generatedSkyPillarMap.copy(),
+                1,
+                1,
+                PRICE_MULTIPLIER
+        ));
+
+        offers.add(new MerchantOffer(
+                new ItemCost(Items.EMERALD, 8),
+                new ItemStack(modItem("cobblemon:flying_gem"), 1),
+                4,
+                1,
+                PRICE_MULTIPLIER
+        ));
+
+        offers.add(new MerchantOffer(
+                new ItemCost(Items.APPLE, 1),
+                new ItemStack(modItem("cobblemon:leftovers"), 1),
+                8,
+                1,
+                PRICE_MULTIPLIER
+        ));
+
+        offers.add(new MerchantOffer(
+                new ItemCost(Items.EMERALD, 5),
+                new ItemStack(modItem("cobblemon:green_apricorn_seed"), 1),
+                6,
+                1,
+                PRICE_MULTIPLIER
+        ));
+
+        // Temporary simplified copy of the old iron hoe trade.
+        // The old datapack version had enchantment components in command NBT.
+        // We can restore the exact enchantments later after the generated-map trade is confirmed working.
+        offers.add(new MerchantOffer(
+                new ItemCost(Items.EMERALD, 10),
+                Optional.of(new ItemCost(modItem("cobblemon:relic_coin"), 16)),
+                new ItemStack(Items.IRON_HOE, 1),
+                1,
+                1,
+                PRICE_MULTIPLIER
+        ));
+
+        return offers;
+    }
+
+    private static Item modItem(String id) {
+        Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(id));
+
+        if (item == Items.AIR) {
+            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                    "Item id {} resolved to minecraft:air. Is the required mod loaded?",
+                    id
+            );
+        }
+
+        return item;
     }
 
     private static boolean runCommandAtMarker(FeatureContext context, ArmorStand marker, String command) {
@@ -33,25 +232,12 @@ public final class WanderingTraderCommandSpawner {
             return true;
         } catch (Exception exception) {
             ProfessorPorkersLegendaryDungeons.LOGGER.error(
-                    "Failed to spawn wandering trader feature at {}",
+                    "Failed to run wandering trader helper command at {}: {}",
                     marker.blockPosition(),
+                    command,
                     exception
             );
             return false;
         }
-    }
-
-    /**
-     * Test map trader copied from the old to_skypillar datapack function.
-     *
-     * Notes:
-     * - This still sells the placeholder/custom rare filled_map with custom_model_data 3311101.
-     * - That lets you test the feature scanner and trader spawning first.
-     * - Later, this trade can sell a Java-generated real exploration map directly.
-     */
-    private static String skyPillarTraderCommand() {
-        return """
-                summon minecraft:wandering_trader ~ ~ ~ {PersistenceRequired:1b,Tags:["pp_spawned_feature_trader","pp_map_trader","pp_to_skypillar"],Offers:{Recipes:[{rewardExp:1b,maxUses:3,buy:{id:"minecraft:emerald",count:3},sell:{id:"minecraft:cherry_sapling",count:5}},{rewardExp:1b,maxUses:1,buy:{id:"minecraft:emerald",count:32},buyB:{id:"cobblemon:relic_coin",count:32},sell:{id:"minecraft:filled_map",count:1,components:{"minecraft:item_name":'{"bold":true,"text":"Sky Pillar Exploration Map"}',"minecraft:lore":['"This map shows the location to the legendary dungeon of Rayquaza"'],"minecraft:rarity":"rare","minecraft:custom_model_data":3311101}}},{rewardExp:1b,maxUses:4,buy:{id:"minecraft:emerald",count:8},sell:{id:"cobblemon:flying_gem",count:1}},{rewardExp:1b,maxUses:8,buy:{id:"minecraft:apple",count:1},sell:{id:"cobblemon:leftovers",count:1}},{rewardExp:1b,maxUses:6,buy:{id:"minecraft:emerald",count:5},sell:{id:"cobblemon:green_apricorn_seed",count:1}},{rewardExp:1b,maxUses:1,buy:{id:"minecraft:emerald",count:10},buyB:{id:"cobblemon:relic_coin",count:16},sell:{id:"minecraft:iron_hoe",count:1,components:{"minecraft:enchantments":{levels:{"minecraft:fortune":3,"minecraft:unbreaking":3}}}}}]}}
-                """.replace('\n', ' ').trim();
     }
 }
