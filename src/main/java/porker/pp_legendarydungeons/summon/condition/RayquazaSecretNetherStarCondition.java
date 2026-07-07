@@ -2,6 +2,7 @@ package porker.pp_legendarydungeons.summon.condition;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.AABB;
 import porker.pp_legendarydungeons.setup.ModScoreboards;
 import porker.pp_legendarydungeons.summon.LegendarySummonDefinition;
@@ -12,34 +13,29 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Normal Rayquaza condition logic.
+ * Secret Rayquaza summon condition.
  *
- * Current behavior:
+ * This is the top-of-tower part of the secret summon.
  *
- * The structure is expected to spawn with the pp_rayquaza_conditions armor stand
- * holding an emerald block.
+ * This condition checks:
+ * - a nearby pp_rayquaza_conditions marker exists
+ * - the player has scs_secrets = 10
+ * - pp_rayquaza_conditions is holding a nether star
+ * - pp_rayquaza_conditions has not already used the secret summon
+ * - pp_summon_rayquaza has not already spawned Rayquaza
  *
- * Normal Rayquaza does NOT summon immediately when the emerald block is removed.
- * Instead, the condition stand must have empty hands for a few check cycles.
- *
- * This gives players enough time to swap the emerald block for another item,
- * such as a nether star for the future secret Rayquaza summon.
- *
- * Normal Rayquaza requires:
- * - pp_rayquaza_conditions exists near pp_legendary_summon
- * - event_triggered < 1 on pp_rayquaza_conditions
- * - pp_rayquaza_conditions has empty hands
- * - pp_timer reaches EMPTY_HAND_TIMER_THRESHOLD
- * - spawn_once < 1 on pp_summon_rayquaza, or fallback marker
+ * This does NOT check the bottom secret puzzle.
+ * The bottom puzzle should be handled separately in the secrets folder,
+ * and should give the player scs_secrets = 10 when completed.
  */
-public final class RayquazaEmeraldRemovedCondition implements LegendarySummonCondition {
+public final class RayquazaSecretNetherStarCondition implements LegendarySummonCondition {
     /**
-     * Your entity summon ticker currently runs once per second.
+     * The player must have this scs_secrets score to use the secret Rayquaza summon.
      *
-     * A value of 3 means the condition stand must stay empty for about 3 seconds
-     * before normal Rayquaza summons.
+     * This matches the old datapack behavior:
+     * scoreboard players set <player> scs_secrets 10
      */
-    private static final int EMPTY_HAND_TIMER_THRESHOLD = 3;
+    private static final int REQUIRED_PLAYER_SECRET_SCORE = 10;
 
     @Override
     public Optional<SummonContext> prepareContext(
@@ -61,10 +57,26 @@ public final class RayquazaEmeraldRemovedCondition implements LegendarySummonCon
         ArmorStand rayquazaConditionMarker = conditionMarker.get();
 
         /*
-         * event_triggered must be absent, 0, or below 1.
+         * The nearby player must have completed the bottom secret sequence.
          *
-         * If it is already 1 or higher, this structure has already triggered
-         * normal Rayquaza.
+         * This intentionally checks the player, not the tower-top armor stand.
+         * That lets the bottom puzzle be far away from the top summon area.
+         */
+        int playerSecretScore = ModScoreboards.getEntityScore(
+                context.player(),
+                ModScoreboards.SCS_SECRETS
+        );
+
+        if (playerSecretScore != REQUIRED_PLAYER_SECRET_SCORE) {
+            return Optional.empty();
+        }
+
+        /*
+         * If event_triggered is already 1 or higher, this Rayquaza summon event
+         * has already been used.
+         *
+         * This helps prevent the secret summon from happening after the normal
+         * summon already happened.
          */
         if (!ModScoreboards.entityScoreLessThan(
                 rayquazaConditionMarker,
@@ -75,47 +87,39 @@ public final class RayquazaEmeraldRemovedCondition implements LegendarySummonCon
         }
 
         /*
-         * If the condition marker is holding any item, normal Rayquaza should
-         * not summon.
-         *
-         * This includes:
-         * - emerald block still present
-         * - nether star for future secret summon
-         * - any other item
-         *
-         * Reset pp_timer because the stand is not empty.
+         * scs_secrets on the condition marker is used as a parallel secret-specific
+         * lock. This allows you to distinguish "secret already used" from other
+         * event state later if needed.
          */
-        if (!hasEmptyHands(rayquazaConditionMarker)) {
-            ModScoreboards.setEntityScore(
-                    rayquazaConditionMarker,
-                    ModScoreboards.PP_TIMER,
-                    0
-            );
-
+        if (!ModScoreboards.entityScoreLessThan(
+                rayquazaConditionMarker,
+                ModScoreboards.SCS_SECRETS,
+                1
+        )) {
             return Optional.empty();
         }
 
         /*
-         * The stand is empty, so increase pp_timer.
+         * The actual top secret trigger:
          *
-         * Once it has been empty long enough, normal Rayquaza can summon.
+         * The player must place a nether star into the pp_rayquaza_conditions
+         * armor stand's hand.
          */
-        int timer = ModScoreboards.getEntityScore(
-                rayquazaConditionMarker,
-                ModScoreboards.PP_TIMER
-        );
+        if (!hasNetherStar(rayquazaConditionMarker)) {
+            return Optional.empty();
+        }
 
-        timer++;
-
+        /*
+         * Because a nether star is now present, reset pp_timer.
+         *
+         * This prevents the normal empty-hand Rayquaza summon from continuing
+         * its timer after the player swaps the emerald block for the nether star.
+         */
         ModScoreboards.setEntityScore(
                 rayquazaConditionMarker,
                 ModScoreboards.PP_TIMER,
-                timer
+                0
         );
-
-        if (timer < EMPTY_HAND_TIMER_THRESHOLD) {
-            return Optional.empty();
-        }
 
         Optional<ArmorStand> spawnMarker = findNearestSpawnMarker(
                 context,
@@ -124,15 +128,13 @@ public final class RayquazaEmeraldRemovedCondition implements LegendarySummonCon
         );
 
         /*
-         * If a pp_summon_rayquaza marker exists, use it.
-         * If not, fall back to the condition marker.
+         * If pp_summon_rayquaza exists, use it.
+         * If not, fall back to pp_rayquaza_conditions.
          */
         ArmorStand spawnScoreMarker = spawnMarker.orElse(rayquazaConditionMarker);
 
         /*
-         * spawn_once must also be absent, 0, or below 1.
-         *
-         * This prevents the same spawn marker from producing Rayquaza again.
+         * spawn_once prevents the same spawn marker from producing Rayquaza again.
          */
         if (!ModScoreboards.entityScoreLessThan(
                 spawnScoreMarker,
@@ -174,10 +176,10 @@ public final class RayquazaEmeraldRemovedCondition implements LegendarySummonCon
                                 && armorStand.getTags().contains(definition.conditionTag())
 
                                 /*
-                                 * Backup repeat prevention.
+                                 * Backup prevention for this specific secret definition.
                                  *
-                                 * The scoreboard values are the main prevention system,
-                                 * but this tag gives an extra safety layer.
+                                 * The scoreboard checks are the main prevention system,
+                                 * but the used tag gives an extra layer of safety.
                                  */
                                 && !armorStand.getTags().contains(definition.usedTag())
         );
@@ -216,13 +218,13 @@ public final class RayquazaEmeraldRemovedCondition implements LegendarySummonCon
     }
 
     /**
-     * Normal Rayquaza only triggers when both hands are empty.
+     * Checks either hand for a vanilla nether star.
      *
-     * This prevents the future secret nether star summon from accidentally
-     * triggering the normal summon.
+     * This is the item the player places into pp_rayquaza_conditions after
+     * unlocking the secret at the bottom of the tower.
      */
-    private boolean hasEmptyHands(ArmorStand armorStand) {
-        return armorStand.getMainHandItem().isEmpty()
-                && armorStand.getOffhandItem().isEmpty();
+    private boolean hasNetherStar(ArmorStand armorStand) {
+        return armorStand.getMainHandItem().is(Items.NETHER_STAR)
+                || armorStand.getOffhandItem().is(Items.NETHER_STAR);
     }
 }

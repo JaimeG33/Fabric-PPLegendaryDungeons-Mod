@@ -4,16 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Rayquaza Logic v2">
-      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/condition/RayquazaEmeraldRemovedCondition.java" afterDir="false" />
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Rayquaza Logic v3">
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/secrets/SecretContext.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/secrets/SecretItemChecks.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/secrets/SecretService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/secrets/SecretTicker.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/secrets/rayquaza/RayquazaSecretProgression.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/aftermath/RayquazaSecretAftermath.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/condition/RayquazaSecretNetherStarCondition.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/ProfessorPorkersLegendaryDungeons.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/ProfessorPorkersLegendaryDungeons.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/setup/ModScoreboards.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/setup/ModScoreboards.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/LegendarySummonDefinition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/LegendarySummonDefinition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/LegendarySummonHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/LegendarySummonHelper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/LegendarySummonRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/LegendarySummonRegistry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/SummonContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/SummonContext.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/LegendarySummonService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/LegendarySummonService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/aftermath/RayquazaAftermath.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/aftermath/RayquazaAftermath.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/condition/RayquazaEmeraldBlockCondition.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/trigger/EntityLegendarySummonTicker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/trigger/EntityLegendarySummonTicker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/structure/rayquaza_tower/sky_pillar.nbt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/structure/rayquaza_tower/sky_pillar.nbt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/condition/RayquazaEmeraldRemovedCondition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/condition/RayquazaEmeraldRemovedCondition.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,6 +88,9 @@
   &quot;associatedIndex&quot;: 8
 }</component>
   <component name="ProjectId" id="3G67ccwK7NokdhcoKrciNaW8mVA" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectSessionTemplates">
     <option name="panelTemplate">
       <template>
@@ -245,7 +255,15 @@
       <option name="project" value="LOCAL" />
       <updated>1783388829332</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Rayquaza Logic v3">
+      <option name="closed" value="true" />
+      <created>1783393495529</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1783393495530</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -259,6 +277,7 @@
     <MESSAGE value="Changed the skypillar&#10;&#10;Also began the first step to allow for pokemon summoning" />
     <MESSAGE value="Rayquaza Logic v1" />
     <MESSAGE value="Rayquaza Logic v2" />
-    <option name="LAST_COMMIT_MESSAGE" value="Rayquaza Logic v2" />
+    <MESSAGE value="Rayquaza Logic v3" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rayquaza Logic v3" />
   </component>
 </project>

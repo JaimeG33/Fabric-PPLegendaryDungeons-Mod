@@ -7,15 +7,6 @@ import porker.pp_legendarydungeons.summon.condition.LegendarySummonCondition;
  * LegendarySummonDefinition describes one legendary summon type.
  *
  * Think of this as the config/data for a legendary encounter.
- *
- * For Rayquaza, this definition says:
- * - summon id = rayquaza
- * - Cobblemon species = rayquaza
- * - level = 70
- * - condition marker tag = pp_rayquaza_conditions
- * - spawn marker tag = pp_summon_rayquaza
- * - condition checker = RayquazaEmeraldBlockCondition
- * - aftermath = RayquazaAftermath
  */
 public record LegendarySummonDefinition(
         /**
@@ -23,23 +14,36 @@ public record LegendarySummonDefinition(
          *
          * Used to build tags like:
          * pp_rayquaza_summoned
+         * pp_rayquaza_secret_summoned
          */
         String id,
 
         /**
          * Cobblemon species string.
          *
+         * Used for simple species + level spawns.
+         *
          * Example:
          * rayquaza
-         * diancie
-         * hoopa
          */
         String species,
 
         /**
          * Level of the Pokémon that will be spawned.
+         *
+         * Used for simple species + level spawns.
          */
         int level,
+
+        /**
+         * Optional full Cobblemon spec string.
+         *
+         * If this is not null and not blank, LegendarySummonService will use this
+         * instead of the simple species + level spawn.
+         *
+         * Use this for special summons like shiny/perfect-IV Rayquaza.
+         */
+        String pokemonSpec,
 
         /**
          * Armor stand tag used to find the condition marker for this legendary.
@@ -69,25 +73,31 @@ public record LegendarySummonDefinition(
 
         /**
          * The condition logic for this legendary.
-         *
-         * This checks whether the summon requirements are met.
          */
         LegendarySummonCondition condition,
 
         /**
          * The aftermath logic for this legendary.
-         *
-         * This only runs after the Pokémon successfully spawns.
          */
         LegendarySummonAftermath aftermath
 ) {
     /**
      * Returns a reusable "this summon was already used" tag.
      *
-     * For Rayquaza, this becomes:
+     * For normal Rayquaza:
      * pp_rayquaza_summoned
+     *
+     * For secret Rayquaza:
+     * pp_rayquaza_secret_summoned
      */
     public String usedTag() {
         return "pp_" + id + "_summoned";
+    }
+
+    /**
+     * Whether this definition should spawn from a full Cobblemon spec string.
+     */
+    public boolean hasPokemonSpec() {
+        return pokemonSpec != null && !pokemonSpec.isBlank();
     }
 }

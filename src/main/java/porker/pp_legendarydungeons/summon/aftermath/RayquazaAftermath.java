@@ -15,20 +15,25 @@ import porker.pp_legendarydungeons.summon.SummonContext;
 /**
  * Rayquaza-specific aftermath.
  *
- * This only runs after Rayquaza successfully spawns.
+ * This only runs after normal Rayquaza successfully spawns.
  *
  * Current behavior:
  * - set event_triggered = 1 on pp_rayquaza_conditions
  * - set spawn_once = 1 on pp_summon_rayquaza, or fallback marker
- * - add pp_rayquaza_summoned tags as extra backup
+ * - reset pp_timer = 0 on pp_rayquaza_conditions
+ * - add pp_rayquaza_summoned tags as an extra backup
  * - play sounds
  * - send a message to nearby players
+ *
+ * Important:
+ * This file does NOT remove the emerald block anymore.
+ * The normal summon now happens after the player already removed the emerald block
+ * and the condition stand stayed empty long enough.
  */
 public final class RayquazaAftermath implements LegendarySummonAftermath {
     private static final double MESSAGE_RADIUS = 64.0D;
     private static final double MESSAGE_RADIUS_SQUARED = MESSAGE_RADIUS * MESSAGE_RADIUS;
 
-    @Override
     public void run(
             SummonContext context,
             LegendarySummonDefinition definition,
@@ -46,8 +51,9 @@ public final class RayquazaAftermath implements LegendarySummonAftermath {
 
         if (conditionMarker != null) {
             /*
-             * Java equivalent of setting:
+             * Mark the Rayquaza condition stand as triggered.
              *
+             * Java equivalent of:
              * scoreboard players set <pp_rayquaza_conditions> event_triggered 1
              */
             ModScoreboards.setEntityScore(
@@ -57,18 +63,30 @@ public final class RayquazaAftermath implements LegendarySummonAftermath {
             );
 
             /*
+             * Reset the empty-hand timer after the summon succeeds.
+             *
+             * This keeps the condition marker clean after normal Rayquaza spawns.
+             */
+            ModScoreboards.setEntityScore(
+                    conditionMarker,
+                    ModScoreboards.PP_TIMER,
+                    0
+            );
+
+            /*
              * Extra backup prevention.
              *
-             * The scoreboard is the main state check, but the tag helps prevent
-             * duplicate summons if another check happens in the same area.
+             * The scoreboard is the main state check, but this tag gives another
+             * layer of protection against duplicate summons.
              */
             conditionMarker.addTag(definition.usedTag());
         }
 
         if (spawnScoreMarker != null) {
             /*
-             * Java equivalent of setting:
+             * Mark the spawn marker as used.
              *
+             * Java equivalent of:
              * scoreboard players set <pp_summon_rayquaza> spawn_once 1
              */
             ModScoreboards.setEntityScore(

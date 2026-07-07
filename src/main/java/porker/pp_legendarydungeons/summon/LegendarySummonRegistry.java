@@ -1,23 +1,70 @@
 package porker.pp_legendarydungeons.summon;
 
 import porker.pp_legendarydungeons.summon.aftermath.RayquazaAftermath;
+import porker.pp_legendarydungeons.summon.aftermath.RayquazaSecretAftermath;
 import porker.pp_legendarydungeons.summon.condition.RayquazaEmeraldRemovedCondition;
+import porker.pp_legendarydungeons.summon.condition.RayquazaSecretNetherStarCondition;
+
 import java.util.List;
 
 /**
  * Stores all legendary summon definitions.
  *
- * For now, only Rayquaza exists.
+ * Important:
+ * More specific/special summons should usually be listed before normal summons.
  *
- * Later, adding a simple Diancie summon would mostly mean:
- * 1. Create DiancieCondition.java
- * 2. Create DiancieAftermath.java
- * 3. Add another LegendarySummonDefinition to this list.
- *
- * You do NOT need to create a new global ticker for every legendary.
+ * For Rayquaza:
+ * 1. Secret shiny/perfect-IV Rayquaza
+ * 2. Normal Rayquaza
  */
 public final class LegendarySummonRegistry {
     private static final List<LegendarySummonDefinition> SUMMONS = List.of(
+            /*
+             * Secret shiny/perfect-IV Rayquaza.
+             *
+             * This checks first so the nether star secret has priority over
+             * normal Rayquaza logic.
+             */
+            new LegendarySummonDefinition(
+                    // Internal summon ID.
+                    "rayquaza_secret",
+
+                    // Cobblemon species string.
+                    // This is still useful for logs/future fallback, even though
+                    // this definition uses pokemonSpec.
+                    "rayquaza",
+
+                    // Pokémon level.
+                    70,
+
+                    // Full Cobblemon spec string.
+                    // This is used instead of the simple species + level spawn.
+                    "rayquaza level=70 shiny=true attack_iv=31 defence_iv=31 hp_iv=31 special_attack_iv=31 special_defence_iv=31 speed_iv=31",
+
+                    // Search for this armor stand near pp_legendary_summon.
+                    "pp_rayquaza_conditions",
+
+                    // Preferred final spawn marker.
+                    "pp_summon_rayquaza",
+
+                    // Search radius from pp_legendary_summon to pp_rayquaza_conditions.
+                    24.0D,
+
+                    // Search radius from pp_rayquaza_conditions to pp_summon_rayquaza.
+                    32.0D,
+
+                    // Secret Rayquaza condition.
+                    new RayquazaSecretNetherStarCondition(),
+
+                    // Secret Rayquaza aftermath.
+                    new RayquazaSecretAftermath()
+            ),
+
+            /*
+             * Normal Rayquaza.
+             *
+             * This checks after the secret version.
+             */
             new LegendarySummonDefinition(
                     // Internal summon ID.
                     "rayquaza",
@@ -28,6 +75,10 @@ public final class LegendarySummonRegistry {
                     // Pokémon level.
                     70,
 
+                    // No special spec string.
+                    // This means the service uses species + level.
+                    null,
+
                     // Search for this armor stand near pp_legendary_summon.
                     "pp_rayquaza_conditions",
 
@@ -35,15 +86,15 @@ public final class LegendarySummonRegistry {
                     "pp_summon_rayquaza",
 
                     // Search radius from pp_legendary_summon to pp_rayquaza_conditions.
-                    32.0D,
+                    24.0D,
 
                     // Search radius from pp_rayquaza_conditions to pp_summon_rayquaza.
-                    48.0D,
+                    32.0D,
 
-                    // Rayquaza-specific condition checker.
+                    // Normal Rayquaza condition.
                     new RayquazaEmeraldRemovedCondition(),
 
-                    // Rayquaza-specific aftermath.
+                    // Normal Rayquaza aftermath.
                     new RayquazaAftermath()
             )
     );
@@ -51,11 +102,6 @@ public final class LegendarySummonRegistry {
     private LegendarySummonRegistry() {
     }
 
-    /**
-     * Returns all registered legendary summons.
-     *
-     * LegendarySummonService loops over this list when a player gets near a summon marker.
-     */
     public static List<LegendarySummonDefinition> all() {
         return SUMMONS;
     }

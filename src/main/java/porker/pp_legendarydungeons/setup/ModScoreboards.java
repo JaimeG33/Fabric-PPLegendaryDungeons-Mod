@@ -50,6 +50,7 @@ public final class ModScoreboards {
     public static final String EVENT_TRIGGERED = "event_triggered";
     public static final String SPAWN_ONCE = "spawn_once";
     public static final String SCS_SECRETS = "scs_secrets";
+    public static final String PP_TIMER = "pp_timer";
 
     /**
      * Teams used by the mod/datapack systems.
@@ -90,6 +91,7 @@ public final class ModScoreboards {
         addDummyObjectiveIfMissing(scoreboard, EVENT_TRIGGERED);
         addDummyObjectiveIfMissing(scoreboard, SPAWN_ONCE);
         addDummyObjectiveIfMissing(scoreboard, SCS_SECRETS);
+        addDummyObjectiveIfMissing(scoreboard, PP_TIMER);
     }
 
     /**

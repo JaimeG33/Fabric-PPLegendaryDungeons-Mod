@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import porker.pp_legendarydungeons.summon.trigger.EntityLegendarySummonTicker;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import porker.pp_legendarydungeons.setup.ModScoreboards;
-
+import porker.pp_legendarydungeons.secrets.SecretTicker;
 import static net.minecraft.commands.Commands.literal;
 
 /**
@@ -43,7 +43,8 @@ public class ProfessorPorkersLegendaryDungeons implements ModInitializer {
         // Calls the setup file I made to add teams / scoreboards and stuff
         ServerLifecycleEvents.SERVER_STARTED.register(ModScoreboards::setup);
 
-
+        // Calls the secret based files I made
+        SecretTicker.register();
 
         // Your existing test command.
         // This can stay for now.

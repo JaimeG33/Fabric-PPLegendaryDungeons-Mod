@@ -14,27 +14,23 @@ import java.util.Optional;
  *
  * This is the part that replaces /spawnpokemon.
  *
- * It creates:
- * PokemonProperties -> Pokemon -> PokemonEntity -> addFreshEntity(...)
+ * It supports two spawn styles:
  *
- * Everything else in the summon system should eventually route through this helper.
+ * 1. Simple spawn:
+ *    species + level
+ *
+ * 2. Spec-string spawn:
+ *    full Cobblemon-style spec string, such as:
+ *    rayquaza level=70 shiny=true attack_iv=31 defence_iv=31 ...
  */
 public final class LegendarySummonHelper {
     private LegendarySummonHelper() {
     }
 
     /**
-     * Creates and spawns a Cobblemon Pokémon directly into the world.
+     * Creates and spawns a simple Cobblemon Pokémon directly into the world.
      *
-     * @param level        server-side level/dimension
-     * @param species      Cobblemon species string, such as "rayquaza"
-     * @param pokemonLevel level of the Pokémon
-     * @param x            spawn x
-     * @param y            spawn y
-     * @param z            spawn z
-     * @param yaw          horizontal rotation
-     * @param pitch        vertical rotation
-     * @return Optional containing the spawned PokemonEntity if successful
+     * Use this for normal summons where species and level are enough.
      */
     public static Optional<PokemonEntity> spawnPokemon(
             ServerLevel level,
@@ -47,42 +43,23 @@ public final class LegendarySummonHelper {
             float pitch
     ) {
         try {
-            // PokemonProperties stores the desired Cobblemon data before the Pokemon object is created.
             PokemonProperties properties = new PokemonProperties();
             properties.setSpecies(species);
             properties.setLevel(pokemonLevel);
 
-            // Create the actual Cobblemon Pokemon data object.
             Pokemon pokemon = properties.create();
 
-            // Wrap that Pokemon data object inside a Minecraft entity.
-            PokemonEntity entity = new PokemonEntity(
+            return spawnPokemonEntity(
                     level,
                     pokemon,
-                    CobblemonEntities.POKEMON
+                    species,
+                    x,
+                    y,
+                    z,
+                    yaw,
+                    pitch
             );
-
-            // Move the entity to the intended spawn position before spawning it into the world.
-            entity.moveTo(x, y, z, yaw, pitch);
-
-            // Actually add the entity to the server world.
-            boolean spawned = level.addFreshEntity(entity);
-
-            if (!spawned) {
-                ProfessorPorkersLegendaryDungeons.LOGGER.warn(
-                        "Failed to spawn {} at {}, {}, {}",
-                        species,
-                        x,
-                        y,
-                        z
-                );
-                return Optional.empty();
-            }
-
-            return Optional.of(entity);
         } catch (Throwable throwable) {
-            // Catching Throwable here prevents one bad summon from crashing the whole server.
-            // Later, after testing, you could narrow this to Exception if desired.
             ProfessorPorkersLegendaryDungeons.LOGGER.error(
                     "Failed to create/spawn Cobblemon Pokemon '{}'",
                     species,
@@ -90,5 +67,85 @@ public final class LegendarySummonHelper {
             );
             return Optional.empty();
         }
+    }
+
+    /**
+     * Creates and spawns a Cobblemon Pokémon from a full Cobblemon spec string.
+     *
+     * Use this for special forms, shiny Pokémon, IVs, held items, features, etc.
+     *
+     * Example:
+     * rayquaza level=70 shiny=true attack_iv=31 defence_iv=31 hp_iv=31
+     * special_attack_iv=31 special_defence_iv=31 speed_iv=31
+     */
+    public static Optional<PokemonEntity> spawnPokemonFromSpec(
+            ServerLevel level,
+            String pokemonSpec,
+            double x,
+            double y,
+            double z,
+            float yaw,
+            float pitch
+    ) {
+        try {
+            PokemonProperties properties = PokemonProperties.Companion.parse(pokemonSpec);
+
+            Pokemon pokemon = properties.create();
+
+            return spawnPokemonEntity(
+                    level,
+                    pokemon,
+                    pokemonSpec,
+                    x,
+                    y,
+                    z,
+                    yaw,
+                    pitch
+            );
+        } catch (Throwable throwable) {
+            ProfessorPorkersLegendaryDungeons.LOGGER.error(
+                    "Failed to create/spawn Cobblemon Pokemon from spec '{}'",
+                    pokemonSpec,
+                    throwable
+            );
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Shared internal entity creation logic.
+     */
+    private static Optional<PokemonEntity> spawnPokemonEntity(
+            ServerLevel level,
+            Pokemon pokemon,
+            String debugName,
+            double x,
+            double y,
+            double z,
+            float yaw,
+            float pitch
+    ) {
+        PokemonEntity entity = new PokemonEntity(
+                level,
+                pokemon,
+                CobblemonEntities.POKEMON
+        );
+
+        entity.moveTo(x, y, z, yaw, pitch);
+
+        boolean spawned = level.addFreshEntity(entity);
+
+        if (!spawned) {
+            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                    "Failed to spawn {} at {}, {}, {}",
+                    debugName,
+                    x,
+                    y,
+                    z
+            );
+            return Optional.empty();
+        }
+
+        return Optional.of(entity);
     }
 }
