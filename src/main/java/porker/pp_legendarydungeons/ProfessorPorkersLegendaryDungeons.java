@@ -10,6 +10,8 @@ import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import porker.pp_legendarydungeons.summon.trigger.EntityLegendarySummonTicker;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import porker.pp_legendarydungeons.setup.ModScoreboards;
 
 import static net.minecraft.commands.Commands.literal;
 
@@ -37,6 +39,11 @@ public class ProfessorPorkersLegendaryDungeons implements ModInitializer {
     public void onInitialize() {
         // Turns on the entity-based legendary summon scanner.
         EntityLegendarySummonTicker.register();
+
+        // Calls the setup file I made to add teams / scoreboards and stuff
+        ServerLifecycleEvents.SERVER_STARTED.register(ModScoreboards::setup);
+
+
 
         // Your existing test command.
         // This can stay for now.

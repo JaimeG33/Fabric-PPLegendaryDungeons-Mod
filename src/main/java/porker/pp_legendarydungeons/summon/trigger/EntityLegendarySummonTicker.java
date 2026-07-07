@@ -36,7 +36,7 @@ public final class EntityLegendarySummonTicker {
     /**
      * Player must be within this many blocks of pp_legendary_summon to begin the check.
      */
-    private static final double PLAYER_TRIGGER_DISTANCE = 10.0D;
+    private static final double PLAYER_TRIGGER_DISTANCE = 20.0D;
 
     /**
      * Squared distance is used because Minecraft distance checks often avoid square roots for performance.

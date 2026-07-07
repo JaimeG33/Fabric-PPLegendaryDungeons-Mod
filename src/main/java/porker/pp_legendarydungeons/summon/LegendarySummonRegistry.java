@@ -36,10 +36,10 @@ public final class LegendarySummonRegistry {
                     "pp_summon_rayquaza",
 
                     // Search radius from pp_legendary_summon to pp_rayquaza_conditions.
-                    16.0D,
+                    24.0D,
 
                     // Search radius from pp_rayquaza_conditions to pp_summon_rayquaza.
-                    24.0D,
+                    32.0D,
 
                     // Rayquaza-specific condition checker.
                     new RayquazaEmeraldBlockCondition(),
