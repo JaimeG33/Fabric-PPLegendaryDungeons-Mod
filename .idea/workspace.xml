@@ -4,13 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Rayquaza Logic v3.4&#10;Slight tweak to sound effects of summon&#10;&#10;Also made compatable for cobblemon 1.6.1 and fixed some mega showdown loot tables using tags">
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Renamed Project to &#10;Cobblemon: Explore Legendary Dungeons">
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/FeatureContext.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/FeatureService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/FeatureTicker.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/wtraders/WanderingTraderCommandSpawner.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/wtraders/WanderingTraderFeature.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/maps/LegendaryMapTarget.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/ProfessorPorkersLegendaryDungeons.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/ProfessorPorkersLegendaryDungeons.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fabric.mod.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fabric.mod.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/worldgen/structure/sky_pillar.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/worldgen/structure/sky_pillar.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,30 +101,33 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.Build professor-porkers-legendary-dungeons.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.professor-porkers-legendary-dungeons [runClient].executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;copilot.chat.legacySessionMetadata.migrated&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/resources/data/pp_legendarydungeons/structure/rayquaza_tower&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Build professor-porkers-legendary-dungeons.executor": "Run",
+    "Gradle.professor-porkers-legendary-dungeons [runClient].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "copilot.chat.legacySessionMetadata.migrated": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/java/porker/pp_legendarydungeons",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\structure\rayquaza_tower" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\worldgen" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\function" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\loot_table" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\tags" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons" />
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons" />
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\structure\rayquaza_tower" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\structure" />
     </key>
@@ -277,7 +283,15 @@
       <option name="project" value="LOCAL" />
       <updated>1783453931026</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Renamed Project to &#10;Cobblemon: Explore Legendary Dungeons">
+      <option name="closed" value="true" />
+      <created>1783459640414</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1783459640415</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -295,6 +309,7 @@
     <MESSAGE value="Rayquaza Logic v3.1&#10;now includes the secrets (unsure if good)" />
     <MESSAGE value="Rayquaza Logic v3.3&#10;Fixed Secret summon of rayquaza" />
     <MESSAGE value="Rayquaza Logic v3.4&#10;Slight tweak to sound effects of summon&#10;&#10;Also made compatable for cobblemon 1.6.1 and fixed some mega showdown loot tables using tags" />
-    <option name="LAST_COMMIT_MESSAGE" value="Rayquaza Logic v3.4&#10;Slight tweak to sound effects of summon&#10;&#10;Also made compatable for cobblemon 1.6.1 and fixed some mega showdown loot tables using tags" />
+    <MESSAGE value="Renamed Project to &#10;Cobblemon: Explore Legendary Dungeons" />
+    <option name="LAST_COMMIT_MESSAGE" value="Renamed Project to &#10;Cobblemon: Explore Legendary Dungeons" />
   </component>
 </project>

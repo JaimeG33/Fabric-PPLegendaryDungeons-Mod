@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import porker.pp_legendarydungeons.secrets.SecretTicker;
 import porker.pp_legendarydungeons.setup.ModScoreboards;
 import porker.pp_legendarydungeons.summon.trigger.EntityLegendarySummonTicker;
+import porker.pp_legendarydungeons.features.FeatureTicker;
 
 /**
  * Main mod initializer.
@@ -38,6 +39,9 @@ public class ProfessorPorkersLegendaryDungeons implements ModInitializer {
 
         // Calls the secret-based scanner.
         SecretTicker.register();
+
+        // Calls the feature search ticker
+        FeatureTicker.register();
 
         LOGGER.info("Cobblemon: Explore Legendary Dungeons initialized.");
     }
