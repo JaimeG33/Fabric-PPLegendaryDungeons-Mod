@@ -7,10 +7,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.decoration.ArmorStand;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import porker.pp_legendarydungeons.setup.ModScoreboards;
 import porker.pp_legendarydungeons.summon.LegendarySummonDefinition;
 import porker.pp_legendarydungeons.summon.SummonContext;
 
@@ -20,10 +18,10 @@ import porker.pp_legendarydungeons.summon.SummonContext;
  * This only runs after Rayquaza successfully spawns.
  *
  * Current behavior:
- * - remove emerald block from pp_rayquaza_conditions armor stand
- * - add pp_rayquaza_summoned tag to condition marker
- * - add pp_rayquaza_summoned tag to main pp_legendary_summon marker
- * - play several dramatic sounds
+ * - set event_triggered = 1 on pp_rayquaza_conditions
+ * - set spawn_once = 1 on pp_summon_rayquaza, or fallback marker
+ * - add pp_rayquaza_summoned tags as extra backup
+ * - play sounds
  * - send a message to nearby players
  */
 public final class RayquazaAftermath implements LegendarySummonAftermath {
@@ -36,19 +34,53 @@ public final class RayquazaAftermath implements LegendarySummonAftermath {
             LegendarySummonDefinition definition,
             PokemonEntity spawnedPokemon
     ) {
-        // This should be the pp_rayquaza_conditions armor stand.
         ArmorStand conditionMarker = context.conditionMarker();
 
-        if (conditionMarker != null) {
-            // Remove the emerald block only after Rayquaza successfully spawned.
-            removeEmeraldBlockFromHand(conditionMarker);
+        /*
+         * If a separate pp_summon_rayquaza marker exists, use that for spawn_once.
+         * If there is no separate spawn marker, fall back to the condition marker.
+         */
+        ArmorStand spawnScoreMarker = context.spawnMarker() != null
+                ? context.spawnMarker()
+                : conditionMarker;
 
-            // Mark this condition marker as used so it cannot summon again.
+        if (conditionMarker != null) {
+            /*
+             * Java equivalent of setting:
+             *
+             * scoreboard players set <pp_rayquaza_conditions> event_triggered 1
+             */
+            ModScoreboards.setEntityScore(
+                    conditionMarker,
+                    ModScoreboards.EVENT_TRIGGERED,
+                    1
+            );
+
+            /*
+             * Extra backup prevention.
+             *
+             * The scoreboard is the main state check, but the tag helps prevent
+             * duplicate summons if another check happens in the same area.
+             */
             conditionMarker.addTag(definition.usedTag());
         }
 
+        if (spawnScoreMarker != null) {
+            /*
+             * Java equivalent of setting:
+             *
+             * scoreboard players set <pp_summon_rayquaza> spawn_once 1
+             */
+            ModScoreboards.setEntityScore(
+                    spawnScoreMarker,
+                    ModScoreboards.SPAWN_ONCE,
+                    1
+            );
+
+            spawnScoreMarker.addTag(definition.usedTag());
+        }
+
         if (context.summonMarker() != null) {
-            // Also mark the main pp_legendary_summon marker as used for this summon.
             context.summonMarker().addTag(definition.usedTag());
         }
 
@@ -56,26 +88,6 @@ public final class RayquazaAftermath implements LegendarySummonAftermath {
         messageNearbyPlayers(context);
     }
 
-    /**
-     * Removes an emerald block from either hand of the condition marker.
-     */
-    private void removeEmeraldBlockFromHand(ArmorStand armorStand) {
-        if (armorStand.getMainHandItem().is(Items.EMERALD_BLOCK)) {
-            armorStand.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
-            return;
-        }
-
-        if (armorStand.getOffhandItem().is(Items.EMERALD_BLOCK)) {
-            armorStand.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
-        }
-    }
-
-    /**
-     * Plays dramatic spawn sounds at Rayquaza's spawn location.
-     *
-     * These are heard by nearby players automatically because level.playSound(null, ...)
-     * broadcasts the sound from the server.
-     */
     private void playRayquazaSounds(SummonContext context) {
         BlockPos pos = context.spawnPos();
 
@@ -107,11 +119,6 @@ public final class RayquazaAftermath implements LegendarySummonAftermath {
         );
     }
 
-    /**
-     * Sends a message to players within 64 blocks of the spawn position.
-     *
-     * This is the Java-side equivalent of a nearby tellraw.
-     */
     private void messageNearbyPlayers(SummonContext context) {
         BlockPos pos = context.spawnPos();
 

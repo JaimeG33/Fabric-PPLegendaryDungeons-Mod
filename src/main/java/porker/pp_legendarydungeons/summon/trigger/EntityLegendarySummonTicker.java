@@ -111,6 +111,7 @@ public final class EntityLegendarySummonTicker {
                         player,
                         summonMarker,
                         null,
+                        null,
                         summonMarker.blockPosition(),
                         SummonTriggerType.ENTITY_PROXIMITY
                 );

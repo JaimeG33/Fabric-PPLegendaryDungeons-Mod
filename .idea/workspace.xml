@@ -4,16 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Rayquaza Logic v1">
-      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/setup/ModScoreboards.java" afterDir="false" />
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Rayquaza Logic v2">
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/condition/RayquazaEmeraldRemovedCondition.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/ProfessorPorkersLegendaryDungeons.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/ProfessorPorkersLegendaryDungeons.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/setup/ModScoreboards.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/setup/ModScoreboards.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/LegendarySummonRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/LegendarySummonRegistry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/README_SUMMON_SYSTEM.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/README_SUMMON_SYSTEM.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/SummonContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/SummonContext.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/aftermath/RayquazaAftermath.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/aftermath/RayquazaAftermath.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/condition/RayquazaEmeraldBlockCondition.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/trigger/EntityLegendarySummonTicker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/trigger/EntityLegendarySummonTicker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/function/on_load/create_team.mcfunction" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/function/on_load/create_team.mcfunction" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/function/on_load/edit_teams.mcfunction" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/function/on_load/edit_teams.mcfunction" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/function/on_load/scoreboard_setup.mcfunction" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/function/on_load/scoreboard_setup.mcfunction" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/structure/rayquaza_tower/sky_pillar.nbt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/structure/rayquaza_tower/sky_pillar.nbt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,6 +122,7 @@
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\tags" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\structure\rayquaza_tower" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\structure" />
     </key>
   </component>
@@ -236,7 +237,15 @@
       <option name="project" value="LOCAL" />
       <updated>1783363017993</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Rayquaza Logic v2">
+      <option name="closed" value="true" />
+      <created>1783388829332</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1783388829332</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -249,6 +258,7 @@
     <MESSAGE value="Upped the ram a little bit for better gameplay performance and faster loading. &#10;&#10;Some warnings that happened:&#10;Warning:(26, 5) 'mixin(org.gradle.api.Action&lt;net.fabricmc.loom.api.MixinExtensionAPI&gt;)' is unstable because its signature references unstable interface 'net.fabricmc.loom.api.MixinExtensionAPI' marked with @ApiStatus.Experimental&#10;&#10;Warning:(27, 9) 'getDefaultRefmapName()' is declared in unstable interface 'net.fabricmc.loom.api.MixinExtensionAPI' marked with @ApiStatus.Experimental" />
     <MESSAGE value="Changed the skypillar&#10;&#10;Also began the first step to allow for pokemon summoning" />
     <MESSAGE value="Rayquaza Logic v1" />
-    <option name="LAST_COMMIT_MESSAGE" value="Rayquaza Logic v1" />
+    <MESSAGE value="Rayquaza Logic v2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rayquaza Logic v2" />
   </component>
 </project>

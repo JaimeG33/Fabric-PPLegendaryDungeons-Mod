@@ -7,72 +7,53 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 
 /**
  * SummonContext stores all information about a specific summon attempt.
- *
- * This is important because different trigger types may need different data.
- *
- * Example entity-based Rayquaza summon:
- * - level = the ServerLevel where the player and armor stands are
- * - player = the nearby player who activated the check
- * - summonMarker = the armor stand tagged pp_legendary_summon
- * - conditionMarker = the armor stand tagged pp_rayquaza_conditions
- * - spawnPos = the pp_summon_rayquaza position, or fallback position
- * - triggerType = ENTITY_PROXIMITY
- *
- * Later, block-based summons can use the same pipeline by filling in different context data.
  */
 public record SummonContext(
-        /**
-         * The server-side world/dimension where the summon is happening.
-         */
         ServerLevel level,
-
-        /**
-         * The player who triggered the summon check.
-         *
-         * For entity proximity, this is the nearby player.
-         * For block interaction later, this would be the player who clicked the block.
-         */
         ServerPlayer player,
 
         /**
-         * The main armor stand marker.
+         * Main nearby marker.
          *
-         * In your system, this is the armor stand tagged:
+         * For entity-based summons, this is usually:
          * pp_legendary_summon
          */
         ArmorStand summonMarker,
 
         /**
-         * The armor stand that stores/checks this specific legendary's conditions.
+         * Pokemon-specific condition marker.
          *
-         * For Rayquaza, this is the armor stand tagged:
+         * For Rayquaza:
          * pp_rayquaza_conditions
-         *
-         * This starts as null and gets filled in by RayquazaEmeraldBlockCondition.
          */
         ArmorStand conditionMarker,
 
         /**
-         * The final position where the Pokémon should spawn.
+         * Pokemon-specific spawn marker.
          *
          * For Rayquaza:
-         * 1. Prefer nearest pp_summon_rayquaza armor stand.
-         * 2. Fall back to pp_rayquaza_conditions armor stand.
+         * pp_summon_rayquaza
+         *
+         * This can be null if no separate spawn marker exists.
+         */
+        ArmorStand spawnMarker,
+
+        /**
+         * Final block position where the Pokemon should spawn.
+         *
+         * If spawnMarker exists, this is spawnMarker.blockPosition().
+         * If no spawnMarker exists, this can fall back to conditionMarker.blockPosition().
          */
         BlockPos spawnPos,
 
-        /**
-         * Explains what kind of trigger started this summon attempt.
-         */
         SummonTriggerType triggerType
 ) {
     /**
-     * Creates a copy of the current context, but with the condition marker and spawn position filled in.
-     *
-     * Records are immutable, so instead of editing the old context, we create a new one.
+     * Creates a copy of this context with condition/spawn data filled in.
      */
     public SummonContext withConditionAndSpawn(
             ArmorStand newConditionMarker,
+            ArmorStand newSpawnMarker,
             BlockPos newSpawnPos
     ) {
         return new SummonContext(
@@ -80,6 +61,7 @@ public record SummonContext(
                 player,
                 summonMarker,
                 newConditionMarker,
+                newSpawnMarker,
                 newSpawnPos,
                 triggerType
         );

@@ -1,8 +1,7 @@
 package porker.pp_legendarydungeons.summon;
 
 import porker.pp_legendarydungeons.summon.aftermath.RayquazaAftermath;
-import porker.pp_legendarydungeons.summon.condition.RayquazaEmeraldBlockCondition;
-
+import porker.pp_legendarydungeons.summon.condition.RayquazaEmeraldRemovedCondition;
 import java.util.List;
 
 /**
@@ -36,13 +35,13 @@ public final class LegendarySummonRegistry {
                     "pp_summon_rayquaza",
 
                     // Search radius from pp_legendary_summon to pp_rayquaza_conditions.
-                    24.0D,
-
-                    // Search radius from pp_rayquaza_conditions to pp_summon_rayquaza.
                     32.0D,
 
+                    // Search radius from pp_rayquaza_conditions to pp_summon_rayquaza.
+                    48.0D,
+
                     // Rayquaza-specific condition checker.
-                    new RayquazaEmeraldBlockCondition(),
+                    new RayquazaEmeraldRemovedCondition(),
 
                     // Rayquaza-specific aftermath.
                     new RayquazaAftermath()

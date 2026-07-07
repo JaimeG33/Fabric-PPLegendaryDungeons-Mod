@@ -7,6 +7,8 @@ import net.minecraft.world.scores.Scoreboard;
 import net.minecraft.world.scores.Objective;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
 import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.scores.ScoreAccess;
 
 /**
  * Handles scoreboard and team setup for Professor Porker's Legendary Dungeons.
@@ -183,5 +185,74 @@ public final class ModScoreboards {
          * teammates as translucent.
          */
         // team.setSeeFriendlyInvisibles(true);
+    }
+
+
+
+    /**
+     * Gets an entity's score for the given objective.
+     *
+     * If the score is absent, Minecraft creates it as 0.
+     * This is fine for this mod because "absent" and "0" both mean "not triggered yet".
+     */
+    public static int getEntityScore(Entity entity, String objectiveName) {
+        Scoreboard scoreboard = entity.level().getScoreboard();
+        Objective objective = scoreboard.getObjective(objectiveName);
+
+        if (objective == null) {
+            addDummyObjectiveIfMissing(scoreboard, objectiveName);
+            objective = scoreboard.getObjective(objectiveName);
+        }
+
+        if (objective == null) {
+            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                    "Could not get missing scoreboard objective '{}'",
+                    objectiveName
+            );
+            return 0;
+        }
+
+        ScoreAccess scoreAccess = scoreboard.getOrCreatePlayerScore(entity, objective);
+        return scoreAccess.get();
+    }
+
+    /**
+     * Sets an entity's score for the given objective.
+     *
+     * Java equivalent of:
+     *
+     * scoreboard players set <entity> <objective> <value>
+     */
+    public static void setEntityScore(Entity entity, String objectiveName, int value) {
+        Scoreboard scoreboard = entity.level().getScoreboard();
+        Objective objective = scoreboard.getObjective(objectiveName);
+
+        if (objective == null) {
+            addDummyObjectiveIfMissing(scoreboard, objectiveName);
+            objective = scoreboard.getObjective(objectiveName);
+        }
+
+        if (objective == null) {
+            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                    "Could not set missing scoreboard objective '{}'",
+                    objectiveName
+            );
+            return;
+        }
+
+        ScoreAccess scoreAccess = scoreboard.getOrCreatePlayerScore(entity, objective);
+        scoreAccess.set(value);
+    }
+
+    /**
+     * Returns true if the entity's score is less than the given value.
+     *
+     * This is useful for checks like:
+     *
+     * event_triggered < 1
+     * spawn_once < 1
+     */
+    public static boolean entityScoreLessThan(Entity entity, String objectiveName, int value) {
+        return getEntityScore(entity, objectiveName) < value;
     }
 }
