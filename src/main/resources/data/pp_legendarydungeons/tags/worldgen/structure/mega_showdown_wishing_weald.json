@@ -1,4 +1,9 @@
 {
   "replace": false,
-  "values": ["mega_showdown:wishing_weald"]
+  "values": [
+    {
+      "id": "mega_showdown:wishing_weald",
+      "required": false
+    }
+  ]
 }

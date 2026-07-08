@@ -4,16 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Maps v4  SKY PILLAR MAP WORKS BAYBEEE">
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Maps v4.1 added cusom data to certain maps">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/abandoned_research_outpost/001_tortera_variants/chest.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/abandoned_research_outpost/001_tortera_variants/chest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/abandoned_research_outpost/dig_generic_point_skypillar.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/abandoned_research_outpost/dig_generic_point_skypillar.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/maps/cobblemon/fishing_boats.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/maps/cobblemon/fishing_boats.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/maps/cobblemon/shipwreck_coves.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/maps/cobblemon/shipwreck_coves.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/maps/find_ancient_city.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/maps/find_ancient_city.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/maps/find_crystal_caves.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/maps/find_crystal_caves.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/maps/mega_showdown/mega_site.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/maps/mega_showdown/mega_site.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/maps/mega_showdown/wishing_weald.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/maps/mega_showdown/wishing_weald.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/items/maps/MapLoreRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/items/maps/MapLoreRegistry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/maps/find_skypillar.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/maps/find_skypillar.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/worldgen/structure/mega_showdown_mega_site.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/worldgen/structure/mega_showdown_mega_site.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/worldgen/structure/mega_showdown_wishing_weald.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/worldgen/structure/mega_showdown_wishing_weald.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -315,7 +311,15 @@
       <option name="project" value="LOCAL" />
       <updated>1783472726935</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Maps v4.1 added cusom data to certain maps">
+      <option name="closed" value="true" />
+      <created>1783534026540</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1783534026540</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -337,6 +341,7 @@
     <MESSAGE value="Maps v1 (test no work)" />
     <MESSAGE value="Maps v2 (test no work)" />
     <MESSAGE value="Maps v4  SKY PILLAR MAP WORKS BAYBEEE" />
-    <option name="LAST_COMMIT_MESSAGE" value="Maps v4  SKY PILLAR MAP WORKS BAYBEEE" />
+    <MESSAGE value="Maps v4.1 added cusom data to certain maps" />
+    <option name="LAST_COMMIT_MESSAGE" value="Maps v4.1 added cusom data to certain maps" />
   </component>
 </project>
