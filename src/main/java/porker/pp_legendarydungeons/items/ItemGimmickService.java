@@ -6,6 +6,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import porker.pp_legendarydungeons.items.maps.MapGimmickData;
 import porker.pp_legendarydungeons.items.maps.MapLoreGimmick;
+import porker.pp_legendarydungeons.items.maps_findrandom.RandomMapGimmickData;
+import porker.pp_legendarydungeons.items.maps_findrandom.RandomMapLoreGimmick;
 
 public final class ItemGimmickService {
     private ItemGimmickService() {
@@ -34,6 +36,7 @@ public final class ItemGimmickService {
 
         return switch (gimmick) {
             case MapGimmickData.MAP_LORE_GIMMICK -> MapLoreGimmick.process(context, customData);
+            case RandomMapGimmickData.RANDOM_MAP_LORE_GIMMICK -> RandomMapLoreGimmick.process(context, customData);
             default -> false;
         };
     }
