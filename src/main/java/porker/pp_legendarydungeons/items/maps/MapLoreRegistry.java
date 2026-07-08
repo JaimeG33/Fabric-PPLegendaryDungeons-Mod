@@ -13,7 +13,7 @@ public final class MapLoreRegistry {
             new MapLoreEntry(
                     "skypillar",
                     List.of(
-                            Component.literal("This map shows the location to the legendary dungeon of Rayquaza.")
+                            Component.literal("This map shows the location to the legendary skypillar of Rayquaza.")
                                     .withStyle(ChatFormatting.GRAY)
                     )
             ),

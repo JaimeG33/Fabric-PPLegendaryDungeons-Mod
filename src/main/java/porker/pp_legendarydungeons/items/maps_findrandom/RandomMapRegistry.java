@@ -31,7 +31,7 @@ public final class RandomMapRegistry {
                                     "Sky Pillar",
                                     "pp_legendarydungeons:skypillar_tag",
                                     List.of(
-                                            Component.literal("A towering dungeon connected to Rayquaza.")
+                                            Component.literal("A towering pillar in the sky connected to Rayquaza.")
                                                     .withStyle(ChatFormatting.GRAY)
                                     )
                             ),
@@ -61,7 +61,7 @@ public final class RandomMapRegistry {
                                     "Overtaken Outpost",
                                     "pp_legendarydungeons:random/specific/overtaken_outpost_1",
                                     List.of(
-                                            Component.literal("An outpost that appears to have been overtaken by hostile forces.")
+                                            Component.literal("A known hideout of a local gang of troublemaking squirtles.")
                                                     .withStyle(ChatFormatting.GRAY)
                                     )
                             ),
@@ -70,7 +70,7 @@ public final class RandomMapRegistry {
                                     "Ancient Battle Island",
                                     "pp_legendarydungeons:random/specific/ancient_battle_gvk_island_1",
                                     List.of(
-                                            Component.literal("A remote site tied to an ancient clash between powerful forces.")
+                                            Component.literal("A remote island tied to an ancient clash between powerful forces of both land and sea.")
                                                     .withStyle(ChatFormatting.GRAY)
                                     )
                             )
@@ -100,7 +100,7 @@ public final class RandomMapRegistry {
                                     "Apricorn and Tumblestone Research Outpost",
                                     "pp_legendarydungeons:random/specific/research_002_ap_and_tumblestones",
                                     List.of(
-                                            Component.literal("An outpost studying ancient Poke Balls, Apricorns, and tumblestones.")
+                                            Component.literal("An outpost studying ancient Poke Balls and tumblestones.")
                                                     .withStyle(ChatFormatting.GRAY)
                                     )
                             ),
