@@ -24,7 +24,11 @@
               "function": "set_components",
               "components": {
                 "minecraft:rarity": "rare",
-                "minecraft:custom_model_data": 3311102
+                "minecraft:custom_data": {
+                  "pp_gimmick": "map_lore",
+                  "pp_map_target": "kyogre_ruins",
+                  "pp_coords_revealed": false
+                }
               }
             },
             {

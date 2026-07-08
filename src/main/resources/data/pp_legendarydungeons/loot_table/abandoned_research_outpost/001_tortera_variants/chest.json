@@ -157,19 +157,32 @@
             "weight": 1,
           "quality": 8,
   "name": "minecraft:map",
-  "functions": [
-    {
-      "function": "minecraft:exploration_map",
-      "destination": "pp_legendarydungeons:skypillar_tag",
-      "decoration": "target_x",
-      "zoom": 2,
-      "skip_existing_chunks": false
-    },
-    {
-      "function": "minecraft:set_name",
-      "name": { "text": "Sky Pillar Explorer Map" }
-    }
-  ]
+          "functions": [
+            {
+              "function": "minecraft:exploration_map",
+              "destination": "pp_legendarydungeons:skypillar_tag",
+              "decoration": "target_x",
+              "zoom": 2,
+              "skip_existing_chunks": false
+            },
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "text": "Sky Pillar Explorer Map"
+              }
+            },
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "minecraft:rarity": "rare",
+                "minecraft:custom_data": {
+                  "pp_gimmick": "map_lore",
+                  "pp_map_target": "skypillar",
+                  "pp_coords_revealed": false
+                }
+              }
+            }
+          ]
 }
       ]
     },

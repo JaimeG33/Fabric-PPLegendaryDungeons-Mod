@@ -21,6 +21,17 @@
               "name": {
                 "text": "Wishing Weald Explorer Map"
               }
+            },
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "minecraft:rarity": "rare",
+                "minecraft:custom_data": {
+                  "pp_gimmick": "map_lore",
+                  "pp_map_target": "wishing_weald",
+                  "pp_coords_revealed": false
+                }
+              }
             }
           ]
         }

@@ -21,6 +21,17 @@
               "name": {
                 "text": "Old Fishing Boat Locator Map"
               }
+            },
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "minecraft:rarity": "rare",
+                "minecraft:custom_data": {
+                  "pp_gimmick": "map_lore",
+                  "pp_map_target": "fishing_boats",
+                  "pp_coords_revealed": false
+                }
+              }
             }
           ]
         }
