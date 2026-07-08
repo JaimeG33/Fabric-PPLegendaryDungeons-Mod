@@ -6,12 +6,11 @@
         {
           "type": "minecraft:item",
           "weight": 1,
-          "quality": 3,
           "name": "minecraft:map",
           "functions": [
             {
               "function": "minecraft:exploration_map",
-              "destination": "pp_legendarydungeons:random/dungeons",
+              "destination": "pp_legendarydungeons:skypillar_tag",
               "decoration": "target_x",
               "zoom": 2,
               "skip_existing_chunks": false
@@ -30,7 +29,41 @@
                   "pp_gimmick": "random_map_lore",
                   "pp_random_map_group": "dungeons",
                   "pp_coords_revealed": false,
-                  "pp_random_map_resolved": false
+                  "pp_random_map_resolved": true,
+                  "pp_random_map_resolved_target": "skypillar"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "minecraft:map",
+          "functions": [
+            {
+              "function": "minecraft:exploration_map",
+              "destination": "pp_legendarydungeons:crystal_caves_tag",
+              "decoration": "target_x",
+              "zoom": 2,
+              "skip_existing_chunks": false
+            },
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "text": "Random Legendary Dungeon Map"
+              }
+            },
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "minecraft:rarity": "rare",
+                "minecraft:custom_data": {
+                  "pp_gimmick": "random_map_lore",
+                  "pp_random_map_group": "dungeons",
+                  "pp_coords_revealed": false,
+                  "pp_random_map_resolved": true,
+                  "pp_random_map_resolved_target": "crystal_caves"
                 }
               }
             }
