@@ -45,8 +45,7 @@ public final class WanderingTraderFeature {
         );
 
         for (ArmorStand traderMarker : traderMarkers) {
-            boolean spawned = WanderingTraderCommandSpawner.spawnSkyPillarTrader(context, traderMarker);
-
+            boolean spawned = WanderingTraderCommandSpawner.spawnRolledTrader(context, traderMarker);
             if (spawned) {
                 // This is the Java equivalent of killing the marker after the summon command.
                 // It prevents duplicate traders from spawning every scan cycle.

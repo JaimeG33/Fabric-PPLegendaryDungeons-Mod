@@ -4,9 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Maps v5.1&#10;&#10;fixed skypillar issue&#10;(type of dungeon is now chosen at the loot table before looking for the nearest structure)">
-      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/items/maps/MapLoreRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/items/maps/MapLoreRegistry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/items/maps_findrandom/RandomMapRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/items/maps_findrandom/RandomMapRegistry.java" afterDir="false" />
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Maps v5.2&#10;one last update to the descriptions.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/wtraders/ModTradeItems.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/wtraders/WanderingTraderMapOffer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/wtraders/WanderingTraderPool.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/wtraders/WanderingTraderProfile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/wtraders/WanderingTraderCommandSpawner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/wtraders/WanderingTraderCommandSpawner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/wtraders/WanderingTraderFeature.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/wtraders/WanderingTraderFeature.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -356,7 +361,15 @@
       <option name="project" value="LOCAL" />
       <updated>1783545475928</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Maps v5.2&#10;one last update to the descriptions.">
+      <option name="closed" value="true" />
+      <created>1783545992193</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1783545992193</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -384,6 +397,7 @@
     <MESSAGE value="Maps v4.3.1&#10;added empty loot tables for random maps to see if the new system will work." />
     <MESSAGE value="Maps v5&#10;added random map functionality &#10;&#10;-although an issue was noticed with the skypillar not spawning in the pool of random dungeons" />
     <MESSAGE value="Maps v5.1&#10;&#10;fixed skypillar issue&#10;(type of dungeon is now chosen at the loot table before looking for the nearest structure)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Maps v5.1&#10;&#10;fixed skypillar issue&#10;(type of dungeon is now chosen at the loot table before looking for the nearest structure)" />
+    <MESSAGE value="Maps v5.2&#10;one last update to the descriptions." />
+    <option name="LAST_COMMIT_MESSAGE" value="Maps v5.2&#10;one last update to the descriptions." />
   </component>
 </project>

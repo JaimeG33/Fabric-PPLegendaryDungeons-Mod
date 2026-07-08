@@ -151,7 +151,7 @@ public final class WanderingTraderCommandSpawner {
     private static Optional<ItemStack> generateMapFromLootTable(
             FeatureContext context,
             ArmorStand marker,
-            LegendaryMapTarget target
+            String lootTableId
     ) {
         AABB searchBox = marker.getBoundingBox().inflate(2.0D);
 
@@ -169,7 +169,7 @@ public final class WanderingTraderCommandSpawner {
         boolean commandSucceeded = runCommandAtMarker(
                 context,
                 marker,
-                "loot spawn ~ ~ ~ loot " + target.lootTableId()
+                "loot spawn ~ ~ ~ loot " + lootTableId
         );
 
         if (!commandSucceeded) {
@@ -289,5 +289,156 @@ public final class WanderingTraderCommandSpawner {
             );
             return false;
         }
+    }
+
+    public static boolean spawnRolledTrader(FeatureContext context, ArmorStand traderMarker) {
+        int roll = context.level().getRandom().nextInt(100);
+
+        if (roll < 20) {
+            return spawnRegularTrader(context, traderMarker);
+        }
+
+        if (roll < 60) {
+            return spawnCustomTraderWithoutMap(context, traderMarker);
+        }
+
+        return spawnCustomTraderWithMap(context, traderMarker);
+    }
+
+    private static boolean spawnRegularTrader(FeatureContext context, ArmorStand traderMarker) {
+        WanderingTrader trader = EntityType.WANDERING_TRADER.create(context.level());
+
+        if (trader == null) {
+            return false;
+        }
+
+        trader.moveTo(
+                traderMarker.getX(),
+                traderMarker.getY(),
+                traderMarker.getZ(),
+                traderMarker.getYRot(),
+                traderMarker.getXRot()
+        );
+
+        trader.setPersistenceRequired();
+        trader.setDespawnDelay(48000);
+
+        trader.addTag("pp_spawned_feature_trader");
+        trader.addTag("pp_regular_trader");
+
+        return context.level().addFreshEntity(trader);
+    }
+
+    private static boolean spawnCustomTraderWithoutMap(FeatureContext context, ArmorStand traderMarker) {
+        WanderingTraderProfile profile = WanderingTraderPool.randomNoMap(context.level());
+        return spawnProfileTrader(context, traderMarker, profile);
+    }
+
+    private static boolean spawnCustomTraderWithMap(FeatureContext context, ArmorStand traderMarker) {
+        WanderingTraderProfile profile = WanderingTraderPool.randomWithMap(context.level());
+        return spawnProfileTrader(context, traderMarker, profile);
+    }
+
+    private static boolean spawnProfileTrader(
+            FeatureContext context,
+            ArmorStand traderMarker,
+            WanderingTraderProfile profile
+    ) {
+        Optional<ItemStack> generatedMap = Optional.empty();
+
+        if (profile.mapOffer().isPresent()) {
+            WanderingTraderMapOffer mapOffer = profile.mapOffer().get();
+
+            generatedMap = generateMapFromLootTable(
+                    context,
+                    traderMarker,
+                    mapOffer.lootTableId()
+            );
+
+            if (generatedMap.isEmpty()) {
+                ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                        "Could not generate map {} for wandering trader profile {} at {}.",
+                        mapOffer.lootTableId(),
+                        profile.id(),
+                        traderMarker.blockPosition()
+                );
+
+                return false;
+            }
+        }
+
+        MerchantOffers offers = profile.createOffers(generatedMap);
+
+        return spawnTraderWithOffers(
+                context,
+                traderMarker,
+                profile,
+                offers
+        );
+    }
+
+    private static boolean spawnTraderWithOffers(
+            FeatureContext context,
+            ArmorStand traderMarker,
+            WanderingTraderProfile profile,
+            MerchantOffers offers
+    ) {
+        WanderingTrader trader = EntityType.WANDERING_TRADER.create(context.level());
+
+        if (trader == null) {
+            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                    "Could not create wandering trader entity at {}.",
+                    traderMarker.blockPosition()
+            );
+            return false;
+        }
+
+        trader.moveTo(
+                traderMarker.getX(),
+                traderMarker.getY(),
+                traderMarker.getZ(),
+                traderMarker.getYRot(),
+                traderMarker.getXRot()
+        );
+
+        trader.setPersistenceRequired();
+        trader.setDespawnDelay(48000);
+
+        trader.setCustomName(profile.displayName());
+        trader.setCustomNameVisible(true);
+
+        trader.addTag("pp_spawned_feature_trader");
+        trader.addTag("pp_custom_trader");
+        trader.addTag("pp_wtrader_" + profile.id());
+
+        if (profile.hasMapOffer()) {
+            trader.addTag("pp_map_trader");
+        } else {
+            trader.addTag("pp_no_map_trader");
+        }
+
+        boolean added = context.level().addFreshEntity(trader);
+
+        if (!added) {
+            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                    "Wandering trader entity was not added to the world at {}.",
+                    traderMarker.blockPosition()
+            );
+            return false;
+        }
+
+        MerchantOffers activeOffers = trader.getOffers();
+        activeOffers.clear();
+        activeOffers.addAll(offers);
+        trader.overrideOffers(activeOffers);
+
+        ProfessorPorkersLegendaryDungeons.LOGGER.info(
+                "Spawned wandering trader profile {} at {} with {} offers.",
+                profile.id(),
+                trader.blockPosition(),
+                trader.getOffers().size()
+        );
+
+        return true;
     }
 }
