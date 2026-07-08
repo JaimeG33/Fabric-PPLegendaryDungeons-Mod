@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "pp_legendarydungeons:overtaken_outpost/1",
+      "required": false
+    },
+    {
+      "id": "pp_legendarydungeons:ancient_battles/gvk/island_1",
+      "required": false
+    }
+  ]
+}

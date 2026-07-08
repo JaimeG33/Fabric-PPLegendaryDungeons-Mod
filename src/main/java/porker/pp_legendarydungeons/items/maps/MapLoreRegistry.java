@@ -31,7 +31,7 @@ public final class MapLoreRegistry {
             new MapLoreEntry(
                     "ancient_city",
                     List.of(
-                            Component.literal("This map points toward an Ancient City deep beneath the surface.")
+                            Component.literal("This map leads toward an Ancient City deep beneath the surface.")
                                     .withStyle(ChatFormatting.GRAY)
                     )
             ),
@@ -73,6 +73,14 @@ public final class MapLoreRegistry {
                                     .withStyle(ChatFormatting.GRAY),
                             Component.literal("If no destination appears, the required structure may not exist in this world or modpack.")
                                     .withStyle(ChatFormatting.DARK_GRAY)
+                    )
+            ),
+            "trial_chambers",
+            new MapLoreEntry(
+                    "trial_chambers",
+                    List.of(
+                            Component.literal("This map leads toward Trial Chambers deep underground.")
+                                    .withStyle(ChatFormatting.GRAY)
                     )
             )
     );
