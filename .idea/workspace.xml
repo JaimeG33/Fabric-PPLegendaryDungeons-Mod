@@ -4,17 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Maps v4.2 &#10;Added Major Structures to maps">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/maps/find_trial_chambers.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/worldgen/structure/fix_multi/001_torterra_variants.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/worldgen/structure/fix_multi/004_magicarpjump.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/worldgen/structure/random/dungeons.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/worldgen/structure/random/misc.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/worldgen/structure/random/research_outposts.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/worldgen/structure/trial_chamber.json" afterDir="false" />
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Maps v4.3&#10;Added tags to begin with extra structures&#10;&#10;Also added trial chamber map">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/maps/random/find_dungeon.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/maps/random/find_misc.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/maps/random/find_research_outpost.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/items/maps/MapLoreRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/items/maps/MapLoreRegistry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/worldgen/structure/cobblemon_shipwreck_coves.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/worldgen/structure/cobblemon_shipwreck_coves.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -332,7 +326,15 @@
       <option name="project" value="LOCAL" />
       <updated>1783536071730</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Maps v4.3&#10;Added tags to begin with extra structures&#10;&#10;Also added trial chamber map">
+      <option name="closed" value="true" />
+      <created>1783540225828</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1783540225828</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -356,6 +358,7 @@
     <MESSAGE value="Maps v4  SKY PILLAR MAP WORKS BAYBEEE" />
     <MESSAGE value="Maps v4.1 added cusom data to certain maps" />
     <MESSAGE value="Maps v4.2 &#10;Added Major Structures to maps" />
-    <option name="LAST_COMMIT_MESSAGE" value="Maps v4.2 &#10;Added Major Structures to maps" />
+    <MESSAGE value="Maps v4.3&#10;Added tags to begin with extra structures&#10;&#10;Also added trial chamber map" />
+    <option name="LAST_COMMIT_MESSAGE" value="Maps v4.3&#10;Added tags to begin with extra structures&#10;&#10;Also added trial chamber map" />
   </component>
 </project>
