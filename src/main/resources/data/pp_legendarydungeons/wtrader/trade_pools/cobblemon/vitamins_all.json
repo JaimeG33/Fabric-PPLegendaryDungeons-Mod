@@ -8,19 +8,18 @@
     "competative",
     "brewing",
     "cooking",
-    "cheap",
     "secondary_price",
     "relic_coin"
   ],
   "base_price": {
     "item": "minecraft:emerald",
-    "count": 5,
-    "variance_min": -2,
-    "variance_max": 2
+    "count": 9,
+    "variance_min": -3,
+    "variance_max": 1
   },
   "secondary_price": {
     "item": "cobblemon:relic_coin",
-    "count": 4,
+    "count": 16,
     "variance_min": 0,
     "variance_max": 0
   },
