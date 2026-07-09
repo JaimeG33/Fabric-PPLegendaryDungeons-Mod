@@ -9,10 +9,10 @@ The goal is to define reusable weighted trade pools in JSON, then let Java decid
 Runtime JSON files, loaded by the mod after the Java loader is implemented:
 
 ```text
-src/main/resources/data/pp_legendarydungeons/wtrader_trade_pools/
-src/main/resources/data/pp_legendarydungeons/wtrader_profiles/
-src/main/resources/data/pp_legendarydungeons/wtrader_selection_tables/
-src/main/resources/data/pp_legendarydungeons/wtrader_map_offers/
+src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/
+src/main/resources/data/pp_legendarydungeons/wtrader/profiles/
+src/main/resources/data/pp_legendarydungeons/wtrader/selection_tables/
+src/main/resources/data/pp_legendarydungeons/wtrader/map_offers/
 ```
 
 Documentation and safe examples that do not load at runtime:

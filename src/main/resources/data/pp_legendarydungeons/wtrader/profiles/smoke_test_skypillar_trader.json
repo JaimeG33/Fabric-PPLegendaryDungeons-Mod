@@ -1,0 +1,25 @@
+{
+  "id": "pp_legendarydungeons:smoke_test_skypillar_trader",
+  "display_name": "Smoke Test Sky Pillar Trader",
+  "show_display_name": true,
+  "trader_type": "custom_map",
+  "map_type": "single_target",
+  "total_trades": 1,
+  "guaranteed_trades": [
+    {
+      "type": "generated_map",
+      "map_offer": "pp_legendarydungeons:sky_pillar",
+      "base_price": {
+        "item": "minecraft:emerald",
+        "count": 32,
+        "variance_min": 0,
+        "variance_max": 0
+      },
+      "secondary_price": null,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 10
+    }
+  ],
+  "random_slots": []
+}

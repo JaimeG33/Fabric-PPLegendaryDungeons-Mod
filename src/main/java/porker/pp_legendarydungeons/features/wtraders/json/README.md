@@ -15,10 +15,10 @@ src/main/java/porker/pp_legendarydungeons/features/wtraders/json/
 The future reload listener should read these folders:
 
 ```text
-src/main/resources/data/pp_legendarydungeons/wtrader_trade_pools/
-src/main/resources/data/pp_legendarydungeons/wtrader_profiles/
-src/main/resources/data/pp_legendarydungeons/wtrader_selection_tables/
-src/main/resources/data/pp_legendarydungeons/wtrader_map_offers/
+src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/
+src/main/resources/data/pp_legendarydungeons/wtrader/profiles/
+src/main/resources/data/pp_legendarydungeons/wtrader/selection_tables/
+src/main/resources/data/pp_legendarydungeons/wtrader/map_offers/
 ```
 
 These paths are represented by `WTraderJsonFolders`.
@@ -30,7 +30,7 @@ These paths are represented by `WTraderJsonFolders`.
 Represents one file from:
 
 ```text
-data/<namespace>/wtrader_trade_pools/*.json
+data/<namespace>/wtrader/trade_pools/*.json
 ```
 
 A trade pool defines a reusable weighted category of possible trades.

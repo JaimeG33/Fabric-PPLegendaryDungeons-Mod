@@ -1,0 +1,50 @@
+{
+  "id": "pp_legendarydungeons:default",
+  "top_level_rolls": [
+    {
+      "result": "vanilla_wandering_trader",
+      "weight": 20
+    },
+    {
+      "result": "custom_no_map",
+      "weight": 40
+    },
+    {
+      "result": "custom_map",
+      "weight": 40
+    }
+  ],
+  "custom_no_map_profiles": [
+    {
+      "profile": "pp_legendarydungeons:smoke_test_supply_trader",
+      "weight": 10
+    }
+  ],
+  "custom_map_profile_groups": [
+    {
+      "group": "single_target",
+      "weight": 50,
+      "profiles": [
+        {
+          "profile": "pp_legendarydungeons:smoke_test_skypillar_trader",
+          "weight": 10
+        }
+      ]
+    },
+    {
+      "group": "random_misc",
+      "weight": 25,
+      "profiles": []
+    },
+    {
+      "group": "random_research_outpost",
+      "weight": 20,
+      "profiles": []
+    },
+    {
+      "group": "random_dungeon",
+      "weight": 5,
+      "profiles": []
+    }
+  ]
+}
