@@ -1,0 +1,49 @@
+{
+  "id": "pp_legendarydungeons:enchanted_farming_tools",
+  "category": "enchanted_farming_tools",
+  "category_weight": 10,
+  "tags": [
+    "tools",
+    "hoes",
+    "farming",
+    "custom_enchants",
+    "secondary_price",
+    "relic_coin"
+  ],
+  "base_price": {
+    "item": "minecraft:emerald",
+    "count": 9,
+    "variance_min": -3,
+    "variance_max": 4
+  },
+  "secondary_price": {
+    "item": "cobblemon:relic_coin",
+    "count": 12,
+    "variance_min": -4,
+    "variance_max": 8
+  },
+  "entries": [
+    {
+      "loot_table": "pp_legendarydungeons:trades/tools/fortune_iron_hoe",
+      "weight": 8,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 10,
+      "tags": [
+        "fortune"
+      ]
+    },
+    {
+      "loot_table": "pp_legendarydungeons:trades/tools/diamond_hoe",
+      "weight": 6,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 2,
+      "max_uses_max": 2,
+      "xp": 8,
+      "tags": []
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "id": "pp_legendarydungeons:held_items_defensive",
+  "category": "held_items_defensive",
+  "category_weight": 10,
+  "tags": [
+    "pokemon",
+    "competative",
+    "held_item",
+    "defensive",
+    "secondary_price",
+    "relic_coin"
+  ],
+  "base_price": {
+    "item": "minecraft:emerald",
+    "count": 8,
+    "variance_min": -2,
+    "variance_max": 4
+  },
+  "secondary_price": {
+    "item": "cobblemon:relic_coin",
+    "count": 8,
+    "variance_min": -2,
+    "variance_max": 4
+  },
+  "entries": [
+    {
+      "item": "cobblemon:rocky_helmet",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 2,
+      "max_uses_max": 2,
+      "xp": 6,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:focus_band",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 2,
+      "max_uses_max": 2,
+      "xp": 6,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:focus_sash",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 8,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:eviolite",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 8,
+      "tags": []
+    }
+  ]
+}

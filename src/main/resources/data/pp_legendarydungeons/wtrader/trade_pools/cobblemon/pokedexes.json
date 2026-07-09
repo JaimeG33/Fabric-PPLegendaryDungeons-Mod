@@ -1,0 +1,36 @@
+{
+  "id": "pp_legendarydungeons:pokedexes",
+  "category": "pokedexes",
+  "category_weight": 10,
+  "tags": [
+    "pokemon",
+    "utility",
+    "pokedex",
+    "secondary_price",
+    "relic_coin"
+  ],
+  "base_price": {
+    "item": "minecraft:emerald",
+    "count": 8,
+    "variance_min": 0,
+    "variance_max": 4
+  },
+  "secondary_price": {
+    "item": "cobblemon:relic_coin",
+    "count": 16,
+    "variance_min": 0,
+    "variance_max": 8
+  },
+  "entries": [
+    {
+      "item": "cobblemon:pokedex_red",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 2,
+      "max_uses_max": 2,
+      "xp": 6,
+      "tags": []
+    }
+  ]
+}

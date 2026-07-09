@@ -22,6 +22,18 @@
     {
       "profile": "pp_legendarydungeons:wtraders_nomap/random_nocheap",
       "weight": 10
+    },
+    {
+      "profile": "pp_legendarydungeons:wtraders_nomap/chud_miner",
+      "weight": 10
+    },
+    {
+      "profile": "pp_legendarydungeons:wtraders_nomap/chud_farmer",
+      "weight": 10
+    },
+    {
+      "profile": "pp_legendarydungeons:wtraders_nomap/master_ball_collector",
+      "weight": 2
     }
   ],
   "custom_map_profile_groups": [

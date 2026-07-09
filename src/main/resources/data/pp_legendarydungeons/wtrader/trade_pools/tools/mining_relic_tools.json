@@ -1,0 +1,62 @@
+{
+  "id": "pp_legendarydungeons:mining_relic_tools",
+  "category": "mining_relic_tools",
+  "category_weight": 10,
+  "tags": [
+    "tools",
+    "pickaxes",
+    "custom_enchants",
+    "secondary_price",
+    "relic_coin"
+  ],
+  "base_price": {
+    "item": "minecraft:emerald",
+    "count": 14,
+    "variance_min": -4,
+    "variance_max": 4
+  },
+  "secondary_price": {
+    "item": "cobblemon:relic_coin",
+    "count": 24,
+    "variance_min": -8,
+    "variance_max": 8
+  },
+  "entries": [
+    {
+      "loot_table": "pp_legendarydungeons:trades/tools/silk_touch_mining_pickaxe",
+      "weight": 6,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 12,
+      "tags": [
+        "silk_touch"
+      ]
+    },
+    {
+      "loot_table": "pp_legendarydungeons:trades/tools/fortune_mining_pickaxe",
+      "weight": 6,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 12,
+      "tags": [
+        "fortune"
+      ]
+    },
+    {
+      "loot_table": "pp_legendarydungeons:trades/tools/unbreaking_mining_pickaxe",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 8,
+      "tags": [
+        "unbreaking"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "id": "pp_legendarydungeons:greenery_misc",
+  "category": "greenery_misc",
+  "category_weight": 10,
+  "tags": [
+    "nature",
+    "plants",
+    "cheap",
+    "emerald_only"
+  ],
+  "base_price": {
+    "item": "minecraft:emerald",
+    "count": 3,
+    "variance_min": -1,
+    "variance_max": 2
+  },
+  "secondary_price": null,
+  "entries": [
+    {
+      "item": "minecraft:azalea",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 4,
+      "max_uses_max": 4,
+      "xp": 3,
+      "tags": []
+    },
+    {
+      "item": "minecraft:flowering_azalea",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 4,
+      "max_uses_max": 4,
+      "xp": 3,
+      "tags": []
+    },
+    {
+      "item": "minecraft:cherry_sapling",
+      "weight": 1,
+      "count_min": 1,
+      "count_max": 5,
+      "max_uses_min": 4,
+      "max_uses_max": 4,
+      "xp": 2,
+      "tags": []
+    },
+    {
+      "item": "minecraft:dark_oak_sapling",
+      "weight": 1,
+      "count_min": 1,
+      "count_max": 4,
+      "max_uses_min": 4,
+      "max_uses_max": 4,
+      "xp": 2,
+      "tags": []
+    }
+  ]
+}

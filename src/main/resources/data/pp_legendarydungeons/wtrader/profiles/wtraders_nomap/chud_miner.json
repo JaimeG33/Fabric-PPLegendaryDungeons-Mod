@@ -1,0 +1,57 @@
+{
+  "id": "pp_legendarydungeons:wtraders_nomap/chud_miner",
+  "display_name": "Chud Miner",
+  "show_display_name": true,
+  "trader_type": "custom_no_map",
+  "map_type": "none",
+  "total_trades": 6,
+  "guaranteed_trades": [],
+  "random_slots": [
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [
+        "greenery_misc"
+      ],
+      "tag_filter_mode": "include",
+      "tags": []
+    },
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [
+        "custom_luck_foods"
+      ],
+      "tag_filter_mode": "include",
+      "tags": []
+    },
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [
+        "cobblestone_rocks"
+      ],
+      "tag_filter_mode": "include",
+      "tags": []
+    },
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [
+        "type_gems_all"
+      ],
+      "tag_filter_mode": "include",
+      "tags": []
+    },
+    {
+      "count": 2,
+      "category_filter_mode": "include",
+      "categories": [
+        "mining_relic_tools",
+        "type_gems_all"
+      ],
+      "tag_filter_mode": "include",
+      "tags": []
+    }
+  ]
+}

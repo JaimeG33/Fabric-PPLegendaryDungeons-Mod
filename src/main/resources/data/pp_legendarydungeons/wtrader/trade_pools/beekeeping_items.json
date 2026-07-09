@@ -1,0 +1,41 @@
+{
+  "id": "pp_legendarydungeons:beekeeping_items",
+  "category": "beekeeping_items",
+  "category_weight": 10,
+  "tags": [
+    "nature",
+    "food",
+    "beekeeping",
+    "cheap",
+    "emerald_only"
+  ],
+  "base_price": {
+    "item": "minecraft:emerald",
+    "count": 3,
+    "variance_min": -1,
+    "variance_max": 2
+  },
+  "secondary_price": null,
+  "entries": [
+    {
+      "item": "minecraft:honeycomb",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 6,
+      "max_uses_max": 6,
+      "xp": 3,
+      "tags": []
+    },
+    {
+      "item": "minecraft:honey_bottle",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 6,
+      "max_uses_max": 6,
+      "xp": 3,
+      "tags": []
+    }
+  ]
+}

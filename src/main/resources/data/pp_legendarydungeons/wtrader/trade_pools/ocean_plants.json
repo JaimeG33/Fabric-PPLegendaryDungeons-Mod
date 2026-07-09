@@ -1,0 +1,51 @@
+{
+  "id": "pp_legendarydungeons:ocean_plants",
+  "category": "ocean_plants",
+  "category_weight": 10,
+  "tags": [
+    "ocean",
+    "nature",
+    "fishing",
+    "cheap",
+    "emerald_only"
+  ],
+  "base_price": {
+    "item": "minecraft:emerald",
+    "count": 2,
+    "variance_min": 0,
+    "variance_max": 2
+  },
+  "secondary_price": null,
+  "entries": [
+    {
+      "item": "minecraft:kelp",
+      "weight": 1,
+      "count_min": 1,
+      "count_max": 3,
+      "max_uses_min": 10,
+      "max_uses_max": 10,
+      "xp": 2,
+      "tags": []
+    },
+    {
+      "item": "minecraft:seagrass",
+      "weight": 1,
+      "count_min": 1,
+      "count_max": 3,
+      "max_uses_min": 10,
+      "max_uses_max": 10,
+      "xp": 2,
+      "tags": []
+    },
+    {
+      "item": "minecraft:sugar_cane",
+      "weight": 1,
+      "count_min": 1,
+      "count_max": 3,
+      "max_uses_min": 10,
+      "max_uses_max": 10,
+      "xp": 2,
+      "tags": []
+    }
+  ]
+}

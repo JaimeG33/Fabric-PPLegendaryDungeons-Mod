@@ -1,0 +1,74 @@
+{
+  "type": "minecraft:generic",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:rotten_flesh",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1
+            },
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "minecraft:food": {
+                  "nutrition": 3,
+                  "saturation": 1,
+                  "effects": [
+                    {
+                      "effect": {
+                        "id": "minecraft:hunger",
+                        "amplifier": 1,
+                        "duration": 1
+                      },
+                      "probability": 1
+                    },
+                    {
+                      "effect": {
+                        "id": "minecraft:saturation",
+                        "amplifier": 0,
+                        "duration": 600
+                      },
+                      "probability": 1
+                    },
+                    {
+                      "effect": {
+                        "id": "minecraft:luck",
+                        "amplifier": 0,
+                        "duration": 300
+                      },
+                      "probability": 1
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "text": "Jerky",
+                "italic": false
+              },
+              "target": "item_name"
+            },
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "text": "Maybe it doesn't taste as bad as it looks",
+                  "italic": false,
+                  "color": "gray"
+                }
+              ],
+              "mode": "append"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

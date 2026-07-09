@@ -1,0 +1,70 @@
+{
+  "id": "pp_legendarydungeons:wtraders_nomap/chud_farmer",
+  "display_name": "Chud Farmer",
+  "show_display_name": true,
+  "trader_type": "custom_no_map",
+  "map_type": "none",
+  "total_trades": 6,
+  "guaranteed_trades": [],
+  "random_slots": [
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [
+        "berries_ev_reduction_all"
+      ],
+      "tag_filter_mode": "include",
+      "tags": []
+    },
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [
+        "berries_ev_reduction_all",
+        "berries_all",
+        "mints_all"
+      ],
+      "tag_filter_mode": "include",
+      "tags": []
+    },
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [
+        "apricorn_seed_all"
+      ],
+      "tag_filter_mode": "include",
+      "tags": []
+    },
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [
+        "type_gems_all"
+      ],
+      "tag_filter_mode": "include",
+      "tags": []
+    },
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [
+        "beekeeping_items",
+        "cobblemon_aggriculture",
+        "apple_leftovers",
+        "saplings"
+      ],
+      "tag_filter_mode": "include",
+      "tags": []
+    },
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [
+        "enchanted_farming_tools"
+      ],
+      "tag_filter_mode": "include",
+      "tags": []
+    }
+  ]
+}
