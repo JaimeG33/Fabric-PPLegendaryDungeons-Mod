@@ -1,0 +1,71 @@
+{
+  "id": "pp_legendarydungeons:saplings",
+  "category": "saplings",
+  "category_weight": 20,
+  "tags": [
+    "nature",
+    "cheap",
+    "emerald_only"
+  ],
+  "base_price": {
+    "item": "minecraft:emerald",
+    "count": 5,
+    "variance_min": -1,
+    "variance_max": 2
+  },
+  "secondary_price": null,
+  "entries": [
+    {
+      "item": "minecraft:oak_sapling",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 2,
+      "max_uses_max": 4,
+      "xp": 3,
+      "tags": [
+        "overworld",
+        "sapling"
+      ]
+    },
+    {
+      "item": "minecraft:cherry_sapling",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 2,
+      "max_uses_max": 4,
+      "xp": 3,
+      "tags": [
+        "overworld",
+        "sapling"
+      ]
+    },
+    {
+      "item": "minecraft:spruce_sapling",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 2,
+      "max_uses_max": 4,
+      "xp": 3,
+      "tags": [
+        "overworld",
+        "sapling"
+      ]
+    },
+    {
+      "item": "minecraft:mangrove_propagule",
+      "weight": 6,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 2,
+      "max_uses_max": 4,
+      "xp": 3,
+      "tags": [
+        "overworld",
+        "sapling"
+      ]
+    }
+  ]
+}

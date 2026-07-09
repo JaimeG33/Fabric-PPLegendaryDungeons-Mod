@@ -1,0 +1,78 @@
+{
+  "id": "pp_legendarydungeons:supply_trader",
+  "display_name": "Wandering Supplies Trader",
+  "show_display_name": true,
+  "trader_type": "custom_no_map",
+  "map_type": "none",
+  "total_trades": 6,
+  "guaranteed_trades": [
+    {
+      "type": "pool_roll",
+      "category_filter_mode": "include",
+      "categories": [
+        "type_gems"
+      ],
+      "tag_filter_mode": "exclude",
+      "tags": [],
+      "count": 1
+    },
+    {
+      "type": "pool_roll",
+      "category_filter_mode": "include",
+      "categories": [
+        "apricorn_seeds",
+        "mint_seeds"
+      ],
+      "tag_filter_mode": "exclude",
+      "tags": [],
+      "count": 1
+    },
+    {
+      "type": "pool_roll",
+      "category_filter_mode": "include",
+      "categories": [
+        "joke_items"
+      ],
+      "tag_filter_mode": "exclude",
+      "tags": [],
+      "count": 1
+    },
+    {
+      "type": "pool_roll",
+      "category_filter_mode": "include",
+      "categories": [
+        "relic_coin_specials"
+      ],
+      "tag_filter_mode": "include",
+      "tags": [
+        "relic_coin"
+      ],
+      "count": 1
+    }
+  ],
+  "random_slots": [
+    {
+      "count": 1,
+      "category_filter_mode": "exclude",
+      "categories": [
+        "maps"
+      ],
+      "tag_filter_mode": "exclude",
+      "tags": [
+        "legendary",
+        "master_ball"
+      ]
+    },
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [
+        "saplings",
+        "cobblemon_ev_training",
+        "utility_items"
+      ],
+      "tag_filter_mode": "exclude",
+      "tags": []
+    }
+  ]
+}

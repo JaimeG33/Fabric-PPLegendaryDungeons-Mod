@@ -1,0 +1,60 @@
+{
+  "id": "pp_legendarydungeons:to_skypillar",
+  "display_name": "Sky Pillar Map Trader",
+  "show_display_name": true,
+  "trader_type": "custom_map",
+  "map_type": "single_target",
+  "total_trades": 5,
+  "guaranteed_trades": [
+    {
+      "type": "generated_map",
+      "map_offer": "pp_legendarydungeons:sky_pillar",
+      "base_price": {
+        "item": "minecraft:emerald",
+        "count": 32,
+        "variance_min": -4,
+        "variance_max": 4
+      },
+      "secondary_price": {
+        "item": "cobblemon:relic_coin",
+        "count": 32,
+        "variance_min": -4,
+        "variance_max": 4
+      },
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 10
+    },
+    {
+      "type": "direct_item",
+      "sell_item": "cobblemon:flying_gem",
+      "sell_count_min": 1,
+      "sell_count_max": 1,
+      "base_price": {
+        "item": "minecraft:emerald",
+        "count": 8,
+        "variance_min": -1,
+        "variance_max": 2
+      },
+      "secondary_price": null,
+      "max_uses_min": 4,
+      "max_uses_max": 4,
+      "xp": 1
+    }
+  ],
+  "random_slots": [
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [
+        "saplings",
+        "relic_coin_tools"
+      ],
+      "tag_filter_mode": "exclude",
+      "tags": [
+        "master_ball",
+        "legendary"
+      ]
+    }
+  ]
+}

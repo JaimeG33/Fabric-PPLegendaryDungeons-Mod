@@ -1,0 +1,132 @@
+{
+  "id": "pp_legendarydungeons:cobblemon_ev_training",
+  "category": "cobblemon_ev_training",
+  "category_weight": 8,
+  "tags": [
+    "cobblemon",
+    "training",
+    "relic_coin",
+    "expensive"
+  ],
+  "base_price": {
+    "item": "minecraft:emerald",
+    "count": 5,
+    "variance_min": -1,
+    "variance_max": 2
+  },
+  "secondary_price": {
+    "item": "cobblemon:relic_coin",
+    "count": 8,
+    "variance_min": 0,
+    "variance_max": 4
+  },
+  "entries": [
+    {
+      "item": "cobblemon:pp_up",
+      "weight": 15,
+      "count_min": 1,
+      "count_max": 2,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 5,
+      "tags": [
+        "pp_item",
+        "training"
+      ]
+    },
+    {
+      "item": "cobblemon:zinc",
+      "weight": 15,
+      "count_min": 1,
+      "count_max": 2,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 5,
+      "tags": [
+        "ev_item",
+        "training"
+      ]
+    },
+    {
+      "item": "cobblemon:iron",
+      "weight": 15,
+      "count_min": 1,
+      "count_max": 2,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 5,
+      "tags": [
+        "ev_item",
+        "training"
+      ]
+    },
+    {
+      "item": "cobblemon:carbos",
+      "weight": 15,
+      "count_min": 1,
+      "count_max": 2,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 5,
+      "tags": [
+        "ev_item",
+        "training"
+      ]
+    },
+    {
+      "item": "cobblemon:pp_max",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 5,
+      "max_uses_max": 5,
+      "xp": 10,
+      "tags": [
+        "pp_item",
+        "rare",
+        "training"
+      ]
+    },
+    {
+      "item": "cobblemon:hp_up",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 5,
+      "max_uses_max": 5,
+      "xp": 10,
+      "tags": [
+        "ev_item",
+        "training"
+      ]
+    },
+    {
+      "item": "cobblemon:calcium",
+      "weight": 5,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 5,
+      "max_uses_max": 5,
+      "xp": 15,
+      "tags": [
+        "ev_item",
+        "rare",
+        "training"
+      ]
+    },
+    {
+      "item": "cobblemon:protein",
+      "weight": 5,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 5,
+      "max_uses_max": 5,
+      "xp": 15,
+      "tags": [
+        "ev_item",
+        "rare",
+        "training"
+      ]
+    }
+  ]
+}

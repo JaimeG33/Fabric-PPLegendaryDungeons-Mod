@@ -1,0 +1,69 @@
+{
+  "id": "pp_legendarydungeons:default",
+  "top_level_rolls": [
+    {
+      "result": "vanilla_wandering_trader",
+      "weight": 20
+    },
+    {
+      "result": "custom_no_map",
+      "weight": 40
+    },
+    {
+      "result": "custom_map",
+      "weight": 40
+    }
+  ],
+  "custom_no_map_profiles": [
+    {
+      "profile": "pp_legendarydungeons:supply_trader",
+      "weight": 10
+    }
+  ],
+  "custom_map_profile_groups": [
+    {
+      "group": "single_target",
+      "weight": 50,
+      "profiles": [
+        {
+          "profile": "pp_legendarydungeons:to_skypillar",
+          "weight": 10
+        },
+        {
+          "profile": "pp_legendarydungeons:to_crystal_caves",
+          "weight": 10
+        }
+      ]
+    },
+    {
+      "group": "random_misc",
+      "weight": 25,
+      "profiles": [
+        {
+          "profile": "pp_legendarydungeons:random_misc_map_trader",
+          "weight": 10
+        }
+      ]
+    },
+    {
+      "group": "random_research_outpost",
+      "weight": 20,
+      "profiles": [
+        {
+          "profile": "pp_legendarydungeons:random_research_outpost_map_trader",
+          "weight": 10
+        }
+      ]
+    },
+    {
+      "group": "random_dungeon",
+      "weight": 5,
+      "profiles": [
+        {
+          "profile": "pp_legendarydungeons:random_dungeon_map_trader",
+          "weight": 10
+        }
+      ]
+    }
+  ]
+}

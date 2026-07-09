@@ -4,9 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="WTraders v1 (NOT FUNCTIONAL)">
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="WTraders v2 semi-functional, but supplies traders are all out of whack, and the odds don't seem to line up">
+      <change afterPath="$PROJECT_DIR$/docs/examples/wtraders/map_offer_sky_pillar.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/examples/wtraders/profile_supply_trader.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/examples/wtraders/profile_to_skypillar.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/examples/wtraders/selection_default.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/examples/wtraders/trade_pool_cobblemon_ev_training.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/examples/wtraders/trade_pool_saplings.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/wtrader_json_schema.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/wtraders/WanderingTraderCommandSpawner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/wtraders/WanderingTraderCommandSpawner.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,17 +111,17 @@
     "copilot.chat.legacySessionMetadata.migrated": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/java/porker/pp_legendarydungeons/items",
+    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons",
     "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\items" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\tags\worldgen\structure\random" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\loot_table\maps\random" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\loot_table\maps" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\tags\worldgen\structure" />
@@ -372,11 +378,18 @@
       <option name="project" value="LOCAL" />
       <updated>1783547461906</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="WTraders v2 semi-functional, but supplies traders are all out of whack, and the odds don't seem to line up">
+      <option name="closed" value="true" />
+      <created>1783549478049</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1783549478049</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="renamed the stuff 4 sure" />
     <MESSAGE value="IT WORKS FINALLY OMG" />
     <MESSAGE value="Run / client stuff and crashlogs will be ignored in github" />
     <MESSAGE value="Transfered everything from the data folder of the original datapack to the data folder of this mod. So far, everything is still semi-functional. &#10;&#10;No new additions have been made, and no Java Setup either." />
@@ -401,6 +414,7 @@
     <MESSAGE value="Maps v5.1&#10;&#10;fixed skypillar issue&#10;(type of dungeon is now chosen at the loot table before looking for the nearest structure)" />
     <MESSAGE value="Maps v5.2&#10;one last update to the descriptions." />
     <MESSAGE value="WTraders v1 (NOT FUNCTIONAL)" />
-    <option name="LAST_COMMIT_MESSAGE" value="WTraders v1 (NOT FUNCTIONAL)" />
+    <MESSAGE value="WTraders v2 semi-functional, but supplies traders are all out of whack, and the odds don't seem to line up" />
+    <option name="LAST_COMMIT_MESSAGE" value="WTraders v2 semi-functional, but supplies traders are all out of whack, and the odds don't seem to line up" />
   </component>
 </project>
