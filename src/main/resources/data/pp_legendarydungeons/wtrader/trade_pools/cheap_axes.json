@@ -1,0 +1,32 @@
+{
+  "id": "pp_legendarydungeons:cheap_axes",
+  "category": "cheap_axes",
+  "category_weight": 10,
+  "tags": [
+    "tools",
+    "axes",
+    "cheap",
+    "emerald_only"
+  ],
+  "base_price": {
+    "item": "minecraft:emerald",
+    "count": 4,
+    "variance_min": -2,
+    "variance_max": 3
+  },
+  "secondary_price": null,
+  "entries": [
+    {
+      "loot_table": "pp_legendarydungeons:trades/enchants/cheap_axes1",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 10,
+      "tags": [
+        "custom_enchants"
+      ]
+    }
+  ]
+}

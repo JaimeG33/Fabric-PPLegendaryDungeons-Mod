@@ -1,0 +1,56 @@
+{
+  "id": "pp_legendarydungeons:tumblestones",
+  "category": "tumblestones",
+  "category_weight": 10,
+  "tags": [
+    "pokemon",
+    "pickaxes",
+    "cheap",
+    "secondary_price",
+    "relic_coin"
+  ],
+  "base_price": {
+    "item": "minecraft:emerald",
+    "count": 4,
+    "variance_min": -3,
+    "variance_max": 1
+  },
+  "secondary_price": {
+    "item": "cobblemon:relic_coin_pouch",
+    "count": 4,
+    "variance_min": -2,
+    "variance_max": 1
+  },
+  "entries": [
+    {
+      "item": "cobblemon:tumblestone",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 3,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:sky_tumblestone",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 3,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:black_tumblestone",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 3,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": []
+    }
+  ]
+}

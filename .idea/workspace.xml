@@ -4,8 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="WTraders v9.2&#10;&#10;added some stuff to docs">
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="WTraders v10&#10;&#10;Update to the way the wtrader json works. Can now accept custom nbt data by connecting it to an existing loot table for that specific trade. &#10;&#10;&#10;Can also now summon specific wtrader profile types and specific profiles.">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/abandoned_research_outpost/004_magicarpjump/dig_fish_tokyogre_nomap.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/trades/enchants/cheap_axes1.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/trades/enchants/cheap_pickaxes1.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/trades/enchants/ok_pickaxe1.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_nomap/random_nocheap.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/cheap_axes.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/cheap_pickaxes.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/cobblemon/feathers_all.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/cobblemon/tumblestones.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/existing_loot/sea_exploration_tokyogre.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/ok_pickaxe.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/selection_tables/default.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/selection_tables/default.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,24 +116,24 @@
     &quot;copilot.chat.legacySessionMetadata.migrated&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/resources/data/pp_legendarydungeons/loot_table/abandoned_research_outpost/004_magicarpjump&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\loot_table\abandoned_research_outpost\004_magicarpjump" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\trade_pools" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\features\wtraders\json" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\features\wtraders" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons" />
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\trade_pools\cobblemon" />
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\profiles\wtraders_nomap" />
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\loot_table\trades\enchants" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\docs" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\trade_pools\cobblemon" />
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\trade_pools\existing_loot" />
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\docs" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\trade_pools" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\tags\worldgen\structure" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons" />
     </key>
   </component>
   <component name="RunManager" selected="Gradle.professor-porkers-legendary-dungeons [runClient]">
@@ -459,11 +471,18 @@
       <option name="project" value="LOCAL" />
       <updated>1783617373584</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="WTraders v10&#10;&#10;Update to the way the wtrader json works. Can now accept custom nbt data by connecting it to an existing loot table for that specific trade. &#10;&#10;&#10;Can also now summon specific wtrader profile types and specific profiles.">
+      <option name="closed" value="true" />
+      <created>1783619739770</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1783619739770</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Rayquaza Logic v3.3&#10;Fixed Secret summon of rayquaza" />
     <MESSAGE value="Rayquaza Logic v3.4&#10;Slight tweak to sound effects of summon&#10;&#10;Also made compatable for cobblemon 1.6.1 and fixed some mega showdown loot tables using tags" />
     <MESSAGE value="Renamed Project to &#10;Cobblemon: Explore Legendary Dungeons" />
     <MESSAGE value="Maps v1 (test no work)" />
@@ -488,6 +507,7 @@
     <MESSAGE value="WTraders v8.1&#10;&#10;Implemented the custom json traders as the smoke_test ones. So far, everything seems functional" />
     <MESSAGE value="WTraders v9&#10;&#10;Began flushing out and fully implementing the custom trades" />
     <MESSAGE value="WTraders v9.2&#10;&#10;added some stuff to docs" />
-    <option name="LAST_COMMIT_MESSAGE" value="WTraders v9.2&#10;&#10;added some stuff to docs" />
+    <MESSAGE value="WTraders v10&#10;&#10;Update to the way the wtrader json works. Can now accept custom nbt data by connecting it to an existing loot table for that specific trade. &#10;&#10;&#10;Can also now summon specific wtrader profile types and specific profiles." />
+    <option name="LAST_COMMIT_MESSAGE" value="WTraders v10&#10;&#10;Update to the way the wtrader json works. Can now accept custom nbt data by connecting it to an existing loot table for that specific trade. &#10;&#10;&#10;Can also now summon specific wtrader profile types and specific profiles." />
   </component>
 </project>

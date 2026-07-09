@@ -18,6 +18,10 @@
     {
       "profile": "pp_legendarydungeons:wtraders_nomap/random_cheap",
       "weight": 10
+    },
+    {
+      "profile": "pp_legendarydungeons:wtraders_nomap/random_nocheap",
+      "weight": 10
     }
   ],
   "custom_map_profile_groups": [

@@ -1,0 +1,81 @@
+{
+  "id": "pp_legendarydungeons:waterbucket_fishbucket",
+  "category": "waterbucket_fishbucket",
+  "category_weight": 10,
+  "tags": [
+    "joke_trade",
+    "cheap",
+    "competative",
+    "ocean",
+    "fishing"
+  ],
+  "base_price": {
+    "item": "minecraft:water_bucket",
+    "count": 1,
+    "variance_min": 0,
+    "variance_max": 0
+  },
+  "secondary_price": null,
+  "entries": [
+    {
+      "item": "minecraft:cod_bucket",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 3,
+      "tags": []
+    },
+    {
+      "item": "minecraft:salmon_bucket",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 3,
+      "tags": []
+    },
+    {
+      "item": "minecraft:tropical_fish_bucket",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 3,
+      "tags": []
+    },
+    {
+      "item": "minecraft:pufferfish_bucket",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 3,
+      "tags": []
+    },
+    {
+      "item": "minecraft:axolotl_bucket",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 3,
+      "tags": []
+    },
+    {
+      "item": "minecraft:tadpole_bucket",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 3,
+      "tags": []
+    }
+  ]
+}
