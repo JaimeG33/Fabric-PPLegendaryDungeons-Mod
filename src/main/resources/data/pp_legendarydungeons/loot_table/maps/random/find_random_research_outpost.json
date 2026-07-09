@@ -14,7 +14,7 @@
               "destination": "pp_legendarydungeons:random/research_outposts",
               "decoration": "target_x",
               "zoom": 2,
-              "skip_existing_chunks": false
+              "skip_existing_chunks": true
             },
             {
               "function": "minecraft:set_name",

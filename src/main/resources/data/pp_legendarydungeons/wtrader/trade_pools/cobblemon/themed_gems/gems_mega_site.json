@@ -1,0 +1,32 @@
+{
+  "id": "pp_legendarydungeons:gems_mega_site",
+  "category": "gems_mega_site",
+  "category_weight": 10,
+  "tags": [
+    "pokemon",
+    "type_gem",
+    "themed_gem",
+    "emerald_only",
+    "mega_showdown",
+    "mega_site"
+  ],
+  "base_price": {
+    "item": "minecraft:emerald",
+    "count": 4,
+    "variance_min": -1,
+    "variance_max": 2
+  },
+  "secondary_price": null,
+  "entries": [
+    {
+      "item": "cobblemon:normal_gem",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 4,
+      "max_uses_max": 4,
+      "xp": 3,
+      "tags": []
+    }
+  ]
+}

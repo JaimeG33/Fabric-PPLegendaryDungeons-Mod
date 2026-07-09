@@ -1,14 +1,14 @@
 {
-  "id": "pp_legendarydungeons:wtraders_map/mega_showdown/to_wishing_weald",
-  "display_name": "Wishing Weald Map Trader",
+  "id": "pp_legendarydungeons:wtraders_map/to_trial_chambers",
+  "display_name": "Trial Chambers Map Trader",
   "show_display_name": true,
   "trader_type": "custom_map",
-  "map_type": "mega_showdown",
+  "map_type": "single_target",
   "total_trades": 6,
   "guaranteed_trades": [
     {
       "type": "generated_map",
-      "map_offer": "pp_legendarydungeons:wishing_weald",
+      "map_offer": "pp_legendarydungeons:trial_chambers",
       "base_price": {
         "item": "minecraft:emerald",
         "count": 32,
@@ -31,8 +31,7 @@
       "count": 1,
       "category_filter_mode": "include",
       "categories": [
-        "greenery_misc",
-        "saplings_all"
+        "custom_luck_foods"
       ],
       "tag_filter_mode": "include",
       "tags": []
@@ -41,7 +40,7 @@
       "count": 1,
       "category_filter_mode": "include",
       "categories": [
-        "gems_wishing_weald"
+        "gems_trial_chambers"
       ],
       "tag_filter_mode": "include",
       "tags": []
@@ -50,7 +49,7 @@
       "count": 1,
       "category_filter_mode": "include",
       "categories": [
-        "apple_leftovers"
+        "held_items_defensive"
       ],
       "tag_filter_mode": "include",
       "tags": []
@@ -59,7 +58,7 @@
       "count": 1,
       "category_filter_mode": "include",
       "categories": [
-        "beekeeping_items"
+        "trial_combat_tools"
       ],
       "tag_filter_mode": "include",
       "tags": []
@@ -68,7 +67,7 @@
       "count": 1,
       "category_filter_mode": "include",
       "categories": [
-        "mega_showdown_specials"
+        "trial_chambers_misc"
       ],
       "tag_filter_mode": "include",
       "tags": []

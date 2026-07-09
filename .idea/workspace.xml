@@ -4,25 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="WTraders v12&#10;Ported over the old nonmap wtraders">
-      <change afterPath="$PROJECT_DIR$/docs/wtrader_map_porting/README_IMPLEMENTATION_STEPS.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/wtrader_map_porting/disabled_crystal_caves_draft/crystal_caves_map_offer.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/wtrader_map_porting/disabled_crystal_caves_draft/to_crystal_caves.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/map_offers/ancient_city.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/map_offers/fishing_boat.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/map_offers/mega_site.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/map_offers/shipwreck_cove.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/map_offers/wishing_weald.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/mega_showdown/to_mega_site.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/mega_showdown/to_wishing_weald.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_ancient_city.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_fishing_boat.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_shipwreck_cove.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_skypillar.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/lighting_items.json" afterDir="false" />
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="WTraders v13&#10;Ported over map based wtraders (forgot trial chambers lol)">
+      <change afterPath="$PROJECT_DIR$/docs/wtrader_map_porting/disabled_crystal_caves_draft/gems_crystal_caves.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/wtrader_random_map_odds_fix/README_IMPLEMENTATION_STEPS.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/map_offers/trial_chambers.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_trial_chambers.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/cobblemon/themed_gems/gems_ancient_city.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/cobblemon/themed_gems/gems_mega_site.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/cobblemon/themed_gems/gems_ocean_maps.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/cobblemon/themed_gems/gems_sky_pillar.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/cobblemon/themed_gems/gems_trial_chambers.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/cobblemon/themed_gems/gems_wishing_weald.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/trial_chambers/trial_chambers_misc.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/trial_chambers/trial_combat_tools.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/map_offers/sky_pillar.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/map_offers/sky_pillar.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/wtrader_map_porting/README_IMPLEMENTATION_STEPS.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/wtrader_map_porting/README_IMPLEMENTATION_STEPS.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/wtrader_map_porting/disabled_crystal_caves_draft/crystal_caves_map_offer.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/wtrader_map_porting/disabled_crystal_caves_draft/to_crystal_caves.json" beforeDir="false" afterPath="$PROJECT_DIR$/docs/wtrader_map_porting/disabled_crystal_caves_draft/to_crystal_caves.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/maps/random/find_random_misc.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/maps/random/find_random_misc.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/maps/random/find_random_research_outpost.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/maps/random/find_random_research_outpost.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/mega_showdown/to_mega_site.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/mega_showdown/to_mega_site.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/mega_showdown/to_wishing_weald.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/mega_showdown/to_wishing_weald.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_ancient_city.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_ancient_city.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_fishing_boat.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_fishing_boat.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_shipwreck_cove.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_shipwreck_cove.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_skypillar.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_skypillar.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/selection_tables/default.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/selection_tables/default.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/saplings.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/saplings.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,24 +129,24 @@
     "copilot.chat.legacySessionMetadata.migrated": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools",
+    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/docs",
     "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\docs" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\trade_pools" />
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\trade_pools\cobblemon" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\profiles\wtraders_maps" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\map_offers" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\docs" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\profiles\wtraders_nomap" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\selection_tables" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\docs" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\trade_pools\cobblemon" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\trade_pools\existing_loot" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\trade_pools" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\tags\worldgen\structure" />
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\profiles\wtraders_maps\mega_showdown" />
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\profiles\wtraders_maps" />
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\map_offers" />
     </key>
   </component>
   <component name="RunManager" selected="Gradle.professor-porkers-legendary-dungeons [runClient]">
@@ -500,11 +508,18 @@
       <option name="project" value="LOCAL" />
       <updated>1783632133987</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="WTraders v13&#10;Ported over map based wtraders (forgot trial chambers lol)">
+      <option name="closed" value="true" />
+      <created>1783634220433</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1783634220433</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Maps v1 (test no work)" />
     <MESSAGE value="Maps v2 (test no work)" />
     <MESSAGE value="Maps v4  SKY PILLAR MAP WORKS BAYBEEE" />
     <MESSAGE value="Maps v4.1 added cusom data to certain maps" />
@@ -529,6 +544,7 @@
     <MESSAGE value="WTraders v10&#10;&#10;Update to the way the wtrader json works. Can now accept custom nbt data by connecting it to an existing loot table for that specific trade. &#10;&#10;&#10;Can also now summon specific wtrader profile types and specific profiles." />
     <MESSAGE value="WTraders v11" />
     <MESSAGE value="WTraders v12&#10;Ported over the old nonmap wtraders" />
-    <option name="LAST_COMMIT_MESSAGE" value="WTraders v12&#10;Ported over the old nonmap wtraders" />
+    <MESSAGE value="WTraders v13&#10;Ported over map based wtraders (forgot trial chambers lol)" />
+    <option name="LAST_COMMIT_MESSAGE" value="WTraders v13&#10;Ported over map based wtraders (forgot trial chambers lol)" />
   </component>
 </project>

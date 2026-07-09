@@ -1,0 +1,42 @@
+{
+  "id": "pp_legendarydungeons:gems_sky_pillar",
+  "category": "gems_sky_pillar",
+  "category_weight": 10,
+  "tags": [
+    "pokemon",
+    "type_gem",
+    "themed_gem",
+    "emerald_only",
+    "sky_pillar",
+    "rayquaza"
+  ],
+  "base_price": {
+    "item": "minecraft:emerald",
+    "count": 4,
+    "variance_min": -1,
+    "variance_max": 2
+  },
+  "secondary_price": null,
+  "entries": [
+    {
+      "item": "cobblemon:dragon_gem",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 4,
+      "max_uses_max": 4,
+      "xp": 3,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:flying_gem",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 4,
+      "max_uses_max": 4,
+      "xp": 3,
+      "tags": []
+    }
+  ]
+}

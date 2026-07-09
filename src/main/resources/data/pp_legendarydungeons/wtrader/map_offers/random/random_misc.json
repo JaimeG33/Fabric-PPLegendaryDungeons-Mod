@@ -1,0 +1,9 @@
+{
+  "id": "pp_legendarydungeons:random_misc",
+  "loot_table": "pp_legendarydungeons:maps/random/find_random_misc",
+  "tags": [
+    "random_map",
+    "misc",
+    "strange_structure"
+  ]
+}
