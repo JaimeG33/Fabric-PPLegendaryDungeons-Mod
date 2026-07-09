@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="WTraders v9.1&#10;&#10;Continued to add the trade_pools">
-      <change afterPath="$PROJECT_DIR$/docs/README_ITEM_GIMMICK_SYSTEM.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/README_MAP_GENERATION_AND_RANDOM_MAPS.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/README_MAP_LORE_AND_COORDINATES.md" afterDir="false" />
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="WTraders v9.2&#10;&#10;added some stuff to docs">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/cobblemon/vitamins_all.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/cobblemon/vitamins_all.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -455,11 +451,18 @@
       <option name="project" value="LOCAL" />
       <updated>1783572342404</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="WTraders v9.2&#10;&#10;added some stuff to docs">
+      <option name="closed" value="true" />
+      <created>1783617373584</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1783617373584</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Rayquaza Logic v3.1&#10;now includes the secrets (unsure if good)" />
     <MESSAGE value="Rayquaza Logic v3.3&#10;Fixed Secret summon of rayquaza" />
     <MESSAGE value="Rayquaza Logic v3.4&#10;Slight tweak to sound effects of summon&#10;&#10;Also made compatable for cobblemon 1.6.1 and fixed some mega showdown loot tables using tags" />
     <MESSAGE value="Renamed Project to &#10;Cobblemon: Explore Legendary Dungeons" />
@@ -484,6 +487,7 @@
     <MESSAGE value="WTraders v8.0&#10;&#10;Tried to implement json functional but got an error" />
     <MESSAGE value="WTraders v8.1&#10;&#10;Implemented the custom json traders as the smoke_test ones. So far, everything seems functional" />
     <MESSAGE value="WTraders v9&#10;&#10;Began flushing out and fully implementing the custom trades" />
-    <option name="LAST_COMMIT_MESSAGE" value="WTraders v9&#10;&#10;Began flushing out and fully implementing the custom trades" />
+    <MESSAGE value="WTraders v9.2&#10;&#10;added some stuff to docs" />
+    <option name="LAST_COMMIT_MESSAGE" value="WTraders v9.2&#10;&#10;added some stuff to docs" />
   </component>
 </project>

@@ -1,0 +1,38 @@
+{
+  "id": "pp_legendarydungeons:enchanted_tools_test",
+  "category": "enchanted_tools_test",
+  "category_weight": 10,
+  "tags": [
+    "tool",
+    "custom_enchants",
+    "secondary_price",
+    "relic_coin"
+  ],
+  "base_price": {
+    "item": "minecraft:emerald",
+    "count": 16,
+    "variance_min": -4,
+    "variance_max": 4
+  },
+  "secondary_price": {
+    "item": "cobblemon:relic_coin",
+    "count": 8,
+    "variance_min": 0,
+    "variance_max": 4
+  },
+  "entries": [
+    {
+      "loot_table": "pp_legendarydungeons:wtrader/items/fortune_3_pickaxe",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 10,
+      "tags": [
+        "custom_enchants",
+        "tool"
+      ]
+    }
+  ]
+}

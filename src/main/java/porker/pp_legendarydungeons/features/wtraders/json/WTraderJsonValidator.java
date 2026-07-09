@@ -76,12 +76,24 @@ public final class WTraderJsonValidator {
             return false;
         }
 
-        if (WTraderJsonValues.isBlank(entry.item)) {
-            warn(fileId, "Trade pool {} entry {} is missing item.", poolId, index);
+        boolean hasItem = !WTraderJsonValues.isBlank(entry.item);
+        boolean hasLootTable = !WTraderJsonValues.isBlank(entry.lootTable);
+
+        if (!hasItem && !hasLootTable) {
+            warn(fileId, "Trade pool {} entry {} is missing item or loot_table.", poolId, index);
             return false;
         }
 
-        if (!validateItemId(fileId, poolId, "entry " + index + " item", entry.item)) {
+        if (hasItem && hasLootTable) {
+            warn(fileId, "Trade pool {} entry {} must use only one of item or loot_table, not both.", poolId, index);
+            return false;
+        }
+
+        if (hasItem && !validateItemId(fileId, poolId, "entry " + index + " item", entry.item)) {
+            return false;
+        }
+
+        if (hasLootTable && !validateResourceLocation(fileId, poolId, "entry " + index + " loot_table", entry.lootTable)) {
             return false;
         }
 
@@ -160,7 +172,7 @@ public final class WTraderJsonValidator {
             if (result != null && result.hasResult() && result.weightOrDefault(0) > 0) {
                 anyTopLevelRoll = true;
             } else {
-                warn(fileId, "Selection table {} has invalid top_level_roll at index {}.", table.id, index);
+                warn(fileId, "Selection table {} has invalid top_level_roll at index {}.", table.id);
             }
         }
 

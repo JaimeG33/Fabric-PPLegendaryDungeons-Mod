@@ -6,9 +6,22 @@ import java.util.List;
 
 /**
  * One weighted possible sell item inside a trade pool.
+ *
+ * An entry can define either:
+ * - item: a direct item registry id, such as minecraft:oak_sapling
+ * - loot_table: a loot table id that generates the sell ItemStack, such as
+ *   pp_legendarydungeons:wtrader/items/fortune_pickaxe
+ *
+ * Use loot_table entries for enchanted items, custom components, random enchants,
+ * custom names/lore, or anything that is easier to express with vanilla loot table
+ * JSON functions.
  */
 public final class TradeEntryJson {
     public String item;
+
+    @SerializedName("loot_table")
+    public String lootTable;
+
     public Integer weight;
 
     @SerializedName("count_min")
@@ -57,5 +70,9 @@ public final class TradeEntryJson {
 
     public boolean hasItem() {
         return !WTraderJsonValues.isBlank(item);
+    }
+
+    public boolean hasLootTable() {
+        return !WTraderJsonValues.isBlank(lootTable);
     }
 }

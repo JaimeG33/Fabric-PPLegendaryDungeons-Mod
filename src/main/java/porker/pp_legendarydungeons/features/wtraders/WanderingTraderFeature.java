@@ -5,22 +5,34 @@ import net.minecraft.world.phys.AABB;
 import porker.pp_legendarydungeons.features.FeatureContext;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Handles structure-spawned wandering trader markers.
  *
- * Initial test behavior:
- * - Find a pp_wtraders armor stand near a pp_feature marker.
- * - Spawn the Sky Pillar map trader.
- * - Remove the pp_wtraders marker so the trader cannot spawn repeatedly.
+ * Supported marker tags:
+ * - pp_wtraders
+ *   Uses the normal rolled behavior: vanilla/custom_no_map/custom_map.
  *
- * Later, this class can roll:
- * - 20% regular wandering trader
- * - 40% custom wandering trader without map
- * - 40% custom wandering trader with map
+ * - pp_wtrader_profiletype
+ *   Requires one additional marker tag:
+ *   - custom_no_map
+ *   - custom_map
+ *   Rolls a random JSON profile of that type.
+ *   If the type tag is missing or ambiguous, a vanilla wandering trader is spawned.
+ *
+ * - pp_wtrader_specificprofile
+ *   Requires one additional marker tag:
+ *   - custom_no_map
+ *   - custom_map
+ *   Also requires the armor stand CustomName to be a loaded JSON profile id, such as:
+ *   pp_legendarydungeons:wtraders_nomap/random_cheap
+ *   If the type tag or profile id is missing/invalid, a vanilla wandering trader is spawned.
  */
 public final class WanderingTraderFeature {
     public static final String WTRADER_MARKER_TAG = "pp_wtraders";
+    public static final String WTRADER_PROFILE_TYPE_MARKER_TAG = "pp_wtrader_profiletype";
+    public static final String WTRADER_SPECIFIC_PROFILE_MARKER_TAG = "pp_wtrader_specificprofile";
 
     /**
      * Old datapack checked around the static feature marker for trader markers within 80 blocks.
@@ -40,17 +52,38 @@ public final class WanderingTraderFeature {
                 searchBox,
                 armorStand ->
                         armorStand.isAlive()
-                                && armorStand.getTags().contains(WTRADER_MARKER_TAG)
+                                && isWTraderMarker(armorStand)
                                 && armorStand.distanceToSqr(context.featureMarker()) <= WTRADER_MARKER_DISTANCE_SQUARED
         );
 
         for (ArmorStand traderMarker : traderMarkers) {
-            boolean spawned = WanderingTraderCommandSpawner.spawnRolledTrader(context, traderMarker);
+            boolean spawned = spawnForMarkerTags(context, traderMarker);
+
             if (spawned) {
-                // This is the Java equivalent of killing the marker after the summon command.
-                // It prevents duplicate traders from spawning every scan cycle.
                 traderMarker.discard();
             }
         }
+    }
+
+    private static boolean isWTraderMarker(ArmorStand armorStand) {
+        Set<String> tags = armorStand.getTags();
+
+        return tags.contains(WTRADER_MARKER_TAG)
+                || tags.contains(WTRADER_PROFILE_TYPE_MARKER_TAG)
+                || tags.contains(WTRADER_SPECIFIC_PROFILE_MARKER_TAG);
+    }
+
+    private static boolean spawnForMarkerTags(FeatureContext context, ArmorStand traderMarker) {
+        Set<String> tags = traderMarker.getTags();
+
+        if (tags.contains(WTRADER_SPECIFIC_PROFILE_MARKER_TAG)) {
+            return WanderingTraderCommandSpawner.spawnSpecificJsonProfileTrader(context, traderMarker);
+        }
+
+        if (tags.contains(WTRADER_PROFILE_TYPE_MARKER_TAG)) {
+            return WanderingTraderCommandSpawner.spawnProfileTypeTrader(context, traderMarker);
+        }
+
+        return WanderingTraderCommandSpawner.spawnRolledTrader(context, traderMarker);
     }
 }
