@@ -55,6 +55,16 @@
       "max_uses_max": 4,
       "xp": 2,
       "tags": []
+    },
+    {
+      "item": "minecraft:sugar_cane",
+      "weight": 1,
+      "count_min": 1,
+      "count_max": 3,
+      "max_uses_min": 10,
+      "max_uses_max": 10,
+      "xp": 2,
+      "tags": []
     }
   ]
 }

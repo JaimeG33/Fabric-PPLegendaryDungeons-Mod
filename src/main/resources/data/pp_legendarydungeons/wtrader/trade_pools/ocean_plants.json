@@ -46,6 +46,16 @@
       "max_uses_max": 10,
       "xp": 2,
       "tags": []
+    },
+    {
+      "item": "cobblemon:medicinal_leek",
+      "weight": 1,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": []
     }
   ]
 }

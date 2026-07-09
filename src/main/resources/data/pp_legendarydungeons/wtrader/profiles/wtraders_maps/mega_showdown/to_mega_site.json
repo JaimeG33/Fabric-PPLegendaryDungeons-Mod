@@ -1,0 +1,77 @@
+{
+  "id": "pp_legendarydungeons:wtraders_map/mega_showdown/to_mega_site",
+  "display_name": "Mega Site Map Trader",
+  "show_display_name": true,
+  "trader_type": "custom_map",
+  "map_type": "mega_showdown",
+  "total_trades": 6,
+  "guaranteed_trades": [
+    {
+      "type": "generated_map",
+      "map_offer": "pp_legendarydungeons:mega_site",
+      "base_price": {
+        "item": "minecraft:emerald",
+        "count": 32,
+        "variance_min": -4,
+        "variance_max": 4
+      },
+      "secondary_price": {
+        "item": "cobblemon:relic_coin",
+        "count": 32,
+        "variance_min": -4,
+        "variance_max": 4
+      },
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 10
+    }
+  ],
+  "random_slots": [
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [
+        "lighting_items"
+      ],
+      "tag_filter_mode": "include",
+      "tags": []
+    },
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [
+        "type_gems_all"
+      ],
+      "tag_filter_mode": "include",
+      "tags": []
+    },
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [
+        "greenery_misc",
+        "saplings_all"
+      ],
+      "tag_filter_mode": "include",
+      "tags": []
+    },
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [
+        "cobblemon_aggriculture"
+      ],
+      "tag_filter_mode": "include",
+      "tags": []
+    },
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [
+        "mega_showdown_specials"
+      ],
+      "tag_filter_mode": "include",
+      "tags": []
+    }
+  ]
+}

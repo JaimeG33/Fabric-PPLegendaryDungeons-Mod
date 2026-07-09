@@ -1,0 +1,9 @@
+{
+  "id": "pp_legendarydungeons:ancient_city",
+  "loot_table": "pp_legendarydungeons:maps/find_ancient_city",
+  "tags": [
+    "single_target",
+    "vanilla",
+    "ancient_city"
+  ]
+}

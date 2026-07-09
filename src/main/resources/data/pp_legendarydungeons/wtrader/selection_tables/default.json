@@ -42,25 +42,42 @@
       "weight": 50,
       "profiles": [
         {
-          "profile": "pp_legendarydungeons:smoke_test_skypillar_trader",
+          "profile": "pp_legendarydungeons:wtraders_map/to_skypillar",
+          "weight": 10
+        },
+        {
+          "profile": "pp_legendarydungeons:wtraders_map/to_ancient_city",
           "weight": 10
         }
       ]
     },
     {
-      "group": "random_misc",
+      "group": "ocean",
       "weight": 25,
-      "profiles": []
+      "profiles": [
+        {
+          "profile": "pp_legendarydungeons:wtraders_map/to_fishing_boat",
+          "weight": 10
+        },
+        {
+          "profile": "pp_legendarydungeons:wtraders_map/to_shipwreck_cove",
+          "weight": 10
+        }
+      ]
     },
     {
-      "group": "random_research_outpost",
-      "weight": 20,
-      "profiles": []
-    },
-    {
-      "group": "random_dungeon",
-      "weight": 5,
-      "profiles": []
+      "group": "mega_showdown",
+      "weight": 10,
+      "profiles": [
+        {
+          "profile": "pp_legendarydungeons:wtraders_map/mega_showdown/to_mega_site",
+          "weight": 10
+        },
+        {
+          "profile": "pp_legendarydungeons:wtraders_map/mega_showdown/to_wishing_weald",
+          "weight": 10
+        }
+      ]
     }
   ]
 }

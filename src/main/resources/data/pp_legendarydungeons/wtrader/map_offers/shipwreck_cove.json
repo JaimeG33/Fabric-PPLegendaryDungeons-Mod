@@ -1,0 +1,9 @@
+{
+  "id": "pp_legendarydungeons:shipwreck_cove",
+  "loot_table": "pp_legendarydungeons:maps/cobblemon/shipwreck_coves",
+  "tags": [
+    "ocean",
+    "cobblemon",
+    "shipwreck_cove"
+  ]
+}
