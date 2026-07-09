@@ -9,6 +9,8 @@ import porker.pp_legendarydungeons.items.ItemGimmickTicker;
 import porker.pp_legendarydungeons.secrets.SecretTicker;
 import porker.pp_legendarydungeons.setup.ModScoreboards;
 import porker.pp_legendarydungeons.summon.trigger.EntityLegendarySummonTicker;
+import porker.pp_legendarydungeons.features.wtraders.json.WTraderJsonReloadRegistrar;
+
 
 /**
  * Main mod initializer.
@@ -36,6 +38,10 @@ public class ProfessorPorkersLegendaryDungeons implements ModInitializer {
         // On Load Functions That run once
         // Calls the setup file to add teams / scoreboards.
         ServerLifecycleEvents.SERVER_STARTED.register(ModScoreboards::setup);
+
+        // Stuff regarding the custom trade injections
+        WTraderJsonReloadRegistrar.register();
+
 
 
         // Tick-like functions that each run while the game is loaded

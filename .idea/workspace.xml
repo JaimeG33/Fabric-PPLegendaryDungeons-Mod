@@ -4,9 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="WTraders v4&#10;added json folder to wtraders">
-      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/wtraders/json/README.md" afterDir="false" />
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="WTraders v5">
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/wtraders/json/WTraderJsonRegistry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/wtraders/json/WTraderJsonReloadListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/wtraders/json/WTraderJsonReloadRegistrar.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/wtraders/json/WTraderJsonValidator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/ProfessorPorkersLegendaryDungeons.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/ProfessorPorkersLegendaryDungeons.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,28 +99,28 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Build professor-porkers-legendary-dungeons.executor": "Run",
-    "Gradle.professor-porkers-legendary-dungeons [runClient].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "copilot.chat.legacySessionMetadata.migrated": "true",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/java/porker/pp_legendarydungeons/features/wtraders",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Build professor-porkers-legendary-dungeons.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.professor-porkers-legendary-dungeons [runClient].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;copilot.chat.legacySessionMetadata.migrated&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/java/porker/pp_legendarydungeons/features/wtraders/json&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\features\wtraders\json" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\features\wtraders" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\items" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\tags\worldgen\structure\random" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\loot_table\maps\random" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\tags\worldgen\structure" />
@@ -396,11 +401,18 @@
       <option name="project" value="LOCAL" />
       <updated>1783559322941</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="WTraders v4.1&#10;added readme to the json folder">
+      <option name="closed" value="true" />
+      <created>1783559668926</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1783559668926</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Transfered everything from the data folder of the original datapack to the data folder of this mod. So far, everything is still semi-functional. &#10;&#10;No new additions have been made, and no Java Setup either." />
     <MESSAGE value="Upped the ram a little bit for better gameplay performance and faster loading." />
     <MESSAGE value="Upped the ram a little bit for better gameplay performance and faster loading. &#10;&#10;Some warnings that happened:&#10;Warning:(26, 5) 'mixin(org.gradle.api.Action&lt;net.fabricmc.loom.api.MixinExtensionAPI&gt;)' is unstable because its signature references unstable interface 'net.fabricmc.loom.api.MixinExtensionAPI' marked with @ApiStatus.Experimental&#10;&#10;Warning:(27, 9) 'getDefaultRefmapName()' is declared in unstable interface 'net.fabricmc.loom.api.MixinExtensionAPI' marked with @ApiStatus.Experimental" />
     <MESSAGE value="Changed the skypillar&#10;&#10;Also began the first step to allow for pokemon summoning" />
@@ -425,6 +437,7 @@
     <MESSAGE value="WTraders v2 semi-functional, but supplies traders are all out of whack, and the odds don't seem to line up" />
     <MESSAGE value="WTraders v3&#10;started json setup and added docs" />
     <MESSAGE value="WTraders v4&#10;added json folder to wtraders" />
-    <option name="LAST_COMMIT_MESSAGE" value="WTraders v4&#10;added json folder to wtraders" />
+    <MESSAGE value="WTraders v4.1&#10;added readme to the json folder" />
+    <option name="LAST_COMMIT_MESSAGE" value="WTraders v4.1&#10;added readme to the json folder" />
   </component>
 </project>
