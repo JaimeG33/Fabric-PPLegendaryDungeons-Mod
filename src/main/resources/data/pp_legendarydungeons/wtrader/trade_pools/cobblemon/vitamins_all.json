@@ -1,0 +1,109 @@
+{
+  "id": "pp_legendarydungeons:vitamins_all",
+  "category": "vitamins_all",
+  "category_weight": 10,
+  "tags": [
+    "ev",
+    "pokemon",
+    "competative",
+    "brewing",
+    "cooking",
+    "cheap",
+    "secondary_price",
+    "relic_coin"
+  ],
+  "base_price": {
+    "item": "minecraft:emerald",
+    "count": 5,
+    "variance_min": -2,
+    "variance_max": 2
+  },
+  "secondary_price": {
+    "item": "cobblemon:relic_coin",
+    "count": 4,
+    "variance_min": 0,
+    "variance_max": 0
+  },
+  "entries": [
+    {
+      "item": "cobblemon:calcium",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:carbos",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:hp_up",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:iron",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:pp_max",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:pp_up",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:protein",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:zinc",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": []
+    }
+  ]
+}

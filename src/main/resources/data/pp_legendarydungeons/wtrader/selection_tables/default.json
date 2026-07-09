@@ -16,7 +16,7 @@
   ],
   "custom_no_map_profiles": [
     {
-      "profile": "pp_legendarydungeons:smoke_test_supply_trader",
+      "profile": "pp_legendarydungeons:wtraders_nomap/random_cheap",
       "weight": 10
     }
   ],

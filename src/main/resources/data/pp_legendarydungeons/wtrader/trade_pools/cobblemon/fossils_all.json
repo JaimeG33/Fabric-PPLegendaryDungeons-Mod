@@ -1,0 +1,177 @@
+{
+  "id": "pp_legendarydungeons:fossils_all",
+  "category": "fossils_all",
+  "category_weight": 10,
+  "tags": [
+    "nature",
+    "pokemon",
+    "fossil",
+    "archeology",
+    "secondary_price",
+    "relic_coin"
+  ],
+  "base_price": {
+    "item": "minecraft:emerald",
+    "count": 8,
+    "variance_min": -1,
+    "variance_max": 7
+  },
+  "secondary_price": {
+    "item": "cobblemon:relic_coin_pouch",
+    "count": 2,
+    "variance_min": -1,
+    "variance_max": 1
+  },
+  "entries": [
+    {
+      "item": "cobblemon:armor_fossil",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 10,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:claw_fossil",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 10,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:cover_fossil",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 10,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:dome_fossil",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 10,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:fossilized_bird",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 10,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:fossilized_dino",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 10,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:fossilized_drake",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 10,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:fossilized_fish",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 10,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:helix_fossil",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 10,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:jaw_fossil",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 10,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:old_amber_fossil",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 10,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:plume_fossil",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 10,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:root_fossil",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 10,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:sail_fossil",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 10,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:skull_fossil",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 10,
+      "tags": []
+    }
+  ]
+}
