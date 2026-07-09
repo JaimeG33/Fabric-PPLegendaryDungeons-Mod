@@ -44,6 +44,8 @@ public final class WTraderJsonReloadListener {
                 WTraderJsonRegistry.selectionTableCount(),
                 WTraderJsonRegistry.mapOfferCount()
         );
+
+        WTraderJsonGeneratorSmokeTest.logSmokeTest();
     }
 
     private static Map<ResourceLocation, TradePoolJson> loadTradePools(ResourceManager resourceManager) {
