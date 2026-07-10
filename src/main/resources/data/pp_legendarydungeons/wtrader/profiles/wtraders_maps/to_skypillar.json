@@ -4,7 +4,7 @@
   "show_display_name": true,
   "trader_type": "custom_map",
   "map_type": "single_target",
-  "total_trades": 6,
+  "total_trades": 5,
   "guaranteed_trades": [
     {
       "type": "generated_map",
@@ -32,7 +32,8 @@
       "category_filter_mode": "include",
       "categories": [
         "saplings_all",
-        "greenery_misc"
+        "greenery_misc",
+        "apricorn_seed_all"
       ],
       "tag_filter_mode": "include",
       "tags": []
@@ -51,15 +52,6 @@
       "category_filter_mode": "include",
       "categories": [
         "apple_leftovers"
-      ],
-      "tag_filter_mode": "include",
-      "tags": []
-    },
-    {
-      "count": 1,
-      "category_filter_mode": "include",
-      "categories": [
-        "apricorn_seed_all"
       ],
       "tag_filter_mode": "include",
       "tags": []

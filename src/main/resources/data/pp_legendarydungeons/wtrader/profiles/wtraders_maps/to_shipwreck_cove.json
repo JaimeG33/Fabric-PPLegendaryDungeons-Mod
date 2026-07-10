@@ -4,7 +4,7 @@
   "show_display_name": true,
   "trader_type": "custom_map",
   "map_type": "ocean",
-  "total_trades": 6,
+  "total_trades": 5,
   "guaranteed_trades": [
     {
       "type": "generated_map",
@@ -31,7 +31,8 @@
       "count": 1,
       "category_filter_mode": "include",
       "categories": [
-        "ocean_plants"
+        "ocean_plants",
+        "ocean_misc"
       ],
       "tag_filter_mode": "include",
       "tags": []
@@ -59,15 +60,6 @@
       "category_filter_mode": "include",
       "categories": [
         "apricorn_seed_all"
-      ],
-      "tag_filter_mode": "include",
-      "tags": []
-    },
-    {
-      "count": 1,
-      "category_filter_mode": "include",
-      "categories": [
-        "ocean_misc"
       ],
       "tag_filter_mode": "include",
       "tags": []
