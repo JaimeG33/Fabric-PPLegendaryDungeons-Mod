@@ -1,7 +1,7 @@
 {
   "id": "pp_legendarydungeons:wtraders_map/random_misc_map_trader",
   "display_name": "Random Strange Structure Map Trader",
-  "show_display_name": true,
+  "show_display_name": false,
   "trader_type": "custom_map",
   "map_type": "random_misc",
   "total_trades": 5,

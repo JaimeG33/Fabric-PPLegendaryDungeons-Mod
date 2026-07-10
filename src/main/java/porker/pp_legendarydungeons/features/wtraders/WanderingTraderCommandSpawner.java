@@ -381,7 +381,7 @@ public final class WanderingTraderCommandSpawner {
         String displayName = WTraderJsonValues.stringOr(profile.displayName, profile.id);
 
         trader.setCustomName(Component.literal(displayName));
-        trader.setCustomNameVisible(profile.showDisplayNameOrDefault(true));
+        trader.setCustomNameVisible(profile.showDisplayNameOrDefault(false));
 
         trader.addTag("pp_spawned_feature_trader");
         trader.addTag("pp_custom_trader");

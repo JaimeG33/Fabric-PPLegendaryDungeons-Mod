@@ -1,7 +1,7 @@
 {
   "id": "pp_legendarydungeons:wtraders_map/mega_showdown/to_wishing_weald",
   "display_name": "Wishing Weald Map Trader",
-  "show_display_name": true,
+  "show_display_name": false,
   "trader_type": "custom_map",
   "map_type": "mega_showdown",
   "total_trades": 6,

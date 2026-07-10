@@ -1,7 +1,7 @@
 {
   "id": "pp_legendarydungeons:wtraders_map/to_trial_chambers",
   "display_name": "Trial Chambers Map Trader",
-  "show_display_name": true,
+  "show_display_name": false,
   "trader_type": "custom_map",
   "map_type": "single_target",
   "total_trades": 5,

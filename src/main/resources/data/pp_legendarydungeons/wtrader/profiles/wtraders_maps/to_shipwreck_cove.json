@@ -1,7 +1,7 @@
 {
   "id": "pp_legendarydungeons:wtraders_map/to_shipwreck_cove",
   "display_name": "Shipwreck Cove Map Trader",
-  "show_display_name": true,
+  "show_display_name": false,
   "trader_type": "custom_map",
   "map_type": "ocean",
   "total_trades": 5,

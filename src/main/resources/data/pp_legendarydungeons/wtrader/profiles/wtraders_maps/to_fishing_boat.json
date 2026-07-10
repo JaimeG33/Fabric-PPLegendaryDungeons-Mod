@@ -1,7 +1,7 @@
 {
   "id": "pp_legendarydungeons:wtraders_map/to_fishing_boat",
   "display_name": "Fishing Boat Map Trader",
-  "show_display_name": true,
+  "show_display_name": false,
   "trader_type": "custom_map",
   "map_type": "ocean",
   "total_trades": 6,

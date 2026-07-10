@@ -1,7 +1,7 @@
 {
   "id": "pp_legendarydungeons:wtraders_nomap/chud_miner",
   "display_name": "Chud Miner",
-  "show_display_name": true,
+  "show_display_name": false,
   "trader_type": "custom_no_map",
   "map_type": "none",
   "total_trades": 6,

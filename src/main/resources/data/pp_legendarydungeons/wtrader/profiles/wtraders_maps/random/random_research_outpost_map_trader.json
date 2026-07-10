@@ -1,7 +1,7 @@
 {
   "id": "pp_legendarydungeons:wtraders_map/random_research_outpost_map_trader",
   "display_name": "Random Research Outpost Map Trader",
-  "show_display_name": true,
+  "show_display_name": false,
   "trader_type": "custom_map",
   "map_type": "random_research_outpost",
   "total_trades": 5,
