@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="WTraders v17&#10;tried to fix names but they still show up.">
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/wtraders/WanderingTraderCommandSpawner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/wtraders/WanderingTraderCommandSpawner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/smoke_test_skypillar_trader.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/smoke_test_supply_trader.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/key_dungeon_base.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/key_dungeon_base.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/structure/secret_vault_base.nbt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/structure/secret_vault_base.nbt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,17 +106,17 @@
     "copilot.chat.legacySessionMetadata.migrated": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/resources/data/pp_legendarydungeons/structure/special/wtraders",
+    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/resources/data/pp_legendarydungeons/loot_table",
     "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\loot_table" />
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\structure" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\structure\special\wtraders" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\profiles\wtraders_maps\random" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\docs" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\trade_pools" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\trade_pools\cobblemon" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\profiles\wtraders_maps\random" />
@@ -534,11 +533,18 @@
       <option name="project" value="LOCAL" />
       <updated>1783650001740</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="WTraders v19&#10;fixed names">
+      <option name="closed" value="true" />
+      <created>1783651044412</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1783651044412</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Maps v4.3&#10;Added tags to begin with extra structures&#10;&#10;Also added trial chamber map" />
     <MESSAGE value="Maps v4.3.1&#10;added empty loot tables for random maps to see if the new system will work." />
     <MESSAGE value="Maps v5&#10;added random map functionality &#10;&#10;-although an issue was noticed with the skypillar not spawning in the pool of random dungeons" />
     <MESSAGE value="Maps v5.1&#10;&#10;fixed skypillar issue&#10;(type of dungeon is now chosen at the loot table before looking for the nearest structure)" />
@@ -563,6 +569,7 @@
     <MESSAGE value="WTraders v15&#10;&#10;Slight change to the json logic to include the include_any_of tag searcher in addition to the existing include (something with all these tags)" />
     <MESSAGE value="WTraders v16&#10;I think this is all of the main traders" />
     <MESSAGE value="WTraders v17&#10;tried to fix names but they still show up." />
-    <option name="LAST_COMMIT_MESSAGE" value="WTraders v17&#10;tried to fix names but they still show up." />
+    <MESSAGE value="WTraders v19&#10;fixed names" />
+    <option name="LAST_COMMIT_MESSAGE" value="WTraders v19&#10;fixed names" />
   </component>
 </project>

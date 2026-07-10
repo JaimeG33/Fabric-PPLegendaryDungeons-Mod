@@ -16,7 +16,12 @@
               "function": "set_components",
               "components": {
                 "minecraft:rarity": "epic",
-                "minecraft:custom_model_data": 1110001
+                "minecraft:custom_data": {
+                  "pp_legendarydungeons": {
+                    "key_type": "ancient",
+                    "opens": "secret_vault_base"
+                  }
+                }
               }
             },
             {
