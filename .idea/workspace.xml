@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="">
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Porting over old features v1 &#10;&#10;ERROR NO WORK">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/key_dungeon_base.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/key_dungeon_base.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/custom_mobs/CustomMobSpawner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/custom_mobs/CustomMobSpawner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/structure/dungeon/enemy/mob/bogged_sentry.nbt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/structure/dungeon/enemy/mob/bogged_sentry.nbt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/structure/secret_vault_base.nbt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/structure/secret_vault_base.nbt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/structure/special/bogged_sentry.nbt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/structure/special/bogged_sentry.nbt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,17 +108,17 @@
     "copilot.chat.legacySessionMetadata.migrated": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/resources/data/pp_legendarydungeons/loot_table",
+    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/resources/data/pp_legendarydungeons/structure/special",
     "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\loot_table" />
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\structure\special" />
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\structure\dungeon\enemy\mob" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\structure" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\structure\special\wtraders" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\profiles\wtraders_maps\random" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\docs" />
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\features\custom_mobs" />
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\features" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\profiles\wtraders_maps\random" />
@@ -541,11 +543,18 @@
       <option name="project" value="LOCAL" />
       <updated>1783651044412</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="Porting over old features v1 &#10;&#10;ERROR NO WORK">
+      <option name="closed" value="true" />
+      <created>1783714389320</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1783714389320</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Maps v4.3.1&#10;added empty loot tables for random maps to see if the new system will work." />
     <MESSAGE value="Maps v5&#10;added random map functionality &#10;&#10;-although an issue was noticed with the skypillar not spawning in the pool of random dungeons" />
     <MESSAGE value="Maps v5.1&#10;&#10;fixed skypillar issue&#10;(type of dungeon is now chosen at the loot table before looking for the nearest structure)" />
     <MESSAGE value="Maps v5.2&#10;one last update to the descriptions." />
@@ -570,6 +579,7 @@
     <MESSAGE value="WTraders v16&#10;I think this is all of the main traders" />
     <MESSAGE value="WTraders v17&#10;tried to fix names but they still show up." />
     <MESSAGE value="WTraders v19&#10;fixed names" />
-    <option name="LAST_COMMIT_MESSAGE" value="WTraders v19&#10;fixed names" />
+    <MESSAGE value="Porting over old features v1 &#10;&#10;ERROR NO WORK" />
+    <option name="LAST_COMMIT_MESSAGE" value="Porting over old features v1 &#10;&#10;ERROR NO WORK" />
   </component>
 </project>

@@ -60,8 +60,8 @@ public final class CustomMobSpawner {
                     .withPermission(4)
                     .withSuppressedOutput();
 
-            int result = context.level().getServer().getCommands().performPrefixedCommand(source, command);
-            return result > 0;
+            context.level().getServer().getCommands().performPrefixedCommand(source, command);
+            return true;
         } catch (Exception exception) {
             ProfessorPorkersLegendaryDungeons.LOGGER.error(
                     "Failed to run custom mob summon command at {}: {}",
