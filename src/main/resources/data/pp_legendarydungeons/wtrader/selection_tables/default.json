@@ -39,7 +39,7 @@
   "custom_map_profile_groups": [
     {
       "group": "single_target",
-      "weight": 45,
+      "weight": 48,
       "profiles": [
         {
           "profile": "pp_legendarydungeons:wtraders_map/to_skypillar",

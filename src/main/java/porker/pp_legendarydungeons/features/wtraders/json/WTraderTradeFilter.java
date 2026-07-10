@@ -50,7 +50,17 @@ public final class WTraderTradeFilter {
             return true;
         }
 
-        // Include mode requires every requested tag to be present.
+        if (WTraderJsonFilterModes.INCLUDE_ANY_OF.equals(normalizedMode)) {
+            for (String tag : tags) {
+                if (available.contains(tag)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // Default include mode requires every requested tag to be present.
         return available.containsAll(tags);
     }
 }

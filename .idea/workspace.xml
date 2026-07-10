@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="WTraders v13&#10;Ported over map based wtraders (forgot trial chambers lol)">
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="WTraders v14">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_ancient_city.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_ancient_city.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_shipwreck_cove.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_shipwreck_cove.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_skypillar.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_skypillar.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_trial_chambers.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_trial_chambers.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/selection_tables/default.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/selection_tables/default.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -503,11 +500,18 @@
       <option name="project" value="LOCAL" />
       <updated>1783640267379</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="WTraders v14">
+      <option name="closed" value="true" />
+      <created>1783641620870</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1783641620870</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Maps v2 (test no work)" />
     <MESSAGE value="Maps v4  SKY PILLAR MAP WORKS BAYBEEE" />
     <MESSAGE value="Maps v4.1 added cusom data to certain maps" />
     <MESSAGE value="Maps v4.2 &#10;Added Major Structures to maps" />
@@ -532,6 +536,7 @@
     <MESSAGE value="WTraders v11" />
     <MESSAGE value="WTraders v12&#10;Ported over the old nonmap wtraders" />
     <MESSAGE value="WTraders v13&#10;Ported over map based wtraders (forgot trial chambers lol)" />
-    <option name="LAST_COMMIT_MESSAGE" value="WTraders v13&#10;Ported over map based wtraders (forgot trial chambers lol)" />
+    <MESSAGE value="WTraders v14" />
+    <option name="LAST_COMMIT_MESSAGE" value="WTraders v14" />
   </component>
 </project>
