@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="WTraders v14">
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="WTraders v15&#10;&#10;Slight change to the json logic to include the include_any_of tag searcher in addition to the existing include (something with all these tags)">
+      <change afterPath="$PROJECT_DIR$/docs/wtrader_random_profiles_include_any/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/selection_tables/default.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/selection_tables/default.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/random/random_dungeon_map_trader.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/random/random_dungeon_map_trader.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/random/random_misc_map_trader.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/random/random_misc_map_trader.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/random/random_research_outpost_map_trader.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/random/random_research_outpost_map_trader.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,17 +108,17 @@
     "copilot.chat.legacySessionMetadata.migrated": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/docs",
+    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/random",
     "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\profiles\wtraders_maps\random" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\docs" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\trade_pools" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\trade_pools\cobblemon" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\profiles\wtraders_maps" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\map_offers" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\profiles\wtraders_maps\random" />
@@ -508,11 +511,18 @@
       <option name="project" value="LOCAL" />
       <updated>1783641620870</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="WTraders v15&#10;&#10;Slight change to the json logic to include the include_any_of tag searcher in addition to the existing include (something with all these tags)">
+      <option name="closed" value="true" />
+      <created>1783644160372</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1783644160372</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Maps v4  SKY PILLAR MAP WORKS BAYBEEE" />
     <MESSAGE value="Maps v4.1 added cusom data to certain maps" />
     <MESSAGE value="Maps v4.2 &#10;Added Major Structures to maps" />
     <MESSAGE value="Maps v4.3&#10;Added tags to begin with extra structures&#10;&#10;Also added trial chamber map" />
@@ -537,6 +547,7 @@
     <MESSAGE value="WTraders v12&#10;Ported over the old nonmap wtraders" />
     <MESSAGE value="WTraders v13&#10;Ported over map based wtraders (forgot trial chambers lol)" />
     <MESSAGE value="WTraders v14" />
-    <option name="LAST_COMMIT_MESSAGE" value="WTraders v14" />
+    <MESSAGE value="WTraders v15&#10;&#10;Slight change to the json logic to include the include_any_of tag searcher in addition to the existing include (something with all these tags)" />
+    <option name="LAST_COMMIT_MESSAGE" value="WTraders v15&#10;&#10;Slight change to the json logic to include the include_any_of tag searcher in addition to the existing include (something with all these tags)" />
   </component>
 </project>

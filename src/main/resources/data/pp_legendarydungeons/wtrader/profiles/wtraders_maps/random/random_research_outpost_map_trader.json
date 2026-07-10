@@ -4,7 +4,7 @@
   "show_display_name": true,
   "trader_type": "custom_map",
   "map_type": "random_research_outpost",
-  "total_trades": 1,
+  "total_trades": 5,
   "guaranteed_trades": [
     {
       "type": "generated_map",
@@ -26,5 +26,48 @@
       "xp": 10
     }
   ],
-  "random_slots": []
+  "random_slots": [
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [
+        "mint_seeds_all",
+        "apricorn_seed_all",
+        "type_gems_all"
+      ],
+      "tag_filter_mode": "include",
+      "tags": []
+    },
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [],
+      "tag_filter_mode": "include_any_of",
+      "tags": [
+        "nature",
+        "pokemon"
+      ]
+    },
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [],
+      "tag_filter_mode": "include_any_of",
+      "tags": [
+        "cheap",
+        "fossils",
+        "joke_trade"
+      ]
+    },
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [],
+      "tag_filter_mode": "include",
+      "tags": [
+        "cheap",
+        "relic_coin"
+      ]
+    }
+  ]
 }
