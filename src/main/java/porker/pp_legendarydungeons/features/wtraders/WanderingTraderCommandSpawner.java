@@ -376,12 +376,18 @@ public final class WanderingTraderCommandSpawner {
         );
 
         trader.setPersistenceRequired();
-        trader.setDespawnDelay(48000);
+        trader.setDespawnDelay(Integer.MAX_VALUE);
 
         String displayName = WTraderJsonValues.stringOr(profile.displayName, profile.id);
+        boolean showDisplayName = profile.showDisplayNameOrDefault(false);
 
-        trader.setCustomName(Component.literal(displayName));
-        trader.setCustomNameVisible(profile.showDisplayNameOrDefault(false));
+        if (showDisplayName) {
+            trader.setCustomName(Component.literal(displayName));
+            trader.setCustomNameVisible(true);
+        } else {
+            trader.setCustomName(null);
+            trader.setCustomNameVisible(false);
+        }
 
         trader.addTag("pp_spawned_feature_trader");
         trader.addTag("pp_custom_trader");
@@ -488,10 +494,10 @@ public final class WanderingTraderCommandSpawner {
         );
 
         trader.setPersistenceRequired();
-        trader.setDespawnDelay(48000);
+        trader.setDespawnDelay(Integer.MAX_VALUE);
 
-        trader.setCustomName(profile.displayName());
-        trader.setCustomNameVisible(true);
+        trader.setCustomName(null);
+        trader.setCustomNameVisible(false);
 
         trader.addTag("pp_spawned_feature_trader");
         trader.addTag("pp_custom_trader");
