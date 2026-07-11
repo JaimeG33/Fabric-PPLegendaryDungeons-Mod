@@ -1,4 +1,3 @@
-
 package porker.pp_legendarydungeons;
 
 import net.fabricmc.api.ModInitializer;
@@ -13,6 +12,7 @@ import porker.pp_legendarydungeons.dungeon_rules.preset.DungeonRulePresetRegistr
 import porker.pp_legendarydungeons.features.FeatureTicker;
 import porker.pp_legendarydungeons.features.wtraders.json.WTraderJsonReloadRegistrar;
 import porker.pp_legendarydungeons.items.ItemGimmickTicker;
+import porker.pp_legendarydungeons.loot.LootTableInjectionRegistrar;
 import porker.pp_legendarydungeons.secrets.SecretTicker;
 import porker.pp_legendarydungeons.setup.ModBlockEntities;
 import porker.pp_legendarydungeons.setup.ModBlocks;
@@ -49,6 +49,12 @@ public class ProfessorPorkersLegendaryDungeons implements ModInitializer {
         });
 
         WTraderJsonReloadRegistrar.register();
+
+        /*
+         * Adds independent pools to selected existing chest/entity loot tables.
+         * This preserves the original table and additions made by other mods.
+         */
+        LootTableInjectionRegistrar.register();
 
         EntityLegendarySummonTicker.register();
         FeatureTicker.register();

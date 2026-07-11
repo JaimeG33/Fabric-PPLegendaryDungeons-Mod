@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 1
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "pp_legendarydungeons:maps/random/find_random_misc",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": "pp_legendarydungeons:maps/random/find_random_research_outpost",
+          "weight": 2
+        }
+      ]
+    }
+  ]
+}
