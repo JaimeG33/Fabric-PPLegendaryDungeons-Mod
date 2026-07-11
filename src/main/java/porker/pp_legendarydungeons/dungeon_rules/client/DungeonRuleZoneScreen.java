@@ -1,4 +1,3 @@
-
 package porker.pp_legendarydungeons.dungeon_rules.client;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -40,42 +39,73 @@ public final class DungeonRuleZoneScreen extends Screen {
     @Override
     protected void init() {
         int center = width / 2;
-        int top = Math.max(8, height / 2 - 116);
+        int top = Math.max(8, height / 2 - 165);
 
-        presetBox = textBox(center - 180, top + 17, 245, snapshot.presetId(), 128);
+        presetBox = textBox(
+                center - 240,
+                top + 30,
+                350,
+                snapshot.presetId(),
+                128
+        );
+
         channelBox = textBox(
-                center + 75,
-                top + 17,
-                105,
+                center + 120,
+                top + 30,
+                120,
                 Integer.toString(snapshot.linkChannel()),
                 16
         );
 
-        offsetXBox = numericBox(center - 180, top + 48, snapshot.offsetX());
-        offsetYBox = numericBox(center - 118, top + 48, snapshot.offsetY());
-        offsetZBox = numericBox(center - 56, top + 48, snapshot.offsetZ());
+        int firstColumn = center - 240;
+        int fieldWidth = 70;
+        int fieldGap = 10;
 
-        sizeXBox = numericBox(center + 18, top + 48, snapshot.sizeX());
-        sizeYBox = numericBox(center + 80, top + 48, snapshot.sizeY());
-        sizeZBox = numericBox(center + 142, top + 48, snapshot.sizeZ());
-
-        priorityBox = numericBox(center - 180, top + 79, snapshot.priority());
-        parentDistanceBox = textBox(
-                center - 86,
-                top + 79,
-                86,
-                Integer.toString(snapshot.maximumParentDistance()),
-                16
+        offsetXBox = numericBox(firstColumn, top + 76, fieldWidth, snapshot.offsetX());
+        offsetYBox = numericBox(
+                firstColumn + fieldWidth + fieldGap,
+                top + 76,
+                fieldWidth,
+                snapshot.offsetY()
+        );
+        offsetZBox = numericBox(
+                firstColumn + (fieldWidth + fieldGap) * 2,
+                top + 76,
+                fieldWidth,
+                snapshot.offsetZ()
         );
 
-        int startY = top + 108;
+        int sizeStart = center + 10;
+        sizeXBox = numericBox(sizeStart, top + 76, fieldWidth, snapshot.sizeX());
+        sizeYBox = numericBox(
+                sizeStart + fieldWidth + fieldGap,
+                top + 76,
+                fieldWidth,
+                snapshot.sizeY()
+        );
+        sizeZBox = numericBox(
+                sizeStart + (fieldWidth + fieldGap) * 2,
+                top + 76,
+                fieldWidth,
+                snapshot.sizeZ()
+        );
+
+        priorityBox = numericBox(center - 240, top + 122, 110, snapshot.priority());
+        parentDistanceBox = numericBox(
+                center - 120,
+                top + 122,
+                140,
+                snapshot.maximumParentDistance()
+        );
+
+        int startY = top + 172;
         DungeonRule[] rules = DungeonRule.values();
 
         for (int index = 0; index < rules.length; index++) {
             DungeonRule rule = rules[index];
             int column = index % 3;
             int row = index / 3;
-            int x = center - 174 + column * 116;
+            int x = center - 234 + column * 156;
             int y = startY + row * 22;
 
             addRenderableWidget(
@@ -85,7 +115,7 @@ public final class DungeonRuleZoneScreen extends Screen {
                                 decisions.set(rule, decisions.get(rule).next());
                                 pressed.setMessage(ruleMessage(rule));
                             }
-                    ).bounds(x, y, 112, 20).build()
+                    ).bounds(x, y, 150, 20).build()
             );
         }
 
@@ -95,14 +125,14 @@ public final class DungeonRuleZoneScreen extends Screen {
                 Button.builder(
                         Component.literal("Save"),
                         button -> send(UpdateDungeonRuleBlockPayload.ACTION_SAVE)
-                ).bounds(center - 86, bottomY, 82, 20).build()
+                ).bounds(center - 116, bottomY, 110, 20).build()
         );
 
         addRenderableWidget(
                 Button.builder(
                         Component.literal("Preview 20s"),
                         button -> send(UpdateDungeonRuleBlockPayload.ACTION_PREVIEW)
-                ).bounds(center + 4, bottomY, 100, 20).build()
+                ).bounds(center + 6, bottomY, 120, 20).build()
         );
     }
 
@@ -114,22 +144,28 @@ public final class DungeonRuleZoneScreen extends Screen {
             int maxLength
     ) {
         EditBox box = new EditBox(font, x, y, width, 20, Component.empty());
-        box.setValue(value);
+
+        /*
+         * Set the maximum before the value. Otherwise long preset IDs are cut to
+         * EditBox's default maximum before this screen ever displays them.
+         */
         box.setMaxLength(maxLength);
+        box.setValue(value);
+
         addRenderableWidget(box);
         return box;
     }
 
-    private EditBox numericBox(int x, int y, int value) {
-        EditBox box = textBox(x, y, 56, Integer.toString(value), 12);
+    private EditBox numericBox(int x, int y, int width, int value) {
+        EditBox box = textBox(x, y, width, Integer.toString(value), 12);
         numericBoxes.add(box);
         return box;
     }
 
     private Component ruleMessage(DungeonRule rule) {
         String label = rule.displayName();
-        if (label.length() > 13) {
-            label = label.substring(0, 13);
+        if (label.length() > 16) {
+            label = label.substring(0, 16);
         }
 
         return Component.literal(label + ": " + decisions.get(rule).name());
@@ -170,24 +206,66 @@ public final class DungeonRuleZoneScreen extends Screen {
             float partialTick
     ) {
         renderBackground(graphics, mouseX, mouseY, partialTick);
+
         int center = width / 2;
-        int top = Math.max(8, height / 2 - 116);
+        int top = Math.max(8, height / 2 - 165);
 
         graphics.drawCenteredString(font, title, center, top, 0xFFFFFF);
-        graphics.drawString(font, "Preset", center - 180, top + 6, 0xA0A0A0);
-        graphics.drawString(font, "Channel", center + 75, top + 6, 0xA0A0A0);
 
-        graphics.drawString(font, "Offset X / Y / Z", center - 180, top + 37, 0xA0A0A0);
-        graphics.drawString(font, "Size X / Y / Z", center + 18, top + 37, 0xA0A0A0);
+        graphics.drawString(font, "Preset ID", center - 240, top + 19, 0xA0A0A0);
+        graphics.drawString(font, "Link channel", center + 120, top + 19, 0xA0A0A0);
 
-        graphics.drawString(font, "Priority", center - 180, top + 68, 0xA0A0A0);
-        graphics.drawString(font, "Parent range", center - 86, top + 68, 0xA0A0A0);
+        int firstColumn = center - 240;
+        int fieldWidth = 70;
+        int fieldGap = 10;
+
+        graphics.drawString(font, "Offset X", firstColumn, top + 64, 0xA0A0A0);
+        graphics.drawString(
+                font,
+                "Offset Y",
+                firstColumn + fieldWidth + fieldGap,
+                top + 64,
+                0xA0A0A0
+        );
+        graphics.drawString(
+                font,
+                "Offset Z",
+                firstColumn + (fieldWidth + fieldGap) * 2,
+                top + 64,
+                0xA0A0A0
+        );
+
+        int sizeStart = center + 10;
+        graphics.drawString(font, "Size X", sizeStart, top + 64, 0xA0A0A0);
+        graphics.drawString(
+                font,
+                "Size Y",
+                sizeStart + fieldWidth + fieldGap,
+                top + 64,
+                0xA0A0A0
+        );
+        graphics.drawString(
+                font,
+                "Size Z",
+                sizeStart + (fieldWidth + fieldGap) * 2,
+                top + 64,
+                0xA0A0A0
+        );
+
+        graphics.drawString(font, "Priority", center - 240, top + 110, 0xA0A0A0);
+        graphics.drawString(
+                font,
+                "Maximum parent distance",
+                center - 120,
+                top + 110,
+                0xA0A0A0
+        );
 
         graphics.drawString(
                 font,
                 "Linked instance: " + snapshot.resolvedInstanceId(),
-                center + 8,
-                top + 82,
+                center + 30,
+                top + 126,
                 0xA0A0A0
         );
 
