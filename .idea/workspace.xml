@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Loot table injections v2&#10;&#10;- small update to old rolls with snow structures&#10;&#10;- Now begining work on injections to cobblemon defeat loot tables. &#10;ERROR, no work on the pokemon loot tables">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/loot/pokemon/PokemonLootTableRegistrar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/loot/pokemon/PokemonLootTableRegistrar.java" afterDir="false" />
-    </list>
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Loot table injections v2.1 &#10;No errors, but loot is still unchanged for kelfki" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -171,14 +168,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1783280264094</updated>
-    </task>
-    <task id="LOCAL-00013" summary="Rayquaza Logic v3.4&#10;Slight tweak to sound effects of summon&#10;&#10;Also made compatable for cobblemon 1.6.1 and fixed some mega showdown loot tables using tags">
-      <option name="closed" value="true" />
-      <created>1783453931026</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1783453931026</updated>
     </task>
     <task id="LOCAL-00014" summary="Renamed Project to &#10;Cobblemon: Explore Legendary Dungeons">
       <option name="closed" value="true" />
@@ -564,11 +553,18 @@
       <option name="project" value="LOCAL" />
       <updated>1783797536153</updated>
     </task>
-    <option name="localTasksCounter" value="62" />
+    <task id="LOCAL-00062" summary="Loot table injections v2.1 &#10;No errors, but loot is still unchanged for kelfki">
+      <option name="closed" value="true" />
+      <created>1783798019728</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1783798019728</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="WTraders v9.2&#10;&#10;added some stuff to docs" />
     <MESSAGE value="WTraders v10&#10;&#10;Update to the way the wtrader json works. Can now accept custom nbt data by connecting it to an existing loot table for that specific trade. &#10;&#10;&#10;Can also now summon specific wtrader profile types and specific profiles." />
     <MESSAGE value="WTraders v11" />
     <MESSAGE value="WTraders v12&#10;Ported over the old nonmap wtraders" />
@@ -593,6 +589,7 @@
     <MESSAGE value="Loot table injections v1&#10;&#10;attempting to add the dungeon key to certain death loot tables, as well as add maps to ceratain chest loot tables&#10;&#10;is functional" />
     <MESSAGE value="Loot table injections v1.1&#10;&#10;modifying chances" />
     <MESSAGE value="Loot table injections v2&#10;&#10;- small update to old rolls with snow structures&#10;&#10;- Now begining work on injections to cobblemon defeat loot tables. &#10;ERROR, no work on the pokemon loot tables" />
-    <option name="LAST_COMMIT_MESSAGE" value="Loot table injections v2&#10;&#10;- small update to old rolls with snow structures&#10;&#10;- Now begining work on injections to cobblemon defeat loot tables. &#10;ERROR, no work on the pokemon loot tables" />
+    <MESSAGE value="Loot table injections v2.1 &#10;No errors, but loot is still unchanged for kelfki" />
+    <option name="LAST_COMMIT_MESSAGE" value="Loot table injections v2.1 &#10;No errors, but loot is still unchanged for kelfki" />
   </component>
 </project>

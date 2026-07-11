@@ -40,7 +40,7 @@ public final class PokemonLootTableRegistrar {
      * Once the logs confirm that battle and non-battle deaths both reach the
      * expected event, change it to true to enable the injected loot tables.
      */
-    private static final boolean EXECUTE_LOOT_TABLES = false;
+    private static final boolean EXECUTE_LOOT_TABLES = true;
 
     /*
      * Battle faint data only needs to survive until the Pokémon entity performs

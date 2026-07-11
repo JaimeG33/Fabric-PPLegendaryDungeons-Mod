@@ -15,11 +15,11 @@
       "entries": [
         {
           "type": "minecraft:empty",
-          "weight": 2
+          "weight": 90
         },
         {
           "type": "item",
-          "weight": 7,
+          "weight": 8,
           "quality": 5,
           "name": "minecraft:trial_key",
           "functions": [
@@ -32,7 +32,7 @@
         {
           "type": "minecraft:loot_table",
           "value": "pp_legendarydungeons:key_dungeon_base",
-          "weight": 1,
+          "weight": 2,
           "quality": 10
         }
       ]

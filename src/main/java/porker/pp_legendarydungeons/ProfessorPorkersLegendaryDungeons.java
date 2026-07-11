@@ -76,3 +76,4 @@ public class ProfessorPorkersLegendaryDungeons implements ModInitializer {
     }
 }
 // Whenever ready to export build, remember .\gradlew.bat clean build
+// Or also .\gradlew.bat clean runClient to boot up the game as well right after
