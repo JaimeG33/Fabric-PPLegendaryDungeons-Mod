@@ -54,10 +54,6 @@ public final class LootTableInjectionRegistrar {
      */
     private static final Set<ResourceKey<LootTable>> VILLAGE_RANDOM_MAP_TARGETS = Set.of(
             vanillaLootTable("chests/village/village_cartographer"),
-            vanillaLootTable("chests/village/village_desert_house"),
-            vanillaLootTable("chests/village/village_plains_house"),
-            vanillaLootTable("chests/village/village_savanna_house"),
-            vanillaLootTable("chests/village/village_snowy_house"),
             vanillaLootTable("chests/village/village_taiga_house")
     );
 

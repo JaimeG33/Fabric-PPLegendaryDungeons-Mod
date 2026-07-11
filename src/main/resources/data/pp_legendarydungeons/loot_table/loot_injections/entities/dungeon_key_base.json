@@ -9,13 +9,19 @@
         },
         {
           "condition": "minecraft:random_chance",
-          "chance": 0.1
+          "chance": 1
         }
       ],
       "entries": [
         {
+          "type": "minecraft:empty",
+          "weight": 6
+        },
+        {
           "type": "minecraft:loot_table",
-          "value": "pp_legendarydungeons:key_dungeon_base"
+          "value": "pp_legendarydungeons:key_dungeon_base",
+          "weight": 3,
+          "quality": 7
         }
       ]
     }
