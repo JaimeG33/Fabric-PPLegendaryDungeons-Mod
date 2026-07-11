@@ -11,15 +11,15 @@
       "map_offer": "pp_legendarydungeons:fishing_boat",
       "base_price": {
         "item": "minecraft:emerald",
-        "count": 32,
+        "count": 8,
         "variance_min": -4,
-        "variance_max": 4
+        "variance_max": 2
       },
       "secondary_price": {
         "item": "cobblemon:relic_coin",
-        "count": 32,
-        "variance_min": -4,
-        "variance_max": 4
+        "count": 16,
+        "variance_min": -12,
+        "variance_max": 2
       },
       "max_uses_min": 1,
       "max_uses_max": 1,

@@ -11,19 +11,19 @@
       "map_offer": "pp_legendarydungeons:random_research_outpost",
       "base_price": {
         "item": "minecraft:emerald",
-        "count": 28,
-        "variance_min": -4,
-        "variance_max": 4
+        "count": 12,
+        "variance_min": -6,
+        "variance_max": 2
       },
       "secondary_price": {
         "item": "cobblemon:relic_coin",
-        "count": 28,
-        "variance_min": -4,
-        "variance_max": 4
+        "count": 12,
+        "variance_min": -6,
+        "variance_max": 2
       },
       "max_uses_min": 1,
       "max_uses_max": 1,
-      "xp": 10
+      "xp": 25
     }
   ],
   "random_slots": [

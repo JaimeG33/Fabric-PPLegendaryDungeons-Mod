@@ -33,12 +33,12 @@
       "tags": []
     },
     {
-      "item": "minecraft:shield",
+      "item": "minecraft:tnt",
       "weight": 8,
-      "count_min": 1,
-      "count_max": 1,
-      "max_uses_min": 2,
-      "max_uses_max": 2,
+      "count_min": 5,
+      "count_max": 10,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
       "xp": 6,
       "tags": []
     },

@@ -5,7 +5,8 @@
   "tags": [
     "food",
     "premium_food",
-    "cheap"
+    "cheap",
+    "joke_trade"
   ],
   "base_price": {
     "item": "minecraft:carrot",
@@ -14,10 +15,10 @@
     "variance_max": 0
   },
   "secondary_price": {
-    "item": "minecraft:emerald",
+    "item": "cobblemon:relic_coin",
     "count": 2,
-    "variance_min": 0,
-    "variance_max": 0
+    "variance_min": -1,
+    "variance_max": 2
   },
   "entries": [
     {
@@ -27,7 +28,7 @@
       "count_max": 1,
       "max_uses_min": 16,
       "max_uses_max": 16,
-      "xp": 3,
+      "xp": 5,
       "tags": []
     }
   ]

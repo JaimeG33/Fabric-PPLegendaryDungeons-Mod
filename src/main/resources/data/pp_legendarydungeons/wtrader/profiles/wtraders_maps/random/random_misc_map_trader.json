@@ -11,14 +11,14 @@
       "map_offer": "pp_legendarydungeons:random_misc",
       "base_price": {
         "item": "minecraft:emerald",
-        "count": 28,
-        "variance_min": -4,
+        "count": 30,
+        "variance_min": -8,
         "variance_max": 4
       },
       "secondary_price": {
         "item": "cobblemon:relic_coin",
-        "count": 28,
-        "variance_min": -4,
+        "count": 20,
+        "variance_min": -8,
         "variance_max": 4
       },
       "max_uses_min": 1,

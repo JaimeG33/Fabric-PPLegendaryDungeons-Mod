@@ -11,15 +11,15 @@
   ],
   "base_price": {
     "item": "minecraft:emerald",
-    "count": 8,
+    "count": 7,
     "variance_min": -2,
-    "variance_max": 4
+    "variance_max": 3
   },
   "secondary_price": {
     "item": "cobblemon:relic_coin",
-    "count": 8,
+    "count": 5,
     "variance_min": -2,
-    "variance_max": 4
+    "variance_max": 3
   },
   "entries": [
     {
@@ -65,10 +65,10 @@
       "tags": []
     },
     {
-      "item": "minecraft:copper_ingot",
+      "item": "minecraft:copper_block",
       "weight": 10,
-      "count_min": 4,
-      "count_max": 10,
+      "count_min": 6,
+      "count_max": 14,
       "max_uses_min": 8,
       "max_uses_max": 8,
       "xp": 2,

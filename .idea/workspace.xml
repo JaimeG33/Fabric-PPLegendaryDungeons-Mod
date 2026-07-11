@@ -4,13 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Updated skypillar structure to include dungeon rule blocks to cover specified area.">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/block/dungeon_allowed_breaks.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/block/dungeon_allowed_places.json" afterDir="false" />
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/mixin/dungeon_rules/DungeonBlockBreakMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/mixin/dungeon_rules/DungeonBlockBreakMixin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/mixin/dungeon_rules/DungeonBlockPlacementMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/mixin/dungeon_rules/DungeonBlockPlacementMixin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/setup/ModTags.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/setup/ModTags.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/vault_secret_base.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/vault_secret_base.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/random/random_dungeon_map_trader.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/random/random_dungeon_map_trader.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/random/random_misc_map_trader.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/random/random_misc_map_trader.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/random/random_research_outpost_map_trader.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/random/random_research_outpost_map_trader.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_ancient_city.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_ancient_city.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_fishing_boat.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_fishing_boat.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_trial_chambers.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_trial_chambers.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/lighting_items.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/joke_trades/lighting_items.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/premium_foods.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/joke_trades/premium_foods.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/trial_chambers/trial_chambers_misc.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/trial_chambers/trial_chambers_misc.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/trial_chambers/trial_combat_tools.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/trial_chambers/trial_combat_tools.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,21 +104,21 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Build professor-porkers-legendary-dungeons.executor": "Run",
-    "Gradle.professor-porkers-legendary-dungeons [runClient].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "copilot.chat.legacySessionMetadata.migrated": "true",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/java/porker/pp_legendarydungeons/setup",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Build professor-porkers-legendary-dungeons.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.professor-porkers-legendary-dungeons [runClient].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;copilot.chat.legacySessionMetadata.migrated&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/java/porker/pp_legendarydungeons/setup&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\setup" />
@@ -122,11 +128,11 @@
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\dungeon_rules\network" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\trade_pools\joke_trades" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\profiles\wtraders_maps\random" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\map_offers\random" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\selection_tables" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\docs" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\profiles\wtraders_maps\mega_showdown" />
     </key>
   </component>
   <component name="RunManager" selected="Gradle.professor-porkers-legendary-dungeons [runClient]">
@@ -175,14 +181,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1783280264094</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Changed the skypillar&#10;&#10;Also began the first step to allow for pokemon summoning">
-      <option name="closed" value="true" />
-      <created>1783360271959</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1783360271959</updated>
     </task>
     <task id="LOCAL-00008" summary="Rayquaza Logic v1">
       <option name="closed" value="true" />
@@ -568,11 +566,18 @@
       <option name="project" value="LOCAL" />
       <updated>1783749789368</updated>
     </task>
-    <option name="localTasksCounter" value="56" />
+    <task id="LOCAL-00056" summary="updated rule block logic to have a list of allowed blocks to be placed in the dungeon and a list for allowed blocks to be broken">
+      <option name="closed" value="true" />
+      <created>1783752396825</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1783752396825</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="WTraders v5" />
     <MESSAGE value="WTraders v6" />
     <MESSAGE value="WTraders v7" />
     <MESSAGE value="WTraders v8.0&#10;&#10;Tried to implement json functional but got an error" />
@@ -597,6 +602,7 @@
     <MESSAGE value="Porting over old features v4&#10;New Dungeon Rule System v2.3&#10;Fixed UI's for good" />
     <MESSAGE value="Porting over old features v4&#10;New Dungeon Rule System v2.4&#10;&#10;Preview box change" />
     <MESSAGE value="Updated skypillar structure to include dungeon rule blocks to cover specified area." />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated skypillar structure to include dungeon rule blocks to cover specified area." />
+    <MESSAGE value="updated rule block logic to have a list of allowed blocks to be placed in the dungeon and a list for allowed blocks to be broken" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated rule block logic to have a list of allowed blocks to be placed in the dungeon and a list for allowed blocks to be broken" />
   </component>
 </project>
