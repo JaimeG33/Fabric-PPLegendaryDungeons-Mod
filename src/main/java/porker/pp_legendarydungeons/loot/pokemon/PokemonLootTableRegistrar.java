@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import kotlin.Unit;
 
 /**
  * Bridges Cobblemon's Pokémon DropTable events to ordinary Minecraft loot tables.
@@ -67,12 +68,18 @@ public final class PokemonLootTableRegistrar {
 
         CobblemonEvents.BATTLE_FAINTED.subscribe(
                 Priority.NORMAL,
-                PokemonLootTableRegistrar::onBattleFainted
+                event -> {
+                    onBattleFainted(event);
+                    return Unit.INSTANCE;
+                }
         );
 
         CobblemonEvents.LOOT_DROPPED.subscribe(
                 Priority.NORMAL,
-                PokemonLootTableRegistrar::onLootDropped
+                event -> {
+                    onLootDropped(event);
+                    return Unit.INSTANCE;
+                }
         );
 
         ProfessorPorkersLegendaryDungeons.LOGGER.info(
