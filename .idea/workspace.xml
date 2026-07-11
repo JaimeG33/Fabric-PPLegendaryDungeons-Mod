@@ -4,19 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="">
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Small ballancing to loot / trade pools">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/vault_secret_base.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/vault_secret_base.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/random/random_dungeon_map_trader.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/random/random_dungeon_map_trader.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/random/random_misc_map_trader.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/random/random_misc_map_trader.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/random/random_research_outpost_map_trader.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/random/random_research_outpost_map_trader.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_ancient_city.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_ancient_city.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_fishing_boat.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_fishing_boat.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_trial_chambers.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/to_trial_chambers.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/lighting_items.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/joke_trades/lighting_items.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/premium_foods.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/joke_trades/premium_foods.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/trial_chambers/trial_chambers_misc.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/trial_chambers/trial_chambers_misc.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/trial_chambers/trial_combat_tools.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/trial_chambers/trial_combat_tools.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/entities/dungeon_eguardian.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/entities/dungeon_eguardian.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -181,14 +171,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1783280264094</updated>
-    </task>
-    <task id="LOCAL-00008" summary="Rayquaza Logic v1">
-      <option name="closed" value="true" />
-      <created>1783363017992</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1783363017993</updated>
     </task>
     <task id="LOCAL-00009" summary="Rayquaza Logic v2">
       <option name="closed" value="true" />
@@ -574,11 +556,18 @@
       <option name="project" value="LOCAL" />
       <updated>1783752396825</updated>
     </task>
-    <option name="localTasksCounter" value="57" />
+    <task id="LOCAL-00057" summary="Small ballancing to loot / trade pools">
+      <option name="closed" value="true" />
+      <created>1783783127556</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1783783127556</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="WTraders v6" />
     <MESSAGE value="WTraders v7" />
     <MESSAGE value="WTraders v8.0&#10;&#10;Tried to implement json functional but got an error" />
     <MESSAGE value="WTraders v8.1&#10;&#10;Implemented the custom json traders as the smoke_test ones. So far, everything seems functional" />
@@ -603,6 +592,7 @@
     <MESSAGE value="Porting over old features v4&#10;New Dungeon Rule System v2.4&#10;&#10;Preview box change" />
     <MESSAGE value="Updated skypillar structure to include dungeon rule blocks to cover specified area." />
     <MESSAGE value="updated rule block logic to have a list of allowed blocks to be placed in the dungeon and a list for allowed blocks to be broken" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated rule block logic to have a list of allowed blocks to be placed in the dungeon and a list for allowed blocks to be broken" />
+    <MESSAGE value="Small ballancing to loot / trade pools" />
+    <option name="LAST_COMMIT_MESSAGE" value="Small ballancing to loot / trade pools" />
   </component>
 </project>
