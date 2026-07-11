@@ -1,4 +1,3 @@
-
 package porker.pp_legendarydungeons.mixin.dungeon_rules;
 
 import net.minecraft.server.level.ServerPlayer;
@@ -14,6 +13,7 @@ import porker.pp_legendarydungeons.dungeon_rules.DungeonRule;
 import porker.pp_legendarydungeons.dungeon_rules.DungeonRuleFeedback;
 import porker.pp_legendarydungeons.dungeon_rules.DungeonRuleManager;
 import porker.pp_legendarydungeons.dungeon_rules.DungeonRulePermissions;
+import porker.pp_legendarydungeons.setup.ModTags;
 
 @Mixin(BlockItem.class)
 public abstract class DungeonBlockPlacementMixin {
@@ -30,6 +30,22 @@ public abstract class DungeonBlockPlacementMixin {
 
         if (!(player instanceof ServerPlayer serverPlayer)
                 || DungeonRulePermissions.canBypass(player)) {
+            return;
+        }
+
+        /*
+         * This mixin runs on BlockItem, so the item being used can identify its
+         * primary placed block without performing another world lookup.
+         *
+         * StandingAndWallBlockItem entries such as torches report their standing
+         * block here, which is why tagging minecraft:torch and
+         * minecraft:soul_torch allows both floor and wall placement.
+         */
+        BlockItem blockItem = (BlockItem) (Object) this;
+
+        if (blockItem.getBlock()
+                .defaultBlockState()
+                .is(ModTags.DUNGEON_ALLOWED_PLACES)) {
             return;
         }
 

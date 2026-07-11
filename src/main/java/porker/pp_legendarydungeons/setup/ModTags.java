@@ -1,4 +1,3 @@
-
 package porker.pp_legendarydungeons.setup;
 
 import net.minecraft.core.registries.Registries;
@@ -14,6 +13,20 @@ public final class ModTags {
 
     public static final TagKey<Block> DUNGEON_HEALER_BLOCKS =
             blockTag("dungeon_healer_blocks");
+
+    /**
+     * Blocks that may still be broken when the BLOCK_BREAKING dungeon rule
+     * would normally deny the action.
+     */
+    public static final TagKey<Block> DUNGEON_ALLOWED_BREAKS =
+            blockTag("dungeon_allowed_breaks");
+
+    /**
+     * Blocks that may still be placed when the BLOCK_PLACEMENT dungeon rule
+     * would normally deny the action.
+     */
+    public static final TagKey<Block> DUNGEON_ALLOWED_PLACES =
+            blockTag("dungeon_allowed_places");
 
     public static final TagKey<Item> DUNGEON_PORTABLE_PC_ITEMS =
             itemTag("dungeon_portable_pc_items");
