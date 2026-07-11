@@ -4,13 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Porting over old features v4&#10;New Dungeon Rule System v2.3&#10;Fixed UI's for good">
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/DungeonRulePreviewManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/DungeonRulePreviewManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/client/DungeonRuleParentScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/client/DungeonRuleParentScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/client/DungeonRuleZoneScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/client/DungeonRuleZoneScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/network/DungeonRuleNetworking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/network/DungeonRuleNetworking.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/network/OpenDungeonRuleEditorPayload.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/network/OpenDungeonRuleEditorPayload.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/ProfessorPorkersLegendaryDungeons.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/ProfessorPorkersLegendaryDungeons.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/structure/rayquaza_tower/sky_pillar.nbt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/structure/rayquaza_tower/sky_pillar.nbt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,17 +106,17 @@
     "copilot.chat.legacySessionMetadata.migrated": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/java/porker/pp_legendarydungeons/dungeon_rules/network",
+    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/resources/data/pp_legendarydungeons/structure/rayquaza_tower",
     "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\structure\rayquaza_tower" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\dungeon_rules\network" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\dungeon_rules\client" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\dungeon_rules" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\profiles\wtraders_maps\random" />
@@ -175,14 +172,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1783280264094</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Transfered everything from the data folder of the original datapack to the data folder of this mod. So far, everything is still semi-functional. &#10;&#10;No new additions have been made, and no Java Setup either.">
-      <option name="closed" value="true" />
-      <created>1783295509342</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1783295509342</updated>
     </task>
     <task id="LOCAL-00006" summary="Upped the ram a little bit for better gameplay performance and faster loading. &#10;&#10;Some warnings that happened:&#10;Warning:(26, 5) 'mixin(org.gradle.api.Action&lt;net.fabricmc.loom.api.MixinExtensionAPI&gt;)' is unstable because its signature references unstable interface 'net.fabricmc.loom.api.MixinExtensionAPI' marked with @ApiStatus.Experimental&#10;&#10;Warning:(27, 9) 'getDefaultRefmapName()' is declared in unstable interface 'net.fabricmc.loom.api.MixinExtensionAPI' marked with @ApiStatus.Experimental">
       <option name="closed" value="true" />
@@ -568,11 +557,18 @@
       <option name="project" value="LOCAL" />
       <updated>1783738127406</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="Porting over old features v4&#10;New Dungeon Rule System v2.4&#10;&#10;Preview box change">
+      <option name="closed" value="true" />
+      <created>1783738975852</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1783738975852</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="WTraders v4&#10;added json folder to wtraders" />
     <MESSAGE value="WTraders v4.1&#10;added readme to the json folder" />
     <MESSAGE value="WTraders v5" />
     <MESSAGE value="WTraders v6" />
@@ -597,6 +593,7 @@
     <MESSAGE value="Porting over old features v4&#10;New Dungeon Rule System v2.1&#10;(large update patch)&#10;rebuilt, can load the game" />
     <MESSAGE value="Porting over old features v4&#10;New Dungeon Rule System v2.2&#10;Small tweak to hopefully fix ui issue of dungeon rule parrent and box blocks&#10;&#10;Not everything worked in the ui, but the blocks are functional" />
     <MESSAGE value="Porting over old features v4&#10;New Dungeon Rule System v2.3&#10;Fixed UI's for good" />
-    <option name="LAST_COMMIT_MESSAGE" value="Porting over old features v4&#10;New Dungeon Rule System v2.3&#10;Fixed UI's for good" />
+    <MESSAGE value="Porting over old features v4&#10;New Dungeon Rule System v2.4&#10;&#10;Preview box change" />
+    <option name="LAST_COMMIT_MESSAGE" value="Porting over old features v4&#10;New Dungeon Rule System v2.4&#10;&#10;Preview box change" />
   </component>
 </project>

@@ -58,3 +58,4 @@ public class ProfessorPorkersLegendaryDungeons implements ModInitializer {
         LOGGER.info("Cobblemon: Explore Legendary Dungeons initialized.");
     }
 }
+// Whenever ready to export build, remember .\gradlew.bat clean build
