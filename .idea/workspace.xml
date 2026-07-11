@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Porting over old features v4&#10;New Dungeon Rule System v2.1&#10;(large update patch)&#10;rebuilt, can load the game">
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Porting over old features v4&#10;New Dungeon Rule System v2.3&#10;Fixed UI's for good">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/client/DungeonRuleParentScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/client/DungeonRuleParentScreen.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/client/DungeonRuleZoneScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/client/DungeonRuleZoneScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/network/DungeonRuleNetworking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/network/DungeonRuleNetworking.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,17 +107,17 @@
     "copilot.chat.legacySessionMetadata.migrated": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/java/porker/pp_legendarydungeons/dungeon_rules/client",
+    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/java/porker/pp_legendarydungeons/dungeon_rules/network",
     "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\dungeon_rules\network" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\dungeon_rules\client" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\summon\trigger" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\summon" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\profiles\wtraders_maps\random" />
@@ -172,14 +173,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1783280264094</updated>
-    </task>
-    <task id="LOCAL-00003" summary="IT WORKS FINALLY OMG">
-      <option name="closed" value="true" />
-      <created>1783284711141</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1783284711141</updated>
     </task>
     <task id="LOCAL-00004" summary="Run / client stuff and crashlogs will be ignored in github">
       <option name="closed" value="true" />
@@ -565,12 +558,18 @@
       <option name="project" value="LOCAL" />
       <updated>1783733527886</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="Porting over old features v4&#10;New Dungeon Rule System v2.2&#10;Small tweak to hopefully fix ui issue of dungeon rule parrent and box blocks&#10;&#10;Not everything worked in the ui, but the blocks are functional">
+      <option name="closed" value="true" />
+      <created>1783735661376</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1783735661376</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="WTraders v2 semi-functional, but supplies traders are all out of whack, and the odds don't seem to line up" />
-    <MESSAGE value="WTraders v3&#10;started json setup and added docs" />
     <MESSAGE value="WTraders v4&#10;added json folder to wtraders" />
     <MESSAGE value="WTraders v4.1&#10;added readme to the json folder" />
     <MESSAGE value="WTraders v5" />
@@ -594,6 +593,8 @@
     <MESSAGE value="Porting over old features v4&#10;New Dungeon Rule System v1&#10;(large update patch)&#10;Not Working" />
     <MESSAGE value="Porting over old features v4&#10;New Dungeon Rule System v2&#10;(large update patch)&#10;attempt to fix" />
     <MESSAGE value="Porting over old features v4&#10;New Dungeon Rule System v2.1&#10;(large update patch)&#10;rebuilt, can load the game" />
-    <option name="LAST_COMMIT_MESSAGE" value="Porting over old features v4&#10;New Dungeon Rule System v2.1&#10;(large update patch)&#10;rebuilt, can load the game" />
+    <MESSAGE value="Porting over old features v4&#10;New Dungeon Rule System v2.2&#10;Small tweak to hopefully fix ui issue of dungeon rule parrent and box blocks&#10;&#10;Not everything worked in the ui, but the blocks are functional" />
+    <MESSAGE value="Porting over old features v4&#10;New Dungeon Rule System v2.3&#10;Fixed UI's for good" />
+    <option name="LAST_COMMIT_MESSAGE" value="Porting over old features v4&#10;New Dungeon Rule System v2.3&#10;Fixed UI's for good" />
   </component>
 </project>

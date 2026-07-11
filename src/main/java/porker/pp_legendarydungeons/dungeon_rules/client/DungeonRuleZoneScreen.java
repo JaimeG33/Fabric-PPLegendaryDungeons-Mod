@@ -1,6 +1,7 @@
 package porker.pp_legendarydungeons.dungeon_rules.client;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -29,6 +30,7 @@ public final class DungeonRuleZoneScreen extends Screen {
     private EditBox sizeZBox;
     private EditBox priorityBox;
     private EditBox parentDistanceBox;
+    private Button linkStatusButton;
 
     public DungeonRuleZoneScreen(OpenDungeonRuleEditorPayload snapshot) {
         super(Component.literal("Dungeon Rule Zone"));
@@ -39,7 +41,7 @@ public final class DungeonRuleZoneScreen extends Screen {
     @Override
     protected void init() {
         int center = width / 2;
-        int top = Math.max(8, height / 2 - 165);
+        int top = Math.max(8, height / 2 - 170);
 
         presetBox = textBox(
                 center - 240,
@@ -98,7 +100,13 @@ public final class DungeonRuleZoneScreen extends Screen {
                 snapshot.maximumParentDistance()
         );
 
-        int startY = top + 172;
+        linkStatusButton = addRenderableWidget(
+                Button.builder(linkStatusMessage(), button -> {
+                    // Display-only link status button.
+                }).bounds(center + 32, top + 122, 208, 20).build()
+        );
+
+        int startY = top + 190;
         DungeonRule[] rules = DungeonRule.values();
 
         for (int index = 0; index < rules.length; index++) {
@@ -162,6 +170,23 @@ public final class DungeonRuleZoneScreen extends Screen {
         return box;
     }
 
+    private boolean isLinked() {
+        String instanceId = snapshot.resolvedInstanceId();
+
+        return instanceId != null
+                && !instanceId.isBlank()
+                && !"UNLINKED".equalsIgnoreCase(instanceId)
+                && !"UNREGISTERED".equalsIgnoreCase(instanceId);
+    }
+
+    private Component linkStatusMessage() {
+        boolean linked = isLinked();
+
+        return Component.literal("Parent Link: ")
+                .append(Component.literal(linked ? "CONNECTED" : "UNLINKED")
+                        .withStyle(linked ? ChatFormatting.GREEN : ChatFormatting.RED));
+    }
+
     private Component ruleMessage(DungeonRule rule) {
         String label = rule.displayName();
         if (label.length() > 16) {
@@ -207,69 +232,44 @@ public final class DungeonRuleZoneScreen extends Screen {
     ) {
         renderBackground(graphics, mouseX, mouseY, partialTick);
 
+        // Render widgets first, then draw static labels above the widget layer.
+        super.render(graphics, mouseX, mouseY, partialTick);
+
         int center = width / 2;
-        int top = Math.max(8, height / 2 - 165);
+        int top = Math.max(8, height / 2 - 170);
 
         graphics.drawCenteredString(font, title, center, top, 0xFFFFFF);
-
-        graphics.drawString(font, "Preset ID", center - 240, top + 19, 0xA0A0A0);
-        graphics.drawString(font, "Link channel", center + 120, top + 19, 0xA0A0A0);
+        graphics.drawString(font, "Preset ID", center - 240, top + 19, 0xFFFFFF);
+        graphics.drawString(font, "Link channel", center + 120, top + 19, 0xFFFFFF);
 
         int firstColumn = center - 240;
         int fieldWidth = 70;
         int fieldGap = 10;
 
-        graphics.drawString(font, "Offset X", firstColumn, top + 64, 0xA0A0A0);
-        graphics.drawString(
-                font,
-                "Offset Y",
-                firstColumn + fieldWidth + fieldGap,
-                top + 64,
-                0xA0A0A0
-        );
-        graphics.drawString(
-                font,
-                "Offset Z",
-                firstColumn + (fieldWidth + fieldGap) * 2,
-                top + 64,
-                0xA0A0A0
-        );
+        graphics.drawString(font, "Offset X", firstColumn, top + 64, 0xFFFFFF);
+        graphics.drawString(font, "Offset Y", firstColumn + fieldWidth + fieldGap, top + 64, 0xFFFFFF);
+        graphics.drawString(font, "Offset Z", firstColumn + (fieldWidth + fieldGap) * 2, top + 64, 0xFFFFFF);
 
         int sizeStart = center + 10;
-        graphics.drawString(font, "Size X", sizeStart, top + 64, 0xA0A0A0);
-        graphics.drawString(
-                font,
-                "Size Y",
-                sizeStart + fieldWidth + fieldGap,
-                top + 64,
-                0xA0A0A0
-        );
-        graphics.drawString(
-                font,
-                "Size Z",
-                sizeStart + (fieldWidth + fieldGap) * 2,
-                top + 64,
-                0xA0A0A0
-        );
+        graphics.drawString(font, "Size X", sizeStart, top + 64, 0xFFFFFF);
+        graphics.drawString(font, "Size Y", sizeStart + fieldWidth + fieldGap, top + 64, 0xFFFFFF);
+        graphics.drawString(font, "Size Z", sizeStart + (fieldWidth + fieldGap) * 2, top + 64, 0xFFFFFF);
 
-        graphics.drawString(font, "Priority", center - 240, top + 110, 0xA0A0A0);
-        graphics.drawString(
-                font,
-                "Maximum parent distance",
-                center - 120,
-                top + 110,
-                0xA0A0A0
-        );
+        graphics.drawString(font, "Priority", center - 240, top + 110, 0xFFFFFF);
+        graphics.drawString(font, "Maximum parent distance", center - 120, top + 110, 0xFFFFFF);
+
+        String linkedInstance = snapshot.resolvedInstanceId();
+        if (linkedInstance == null || linkedInstance.isBlank()) {
+            linkedInstance = "UNLINKED";
+        }
 
         graphics.drawString(
                 font,
-                "Linked instance: " + snapshot.resolvedInstanceId(),
-                center + 30,
-                top + 126,
-                0xA0A0A0
+                "Linked instance: " + linkedInstance,
+                center - 240,
+                top + 154,
+                0xE0E0E0
         );
-
-        super.render(graphics, mouseX, mouseY, partialTick);
     }
 
     @Override

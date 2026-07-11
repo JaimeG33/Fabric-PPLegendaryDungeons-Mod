@@ -1,6 +1,7 @@
 package porker.pp_legendarydungeons.dungeon_rules.client;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -22,25 +23,28 @@ public final class DungeonRuleParentScreen extends Screen {
     private EditBox presetBox;
     private EditBox channelBox;
     private Button enabledButton;
+    private Button ruleStatusButton;
     private boolean enabled;
+    private String instanceState;
 
     public DungeonRuleParentScreen(OpenDungeonRuleEditorPayload snapshot) {
         super(Component.literal("Dungeon Rule Parent"));
         this.snapshot = snapshot;
         this.decisions = DungeonRuleSet.fromPackedInt(snapshot.packedRuleOverrides());
         this.enabled = snapshot.enabled();
+        this.instanceState = snapshot.instanceState();
     }
 
     @Override
     protected void init() {
         int center = width / 2;
-        int top = Math.max(10, height / 2 - 135);
+        int top = Math.max(10, height / 2 - 145);
 
         presetBox = new EditBox(
                 font,
-                center - 210,
+                center - 234,
                 top + 30,
-                320,
+                350,
                 20,
                 Component.literal("Preset ID")
         );
@@ -55,9 +59,9 @@ public final class DungeonRuleParentScreen extends Screen {
 
         channelBox = new EditBox(
                 font,
-                center + 120,
+                center + 126,
                 top + 30,
-                90,
+                108,
                 20,
                 Component.literal("Link Channel")
         );
@@ -69,10 +73,17 @@ public final class DungeonRuleParentScreen extends Screen {
                 Button.builder(enabledMessage(), button -> {
                     enabled = !enabled;
                     button.setMessage(enabledMessage());
-                }).bounds(center - 210, top + 56, 210, 20).build()
+                    updateRuleStatusButton();
+                }).bounds(center - 234, top + 56, 210, 20).build()
         );
 
-        int startY = top + 102;
+        ruleStatusButton = addRenderableWidget(
+                Button.builder(ruleStatusMessage(), button -> {
+                    // Display-only status button.
+                }).bounds(center - 14, top + 56, 248, 20).build()
+        );
+
+        int startY = top + 110;
         DungeonRule[] rules = DungeonRule.values();
 
         for (int index = 0; index < rules.length; index++) {
@@ -129,6 +140,24 @@ public final class DungeonRuleParentScreen extends Screen {
         return Component.literal("Controller: " + (enabled ? "ENABLED" : "DISABLED"));
     }
 
+    private boolean rulesAreActive() {
+        return enabled && "ACTIVE".equalsIgnoreCase(instanceState);
+    }
+
+    private Component ruleStatusMessage() {
+        boolean active = rulesAreActive();
+
+        return Component.literal("Dungeon Rule Status: ")
+                .append(Component.literal(active ? "ENABLED" : "DISABLED")
+                        .withStyle(active ? ChatFormatting.GREEN : ChatFormatting.RED));
+    }
+
+    private void updateRuleStatusButton() {
+        if (ruleStatusButton != null) {
+            ruleStatusButton.setMessage(ruleStatusMessage());
+        }
+    }
+
     private Component ruleMessage(DungeonRule rule) {
         return Component.literal(
                 abbreviate(rule.displayName()) + ": " + decisions.get(rule).name()
@@ -140,6 +169,14 @@ public final class DungeonRuleParentScreen extends Screen {
     }
 
     private void send(String action) {
+        if (UpdateDungeonRuleBlockPayload.ACTION_COMPLETE.equals(action)) {
+            instanceState = "COMPLETED";
+        } else if (UpdateDungeonRuleBlockPayload.ACTION_REACTIVATE.equals(action)) {
+            instanceState = "ACTIVE";
+        }
+
+        updateRuleStatusButton();
+
         ClientPlayNetworking.send(new UpdateDungeonRuleBlockPayload(
                 snapshot.pos(),
                 true,
@@ -172,30 +209,31 @@ public final class DungeonRuleParentScreen extends Screen {
     ) {
         renderBackground(graphics, mouseX, mouseY, partialTick);
 
+        // Render widgets first, then draw static labels above the widget layer.
+        super.render(graphics, mouseX, mouseY, partialTick);
+
         int center = width / 2;
-        int top = Math.max(10, height / 2 - 135);
+        int top = Math.max(10, height / 2 - 145);
 
         graphics.drawCenteredString(font, title, center, top, 0xFFFFFF);
-        graphics.drawString(font, "Preset ID", center - 210, top + 19, 0xA0A0A0);
-        graphics.drawString(font, "Link channel", center + 120, top + 19, 0xA0A0A0);
+        graphics.drawString(font, "Preset ID", center - 234, top + 19, 0xFFFFFF);
+        graphics.drawString(font, "Link channel", center + 126, top + 19, 0xFFFFFF);
 
         graphics.drawString(
                 font,
                 "Instance: " + snapshot.resolvedInstanceId(),
-                center - 210,
-                top + 80,
-                0xA0A0A0
+                center - 234,
+                top + 82,
+                0xE0E0E0
         );
 
         graphics.drawString(
                 font,
-                "State: " + snapshot.instanceState(),
-                center + 60,
-                top + 80,
-                0xA0A0A0
+                "Saved state: " + instanceState,
+                center + 64,
+                top + 82,
+                0xE0E0E0
         );
-
-        super.render(graphics, mouseX, mouseY, partialTick);
     }
 
     @Override
