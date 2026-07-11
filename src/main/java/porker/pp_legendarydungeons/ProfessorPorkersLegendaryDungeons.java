@@ -19,6 +19,7 @@ import porker.pp_legendarydungeons.setup.ModBlocks;
 import porker.pp_legendarydungeons.setup.ModScoreboards;
 import porker.pp_legendarydungeons.summon.dungeon_completion.DungeonCompletionRegistry;
 import porker.pp_legendarydungeons.summon.trigger.EntityLegendarySummonTicker;
+import porker.pp_legendarydungeons.loot.pokemon.PokemonLootTableRegistrar;
 
 /**
  * Main mod initializer.
@@ -46,6 +47,11 @@ public class ProfessorPorkersLegendaryDungeons implements ModInitializer {
         ServerLifecycleEvents.SERVER_STOPPED.register(server -> {
             DungeonRuleManager.clear();
             DungeonRulePreviewManager.clear();
+
+            /*
+             * Clears temporary battle-faint context used by Pokémon loot injection.
+             */
+            PokemonLootTableRegistrar.clear();
         });
 
         WTraderJsonReloadRegistrar.register();
@@ -55,6 +61,11 @@ public class ProfessorPorkersLegendaryDungeons implements ModInitializer {
          * This preserves the original table and additions made by other mods.
          */
         LootTableInjectionRegistrar.register();
+        /*
+         * Bridges Cobblemon's native Pokémon drop events to additional Minecraft
+         * loot tables. The initial version runs in diagnostic-only mode.
+         */
+        PokemonLootTableRegistrar.register();
 
         EntityLegendarySummonTicker.register();
         FeatureTicker.register();

@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Loot table injections v1&#10;&#10;attempting to add the dungeon key to certain death loot tables, as well as add maps to ceratain chest loot tables&#10;&#10;is functional">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/loot_injections/chests/snow_village_extras.json" afterDir="false" />
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Loot table injections v1.1&#10;&#10;modifying chances">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/loot_injections/pokemon/klefki.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/loot/LootTableInjectionRegistrar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/loot/LootTableInjectionRegistrar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/loot_injections/chests/village_random_maps.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/loot_injections/chests/village_random_maps.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/loot_injections/entities/dungeon_key_base.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/loot_injections/entities/dungeon_key_base.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/loot_injections/chests/snow_village_extras.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/loot_injections/chests/snow_village_extras.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,17 +107,17 @@
     "copilot.chat.legacySessionMetadata.migrated": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/resources/data/pp_legendarydungeons/loot_table/loot_injections/chests",
+    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/resources/data/pp_legendarydungeons/loot_table/loot_injections/pokemon",
     "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\loot_table\loot_injections\pokemon" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\loot_table\loot_injections\chests" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\loot_table" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\docs" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\setup" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\trade_pools\joke_trades" />
@@ -174,14 +173,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1783280264094</updated>
-    </task>
-    <task id="LOCAL-00011" summary="Rayquaza Logic v3.1&#10;now includes the secrets (unsure if good)">
-      <option name="closed" value="true" />
-      <created>1783398201651</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1783398201651</updated>
     </task>
     <task id="LOCAL-00012" summary="Rayquaza Logic v3.3&#10;Fixed Secret summon of rayquaza">
       <option name="closed" value="true" />
@@ -567,11 +558,18 @@
       <option name="project" value="LOCAL" />
       <updated>1783790054313</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="Loot table injections v1.1&#10;&#10;modifying chances">
+      <option name="closed" value="true" />
+      <created>1783793696845</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1783793696845</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="WTraders v8.1&#10;&#10;Implemented the custom json traders as the smoke_test ones. So far, everything seems functional" />
     <MESSAGE value="WTraders v9&#10;&#10;Began flushing out and fully implementing the custom trades" />
     <MESSAGE value="WTraders v9.2&#10;&#10;added some stuff to docs" />
     <MESSAGE value="WTraders v10&#10;&#10;Update to the way the wtrader json works. Can now accept custom nbt data by connecting it to an existing loot table for that specific trade. &#10;&#10;&#10;Can also now summon specific wtrader profile types and specific profiles." />
@@ -596,6 +594,7 @@
     <MESSAGE value="Small ballancing to loot / trade pools" />
     <MESSAGE value="eguardian loot table was still using the old key." />
     <MESSAGE value="Loot table injections v1&#10;&#10;attempting to add the dungeon key to certain death loot tables, as well as add maps to ceratain chest loot tables&#10;&#10;is functional" />
-    <option name="LAST_COMMIT_MESSAGE" value="Loot table injections v1&#10;&#10;attempting to add the dungeon key to certain death loot tables, as well as add maps to ceratain chest loot tables&#10;&#10;is functional" />
+    <MESSAGE value="Loot table injections v1.1&#10;&#10;modifying chances" />
+    <option name="LAST_COMMIT_MESSAGE" value="Loot table injections v1.1&#10;&#10;modifying chances" />
   </component>
 </project>

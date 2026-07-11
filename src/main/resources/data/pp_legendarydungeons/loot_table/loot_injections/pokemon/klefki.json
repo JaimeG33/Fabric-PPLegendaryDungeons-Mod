@@ -1,0 +1,41 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:killed_by_player"
+        },
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 1
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 2
+        },
+        {
+          "type": "item",
+          "weight": 7,
+          "quality": 5,
+          "name": "minecraft:trial_key",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": "pp_legendarydungeons:key_dungeon_base",
+          "weight": 1,
+          "quality": 10
+        }
+      ]
+    }
+  ]
+}
