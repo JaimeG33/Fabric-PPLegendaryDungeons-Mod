@@ -1,3 +1,4 @@
+
 plugins {
     id("java")
     id("dev.architectury.loom") version ("1.11-SNAPSHOT")
@@ -38,13 +39,18 @@ dependencies {
     mappings(loom.officialMojangMappings())
     modImplementation("net.fabricmc:fabric-loader:0.17.2")
 
-    modRuntimeOnly("net.fabricmc.fabric-api:fabric-api:0.116.6+1.21.1")
-    modImplementation(fabricApi.module("fabric-command-api-v2", "0.116.6+1.21.1"))
-    modImplementation(fabricApi.module("fabric-lifecycle-events-v1", "0.116.6+1.21.1"))
-    modImplementation(fabricApi.module("fabric-resource-loader-v0", "0.116.6+1.21.1"))
+    /*
+     * Full Fabric API is now a compile dependency because dungeon rules use:
+     * - interaction callbacks
+     * - networking payloads
+     * - lifecycle/tick events
+     */
+    modImplementation("net.fabricmc.fabric-api:fabric-api:0.116.6+1.21.1")
 
     modImplementation("net.fabricmc:fabric-language-kotlin:1.13.6+kotlin.2.2.20")
-    modCompileOnly("com.cobblemon:mod:1.6.1+1.21.1") { isTransitive = false }
+    modCompileOnly("com.cobblemon:mod:1.6.1+1.21.1") {
+        isTransitive = false
+    }
     modImplementation("com.cobblemon:fabric:1.6.1+1.21.1")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
