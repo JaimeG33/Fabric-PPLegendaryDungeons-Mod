@@ -1,3 +1,4 @@
+
 {
   "schemaVersion": 1,
   "id": "pp_legendarydungeons",
@@ -12,8 +13,14 @@
   "entrypoints": {
     "main": [
       "porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons"
+    ],
+    "client": [
+      "porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeonsClient"
     ]
   },
+  "mixins": [
+    "pp_legendarydungeons.mixins.json"
+  ],
   "depends": {
     "minecraft": "1.21.1",
     "fabric-api": "*",

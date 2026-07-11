@@ -1,3 +1,4 @@
+
 package porker.pp_legendarydungeons.features;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -5,6 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.phys.AABB;
+import porker.pp_legendarydungeons.dungeon_rules.DungeonRulePlayerTracker;
 
 import java.util.HashSet;
 import java.util.List;
@@ -22,24 +24,17 @@ import java.util.UUID;
  * Then nearby feature-specific markers can be used, for example:
  * - pp_wtraders
  *
- * This ticker intentionally checks near players instead of scanning the whole world.
+ * The same low-frequency player pass now also updates dungeon-zone player state.
+ * Dungeon rule action checks remain event/mixin driven and do not scan entities.
  */
 public final class FeatureTicker {
     public static final String FEATURE_MARKER_TAG = "pp_feature";
 
-    /**
-     * Similar to the old datapack static feature scan distance.
-     */
     private static final double PLAYER_TRIGGER_DISTANCE = 128.0D;
     private static final double PLAYER_TRIGGER_DISTANCE_SQUARED =
             PLAYER_TRIGGER_DISTANCE * PLAYER_TRIGGER_DISTANCE;
 
-    /**
-     * Old datapack scanner ran every 30 ticks.
-     * Keeping that cadence here avoids unnecessary entity scans.
-     */
     private static final int SCAN_INTERVAL_TICKS = 30;
-
     private static int ticks = 0;
 
     private FeatureTicker() {
@@ -63,6 +58,12 @@ public final class FeatureTicker {
         Set<UUID> processedFeatureMarkers = new HashSet<>();
 
         for (ServerPlayer player : level.players()) {
+            /*
+             * This is a chunk-indexed lookup, not a block/entity scan.
+             * It handles mining fatigue, pp_in_dungeon_zone, and builder previews.
+             */
+            DungeonRulePlayerTracker.checkPlayer(level, player);
+
             AABB searchBox = player.getBoundingBox().inflate(PLAYER_TRIGGER_DISTANCE);
 
             List<ArmorStand> featureMarkers = level.getEntitiesOfClass(
@@ -71,7 +72,8 @@ public final class FeatureTicker {
                     armorStand ->
                             armorStand.isAlive()
                                     && armorStand.getTags().contains(FEATURE_MARKER_TAG)
-                                    && armorStand.distanceToSqr(player) <= PLAYER_TRIGGER_DISTANCE_SQUARED
+                                    && armorStand.distanceToSqr(player)
+                                    <= PLAYER_TRIGGER_DISTANCE_SQUARED
             );
 
             for (ArmorStand featureMarker : featureMarkers) {

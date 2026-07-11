@@ -1,0 +1,10 @@
+
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "legendarymonuments:arc_phone",
+      "required": false
+    }
+  ]
+}

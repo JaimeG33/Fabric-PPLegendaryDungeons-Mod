@@ -4,12 +4,75 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Porting over old features v1 &#10;&#10;ERROR NO WORK">
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Porting over old features v3">
+      <change afterPath="$PROJECT_DIR$/docs/dungeon_rules/README_BLOCKS_AND_ZONES.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/dungeon_rules/README_DUNGEON_COMPLETION.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/dungeon_rules/README_LEGENDARY_SUMMON_INTEGRATION.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/dungeon_rules/README_RUNTIME_AND_RULES.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/dungeon_rules/README_UI_AND_BUILDING.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/blocks/dungeon_rules/AbstractDungeonRuleBlock.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/blocks/dungeon_rules/DungeonRuleParentBlock.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/blocks/dungeon_rules/DungeonRuleZoneBlock.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/blocks/entity/DungeonRuleParentBlockEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/blocks/entity/DungeonRuleZoneBlockEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/DungeonRule.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/DungeonRuleFeedback.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/DungeonRuleManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/DungeonRulePermissions.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/DungeonRulePlayerTracker.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/DungeonRulePreviewManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/DungeonRuleSet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/DungeonRuleSpatialIndex.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/DungeonRuleZone.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/RuleDecision.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/client/DungeonRuleClientNetworking.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/client/DungeonRuleParentScreen.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/client/DungeonRuleZoneScreen.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/events/DungeonRuleInteractionEvents.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/instance/DungeonCompletionService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/instance/DungeonInstanceRecord.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/instance/DungeonInstanceState.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/instance/DungeonRuleSavedData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/instance/DungeonZoneRecord.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/network/DungeonRuleNetworking.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/network/OpenDungeonRuleEditorPayload.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/network/UpdateDungeonRuleBlockPayload.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/preset/DungeonRulePreset.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/preset/DungeonRulePresetRegistry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/mixin/dungeon_rules/DungeonBlockBreakMixin.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/mixin/dungeon_rules/DungeonBlockPlacementMixin.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/mixin/dungeon_rules/DungeonExplosionMixin.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/setup/ModBlockEntities.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/setup/ModBlocks.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/setup/ModTags.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/dungeon_completion/CompletionCheckResult.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/dungeon_completion/DungeonCompletionCondition.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/dungeon_completion/DungeonCompletionRegistry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/dungeon_completion/DungeonCompletionSavedData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/dungeon_completion/DungeonCompletionTracker.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/dungeon_completion/DungeonCompletionWatch.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/dungeon_completion/rayquaza/RayquazaCompletionCondition.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/dungeon_completion/rayquaza/RayquazaDungeonCompletion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/pp_legendarydungeons/blockstates/dungeon_rule_parent.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/pp_legendarydungeons/blockstates/dungeon_rule_zone.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/pp_legendarydungeons/lang/en_us.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/pp_legendarydungeons/models/block/dungeon_rule_parent.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/pp_legendarydungeons/models/block/dungeon_rule_zone.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/pp_legendarydungeons/models/item/dungeon_rule_parent.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/pp_legendarydungeons/models/item/dungeon_rule_zone.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/pp_legendarydungeons/textures/block/dungeon_rule_parent.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/pp_legendarydungeons/textures/block/dungeon_rule_zone.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/pp_legendarydungeons/textures/item/dungeon_rule_parent.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/pp_legendarydungeons/textures/item/dungeon_rule_zone.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/block/dungeon_healer_blocks.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/block/dungeon_pc_blocks.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/item/dungeon_portable_healer_items.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/item/dungeon_portable_pc_items.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/pp_legendarydungeons.mixins.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/custom_mobs/CustomMobSpawner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/custom_mobs/CustomMobSpawner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/structure/dungeon/enemy/mob/bogged_sentry.nbt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/structure/dungeon/enemy/mob/bogged_sentry.nbt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/structure/secret_vault_base.nbt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/structure/secret_vault_base.nbt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/structure/special/bogged_sentry.nbt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/structure/special/bogged_sentry.nbt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/FeatureTicker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/FeatureTicker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/aftermath/RayquazaAftermath.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/summon/aftermath/RayquazaAftermath.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fabric.mod.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fabric.mod.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,17 +171,17 @@
     "copilot.chat.legacySessionMetadata.migrated": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/resources/data/pp_legendarydungeons/structure/special",
+    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/java/porker/pp_legendarydungeons/summon",
     "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\structure\special" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\structure\dungeon\enemy\mob" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\structure" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\features\custom_mobs" />
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\summon" />
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\summon\aftermath" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\features" />
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons" />
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\setup" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\profiles\wtraders_maps\random" />
@@ -551,11 +614,18 @@
       <option name="project" value="LOCAL" />
       <updated>1783714389320</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="Porting over old features v2&#10;&#10;Hopefully fixed error and fully included the summon enemy system and made some updates to the custom vaults / keys&#10;&#10;Fully incorporated standard vault, enemy system / bogged sentry, and updated the custom vault key.">
+      <option name="closed" value="true" />
+      <created>1783717844315</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1783717844315</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Maps v5&#10;added random map functionality &#10;&#10;-although an issue was noticed with the skypillar not spawning in the pool of random dungeons" />
     <MESSAGE value="Maps v5.1&#10;&#10;fixed skypillar issue&#10;(type of dungeon is now chosen at the loot table before looking for the nearest structure)" />
     <MESSAGE value="Maps v5.2&#10;one last update to the descriptions." />
     <MESSAGE value="WTraders v1 (NOT FUNCTIONAL)" />
@@ -580,6 +650,7 @@
     <MESSAGE value="WTraders v17&#10;tried to fix names but they still show up." />
     <MESSAGE value="WTraders v19&#10;fixed names" />
     <MESSAGE value="Porting over old features v1 &#10;&#10;ERROR NO WORK" />
-    <option name="LAST_COMMIT_MESSAGE" value="Porting over old features v1 &#10;&#10;ERROR NO WORK" />
+    <MESSAGE value="Porting over old features v2&#10;&#10;Hopefully fixed error and fully included the summon enemy system and made some updates to the custom vaults / keys&#10;&#10;Fully incorporated standard vault, enemy system / bogged sentry, and updated the custom vault key." />
+    <option name="LAST_COMMIT_MESSAGE" value="Porting over old features v2&#10;&#10;Hopefully fixed error and fully included the summon enemy system and made some updates to the custom vaults / keys&#10;&#10;Fully incorporated standard vault, enemy system / bogged sentry, and updated the custom vault key." />
   </component>
 </project>

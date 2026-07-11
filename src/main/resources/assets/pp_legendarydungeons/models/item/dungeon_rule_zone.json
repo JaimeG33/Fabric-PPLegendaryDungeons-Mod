@@ -1,0 +1,7 @@
+
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "pp_legendarydungeons:item/dungeon_rule_zone"
+  }
+}
