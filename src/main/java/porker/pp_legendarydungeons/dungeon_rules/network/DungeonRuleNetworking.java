@@ -51,6 +51,7 @@ public final class DungeonRuleNetworking {
         }
 
         BlockEntity blockEntity = player.serverLevel().getBlockEntity(pos);
+        boolean previewActive = DungeonRulePreviewManager.isPreviewing(player, pos);
 
         if (blockEntity instanceof DungeonRuleParentBlockEntity parent) {
             String instanceId = parent.getInstanceId();
@@ -78,7 +79,8 @@ public final class DungeonRuleNetworking {
                             (int) DungeonRuleManager.DEFAULT_PARENT_LINK_DISTANCE,
                             parent.getRuleOverrides().toPackedInt(),
                             instanceId,
-                            state
+                            state,
+                            previewActive
                     )
             );
             return;
@@ -113,7 +115,8 @@ public final class DungeonRuleNetworking {
                             (int) zone.getMaximumParentDistance(),
                             zone.getRuleOverrides().toPackedInt(),
                             instanceId,
-                            state
+                            state,
+                            previewActive
                     )
             );
         }
@@ -129,8 +132,11 @@ public final class DungeonRuleNetworking {
                 payload.pos().getY() + 0.5D,
                 payload.pos().getZ() + 0.5D
         ) > MAXIMUM_EDIT_DISTANCE_SQUARED) {
-            actionBar(player, Component.literal("You are too far away from that dungeon-rule controller.")
-                    .withStyle(ChatFormatting.RED));
+            actionBar(
+                    player,
+                    Component.literal("You are too far away from that dungeon-rule controller.")
+                            .withStyle(ChatFormatting.RED)
+            );
             return;
         }
 
@@ -140,20 +146,27 @@ public final class DungeonRuleNetworking {
 
         BlockEntity blockEntity = level.getBlockEntity(payload.pos());
         ResourceLocation presetId = parsePreset(payload.presetId());
-        DungeonRuleSet overrides = DungeonRuleSet.fromPackedInt(payload.packedRuleOverrides());
+        DungeonRuleSet overrides = DungeonRuleSet.fromPackedInt(
+                payload.packedRuleOverrides()
+        );
 
-        if (payload.parent() && blockEntity instanceof DungeonRuleParentBlockEntity parent) {
+        if (payload.parent()
+                && blockEntity instanceof DungeonRuleParentBlockEntity parent) {
             handleParentUpdate(player, parent, presetId, overrides, payload);
             return;
         }
 
-        if (!payload.parent() && blockEntity instanceof DungeonRuleZoneBlockEntity zone) {
+        if (!payload.parent()
+                && blockEntity instanceof DungeonRuleZoneBlockEntity zone) {
             handleZoneUpdate(player, level, zone, presetId, overrides, payload);
             return;
         }
 
-        actionBar(player, Component.literal("That dungeon-rule controller is no longer available.")
-                .withStyle(ChatFormatting.RED));
+        actionBar(
+                player,
+                Component.literal("That dungeon-rule controller is no longer available.")
+                        .withStyle(ChatFormatting.RED)
+        );
     }
 
     private static void handleParentUpdate(
@@ -182,12 +195,15 @@ public final class DungeonRuleNetworking {
                 actionBar(
                         player,
                         completed
-                                ? Component.literal("Dungeon completed. Dungeon rules are now DISABLED.")
-                                .withStyle(ChatFormatting.GREEN)
-                                : Component.literal("Could not complete that dungeon instance.")
-                                .withStyle(ChatFormatting.RED)
+                                ? Component.literal(
+                                        "Dungeon completed. Dungeon rules are now DISABLED."
+                                ).withStyle(ChatFormatting.GREEN)
+                                : Component.literal(
+                                        "Could not complete that dungeon instance."
+                                ).withStyle(ChatFormatting.RED)
                 );
             }
+
             case UpdateDungeonRuleBlockPayload.ACTION_REACTIVATE -> {
                 boolean reactivated = DungeonCompletionService.reactivateInstance(
                         player.serverLevel().getServer(),
@@ -197,17 +213,33 @@ public final class DungeonRuleNetworking {
                 actionBar(
                         player,
                         reactivated
-                                ? Component.literal("Dungeon reactivated. Dungeon rules are now ENABLED.")
-                                .withStyle(ChatFormatting.GREEN)
-                                : Component.literal("Could not reactivate that dungeon instance.")
-                                .withStyle(ChatFormatting.RED)
+                                ? Component.literal(
+                                        "Dungeon reactivated. Dungeon rules are now ENABLED."
+                                ).withStyle(ChatFormatting.GREEN)
+                                : Component.literal(
+                                        "Could not reactivate that dungeon instance."
+                                ).withStyle(ChatFormatting.RED)
                 );
             }
+
             case UpdateDungeonRuleBlockPayload.ACTION_PREVIEW -> {
-                DungeonRulePreviewManager.previewParent(player, payload.pos());
-                actionBar(player, Component.literal("Previewing the parent controller for 20 seconds.")
-                        .withStyle(ChatFormatting.AQUA));
+                boolean previewEnabled = DungeonRulePreviewManager.toggleParent(
+                        player,
+                        payload.pos()
+                );
+
+                actionBar(
+                        player,
+                        Component.literal(
+                                "Parent preview: " + (previewEnabled ? "ON" : "OFF")
+                        ).withStyle(
+                                previewEnabled
+                                        ? ChatFormatting.GREEN
+                                        : ChatFormatting.RED
+                        )
+                );
             }
+
             case UpdateDungeonRuleBlockPayload.ACTION_SAVE -> {
                 boolean active = DungeonRuleSavedData
                         .get(player.serverLevel().getServer())
@@ -217,13 +249,22 @@ public final class DungeonRuleNetworking {
 
                 actionBar(
                         player,
-                        Component.literal("Dungeon parent saved. Dungeon Rule Status: "
-                                + (active ? "ENABLED" : "DISABLED"))
-                                .withStyle(active ? ChatFormatting.GREEN : ChatFormatting.RED)
+                        Component.literal(
+                                "Dungeon parent saved. Dungeon Rule Status: "
+                                        + (active ? "ENABLED" : "DISABLED")
+                        ).withStyle(
+                                active
+                                        ? ChatFormatting.GREEN
+                                        : ChatFormatting.RED
+                        )
                 );
             }
-            default -> actionBar(player, Component.literal("Dungeon parent updated.")
-                    .withStyle(ChatFormatting.GREEN));
+
+            default -> actionBar(
+                    player,
+                    Component.literal("Dungeon parent updated.")
+                            .withStyle(ChatFormatting.GREEN)
+            );
         }
     }
 
@@ -249,18 +290,28 @@ public final class DungeonRuleNetworking {
                 overrides
         );
 
-        Optional<String> resolvedInstance = DungeonRuleManager.getResolvedInstance(level, payload.pos());
+        Optional<String> resolvedInstance = DungeonRuleManager.getResolvedInstance(
+                level,
+                payload.pos()
+        );
 
         if (UpdateDungeonRuleBlockPayload.ACTION_PREVIEW.equals(payload.action())) {
-            DungeonRulePreviewManager.previewZone(player, zone.getWorldMinPos(), zone.getWorldMaxPos());
+            boolean previewEnabled = DungeonRulePreviewManager.toggleZone(
+                    player,
+                    payload.pos(),
+                    zone.getWorldMinPos(),
+                    zone.getWorldMaxPos()
+            );
 
             actionBar(
                     player,
                     Component.literal(
-                            resolvedInstance.isPresent()
-                                    ? "Previewing linked dungeon zone for 20 seconds."
-                                    : "Previewing zone for 20 seconds. Warning: no matching parent is linked."
-                    ).withStyle(resolvedInstance.isPresent() ? ChatFormatting.AQUA : ChatFormatting.YELLOW)
+                            "Zone preview: " + (previewEnabled ? "ON" : "OFF")
+                    ).withStyle(
+                            previewEnabled
+                                    ? ChatFormatting.GREEN
+                                    : ChatFormatting.RED
+                    )
             );
             return;
         }
@@ -268,14 +319,17 @@ public final class DungeonRuleNetworking {
         if (resolvedInstance.isPresent()) {
             actionBar(
                     player,
-                    Component.literal("Dungeon zone saved and linked to parent: " + resolvedInstance.get())
-                            .withStyle(ChatFormatting.GREEN)
+                    Component.literal(
+                            "Dungeon zone saved and linked to parent: "
+                                    + resolvedInstance.get()
+                    ).withStyle(ChatFormatting.GREEN)
             );
         } else {
             actionBar(
                     player,
-                    Component.literal("Dungeon zone saved, but no matching parent was found.")
-                            .withStyle(ChatFormatting.RED)
+                    Component.literal(
+                            "Dungeon zone saved, but no matching parent was found."
+                    ).withStyle(ChatFormatting.RED)
             );
         }
     }

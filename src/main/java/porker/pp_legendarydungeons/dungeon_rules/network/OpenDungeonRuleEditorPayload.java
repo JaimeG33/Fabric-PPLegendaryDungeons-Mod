@@ -1,4 +1,3 @@
-
 package porker.pp_legendarydungeons.dungeon_rules.network;
 
 import net.minecraft.core.BlockPos;
@@ -27,7 +26,8 @@ public record OpenDungeonRuleEditorPayload(
         int maximumParentDistance,
         int packedRuleOverrides,
         String resolvedInstanceId,
-        String instanceState
+        String instanceState,
+        boolean previewActive
 ) implements CustomPacketPayload {
     public static final Type<OpenDungeonRuleEditorPayload> TYPE =
             new Type<>(ResourceLocation.fromNamespaceAndPath(
@@ -58,6 +58,7 @@ public record OpenDungeonRuleEditorPayload(
         buffer.writeInt(packedRuleOverrides);
         buffer.writeUtf(resolvedInstanceId);
         buffer.writeUtf(instanceState);
+        buffer.writeBoolean(previewActive);
     }
 
     private static OpenDungeonRuleEditorPayload read(RegistryFriendlyByteBuf buffer) {
@@ -77,7 +78,8 @@ public record OpenDungeonRuleEditorPayload(
                 buffer.readVarInt(),
                 buffer.readInt(),
                 buffer.readUtf(),
-                buffer.readUtf()
+                buffer.readUtf(),
+                buffer.readBoolean()
         );
     }
 

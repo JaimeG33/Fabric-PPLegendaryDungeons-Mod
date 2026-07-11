@@ -31,11 +31,15 @@ public final class DungeonRuleZoneScreen extends Screen {
     private EditBox priorityBox;
     private EditBox parentDistanceBox;
     private Button linkStatusButton;
+    private Button previewButton;
+
+    private boolean previewActive;
 
     public DungeonRuleZoneScreen(OpenDungeonRuleEditorPayload snapshot) {
         super(Component.literal("Dungeon Rule Zone"));
         this.snapshot = snapshot;
         this.decisions = DungeonRuleSet.fromPackedInt(snapshot.packedRuleOverrides());
+        this.previewActive = snapshot.previewActive();
     }
 
     @Override
@@ -136,10 +140,10 @@ public final class DungeonRuleZoneScreen extends Screen {
                 ).bounds(center - 116, bottomY, 110, 20).build()
         );
 
-        addRenderableWidget(
+        previewButton = addRenderableWidget(
                 Button.builder(
-                        Component.literal("Preview 20s"),
-                        button -> send(UpdateDungeonRuleBlockPayload.ACTION_PREVIEW)
+                        previewMessage(),
+                        button -> togglePreview()
                 ).bounds(center + 6, bottomY, 120, 20).build()
         );
     }
@@ -152,14 +156,8 @@ public final class DungeonRuleZoneScreen extends Screen {
             int maxLength
     ) {
         EditBox box = new EditBox(font, x, y, width, 20, Component.empty());
-
-        /*
-         * Set the maximum before the value. Otherwise long preset IDs are cut to
-         * EditBox's default maximum before this screen ever displays them.
-         */
         box.setMaxLength(maxLength);
         box.setValue(value);
-
         addRenderableWidget(box);
         return box;
     }
@@ -185,6 +183,22 @@ public final class DungeonRuleZoneScreen extends Screen {
         return Component.literal("Parent Link: ")
                 .append(Component.literal(linked ? "CONNECTED" : "UNLINKED")
                         .withStyle(linked ? ChatFormatting.GREEN : ChatFormatting.RED));
+    }
+
+    private Component previewMessage() {
+        return Component.literal("Preview: ")
+                .append(Component.literal(previewActive ? "ON" : "OFF")
+                        .withStyle(previewActive ? ChatFormatting.GREEN : ChatFormatting.RED));
+    }
+
+    private void togglePreview() {
+        previewActive = !previewActive;
+
+        if (previewButton != null) {
+            previewButton.setMessage(previewMessage());
+        }
+
+        send(UpdateDungeonRuleBlockPayload.ACTION_PREVIEW);
     }
 
     private Component ruleMessage(DungeonRule rule) {
@@ -231,8 +245,6 @@ public final class DungeonRuleZoneScreen extends Screen {
             float partialTick
     ) {
         renderBackground(graphics, mouseX, mouseY, partialTick);
-
-        // Render widgets first, then draw static labels above the widget layer.
         super.render(graphics, mouseX, mouseY, partialTick);
 
         int center = width / 2;
@@ -247,16 +259,46 @@ public final class DungeonRuleZoneScreen extends Screen {
         int fieldGap = 10;
 
         graphics.drawString(font, "Offset X", firstColumn, top + 64, 0xFFFFFF);
-        graphics.drawString(font, "Offset Y", firstColumn + fieldWidth + fieldGap, top + 64, 0xFFFFFF);
-        graphics.drawString(font, "Offset Z", firstColumn + (fieldWidth + fieldGap) * 2, top + 64, 0xFFFFFF);
+        graphics.drawString(
+                font,
+                "Offset Y",
+                firstColumn + fieldWidth + fieldGap,
+                top + 64,
+                0xFFFFFF
+        );
+        graphics.drawString(
+                font,
+                "Offset Z",
+                firstColumn + (fieldWidth + fieldGap) * 2,
+                top + 64,
+                0xFFFFFF
+        );
 
         int sizeStart = center + 10;
         graphics.drawString(font, "Size X", sizeStart, top + 64, 0xFFFFFF);
-        graphics.drawString(font, "Size Y", sizeStart + fieldWidth + fieldGap, top + 64, 0xFFFFFF);
-        graphics.drawString(font, "Size Z", sizeStart + (fieldWidth + fieldGap) * 2, top + 64, 0xFFFFFF);
+        graphics.drawString(
+                font,
+                "Size Y",
+                sizeStart + fieldWidth + fieldGap,
+                top + 64,
+                0xFFFFFF
+        );
+        graphics.drawString(
+                font,
+                "Size Z",
+                sizeStart + (fieldWidth + fieldGap) * 2,
+                top + 64,
+                0xFFFFFF
+        );
 
         graphics.drawString(font, "Priority", center - 240, top + 110, 0xFFFFFF);
-        graphics.drawString(font, "Maximum parent distance", center - 120, top + 110, 0xFFFFFF);
+        graphics.drawString(
+                font,
+                "Maximum parent distance",
+                center - 120,
+                top + 110,
+                0xFFFFFF
+        );
 
         String linkedInstance = snapshot.resolvedInstanceId();
         if (linkedInstance == null || linkedInstance.isBlank()) {

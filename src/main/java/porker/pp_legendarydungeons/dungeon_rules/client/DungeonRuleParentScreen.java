@@ -24,7 +24,10 @@ public final class DungeonRuleParentScreen extends Screen {
     private EditBox channelBox;
     private Button enabledButton;
     private Button ruleStatusButton;
+    private Button previewButton;
+
     private boolean enabled;
+    private boolean previewActive;
     private String instanceState;
 
     public DungeonRuleParentScreen(OpenDungeonRuleEditorPayload snapshot) {
@@ -32,6 +35,7 @@ public final class DungeonRuleParentScreen extends Screen {
         this.snapshot = snapshot;
         this.decisions = DungeonRuleSet.fromPackedInt(snapshot.packedRuleOverrides());
         this.enabled = snapshot.enabled();
+        this.previewActive = snapshot.previewActive();
         this.instanceState = snapshot.instanceState();
     }
 
@@ -48,11 +52,6 @@ public final class DungeonRuleParentScreen extends Screen {
                 20,
                 Component.literal("Preset ID")
         );
-
-        /*
-         * EditBox defaults to a shorter maximum length. The maximum must be raised
-         * before setValue(...) or long resource IDs are permanently truncated.
-         */
         presetBox.setMaxLength(128);
         presetBox.setValue(snapshot.presetId());
         addRenderableWidget(presetBox);
@@ -114,10 +113,10 @@ public final class DungeonRuleParentScreen extends Screen {
                 ).bounds(center - 234, bottomY, 110, 20).build()
         );
 
-        addRenderableWidget(
+        previewButton = addRenderableWidget(
                 Button.builder(
-                        Component.literal("Preview"),
-                        button -> send(UpdateDungeonRuleBlockPayload.ACTION_PREVIEW)
+                        previewMessage(),
+                        button -> togglePreview()
                 ).bounds(center - 118, bottomY, 110, 20).build()
         );
 
@@ -138,6 +137,22 @@ public final class DungeonRuleParentScreen extends Screen {
 
     private Component enabledMessage() {
         return Component.literal("Controller: " + (enabled ? "ENABLED" : "DISABLED"));
+    }
+
+    private Component previewMessage() {
+        return Component.literal("Preview: ")
+                .append(Component.literal(previewActive ? "ON" : "OFF")
+                        .withStyle(previewActive ? ChatFormatting.GREEN : ChatFormatting.RED));
+    }
+
+    private void togglePreview() {
+        previewActive = !previewActive;
+
+        if (previewButton != null) {
+            previewButton.setMessage(previewMessage());
+        }
+
+        send(UpdateDungeonRuleBlockPayload.ACTION_PREVIEW);
     }
 
     private boolean rulesAreActive() {
@@ -208,8 +223,6 @@ public final class DungeonRuleParentScreen extends Screen {
             float partialTick
     ) {
         renderBackground(graphics, mouseX, mouseY, partialTick);
-
-        // Render widgets first, then draw static labels above the widget layer.
         super.render(graphics, mouseX, mouseY, partialTick);
 
         int center = width / 2;

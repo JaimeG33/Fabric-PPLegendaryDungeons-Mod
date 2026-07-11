@@ -6,9 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Porting over old features v4&#10;New Dungeon Rule System v2.3&#10;Fixed UI's for good">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/DungeonRulePreviewManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/DungeonRulePreviewManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/client/DungeonRuleParentScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/client/DungeonRuleParentScreen.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/client/DungeonRuleZoneScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/client/DungeonRuleZoneScreen.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/network/DungeonRuleNetworking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/network/DungeonRuleNetworking.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/network/OpenDungeonRuleEditorPayload.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/dungeon_rules/network/OpenDungeonRuleEditorPayload.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,9 +117,9 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\dungeon_rules\network" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\dungeon_rules\client" />
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\dungeon_rules" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\summon\trigger" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\profiles\wtraders_maps\random" />
@@ -173,14 +175,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1783280264094</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Run / client stuff and crashlogs will be ignored in github">
-      <option name="closed" value="true" />
-      <created>1783284865089</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1783284865089</updated>
     </task>
     <task id="LOCAL-00005" summary="Transfered everything from the data folder of the original datapack to the data folder of this mod. So far, everything is still semi-functional. &#10;&#10;No new additions have been made, and no Java Setup either.">
       <option name="closed" value="true" />
@@ -566,7 +560,15 @@
       <option name="project" value="LOCAL" />
       <updated>1783735661376</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="Porting over old features v4&#10;New Dungeon Rule System v2.3&#10;Fixed UI's for good">
+      <option name="closed" value="true" />
+      <created>1783738127406</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1783738127406</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

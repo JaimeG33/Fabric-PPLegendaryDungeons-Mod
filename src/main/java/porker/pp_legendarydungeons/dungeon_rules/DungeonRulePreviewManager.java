@@ -1,4 +1,3 @@
-
 package porker.pp_legendarydungeons.dungeon_rules;
 
 import net.minecraft.core.BlockPos;
@@ -13,54 +12,86 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Temporary builder-only particle preview.
+ * Builder-only particle previews for dungeon-rule controllers.
  *
- * It runs only for players who explicitly press Preview in the configuration UI.
+ * A player can have at most one active preview. A preview remains enabled until
+ * the same controller is toggled off, another controller is toggled on, or the
+ * server stops.
+ *
+ * Particles are still refreshed only through the existing low-frequency player
+ * pulse, so an enabled preview does not create a new per-tick task.
  */
 public final class DungeonRulePreviewManager {
-    private static final int PREVIEW_DURATION_TICKS = 20 * 20;
     private static final Map<UUID, PreviewSession> SESSIONS = new HashMap<>();
 
     private DungeonRulePreviewManager() {
     }
 
-    public static void previewParent(ServerPlayer player, BlockPos pos) {
-        SESSIONS.put(
-                player.getUUID(),
-                new PreviewSession(
-                        player.serverLevel().dimension(),
-                        pos,
-                        pos,
-                        player.serverLevel().getServer().getTickCount() + PREVIEW_DURATION_TICKS
-                )
+    public static boolean toggleParent(ServerPlayer player, BlockPos sourcePos) {
+        return toggle(
+                player,
+                sourcePos,
+                sourcePos,
+                sourcePos
         );
     }
 
-    public static void previewZone(ServerPlayer player, BlockPos minPos, BlockPos maxPos) {
+    public static boolean toggleZone(
+            ServerPlayer player,
+            BlockPos sourcePos,
+            BlockPos minPos,
+            BlockPos maxPos
+    ) {
+        return toggle(
+                player,
+                sourcePos,
+                minPos,
+                maxPos
+        );
+    }
+
+    private static boolean toggle(
+            ServerPlayer player,
+            BlockPos sourcePos,
+            BlockPos minPos,
+            BlockPos maxPos
+    ) {
+        UUID playerId = player.getUUID();
+        ResourceKey<Level> dimension = player.serverLevel().dimension();
+        PreviewSession existing = SESSIONS.get(playerId);
+
+        if (existing != null
+                && existing.dimension().equals(dimension)
+                && existing.sourcePos().equals(sourcePos)) {
+            SESSIONS.remove(playerId);
+            return false;
+        }
+
         SESSIONS.put(
-                player.getUUID(),
+                playerId,
                 new PreviewSession(
-                        player.serverLevel().dimension(),
-                        minPos,
-                        maxPos,
-                        player.serverLevel().getServer().getTickCount() + PREVIEW_DURATION_TICKS
+                        dimension,
+                        sourcePos.immutable(),
+                        minPos.immutable(),
+                        maxPos.immutable()
                 )
         );
+
+        return true;
+    }
+
+    public static boolean isPreviewing(ServerPlayer player, BlockPos sourcePos) {
+        PreviewSession session = SESSIONS.get(player.getUUID());
+
+        return session != null
+                && session.dimension().equals(player.serverLevel().dimension())
+                && session.sourcePos().equals(sourcePos);
     }
 
     public static void tickPlayer(ServerLevel level, ServerPlayer player) {
         PreviewSession session = SESSIONS.get(player.getUUID());
 
-        if (session == null) {
-            return;
-        }
-
-        if (player.serverLevel().getServer().getTickCount() > session.expiresAtTick()) {
-            SESSIONS.remove(player.getUUID());
-            return;
-        }
-
-        if (!session.dimension().equals(level.dimension())) {
+        if (session == null || !session.dimension().equals(level.dimension())) {
             return;
         }
 
@@ -99,7 +130,13 @@ public final class DungeonRulePreviewManager {
         }
     }
 
-    private static void send(ServerLevel level, ServerPlayer player, int x, int y, int z) {
+    private static void send(
+            ServerLevel level,
+            ServerPlayer player,
+            int x,
+            int y,
+            int z
+    ) {
         level.sendParticles(
                 player,
                 ParticleTypes.END_ROD,
@@ -121,9 +158,9 @@ public final class DungeonRulePreviewManager {
 
     private record PreviewSession(
             ResourceKey<Level> dimension,
+            BlockPos sourcePos,
             BlockPos minPos,
-            BlockPos maxPos,
-            int expiresAtTick
+            BlockPos maxPos
     ) {
     }
 }
