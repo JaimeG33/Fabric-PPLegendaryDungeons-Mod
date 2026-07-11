@@ -1,4 +1,3 @@
-
 {
   "required": true,
   "minVersion": "0.8",
@@ -7,7 +6,8 @@
   "mixins": [
     "dungeon_rules.DungeonBlockBreakMixin",
     "dungeon_rules.DungeonBlockPlacementMixin",
-    "dungeon_rules.DungeonExplosionMixin"
+    "dungeon_rules.DungeonExplosionMixin",
+    "trades.NaturalWanderingTraderMixin"
   ],
   "client": [],
   "server": [],

@@ -6,8 +6,9 @@ import java.util.List;
 /**
  * Small helpers for nullable JSON fields.
  *
- * These classes intentionally use nullable wrapper types such as Integer and Boolean
- * so the future loader can distinguish "field missing" from "field set to 0/false".
+ * These classes intentionally use nullable wrapper types such as Integer, Float,
+ * and Boolean so the loader can distinguish "field missing" from a value that
+ * was explicitly set to 0/false.
  */
 public final class WTraderJsonValues {
     private WTraderJsonValues() {
@@ -18,6 +19,10 @@ public final class WTraderJsonValues {
     }
 
     public static int intOr(Integer value, int fallback) {
+        return value == null ? fallback : value;
+    }
+
+    public static float floatOr(Float value, float fallback) {
         return value == null ? fallback : value;
     }
 

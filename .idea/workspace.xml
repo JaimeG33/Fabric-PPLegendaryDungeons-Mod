@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Loot table injections v2.1 &#10;No errors, but loot is still unchanged for kelfki" />
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Begin work on villager injections v1">
+      <change afterPath="$PROJECT_DIR$/docs/README_VILLAGER_AND_NATURAL_WTRADER_INJECTIONS.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/pp_legendarydungeons/icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fabric.mod.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fabric.mod.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -102,24 +107,24 @@
     "copilot.chat.legacySessionMetadata.migrated": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/resources/data/pp_legendarydungeons/loot_table/loot_injections/pokemon",
+    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/docs",
     "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\docs" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\loot_table\loot_injections\pokemon" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\loot_table\loot_injections\chests" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\loot_table" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\docs" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\assets\pp_legendarydungeons" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\trade_pools\joke_trades" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\profiles\wtraders_maps\random" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\map_offers\random" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\selection_tables" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\docs" />
     </key>
   </component>
   <component name="RunManager" selected="Gradle.professor-porkers-legendary-dungeons [runClient]">
@@ -168,14 +173,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1783280264094</updated>
-    </task>
-    <task id="LOCAL-00014" summary="Renamed Project to &#10;Cobblemon: Explore Legendary Dungeons">
-      <option name="closed" value="true" />
-      <created>1783459640414</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1783459640415</updated>
     </task>
     <task id="LOCAL-00015" summary="Maps v1 (test no work)">
       <option name="closed" value="true" />
@@ -561,11 +558,18 @@
       <option name="project" value="LOCAL" />
       <updated>1783798019728</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL-00063" summary="Loot table injections v2.2&#10;hopefuly allow pokemon loot table injections now (ik thats now how it works)&#10;it works :)">
+      <option name="closed" value="true" />
+      <created>1783798725766</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1783798725766</updated>
+    </task>
+    <option name="localTasksCounter" value="64" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="WTraders v10&#10;&#10;Update to the way the wtrader json works. Can now accept custom nbt data by connecting it to an existing loot table for that specific trade. &#10;&#10;&#10;Can also now summon specific wtrader profile types and specific profiles." />
     <MESSAGE value="WTraders v11" />
     <MESSAGE value="WTraders v12&#10;Ported over the old nonmap wtraders" />
     <MESSAGE value="WTraders v13&#10;Ported over map based wtraders (forgot trial chambers lol)" />
@@ -590,6 +594,7 @@
     <MESSAGE value="Loot table injections v1.1&#10;&#10;modifying chances" />
     <MESSAGE value="Loot table injections v2&#10;&#10;- small update to old rolls with snow structures&#10;&#10;- Now begining work on injections to cobblemon defeat loot tables. &#10;ERROR, no work on the pokemon loot tables" />
     <MESSAGE value="Loot table injections v2.1 &#10;No errors, but loot is still unchanged for kelfki" />
-    <option name="LAST_COMMIT_MESSAGE" value="Loot table injections v2.1 &#10;No errors, but loot is still unchanged for kelfki" />
+    <MESSAGE value="Loot table injections v2.2&#10;hopefuly allow pokemon loot table injections now (ik thats now how it works)&#10;it works :)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Loot table injections v2.2&#10;hopefuly allow pokemon loot table injections now (ik thats now how it works)&#10;it works :)" />
   </component>
 </project>

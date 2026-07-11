@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * Runtime JSON model for:
- * data/<namespace>/wtrader_trade_pools/*.json
+ * data/<namespace>/wtrader/trade_pools/*.json
  */
 public final class TradePoolJson {
     public String id;
@@ -23,10 +23,25 @@ public final class TradePoolJson {
     @SerializedName("secondary_price")
     public TradePriceJson secondaryPrice;
 
+    /**
+     * Controls how strongly reputation, demand, and villager discounts affect
+     * the price. Existing pools default to 0.05 when this field is omitted.
+     *
+     * Typical vanilla-style values:
+     * - 0.05 for ordinary/low-tier trades
+     * - 0.20 for expensive/high-tier trades
+     */
+    @SerializedName("price_multiplier")
+    public Float priceMultiplier;
+
     public List<TradeEntryJson> entries;
 
     public int categoryWeightOrDefault(int fallback) {
         return WTraderJsonValues.intOr(categoryWeight, fallback);
+    }
+
+    public float priceMultiplierOrDefault(float fallback) {
+        return WTraderJsonValues.floatOr(priceMultiplier, fallback);
     }
 
     public List<String> tagsOrEmpty() {

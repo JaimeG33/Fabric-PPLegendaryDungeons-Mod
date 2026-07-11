@@ -1,0 +1,39 @@
+{
+  "id": "pp_legendarydungeons:villagers/cartographer/random_research_outpost_map",
+  "category": "villager_cartographer_random_research_outpost_map",
+  "category_weight": 1,
+  "tags": [
+    "villager_only",
+    "cartographer",
+    "novice",
+    "random_map"
+  ],
+  "base_price": {
+    "item": "minecraft:emerald",
+    "count": 16,
+    "variance_min": -2,
+    "variance_max": 2
+  },
+  "secondary_price": {
+    "item": "minecraft:compass",
+    "count": 1,
+    "variance_min": 0,
+    "variance_max": 0
+  },
+  "price_multiplier": 0.05,
+  "entries": [
+    {
+      "loot_table": "pp_legendarydungeons:maps/random/find_random_research_outpost",
+      "weight": 1,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 1,
+      "tags": [
+        "random_research_outpost",
+        "research_outpost"
+      ]
+    }
+  ]
+}

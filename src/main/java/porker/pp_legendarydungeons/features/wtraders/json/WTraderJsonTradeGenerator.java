@@ -17,30 +17,38 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Converts loaded JSON trader profiles into MerchantOffers.
+ * Converts loaded JSON trader profiles and exact trade-pool references into
+ * MerchantOffers.
  *
  * Supported in this version:
  * - direct_item
  * - pool_roll
  * - generated_map, if the caller supplies an already generated map ItemStack
  *
- * Pool-roll trade entries can now sell either:
+ * Pool-roll trade entries can sell either:
  * - a direct item id via "item"
  * - a generated ItemStack via "loot_table"
  *
- * Loot table entries are intended for enchanted tools, custom components,
- * custom names/lore, random enchantments, or other advanced ItemStack data.
+ * Loot table entries are intended for functional maps, enchanted tools, custom
+ * components, custom names/lore, random enchantments, or other advanced stacks.
  */
 public final class WTraderJsonTradeGenerator {
-    private static final float PRICE_MULTIPLIER = 0.05F;
+    private static final float DEFAULT_PRICE_MULTIPLIER = 0.05F;
 
-    private static final LootTableStackProvider NO_LOOT_TABLE_STACK_PROVIDER = lootTableId -> {
-        ProfessorPorkersLegendaryDungeons.LOGGER.warn(
-                "[WTrader JSON] Trade requested loot_table {}, but no loot table stack provider was supplied.",
-                lootTableId
-        );
-        return Optional.empty();
-    };
+    /**
+     * Pools with this tag are excluded from broad wandering-trader pool rolls.
+     * They can still be requested directly by id through createOfferFromPool().
+     */
+    private static final String VILLAGER_ONLY_TAG = "villager_only";
+
+    private static final LootTableStackProvider NO_LOOT_TABLE_STACK_PROVIDER =
+            lootTableId -> {
+                ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                        "[WTrader JSON] Trade requested loot_table {}, but no loot table stack provider was supplied.",
+                        lootTableId
+                );
+                return Optional.empty();
+            };
 
     private WTraderJsonTradeGenerator() {
     }
@@ -50,8 +58,16 @@ public final class WTraderJsonTradeGenerator {
         Optional<ItemStack> generate(String lootTableId);
     }
 
-    public static MerchantOffers createOffersForProfile(RandomSource random, TraderProfileJson profile) {
-        return createOffersForProfile(random, profile, Map.of(), NO_LOOT_TABLE_STACK_PROVIDER);
+    public static MerchantOffers createOffersForProfile(
+            RandomSource random,
+            TraderProfileJson profile
+    ) {
+        return createOffersForProfile(
+                random,
+                profile,
+                Map.of(),
+                NO_LOOT_TABLE_STACK_PROVIDER
+        );
     }
 
     public static MerchantOffers createOffersForProfile(
@@ -59,7 +75,12 @@ public final class WTraderJsonTradeGenerator {
             TraderProfileJson profile,
             Map<ResourceLocation, ItemStack> generatedMaps
     ) {
-        return createOffersForProfile(random, profile, generatedMaps, NO_LOOT_TABLE_STACK_PROVIDER);
+        return createOffersForProfile(
+                random,
+                profile,
+                generatedMaps,
+                NO_LOOT_TABLE_STACK_PROVIDER
+        );
     }
 
     public static MerchantOffers createOffersForProfile(
@@ -75,16 +96,29 @@ public final class WTraderJsonTradeGenerator {
         }
 
         LootTableStackProvider safeLootTableStackProvider =
-                lootTableStackProvider == null ? NO_LOOT_TABLE_STACK_PROVIDER : lootTableStackProvider;
+                lootTableStackProvider == null
+                        ? NO_LOOT_TABLE_STACK_PROVIDER
+                        : lootTableStackProvider;
 
-        int totalTrades = Math.max(1, profile.totalTradesOrDefault(Integer.MAX_VALUE));
+        int totalTrades = Math.max(
+                1,
+                profile.totalTradesOrDefault(Integer.MAX_VALUE)
+        );
 
         for (TraderTradeJson guaranteedTrade : profile.guaranteedTradesOrEmpty()) {
             if (offers.size() >= totalTrades) {
                 return offers;
             }
 
-            addGuaranteedTrade(random, offers, totalTrades, profile, guaranteedTrade, generatedMaps, safeLootTableStackProvider);
+            addGuaranteedTrade(
+                    random,
+                    offers,
+                    totalTrades,
+                    profile,
+                    guaranteedTrade,
+                    generatedMaps,
+                    safeLootTableStackProvider
+            );
         }
 
         for (TraderRandomSlotJson randomSlot : profile.randomSlotsOrEmpty()) {
@@ -109,6 +143,59 @@ public final class WTraderJsonTradeGenerator {
         return offers;
     }
 
+    /**
+     * Generates exactly one offer from one named trade pool.
+     *
+     * <p>This is the entry point used by vanilla villager trade factories. It
+     * deliberately bypasses the broad category/tag pool search, so a pool tagged
+     * villager_only can still be requested directly.</p>
+     */
+    public static Optional<MerchantOffer> createOfferFromPool(
+            RandomSource random,
+            ResourceLocation poolId,
+            LootTableStackProvider lootTableStackProvider
+    ) {
+        if (poolId == null) {
+            return Optional.empty();
+        }
+
+        Optional<TradePoolJson> pool = WTraderJsonRegistry.getTradePool(poolId);
+
+        if (pool.isEmpty()) {
+            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                    "[WTrader JSON] Direct trade request referenced missing pool {}.",
+                    poolId
+            );
+            return Optional.empty();
+        }
+
+        LootTableStackProvider safeLootTableStackProvider =
+                lootTableStackProvider == null
+                        ? NO_LOOT_TABLE_STACK_PROVIDER
+                        : lootTableStackProvider;
+
+        List<TradeEntryJson> validEntries = new ArrayList<>();
+
+        for (TradeEntryJson entry : pool.get().entriesOrEmpty()) {
+            if (entry == null || entry.weightOrDefault(0) <= 0) {
+                continue;
+            }
+
+            if (!entry.hasItem() && !entry.hasLootTable()) {
+                continue;
+            }
+
+            validEntries.add(entry);
+        }
+
+        return createOfferFromResolvedPool(
+                random,
+                pool.get(),
+                validEntries,
+                safeLootTableStackProvider
+        );
+    }
+
     private static void addGuaranteedTrade(
             RandomSource random,
             MerchantOffers offers,
@@ -123,12 +210,15 @@ public final class WTraderJsonTradeGenerator {
         }
 
         switch (trade.type) {
-            case WTraderJsonTradeTypes.DIRECT_ITEM -> createDirectItemOffer(random, trade).ifPresent(offers::add);
+            case WTraderJsonTradeTypes.DIRECT_ITEM ->
+                    createDirectItemOffer(random, trade).ifPresent(offers::add);
 
             case WTraderJsonTradeTypes.POOL_ROLL -> {
                 int count = Math.max(1, trade.countOrDefault(1));
 
-                for (int i = 0; i < count && offers.size() < totalTrades; i++) {
+                for (int i = 0;
+                     i < count && offers.size() < totalTrades;
+                     i++) {
                     createPoolRollOffer(
                             random,
                             trade.categoryFilterMode,
@@ -140,7 +230,13 @@ public final class WTraderJsonTradeGenerator {
                 }
             }
 
-            case WTraderJsonTradeTypes.GENERATED_MAP -> createGeneratedMapOffer(random, profile, trade, generatedMaps).ifPresent(offers::add);
+            case WTraderJsonTradeTypes.GENERATED_MAP ->
+                    createGeneratedMapOffer(
+                            random,
+                            profile,
+                            trade,
+                            generatedMaps
+                    ).ifPresent(offers::add);
 
             default -> ProfessorPorkersLegendaryDungeons.LOGGER.warn(
                     "[WTrader JSON] Profile {} has unsupported trade type: {}",
@@ -150,7 +246,10 @@ public final class WTraderJsonTradeGenerator {
         }
     }
 
-    private static Optional<MerchantOffer> createDirectItemOffer(RandomSource random, TraderTradeJson trade) {
+    private static Optional<MerchantOffer> createDirectItemOffer(
+            RandomSource random,
+            TraderTradeJson trade
+    ) {
         if (WTraderJsonValues.isBlank(trade.sellItem)) {
             ProfessorPorkersLegendaryDungeons.LOGGER.warn(
                     "[WTrader JSON] direct_item trade is missing sell_item."
@@ -164,7 +263,11 @@ public final class WTraderJsonTradeGenerator {
             return Optional.empty();
         }
 
-        int sellCount = randomBetween(random, trade.sellCountMinOrDefault(1), trade.sellCountMaxOrDefault(1));
+        int sellCount = randomBetween(
+                random,
+                trade.sellCountMinOrDefault(1),
+                trade.sellCountMaxOrDefault(1)
+        );
         ItemStack sellStack = new ItemStack(item, sellCount);
 
         return createOfferFromStack(
@@ -242,7 +345,20 @@ public final class WTraderJsonTradeGenerator {
                 continue;
             }
 
-            if (!WTraderTradeFilter.matchesCategory(categoryFilterMode, categories, pool.category)) {
+            /*
+             * "villager_only" is an actual usage restriction, not just a label.
+             * This keeps profession-specific pools out of broad custom WTrader
+             * random slots while still allowing exact pool-id requests.
+             */
+            if (pool.tagsOrEmpty().contains(VILLAGER_ONLY_TAG)) {
+                continue;
+            }
+
+            if (!WTraderTradeFilter.matchesCategory(
+                    categoryFilterMode,
+                    categories,
+                    pool.category
+            )) {
                 continue;
             }
 
@@ -271,8 +387,26 @@ public final class WTraderJsonTradeGenerator {
         }
 
         TradePoolJson pool = pickedPool.get();
-        List<TradeEntryJson> entries = matchingEntries(pool, tagFilterMode, tags);
+        List<TradeEntryJson> entries = matchingEntries(
+                pool,
+                tagFilterMode,
+                tags
+        );
 
+        return createOfferFromResolvedPool(
+                random,
+                pool,
+                entries,
+                lootTableStackProvider
+        );
+    }
+
+    private static Optional<MerchantOffer> createOfferFromResolvedPool(
+            RandomSource random,
+            TradePoolJson pool,
+            List<TradeEntryJson> entries,
+            LootTableStackProvider lootTableStackProvider
+    ) {
         Optional<TradeEntryJson> pickedEntry = WTraderWeightedPicker.pick(
                 random,
                 entries,
@@ -288,7 +422,11 @@ public final class WTraderJsonTradeGenerator {
         }
 
         TradeEntryJson entry = pickedEntry.get();
-        Optional<ItemStack> sellStack = createSellStackFromEntry(random, entry, lootTableStackProvider);
+        Optional<ItemStack> sellStack = createSellStackFromEntry(
+                random,
+                entry,
+                lootTableStackProvider
+        );
 
         if (sellStack.isEmpty()) {
             return Optional.empty();
@@ -301,7 +439,8 @@ public final class WTraderJsonTradeGenerator {
                 sellStack.get(),
                 entry.maxUsesMinOrDefault(1),
                 entry.maxUsesMaxOrDefault(1),
-                entry.xpOrDefault(0)
+                entry.xpOrDefault(0),
+                pool.priceMultiplierOrDefault(DEFAULT_PRICE_MULTIPLIER)
         );
     }
 
@@ -310,10 +449,15 @@ public final class WTraderJsonTradeGenerator {
             TradeEntryJson entry,
             LootTableStackProvider lootTableStackProvider
     ) {
-        int sellCount = randomBetween(random, entry.countMinOrDefault(1), entry.countMaxOrDefault(1));
+        int sellCount = randomBetween(
+                random,
+                entry.countMinOrDefault(1),
+                entry.countMaxOrDefault(1)
+        );
 
         if (entry.hasLootTable()) {
-            Optional<ItemStack> generatedStack = lootTableStackProvider.generate(entry.lootTable);
+            Optional<ItemStack> generatedStack =
+                    lootTableStackProvider.generate(entry.lootTable);
 
             if (generatedStack.isEmpty() || generatedStack.get().isEmpty()) {
                 ProfessorPorkersLegendaryDungeons.LOGGER.warn(
@@ -337,7 +481,11 @@ public final class WTraderJsonTradeGenerator {
         return Optional.of(new ItemStack(item, sellCount));
     }
 
-    private static List<TradeEntryJson> matchingEntries(TradePoolJson pool, String tagFilterMode, List<String> tags) {
+    private static List<TradeEntryJson> matchingEntries(
+            TradePoolJson pool,
+            String tagFilterMode,
+            List<String> tags
+    ) {
         List<TradeEntryJson> matching = new ArrayList<>();
 
         for (TradeEntryJson entry : pool.entriesOrEmpty()) {
@@ -349,7 +497,11 @@ public final class WTraderJsonTradeGenerator {
             combinedTags.addAll(pool.tagsOrEmpty());
             combinedTags.addAll(entry.tagsOrEmpty());
 
-            if (WTraderTradeFilter.matchesTags(tagFilterMode, tags, combinedTags)) {
+            if (WTraderTradeFilter.matchesTags(
+                    tagFilterMode,
+                    tags,
+                    combinedTags
+            )) {
                 matching.add(entry);
             }
         }
@@ -366,6 +518,28 @@ public final class WTraderJsonTradeGenerator {
             int maxUsesMax,
             int xp
     ) {
+        return createOfferFromStack(
+                random,
+                basePrice,
+                secondaryPrice,
+                sellStack,
+                maxUsesMin,
+                maxUsesMax,
+                xp,
+                DEFAULT_PRICE_MULTIPLIER
+        );
+    }
+
+    private static Optional<MerchantOffer> createOfferFromStack(
+            RandomSource random,
+            TradePriceJson basePrice,
+            TradePriceJson secondaryPrice,
+            ItemStack sellStack,
+            int maxUsesMin,
+            int maxUsesMax,
+            int xp,
+            float priceMultiplier
+    ) {
         Optional<ItemCost> baseCost = createItemCost(random, basePrice);
 
         if (baseCost.isEmpty()) {
@@ -374,6 +548,13 @@ public final class WTraderJsonTradeGenerator {
 
         int maxUses = randomBetween(random, maxUsesMin, maxUsesMax);
         int safeXp = Math.max(0, xp);
+        float safePriceMultiplier = priceMultiplier;
+
+        if (!Float.isFinite(safePriceMultiplier)
+                || safePriceMultiplier < 0.0F
+                || safePriceMultiplier > 1.0F) {
+            safePriceMultiplier = DEFAULT_PRICE_MULTIPLIER;
+        }
 
         if (secondaryPrice == null) {
             return Optional.of(new MerchantOffer(
@@ -381,11 +562,14 @@ public final class WTraderJsonTradeGenerator {
                     sellStack,
                     maxUses,
                     safeXp,
-                    PRICE_MULTIPLIER
+                    safePriceMultiplier
             ));
         }
 
-        Optional<ItemCost> secondaryCost = createItemCost(random, secondaryPrice);
+        Optional<ItemCost> secondaryCost = createItemCost(
+                random,
+                secondaryPrice
+        );
 
         if (secondaryCost.isEmpty()) {
             return Optional.empty();
@@ -397,11 +581,14 @@ public final class WTraderJsonTradeGenerator {
                 sellStack,
                 maxUses,
                 safeXp,
-                PRICE_MULTIPLIER
+                safePriceMultiplier
         ));
     }
 
-    private static Optional<ItemCost> createItemCost(RandomSource random, TradePriceJson price) {
+    private static Optional<ItemCost> createItemCost(
+            RandomSource random,
+            TradePriceJson price
+    ) {
         if (price == null || !price.hasItem()) {
             return Optional.empty();
         }
@@ -427,7 +614,8 @@ public final class WTraderJsonTradeGenerator {
             ResourceLocation id = ResourceLocation.parse(itemId);
             Item item = BuiltInRegistries.ITEM.get(id);
 
-            if (item == Items.AIR && !id.equals(ResourceLocation.withDefaultNamespace("air"))) {
+            if (item == Items.AIR
+                    && !id.equals(ResourceLocation.withDefaultNamespace("air"))) {
                 ProfessorPorkersLegendaryDungeons.LOGGER.warn(
                         "[WTrader JSON] Item id {} resolved to minecraft:air.",
                         itemId
@@ -445,7 +633,11 @@ public final class WTraderJsonTradeGenerator {
         }
     }
 
-    private static int randomBetween(RandomSource random, int min, int max) {
+    private static int randomBetween(
+            RandomSource random,
+            int min,
+            int max
+    ) {
         if (min > max) {
             int oldMin = min;
             min = max;

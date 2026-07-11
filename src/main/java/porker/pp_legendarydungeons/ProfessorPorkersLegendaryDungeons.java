@@ -11,6 +11,7 @@ import porker.pp_legendarydungeons.dungeon_rules.network.DungeonRuleNetworking;
 import porker.pp_legendarydungeons.dungeon_rules.preset.DungeonRulePresetRegistry;
 import porker.pp_legendarydungeons.features.FeatureTicker;
 import porker.pp_legendarydungeons.features.wtraders.json.WTraderJsonReloadRegistrar;
+import porker.pp_legendarydungeons.features.wtraders.villager.VillagerTradeInjectionRegistrar;
 import porker.pp_legendarydungeons.items.ItemGimmickTicker;
 import porker.pp_legendarydungeons.loot.LootTableInjectionRegistrar;
 import porker.pp_legendarydungeons.secrets.SecretTicker;
@@ -57,13 +58,19 @@ public class ProfessorPorkersLegendaryDungeons implements ModInitializer {
         WTraderJsonReloadRegistrar.register();
 
         /*
+         * Adds the three data-driven cartographer map factories to vanilla's
+         * candidate lists without replacing any vanilla or modded trades.
+         */
+        VillagerTradeInjectionRegistrar.register();
+
+        /*
          * Adds independent pools to selected existing chest/entity loot tables.
          * This preserves the original table and additions made by other mods.
          */
         LootTableInjectionRegistrar.register();
         /*
          * Bridges Cobblemon's native Pokémon drop events to additional Minecraft
-         * loot tables. The initial version runs in diagnostic-only mode.
+         * loot tables.
          */
         PokemonLootTableRegistrar.register();
 

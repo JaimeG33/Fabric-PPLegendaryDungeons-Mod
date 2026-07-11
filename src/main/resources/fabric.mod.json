@@ -9,6 +9,7 @@
     "Jaime Garcia"
   ],
   "license": "MIT",
+  "icon": "assets/pp_legendarydungeons/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [

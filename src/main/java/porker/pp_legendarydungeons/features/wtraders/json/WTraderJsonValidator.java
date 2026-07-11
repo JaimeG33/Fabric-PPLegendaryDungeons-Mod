@@ -16,6 +16,8 @@ import java.util.List;
  * the first version.
  */
 public final class WTraderJsonValidator {
+    private static final float DEFAULT_PRICE_MULTIPLIER = 0.05F;
+
     private WTraderJsonValidator() {
     }
 
@@ -39,11 +41,34 @@ public final class WTraderJsonValidator {
             return false;
         }
 
+        float priceMultiplier = pool.priceMultiplierOrDefault(
+                DEFAULT_PRICE_MULTIPLIER
+        );
+
+        if (!Float.isFinite(priceMultiplier)
+                || priceMultiplier < 0.0F
+                || priceMultiplier > 1.0F) {
+            warn(
+                    fileId,
+                    "Trade pool {} has price_multiplier outside 0.0-1.0: {}",
+                    pool.id,
+                    priceMultiplier
+            );
+            return false;
+        }
+
         if (!validatePrice(fileId, pool.id, "base_price", pool.basePrice, true)) {
             return false;
         }
 
-        if (pool.secondaryPrice != null && !validatePrice(fileId, pool.id, "secondary_price", pool.secondaryPrice, false)) {
+        if (pool.secondaryPrice != null
+                && !validatePrice(
+                        fileId,
+                        pool.id,
+                        "secondary_price",
+                        pool.secondaryPrice,
+                        false
+                )) {
             return false;
         }
 
@@ -70,7 +95,12 @@ public final class WTraderJsonValidator {
         return true;
     }
 
-    private static boolean validateTradeEntry(ResourceLocation fileId, String poolId, int index, TradeEntryJson entry) {
+    private static boolean validateTradeEntry(
+            ResourceLocation fileId,
+            String poolId,
+            int index,
+            TradeEntryJson entry
+    ) {
         if (entry == null) {
             warn(fileId, "Trade pool {} has null entry at index {}.", poolId, index);
             return false;
@@ -93,7 +123,13 @@ public final class WTraderJsonValidator {
             return false;
         }
 
-        if (hasLootTable && !validateResourceLocation(fileId, poolId, "entry " + index + " loot_table", entry.lootTable)) {
+        if (hasLootTable
+                && !validateResourceLocation(
+                        fileId,
+                        poolId,
+                        "entry " + index + " loot_table",
+                        entry.lootTable
+                )) {
             return false;
         }
 
@@ -102,11 +138,27 @@ public final class WTraderJsonValidator {
             return false;
         }
 
-        if (!validateRange(fileId, poolId, "entry " + index + " count", entry.countMinOrDefault(1), entry.countMaxOrDefault(1), 1, 64)) {
+        if (!validateRange(
+                fileId,
+                poolId,
+                "entry " + index + " count",
+                entry.countMinOrDefault(1),
+                entry.countMaxOrDefault(1),
+                1,
+                64
+        )) {
             return false;
         }
 
-        if (!validateRange(fileId, poolId, "entry " + index + " max_uses", entry.maxUsesMinOrDefault(1), entry.maxUsesMaxOrDefault(1), 1, Integer.MAX_VALUE)) {
+        if (!validateRange(
+                fileId,
+                poolId,
+                "entry " + index + " max_uses",
+                entry.maxUsesMinOrDefault(1),
+                entry.maxUsesMaxOrDefault(1),
+                1,
+                Integer.MAX_VALUE
+        )) {
             return false;
         }
 
@@ -118,7 +170,10 @@ public final class WTraderJsonValidator {
         return true;
     }
 
-    public static boolean validateTraderProfile(ResourceLocation fileId, TraderProfileJson profile) {
+    public static boolean validateTraderProfile(
+            ResourceLocation fileId,
+            TraderProfileJson profile
+    ) {
         if (profile == null) {
             warn(fileId, "Trader profile JSON parsed to null.");
             return false;
@@ -143,13 +198,16 @@ public final class WTraderJsonValidator {
             return false;
         }
 
-        // The deeper validation of guaranteed trade fields happens in the future
-        // trade generator. This first loader only confirms the profile is shaped
-        // enough to store safely.
+        // The deeper validation of guaranteed trade fields happens in the
+        // trade generator. This loader confirms the profile is shaped enough
+        // to store safely.
         return true;
     }
 
-    public static boolean validateSelectionTable(ResourceLocation fileId, SelectionTableJson table) {
+    public static boolean validateSelectionTable(
+            ResourceLocation fileId,
+            SelectionTableJson table
+    ) {
         if (table == null) {
             warn(fileId, "Selection table JSON parsed to null.");
             return false;
@@ -169,10 +227,12 @@ public final class WTraderJsonValidator {
         for (int index = 0; index < table.topLevelRollsOrEmpty().size(); index++) {
             WeightedResultJson result = table.topLevelRollsOrEmpty().get(index);
 
-            if (result != null && result.hasResult() && result.weightOrDefault(0) > 0) {
+            if (result != null
+                    && result.hasResult()
+                    && result.weightOrDefault(0) > 0) {
                 anyTopLevelRoll = true;
             } else {
-                warn(fileId, "Selection table {} has invalid top_level_roll at index {}.", table.id);
+                warn(fileId, "Selection table {} has invalid top_level_roll at index {}.", table.id, index);
             }
         }
 
@@ -184,7 +244,10 @@ public final class WTraderJsonValidator {
         return true;
     }
 
-    public static boolean validateMapOffer(ResourceLocation fileId, MapOfferJson mapOffer) {
+    public static boolean validateMapOffer(
+            ResourceLocation fileId,
+            MapOfferJson mapOffer
+    ) {
         if (mapOffer == null) {
             warn(fileId, "Map offer JSON parsed to null.");
             return false;
@@ -273,14 +336,27 @@ public final class WTraderJsonValidator {
         }
 
         if (min < allowedMin || max > allowedMax) {
-            warn(fileId, "{} has {} outside allowed range {}-{}: {}-{}.", ownerId, fieldName, allowedMin, allowedMax, min, max);
+            warn(
+                    fileId,
+                    "{} has {} outside allowed range {}-{}: {}-{}.",
+                    ownerId,
+                    fieldName,
+                    allowedMin,
+                    allowedMax,
+                    min,
+                    max
+            );
             return false;
         }
 
         return true;
     }
 
-    private static boolean requireId(ResourceLocation fileId, String id, String typeName) {
+    private static boolean requireId(
+            ResourceLocation fileId,
+            String id,
+            String typeName
+    ) {
         if (WTraderJsonValues.isBlank(id)) {
             warn(fileId, "{} is missing id.", typeName);
             return false;
@@ -289,8 +365,18 @@ public final class WTraderJsonValidator {
         return validateResourceLocation(fileId, id, "id", id);
     }
 
-    private static boolean validateItemId(ResourceLocation fileId, String ownerId, String fieldName, String itemId) {
-        ResourceLocation parsed = parseResourceLocation(fileId, ownerId, fieldName, itemId);
+    private static boolean validateItemId(
+            ResourceLocation fileId,
+            String ownerId,
+            String fieldName,
+            String itemId
+    ) {
+        ResourceLocation parsed = parseResourceLocation(
+                fileId,
+                ownerId,
+                fieldName,
+                itemId
+        );
 
         if (parsed == null) {
             return false;
@@ -298,7 +384,8 @@ public final class WTraderJsonValidator {
 
         Item item = BuiltInRegistries.ITEM.get(parsed);
 
-        if (item == Items.AIR && !parsed.equals(ResourceLocation.withDefaultNamespace("air"))) {
+        if (item == Items.AIR
+                && !parsed.equals(ResourceLocation.withDefaultNamespace("air"))) {
             warn(fileId, "{} has {} that resolved to minecraft:air: {}", ownerId, fieldName, itemId);
             return false;
         }
@@ -306,11 +393,21 @@ public final class WTraderJsonValidator {
         return true;
     }
 
-    private static boolean validateResourceLocation(ResourceLocation fileId, String ownerId, String fieldName, String value) {
+    private static boolean validateResourceLocation(
+            ResourceLocation fileId,
+            String ownerId,
+            String fieldName,
+            String value
+    ) {
         return parseResourceLocation(fileId, ownerId, fieldName, value) != null;
     }
 
-    private static ResourceLocation parseResourceLocation(ResourceLocation fileId, String ownerId, String fieldName, String value) {
+    private static ResourceLocation parseResourceLocation(
+            ResourceLocation fileId,
+            String ownerId,
+            String fieldName,
+            String value
+    ) {
         try {
             return ResourceLocation.parse(value);
         } catch (Exception exception) {
@@ -319,7 +416,11 @@ public final class WTraderJsonValidator {
         }
     }
 
-    private static void warn(ResourceLocation fileId, String message, Object... args) {
+    private static void warn(
+            ResourceLocation fileId,
+            String message,
+            Object... args
+    ) {
         ProfessorPorkersLegendaryDungeons.LOGGER.warn(
                 "[WTrader JSON] {}: " + message,
                 prepend(fileId, args)
