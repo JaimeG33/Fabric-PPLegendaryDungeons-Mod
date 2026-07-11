@@ -14,6 +14,7 @@ import porker.pp_legendarydungeons.features.wtraders.runtime.WTraderProfileOffer
 
 import java.util.Optional;
 import java.util.UUID;
+import net.minecraft.world.level.storage.ServerLevelData;
 
 /**
  * Applies the vanilla_wtrader_spawns selection table to naturally spawned
@@ -179,13 +180,28 @@ public final class NaturalWanderingTraderService {
         );
     }
 
+    /**
+     * Checks whether this trader is the entity currently tracked by vanilla's
+     * natural wandering-trader spawner.
+     *
+     * <p>ServerLevel#getLevelData() is declared as the general LevelData type,
+     * even though the server-side implementation also implements ServerLevelData.
+     * The explicit type check is therefore required before accessing the stored
+     * wandering-trader UUID.</p>
+     */
     private static boolean isCurrentNaturalTrader(
             ServerLevel level,
             WanderingTrader trader
     ) {
-        UUID naturalTraderId = level
-                .getLevelData()
-                .getWanderingTraderId();
+        if (!(level.getLevelData() instanceof ServerLevelData serverLevelData)) {
+            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                    "[Natural WTrader] Server level data did not implement ServerLevelData; "
+                            + "natural trader detection was skipped."
+            );
+            return false;
+        }
+
+        UUID naturalTraderId = serverLevelData.getWanderingTraderId();
 
         return naturalTraderId != null
                 && naturalTraderId.equals(trader.getUUID());

@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Begin work on villager injections v1">
-      <change afterPath="$PROJECT_DIR$/docs/README_VILLAGER_AND_NATURAL_WTRADER_INJECTIONS.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/pp_legendarydungeons/icon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fabric.mod.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fabric.mod.json" afterDir="false" />
-    </list>
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Begin work on villager injections v1&#10;&#10;ERROR on NaturalWanderingTraderService" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -107,17 +102,17 @@
     "copilot.chat.legacySessionMetadata.migrated": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/docs",
+    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/java/porker/pp_legendarydungeons/features/wtraders",
     "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\docs" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\loot_table\loot_injections\pokemon" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\loot_table\loot_injections\chests" />
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\features\wtraders" />
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\features\wtraders\json" />
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\mixin" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\loot_table" />
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\trade_pools" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\assets\pp_legendarydungeons" />
@@ -173,14 +168,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1783280264094</updated>
-    </task>
-    <task id="LOCAL-00015" summary="Maps v1 (test no work)">
-      <option name="closed" value="true" />
-      <created>1783466455256</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1783466455256</updated>
     </task>
     <task id="LOCAL-00016" summary="Maps v2 (test no work)">
       <option name="closed" value="true" />
@@ -566,11 +553,18 @@
       <option name="project" value="LOCAL" />
       <updated>1783798725766</updated>
     </task>
-    <option name="localTasksCounter" value="64" />
+    <task id="LOCAL-00064" summary="Begin work on villager injections v1&#10;&#10;ERROR on NaturalWanderingTraderService">
+      <option name="closed" value="true" />
+      <created>1783805155952</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1783805155953</updated>
+    </task>
+    <option name="localTasksCounter" value="65" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="WTraders v11" />
     <MESSAGE value="WTraders v12&#10;Ported over the old nonmap wtraders" />
     <MESSAGE value="WTraders v13&#10;Ported over map based wtraders (forgot trial chambers lol)" />
     <MESSAGE value="WTraders v14" />
@@ -595,6 +589,7 @@
     <MESSAGE value="Loot table injections v2&#10;&#10;- small update to old rolls with snow structures&#10;&#10;- Now begining work on injections to cobblemon defeat loot tables. &#10;ERROR, no work on the pokemon loot tables" />
     <MESSAGE value="Loot table injections v2.1 &#10;No errors, but loot is still unchanged for kelfki" />
     <MESSAGE value="Loot table injections v2.2&#10;hopefuly allow pokemon loot table injections now (ik thats now how it works)&#10;it works :)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Loot table injections v2.2&#10;hopefuly allow pokemon loot table injections now (ik thats now how it works)&#10;it works :)" />
+    <MESSAGE value="Begin work on villager injections v1&#10;&#10;ERROR on NaturalWanderingTraderService" />
+    <option name="LAST_COMMIT_MESSAGE" value="Begin work on villager injections v1&#10;&#10;ERROR on NaturalWanderingTraderService" />
   </component>
 </project>
