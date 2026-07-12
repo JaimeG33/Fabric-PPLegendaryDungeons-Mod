@@ -5,12 +5,6 @@ public enum WanderingTraderMapOffer {
             "sky_pillar",
             "pp_legendarydungeons:maps/find_skypillar"
     ),
-
-    CRYSTAL_CAVES(
-            "crystal_caves",
-            "pp_legendarydungeons:maps/find_crystal_caves"
-    ),
-
     RANDOM_DUNGEON(
             "random_dungeon",
             "pp_legendarydungeons:maps/random/find_random_dungeon"

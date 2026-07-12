@@ -17,15 +17,6 @@ public enum LegendaryMapTarget {
             "This map shows the location to the legendary dungeon of Rayquaza",
             "pp_legendarydungeons:maps/find_skypillar",
             "pp_legendarydungeons:skypillar_tag"
-    ),
-
-    CRYSTAL_CAVES(
-            "crystal_caves",
-            3311109,
-            "Crystal Caves Locator Map",
-            "This map leads to a carbink colony headed by Diancie",
-            "pp_legendarydungeons:maps/find_crystal_caves",
-            "pp_legendarydungeons:crystal_caves_tag"
     );
 
     private final String id;

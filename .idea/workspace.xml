@@ -4,7 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Begin work on villager injections v1&#10;&#10;ERROR on NaturalWanderingTraderService" />
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Begin work on villager injections v1.2">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/wtraders/WanderingTraderMapOffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/features/wtraders/WanderingTraderMapOffer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/items/maps_findrandom/RandomMapRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/items/maps_findrandom/RandomMapRegistry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/maps/LegendaryMapTarget.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/maps/LegendaryMapTarget.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/worldgen/structure/crystal_caves_tag.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/worldgen/structure/random/dungeons.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/worldgen/structure/random/dungeons.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/worldgen/structure/dungeon/crystal_caves.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/worldgen/structure_set/dungeons/crystal_caves.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/villagers/cartographer/random_dungeon_map.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/villagers/cartographer/random_dungeon_map.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/villagers/cartographer/random_misc_map.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/villagers/cartographer/random_misc_map.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/villagers/cartographer/random_research_outpost_map.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/villagers/cartographer/random_research_outpost_map.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -91,21 +103,21 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Build professor-porkers-legendary-dungeons.executor": "Run",
-    "Gradle.professor-porkers-legendary-dungeons [runClient].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "copilot.chat.legacySessionMetadata.migrated": "true",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/java/porker/pp_legendarydungeons/features/wtraders",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Build professor-porkers-legendary-dungeons.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.professor-porkers-legendary-dungeons [runClient].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;copilot.chat.legacySessionMetadata.migrated&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/java/porker/pp_legendarydungeons/features/wtraders&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\features\wtraders" />
@@ -168,14 +180,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1783280264094</updated>
-    </task>
-    <task id="LOCAL-00016" summary="Maps v2 (test no work)">
-      <option name="closed" value="true" />
-      <created>1783467266231</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1783467266231</updated>
     </task>
     <task id="LOCAL-00017" summary="Maps v4  SKY PILLAR MAP WORKS BAYBEEE">
       <option name="closed" value="true" />
@@ -561,11 +565,18 @@
       <option name="project" value="LOCAL" />
       <updated>1783805155953</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="Begin work on villager injections v1.1 functional hopefully lol">
+      <option name="closed" value="true" />
+      <created>1783805350777</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1783805350777</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="WTraders v12&#10;Ported over the old nonmap wtraders" />
     <MESSAGE value="WTraders v13&#10;Ported over map based wtraders (forgot trial chambers lol)" />
     <MESSAGE value="WTraders v14" />
     <MESSAGE value="WTraders v15&#10;&#10;Slight change to the json logic to include the include_any_of tag searcher in addition to the existing include (something with all these tags)" />
@@ -590,6 +601,7 @@
     <MESSAGE value="Loot table injections v2.1 &#10;No errors, but loot is still unchanged for kelfki" />
     <MESSAGE value="Loot table injections v2.2&#10;hopefuly allow pokemon loot table injections now (ik thats now how it works)&#10;it works :)" />
     <MESSAGE value="Begin work on villager injections v1&#10;&#10;ERROR on NaturalWanderingTraderService" />
-    <option name="LAST_COMMIT_MESSAGE" value="Begin work on villager injections v1&#10;&#10;ERROR on NaturalWanderingTraderService" />
+    <MESSAGE value="Begin work on villager injections v1.1 functional hopefully lol" />
+    <option name="LAST_COMMIT_MESSAGE" value="Begin work on villager injections v1.1 functional hopefully lol" />
   </component>
 </project>

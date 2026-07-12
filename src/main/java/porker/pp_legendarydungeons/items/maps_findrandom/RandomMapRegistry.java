@@ -34,15 +34,6 @@ public final class RandomMapRegistry {
                                             Component.literal("A towering pillar in the sky connected to Rayquaza.")
                                                     .withStyle(ChatFormatting.GRAY)
                                     )
-                            ),
-                            new RandomMapTarget(
-                                    "crystal_caves",
-                                    "Crystal Caves",
-                                    "pp_legendarydungeons:crystal_caves_tag",
-                                    List.of(
-                                            Component.literal("A Carbink colony said to be watched over by Diancie.")
-                                                    .withStyle(ChatFormatting.GRAY)
-                                    )
                             )
                     )
             ),

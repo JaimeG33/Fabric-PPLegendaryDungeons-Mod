@@ -10,14 +10,14 @@
   ],
   "base_price": {
     "item": "minecraft:emerald",
-    "count": 16,
-    "variance_min": -2,
-    "variance_max": 2
+    "count": 8,
+    "variance_min": -5,
+    "variance_max": 3
   },
   "secondary_price": {
-    "item": "minecraft:compass",
-    "count": 1,
-    "variance_min": 0,
+    "item": "cobblemon:relic_coin",
+    "count": 8,
+    "variance_min": -4,
     "variance_max": 0
   },
   "price_multiplier": 0.05,
