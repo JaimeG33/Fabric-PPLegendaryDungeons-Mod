@@ -128,7 +128,7 @@ public final class PokemonLootTableRegistrar {
                 )
         );
 
-        ProfessorPorkersLegendaryDungeons.LOGGER.info(
+        ProfessorPorkersLegendaryDungeons.LOGGER.debug(
                 "[Pokemon Loot Diagnostic] BATTLE_FAINTED species={} pokemonUuid={} wild={} player={} table={}",
                 faintedPokemon.getSpecies().getResourceIdentifier(),
                 faintedPokemon.getUuid(),
@@ -149,7 +149,7 @@ public final class PokemonLootTableRegistrar {
         cleanupExpiredContexts();
 
         if (!(event.getEntity() instanceof PokemonEntity pokemonEntity)) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.info(
+            ProfessorPorkersLegendaryDungeons.LOGGER.debug(
                     "[Pokemon Loot Diagnostic] LOOT_DROPPED without PokemonEntity. entityPresent={} player={} selectedNativeDrops={}",
                     event.getEntity() != null,
                     playerName(event.getPlayer()),

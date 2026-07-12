@@ -161,14 +161,14 @@ public final class PokemonLootTableRunner {
             );
 
             return spawnedStacks;
-        } catch (Throwable throwable) {
+        } catch (Exception exception) {
             ProfessorPorkersLegendaryDungeons.LOGGER.error(
                     "[Pokemon Loot] Failed to execute loot table {} for species {}.",
                     lootTableKey.location(),
                     pokemonEntity.getPokemon()
                             .getSpecies()
                             .getResourceIdentifier(),
-                    throwable
+                    exception
             );
 
             return 0;

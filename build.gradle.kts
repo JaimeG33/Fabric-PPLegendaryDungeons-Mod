@@ -7,7 +7,12 @@ plugins {
 }
 
 group = "porker.pp_legendarydungeons"
-version = "1.0.0-mc1.21.1-cobblemon1.6.1-1.7.3"
+version = "1.0.2"
+base {
+    archivesName.set(
+        "cobblemon-eld-${project.version}-fabricmc1.21.1-cob1.7.3"
+    )
+}
 
 architectury {
     platformSetupLoomIde()
@@ -48,10 +53,10 @@ dependencies {
     modImplementation("net.fabricmc.fabric-api:fabric-api:0.116.6+1.21.1")
 
     modImplementation("net.fabricmc:fabric-language-kotlin:1.13.6+kotlin.2.2.20")
-    modCompileOnly("com.cobblemon:mod:1.6.1+1.21.1") {
+    modCompileOnly("com.cobblemon:mod:1.7.3+1.21.1") {
         isTransitive = false
     }
-    modImplementation("com.cobblemon:fabric:1.6.1+1.21.1")
+    modImplementation("com.cobblemon:fabric:1.7.3+1.21.1")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.0")
