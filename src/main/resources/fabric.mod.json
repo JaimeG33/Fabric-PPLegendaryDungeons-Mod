@@ -25,6 +25,7 @@
   "depends": {
     "minecraft": "1.21.1",
     "fabric-api": "*",
-    "cobblemon": ">=1.6.1 <1.8.0"
+    "cobblemon": "1.7.3",
+    "mega_showdown": ">=1.6.9 <=1.7.4"
   }
 }

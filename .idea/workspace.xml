@@ -4,62 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="removed crystal caves structure for now so it doesn't spawn unready in players worlds">
-      <change afterPath="$PROJECT_DIR$/docs/COMPATIBILITY.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/RELEASE_CHECKLIST.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/archive/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/development/ADDING_CONTENT.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/development/PROJECT_IDENTIFIERS_AND_BUILD.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/development/WTRADER_JSON_SCHEMA.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/gameplay/LEGENDARY_SUMMONS_AND_DUNGEON_RULES.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/gameplay/LOOT_INJECTIONS.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/gameplay/MAPS.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/gameplay/TRADERS.md" afterDir="false" />
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Version 1.7.3 dependency only, also about to add mega showdown as a dependency.">
       <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/PORTING_GUIDE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/README_ITEM_GIMMICK_SYSTEM.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/README_LOOT_TABLE_INJECTIONS.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/README_MAP_GENERATION_AND_RANDOM_MAPS.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/README_MAP_LORE_AND_COORDINATES.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/README_VILLAGER_AND_NATURAL_WTRADER_INJECTIONS.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/draft_map_profiles/to_ancient_city.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/draft_map_profiles/to_crystal_caves.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/draft_map_profiles/to_fishing_boat.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/draft_map_profiles/to_mega_site.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/draft_map_profiles/to_shipwreck_cove.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/draft_map_profiles/to_skypillar.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/draft_map_profiles/to_wishing_weald.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/dungeon_rules/README_BLOCKS_AND_ZONES.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/dungeon_rules/README_DUNGEON_COMPLETION.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/dungeon_rules/README_LEGENDARY_SUMMON_INTEGRATION.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/dungeon_rules/README_RUNTIME_AND_RULES.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/dungeon_rules/README_UI_AND_BUILDING.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/examples/wtraders/loot_table_fortune_3_pickaxe.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/examples/wtraders/map_offer_sky_pillar.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/examples/wtraders/profile_supply_trader.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/examples/wtraders/profile_to_skypillar.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/examples/wtraders/selection_default.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/examples/wtraders/trade_pool_cobblemon_ev_training.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/examples/wtraders/trade_pool_enchanted_tools_test.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/examples/wtraders/trade_pool_saplings.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/wtrader_json_schema.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/wtrader_map_porting/README_IMPLEMENTATION_STEPS.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/wtrader_map_porting/disabled_crystal_caves_draft/crystal_caves_map_offer.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/wtrader_map_porting/disabled_crystal_caves_draft/gems_crystal_caves.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/wtrader_map_porting/disabled_crystal_caves_draft/to_crystal_caves.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/wtrader_marker_and_loot_table_entries.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/wtrader_random_map_odds_fix/README_IMPLEMENTATION_STEPS.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/wtrader_random_profiles_include_any/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/loot/pokemon/PokemonLootTableRegistrar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/loot/pokemon/PokemonLootTableRegistrar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/function/other/maps/clear_oldmap.mcfunction" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/function/other/maps/find_map.mcfunction" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/function/other/maps/voucher_check.mcfunction" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/maps/random/find_random_dungeon.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/loot_table/maps/random/find_random_dungeon.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/worldgen/structure_set/ancient_battles/gvk/island_1.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/worldgen/structure_set/ancient_battles/gvk/island_1.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/worldgen/structure_set/overtaken_outpost/1.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/worldgen/structure_set/overtaken_outpost/1.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/fabric.mod.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fabric.mod.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -225,14 +173,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1783280264094</updated>
-    </task>
-    <task id="LOCAL-00018" summary="Maps v4.1 added cusom data to certain maps">
-      <option name="closed" value="true" />
-      <created>1783534026540</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1783534026540</updated>
     </task>
     <task id="LOCAL-00019" summary="Maps v4.2 &#10;Added Major Structures to maps">
       <option name="closed" value="true" />
@@ -618,11 +558,18 @@
       <option name="project" value="LOCAL" />
       <updated>1783820366360</updated>
     </task>
-    <option name="localTasksCounter" value="67" />
+    <task id="LOCAL-00067" summary="Version 1.7.3 dependency only, also about to add mega showdown as a dependency.">
+      <option name="closed" value="true" />
+      <created>1783898481354</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1783898481354</updated>
+    </task>
+    <option name="localTasksCounter" value="68" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="WTraders v14" />
     <MESSAGE value="WTraders v15&#10;&#10;Slight change to the json logic to include the include_any_of tag searcher in addition to the existing include (something with all these tags)" />
     <MESSAGE value="WTraders v16&#10;I think this is all of the main traders" />
     <MESSAGE value="WTraders v17&#10;tried to fix names but they still show up." />
@@ -647,6 +594,7 @@
     <MESSAGE value="Begin work on villager injections v1&#10;&#10;ERROR on NaturalWanderingTraderService" />
     <MESSAGE value="Begin work on villager injections v1.1 functional hopefully lol" />
     <MESSAGE value="removed crystal caves structure for now so it doesn't spawn unready in players worlds" />
-    <option name="LAST_COMMIT_MESSAGE" value="removed crystal caves structure for now so it doesn't spawn unready in players worlds" />
+    <MESSAGE value="Version 1.7.3 dependency only, also about to add mega showdown as a dependency." />
+    <option name="LAST_COMMIT_MESSAGE" value="Version 1.7.3 dependency only, also about to add mega showdown as a dependency." />
   </component>
 </project>
