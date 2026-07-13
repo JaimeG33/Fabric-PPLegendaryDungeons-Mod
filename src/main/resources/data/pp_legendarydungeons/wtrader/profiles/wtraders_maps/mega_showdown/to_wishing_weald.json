@@ -68,7 +68,9 @@
       "count": 1,
       "category_filter_mode": "include",
       "categories": [
-        "mega_showdown_specials"
+        "mega_showdown_specials",
+        "joke_max_mushroom_brown",
+        "joke_max_mushroom_red"
       ],
       "tag_filter_mode": "include",
       "tags": []

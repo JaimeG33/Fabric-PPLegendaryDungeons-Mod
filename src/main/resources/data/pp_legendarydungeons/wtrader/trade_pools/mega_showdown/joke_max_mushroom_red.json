@@ -1,0 +1,36 @@
+{
+  "id": "pp_legendarydungeons:joke_max_mushroom_red",
+  "category": "max_mushroom_duplication_red",
+  "category_weight": 1,
+  "tags": [
+    "mega_showdown",
+    "joke",
+    "secondary_price"
+  ],
+  "base_price": {
+    "item": "mega_showdown:max_mushroom",
+    "count": 1,
+    "variance_min": 0,
+    "variance_max": 0
+  },
+  "secondary_price": {
+    "item": "minecraft:red_mushroom",
+    "count": 2,
+    "variance_min": -1,
+    "variance_max": 3
+  },
+  "entries": [
+    {
+      "item": "mega_showdown:max_mushroom",
+      "weight": 10,
+      "count_min": 2,
+      "count_max": 2,
+      "max_uses_min": 3,
+      "max_uses_max": 5,
+      "xp": 15,
+      "tags": [
+        "max_mushroom"
+      ]
+    }
+  ]
+}
