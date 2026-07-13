@@ -26,8 +26,8 @@ Each phase document should contain:
 |---|---|---|
 | 0 | `PHASE_00_BRANCH_AND_BASELINE.md` | Complete |
 | 1 | `PHASE_01_ARCHITECTURY_DIRECT_DEPENDENCY.md` | Complete and locally verified |
-| 2 | `PHASE_02_COMMON_EVENT_FOUNDATION.md` | Ready to apply and verify |
-| 3 | Future: interaction and protection events | Planned |
+| 2 | `PHASE_02_COMMON_EVENT_FOUNDATION.md` | Complete and locally verified |
+| 3 | `PHASE_03_INTERACTION_AND_PROTECTION_EVENTS.md` | Ready to apply and verify |
 | 4 | Future: deferred registries | Planned |
 | 5 | Future: networking and client boundary | Planned |
 | 6 | Future: Fabric regression checkpoint | Planned |

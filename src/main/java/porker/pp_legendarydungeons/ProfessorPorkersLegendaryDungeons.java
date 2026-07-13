@@ -2,15 +2,13 @@ package porker.pp_legendarydungeons;
 
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
-import porker.pp_legendarydungeons.dungeon_rules.events.DungeonRuleInteractionEvents;
 import porker.pp_legendarydungeons.dungeon_rules.network.DungeonRuleNetworking;
 
 /**
  * Fabric loader entrypoint.
  *
- * <p>Most initialization now lives in {@link LegendaryDungeons}. The two
- * registrations left here still use Fabric-specific APIs and will move into
- * shared Architectury code during their dedicated migration phases.</p>
+ * <p>Shared initialization lives in {@link LegendaryDungeons}. Only Fabric
+ * networking remains here until the networking and client-boundary phase.</p>
  */
 public final class ProfessorPorkersLegendaryDungeons implements ModInitializer {
     /**
@@ -29,12 +27,9 @@ public final class ProfessorPorkersLegendaryDungeons implements ModInitializer {
         LegendaryDungeons.init();
 
         /*
-         * Deferred to later phases:
-         * - Phase 3: interaction and protection events
-         * - Phase 5: networking and client boundary
+         * Deferred to Phase 5: networking and client boundary.
          */
         DungeonRuleNetworking.register();
-        DungeonRuleInteractionEvents.register();
 
         LOGGER.info("Cobblemon: Explore Legendary Dungeons initialized on Fabric.");
     }

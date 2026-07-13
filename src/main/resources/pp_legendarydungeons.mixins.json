@@ -4,8 +4,6 @@
   "package": "porker.pp_legendarydungeons.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "dungeon_rules.DungeonBlockBreakMixin",
-    "dungeon_rules.DungeonBlockPlacementMixin",
     "dungeon_rules.DungeonExplosionMixin",
     "trades.NaturalWanderingTraderMixin"
   ],

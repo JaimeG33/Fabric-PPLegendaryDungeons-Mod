@@ -19,7 +19,7 @@ Unless a newer phase document explicitly replaces these values, use this baselin
 | Accessories | `1.1.0-beta.52+1.21.1` |
 | NeoForge | planned; initial alignment target `21.1.214` |
 
-The repository remains a single-module Fabric project. Phase 1 made Architectury API a direct dependency. Phase 2 begins moving low-risk lifecycle, tick, reload, trade, and loot boundaries into loader-neutral Architectury code while preserving Fabric as the only runnable platform for now.
+The repository remains a single-module Fabric project. Phases 1 and 2 established the direct Architectury dependency and shared lifecycle/tick/reload/trade/loot foundation. Phase 3 moves dungeon interactions and player block protection to Architectury events and removes the two redundant break/place mixins.
 
 ## Start here for the multi-loader migration
 
@@ -28,6 +28,7 @@ The repository remains a single-module Fabric project. Phase 1 made Architectury
 3. [`migration/PHASE_00_BRANCH_AND_BASELINE.md`](migration/PHASE_00_BRANCH_AND_BASELINE.md)
 4. [`migration/PHASE_01_ARCHITECTURY_DIRECT_DEPENDENCY.md`](migration/PHASE_01_ARCHITECTURY_DIRECT_DEPENDENCY.md)
 5. [`migration/PHASE_02_COMMON_EVENT_FOUNDATION.md`](migration/PHASE_02_COMMON_EVENT_FOUNDATION.md)
+6. [`migration/PHASE_03_INTERACTION_AND_PROTECTION_EVENTS.md`](migration/PHASE_03_INTERACTION_AND_PROTECTION_EVENTS.md)
 
 The master plan is intended to be the durable context document for future development sessions. Each completed phase receives its own focused document containing the exact scope, changed paths, tests, risks, and completion criteria.
 
@@ -43,6 +44,7 @@ The master plan is intended to be the durable context document for future develo
 - `development/ADDING_CONTENT.md`
 - `development/PROJECT_IDENTIFIERS_AND_BUILD.md`
 - `development/WTRADER_JSON_SCHEMA.md`
+- `development/DEVELOPMENT_MEMORY_AND_BUILD_PERFORMANCE.md`
 - `COMPATIBILITY.md`
 - `RELEASE_CHECKLIST.md`
 

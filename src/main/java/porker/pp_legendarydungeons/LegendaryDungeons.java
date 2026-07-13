@@ -5,6 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import porker.pp_legendarydungeons.dungeon_rules.DungeonRuleManager;
 import porker.pp_legendarydungeons.dungeon_rules.DungeonRulePreviewManager;
+import porker.pp_legendarydungeons.dungeon_rules.events.DungeonRuleBlockEvents;
+import porker.pp_legendarydungeons.dungeon_rules.events.DungeonRuleInteractionEvents;
 import porker.pp_legendarydungeons.dungeon_rules.preset.DungeonRulePresetRegistry;
 import porker.pp_legendarydungeons.features.wtraders.json.WTraderJsonReloadRegistrar;
 import porker.pp_legendarydungeons.features.wtraders.villager.VillagerTradeInjectionRegistrar;
@@ -19,12 +21,12 @@ import porker.pp_legendarydungeons.summon.dungeon_completion.DungeonCompletionRe
 /**
  * Loader-neutral initialization entrypoint.
  *
- * <p>The current project is still a single-module Fabric project, but this class
- * deliberately avoids Fabric entrypoint and Fabric event types. Future Fabric
- * and NeoForge entrypoints will both call {@link #init()}.</p>
+ * <p>The current project is still a single-module Fabric project, but this
+ * class avoids Fabric entrypoint and Fabric event types. Future Fabric and
+ * NeoForge entrypoints will both call {@link #init()}.</p>
  *
- * <p>Networking and dungeon interaction callbacks remain temporarily in the
- * Fabric entrypoint until their dedicated migration phases.</p>
+ * <p>Dungeon networking remains temporarily registered by the Fabric
+ * entrypoint until the dedicated networking migration phase.</p>
  */
 public final class LegendaryDungeons {
     public static final String MOD_ID = "pp_legendarydungeons";
@@ -53,7 +55,12 @@ public final class LegendaryDungeons {
         ModBlocks.register();
         ModBlockEntities.register();
 
+        /*
+         * Shared Architectury event boundaries.
+         */
         registerLifecycleEvents();
+        DungeonRuleInteractionEvents.register();
+        DungeonRuleBlockEvents.register();
 
         WTraderJsonReloadRegistrar.register();
 
