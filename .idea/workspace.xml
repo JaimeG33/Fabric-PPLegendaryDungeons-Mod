@@ -4,18 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="idk">
-      <change afterPath="$PROJECT_DIR$/docs/MULTILOADER_MIGRATION_MASTER_PLAN.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/migration/PHASE_00_BRANCH_AND_BASELINE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/migration/PHASE_01_ARCHITECTURY_DIRECT_DEPENDENCY.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/migration/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Phase 1 of Architectury Multiloader Migration&#10;v 1 The game Properly booted up">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/ProfessorPorkersLegendaryDungeons.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/porker/pp_legendarydungeons/ProfessorPorkersLegendaryDungeons.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/function/tick.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/tags/function/tick.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fabric.mod.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fabric.mod.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,11 +117,11 @@
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\features\wtraders\json" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\run\mods" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\assets\pp_legendarydungeons" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\trade_pools\joke_trades" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\profiles\wtraders_maps\random" />
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\map_offers\random" />
-      <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\selection_tables" />
     </key>
   </component>
   <component name="RunManager" selected="Gradle.professor-porkers-legendary-dungeons [runClient]">
@@ -180,14 +170,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1783280264094</updated>
-    </task>
-    <task id="LOCAL-00022" summary="Maps v5&#10;added random map functionality &#10;&#10;-although an issue was noticed with the skypillar not spawning in the pool of random dungeons">
-      <option name="closed" value="true" />
-      <created>1783544024501</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1783544024501</updated>
     </task>
     <task id="LOCAL-00023" summary="Maps v5.1&#10;&#10;fixed skypillar issue&#10;(type of dungeon is now chosen at the loot table before looking for the nearest structure)">
       <option name="closed" value="true" />
@@ -573,11 +555,18 @@
       <option name="project" value="LOCAL" />
       <updated>1783916138514</updated>
     </task>
-    <option name="localTasksCounter" value="71" />
+    <task id="LOCAL-00071" summary="Phase 1 of Architectury Multiloader Migration&#10;v 1 The game Properly booted up">
+      <option name="closed" value="true" />
+      <created>1783917013988</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1783917013988</updated>
+    </task>
+    <option name="localTasksCounter" value="72" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="WTraders v19&#10;fixed names" />
     <MESSAGE value="Porting over old features v1 &#10;&#10;ERROR NO WORK" />
     <MESSAGE value="Porting over old features v2&#10;&#10;Hopefully fixed error and fully included the summon enemy system and made some updates to the custom vaults / keys&#10;&#10;Fully incorporated standard vault, enemy system / bogged sentry, and updated the custom vault key." />
     <MESSAGE value="Porting over old features v4&#10;New Dungeon Rule System v1&#10;(large update patch)&#10;Not Working" />
@@ -602,6 +591,7 @@
     <MESSAGE value="Mega Showdown is now listed as a dependency :)" />
     <MESSAGE value="Tweaks to mega trade_pools" />
     <MESSAGE value="idk" />
-    <option name="LAST_COMMIT_MESSAGE" value="idk" />
+    <MESSAGE value="Phase 1 of Architectury Multiloader Migration&#10;v 1 The game Properly booted up" />
+    <option name="LAST_COMMIT_MESSAGE" value="Phase 1 of Architectury Multiloader Migration&#10;v 1 The game Properly booted up" />
   </component>
 </project>
