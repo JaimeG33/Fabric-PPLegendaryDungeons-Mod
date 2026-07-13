@@ -65,8 +65,8 @@ public final class DungeonRuleInteractionEvents {
          * - only creative operators open the editor;
          * - perform the actual screen/network action on the server.
          */
-        if (state.is(ModBlocks.DUNGEON_RULE_PARENT)
-                || state.is(ModBlocks.DUNGEON_RULE_ZONE)) {
+        if (state.is(ModBlocks.DUNGEON_RULE_PARENT.get())
+                || state.is(ModBlocks.DUNGEON_RULE_ZONE.get())) {
             if (!level.isClientSide
                     && player instanceof ServerPlayer serverPlayer
                     && DungeonRulePermissions.canBypass(serverPlayer)) {

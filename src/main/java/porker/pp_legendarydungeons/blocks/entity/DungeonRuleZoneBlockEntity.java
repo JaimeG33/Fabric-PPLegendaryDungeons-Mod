@@ -1,4 +1,3 @@
-
 package porker.pp_legendarydungeons.blocks.entity;
 
 import net.minecraft.core.BlockPos;
@@ -34,7 +33,7 @@ public final class DungeonRuleZoneBlockEntity extends BlockEntity {
     private DungeonRuleSet ruleOverrides = new DungeonRuleSet();
 
     public DungeonRuleZoneBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.DUNGEON_RULE_ZONE, pos, state);
+        super(ModBlockEntities.DUNGEON_RULE_ZONE.get(), pos, state);
     }
 
     public ResourceLocation getPresetResourceLocation() {
