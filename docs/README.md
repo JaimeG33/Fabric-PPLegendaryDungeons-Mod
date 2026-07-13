@@ -19,7 +19,7 @@ Unless a newer phase document explicitly replaces these values, use this baselin
 | Accessories | `1.1.0-beta.52+1.21.1` |
 | NeoForge | planned; initial alignment target `21.1.214` |
 
-The repository remains a single-module Fabric project. Phases 1 through 3 established the direct Architectury dependency and moved lifecycle, ticking, reloads, trades, loot, interactions, and block protection behind shared APIs. Phase 4 converts the controller blocks, block items, and block-entity types to Architectury deferred registries.
+The repository remains a single-module Fabric project. Phases 1 through 4 established shared Architectury events and deferred registries. Phase 5 moves dungeon-rule packet transport and client initialization behind Architectury while retaining thin Fabric entrypoints.
 
 ## Start here for the multi-loader migration
 
@@ -30,6 +30,7 @@ The repository remains a single-module Fabric project. Phases 1 through 3 establ
 5. [`migration/PHASE_02_COMMON_EVENT_FOUNDATION.md`](migration/PHASE_02_COMMON_EVENT_FOUNDATION.md)
 6. [`migration/PHASE_03_INTERACTION_AND_PROTECTION_EVENTS.md`](migration/PHASE_03_INTERACTION_AND_PROTECTION_EVENTS.md)
 7. [`migration/PHASE_04_SHARED_DEFERRED_REGISTRIES.md`](migration/PHASE_04_SHARED_DEFERRED_REGISTRIES.md)
+8. [`migration/PHASE_05_SHARED_NETWORKING_AND_CLIENT_BOUNDARY.md`](migration/PHASE_05_SHARED_NETWORKING_AND_CLIENT_BOUNDARY.md)
 
 The master plan is intended to be the durable context document for future development sessions. Each completed phase receives its own focused document containing the exact scope, changed paths, tests, risks, and completion criteria.
 

@@ -2,7 +2,7 @@
 
 ## Status
 
-**Ready to apply and verify.**
+**Complete and locally verified.**
 
 Verified remote starting point:
 
@@ -12,6 +12,16 @@ Commit: 4159a71c66b0faa4b91350e7d390def72ff6dc2a
 ```
 
 Phase 3 and the fire/soul-fire allowlist patch are present on GitHub.
+
+---
+
+
+## Completion verification
+
+The Phase 4 deferred-registry changes were reported as successfully built and
+tested in-game, then pushed to the remote migration branch. Remote inspection
+confirmed the deferred block, item, and block-entity registrations and their
+supplier-based call sites.
 
 ---
 

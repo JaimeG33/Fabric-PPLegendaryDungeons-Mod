@@ -1,14 +1,17 @@
 package porker.pp_legendarydungeons.dungeon_rules.network;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import porker.pp_legendarydungeons.LegendaryDungeons;
 
 /**
  * Server-to-client snapshot used to open either the parent or child editor.
+ *
+ * <p>The payload keeps its vanilla payload type and stream codec while
+ * Architectury owns the cross-loader transport.</p>
  */
 public record OpenDungeonRuleEditorPayload(
         BlockPos pos,
@@ -29,19 +32,22 @@ public record OpenDungeonRuleEditorPayload(
         String instanceState,
         boolean previewActive
 ) implements CustomPacketPayload {
-    public static final Type<OpenDungeonRuleEditorPayload> TYPE =
-            new Type<>(ResourceLocation.fromNamespaceAndPath(
-                    ProfessorPorkersLegendaryDungeons.MOD_ID,
+    public static final ResourceLocation ID =
+            ResourceLocation.fromNamespaceAndPath(
+                    LegendaryDungeons.MOD_ID,
                     "open_dungeon_rule_editor"
-            ));
+            );
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, OpenDungeonRuleEditorPayload> CODEC =
+    public static final Type<OpenDungeonRuleEditorPayload> TYPE =
+            new Type<>(ID);
+
+    public static final StreamCodec<FriendlyByteBuf, OpenDungeonRuleEditorPayload> CODEC =
             StreamCodec.of(
                     (buffer, payload) -> payload.write(buffer),
                     OpenDungeonRuleEditorPayload::read
             );
 
-    private void write(RegistryFriendlyByteBuf buffer) {
+    private void write(FriendlyByteBuf buffer) {
         buffer.writeBlockPos(pos);
         buffer.writeBoolean(parent);
         buffer.writeUtf(presetId);
@@ -61,7 +67,9 @@ public record OpenDungeonRuleEditorPayload(
         buffer.writeBoolean(previewActive);
     }
 
-    private static OpenDungeonRuleEditorPayload read(RegistryFriendlyByteBuf buffer) {
+    private static OpenDungeonRuleEditorPayload read(
+            FriendlyByteBuf buffer
+    ) {
         return new OpenDungeonRuleEditorPayload(
                 buffer.readBlockPos(),
                 buffer.readBoolean(),

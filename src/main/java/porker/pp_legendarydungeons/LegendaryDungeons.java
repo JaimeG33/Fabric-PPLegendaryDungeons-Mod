@@ -7,6 +7,7 @@ import porker.pp_legendarydungeons.dungeon_rules.DungeonRuleManager;
 import porker.pp_legendarydungeons.dungeon_rules.DungeonRulePreviewManager;
 import porker.pp_legendarydungeons.dungeon_rules.events.DungeonRuleBlockEvents;
 import porker.pp_legendarydungeons.dungeon_rules.events.DungeonRuleInteractionEvents;
+import porker.pp_legendarydungeons.dungeon_rules.network.DungeonRuleNetworking;
 import porker.pp_legendarydungeons.dungeon_rules.preset.DungeonRulePresetRegistry;
 import porker.pp_legendarydungeons.features.wtraders.json.WTraderJsonReloadRegistrar;
 import porker.pp_legendarydungeons.features.wtraders.villager.VillagerTradeInjectionRegistrar;
@@ -22,11 +23,8 @@ import porker.pp_legendarydungeons.summon.dungeon_completion.DungeonCompletionRe
  * Loader-neutral initialization entrypoint.
  *
  * <p>The current project is still a single-module Fabric project, but this
- * class avoids Fabric entrypoint and Fabric event types. Future Fabric and
- * NeoForge entrypoints will both call {@link #init()}.</p>
- *
- * <p>Dungeon networking remains temporarily registered by the Fabric
- * entrypoint until the dedicated networking migration phase.</p>
+ * class avoids Fabric entrypoint and Fabric event/networking types. Future
+ * Fabric and NeoForge entrypoints will both call {@link #init()}.</p>
  */
 public final class LegendaryDungeons {
     public static final String MOD_ID = "pp_legendarydungeons";
@@ -45,10 +43,8 @@ public final class LegendaryDungeons {
         initialized = true;
 
         /*
-         * Static registrations must happen before worlds create or load the
-         * dungeon-rule block entities.
-         *
-         * Direct registry calls are retained until the DeferredRegister phase.
+         * Static and deferred registrations must happen before worlds create
+         * or load the dungeon-rule block entities.
          */
         DungeonRulePresetRegistry.bootstrap();
         DungeonCompletionRegistry.bootstrap();
@@ -56,8 +52,9 @@ public final class LegendaryDungeons {
         ModBlockEntities.register();
 
         /*
-         * Shared Architectury event boundaries.
+         * Shared Architectury networking and event boundaries.
          */
+        DungeonRuleNetworking.register();
         registerLifecycleEvents();
         DungeonRuleInteractionEvents.register();
         DungeonRuleBlockEvents.register();

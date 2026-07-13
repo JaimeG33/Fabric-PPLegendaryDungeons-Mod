@@ -1,17 +1,17 @@
-
 package porker.pp_legendarydungeons.dungeon_rules.network;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import porker.pp_legendarydungeons.LegendaryDungeons;
 
 /**
  * Client-to-server edit/action request.
  *
- * The server re-validates permission, distance, block type, and value ranges.
+ * <p>The server re-validates permission, distance, block type, and value
+ * ranges. Architectury owns the cross-loader transport.</p>
  */
 public record UpdateDungeonRuleBlockPayload(
         BlockPos pos,
@@ -35,19 +35,22 @@ public record UpdateDungeonRuleBlockPayload(
     public static final String ACTION_COMPLETE = "complete";
     public static final String ACTION_REACTIVATE = "reactivate";
 
-    public static final Type<UpdateDungeonRuleBlockPayload> TYPE =
-            new Type<>(ResourceLocation.fromNamespaceAndPath(
-                    ProfessorPorkersLegendaryDungeons.MOD_ID,
+    public static final ResourceLocation ID =
+            ResourceLocation.fromNamespaceAndPath(
+                    LegendaryDungeons.MOD_ID,
                     "update_dungeon_rule_block"
-            ));
+            );
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, UpdateDungeonRuleBlockPayload> CODEC =
+    public static final Type<UpdateDungeonRuleBlockPayload> TYPE =
+            new Type<>(ID);
+
+    public static final StreamCodec<FriendlyByteBuf, UpdateDungeonRuleBlockPayload> CODEC =
             StreamCodec.of(
                     (buffer, payload) -> payload.write(buffer),
                     UpdateDungeonRuleBlockPayload::read
             );
 
-    private void write(RegistryFriendlyByteBuf buffer) {
+    private void write(FriendlyByteBuf buffer) {
         buffer.writeBlockPos(pos);
         buffer.writeBoolean(parent);
         buffer.writeUtf(presetId);
@@ -65,7 +68,9 @@ public record UpdateDungeonRuleBlockPayload(
         buffer.writeUtf(action);
     }
 
-    private static UpdateDungeonRuleBlockPayload read(RegistryFriendlyByteBuf buffer) {
+    private static UpdateDungeonRuleBlockPayload read(
+            FriendlyByteBuf buffer
+    ) {
         return new UpdateDungeonRuleBlockPayload(
                 buffer.readBlockPos(),
                 buffer.readBoolean(),
