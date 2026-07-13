@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="Mega Showdown is now listed as a dependency :)">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/mega_showdown/joke_max_mushroom_brown.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/mega_showdown/joke_max_mushroom_red.json" afterDir="false" />
+    <list default="true" id="5c03c058-5b2c-4fab-a3f3-5cddede270c7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/mega_showdown/to_wishing_weald.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/profiles/wtraders_maps/mega_showdown/to_wishing_weald.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/mega_showdown/mega_showdown_specials.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/mega_showdown/mega_showdown_specials.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,21 +93,21 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Build professor-porkers-legendary-dungeons.executor": "Run",
-    "Gradle.professor-porkers-legendary-dungeons [runClient].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "copilot.chat.legacySessionMetadata.migrated": "true",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/mega_showdown",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Build professor-porkers-legendary-dungeons.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.professor-porkers-legendary-dungeons [runClient].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;copilot.chat.legacySessionMetadata.migrated&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Minecraft Stuff/Mod Projects/professor-porkers-legendary-dungeons/src/main/resources/data/pp_legendarydungeons/wtrader/trade_pools/mega_showdown&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\resources\data\pp_legendarydungeons\wtrader\trade_pools\mega_showdown" />
@@ -174,14 +170,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1783280264094</updated>
-    </task>
-    <task id="LOCAL-00020" summary="Maps v4.3&#10;Added tags to begin with extra structures&#10;&#10;Also added trial chamber map">
-      <option name="closed" value="true" />
-      <created>1783540225828</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1783540225828</updated>
     </task>
     <task id="LOCAL-00021" summary="Maps v4.3.1&#10;added empty loot tables for random maps to see if the new system will work.">
       <option name="closed" value="true" />
@@ -567,11 +555,18 @@
       <option name="project" value="LOCAL" />
       <updated>1783900377131</updated>
     </task>
-    <option name="localTasksCounter" value="69" />
+    <task id="LOCAL-00069" summary="Tweaks to mega trade_pools">
+      <option name="closed" value="true" />
+      <created>1783903435297</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1783903435297</updated>
+    </task>
+    <option name="localTasksCounter" value="70" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="WTraders v16&#10;I think this is all of the main traders" />
     <MESSAGE value="WTraders v17&#10;tried to fix names but they still show up." />
     <MESSAGE value="WTraders v19&#10;fixed names" />
     <MESSAGE value="Porting over old features v1 &#10;&#10;ERROR NO WORK" />
@@ -596,6 +591,7 @@
     <MESSAGE value="removed crystal caves structure for now so it doesn't spawn unready in players worlds" />
     <MESSAGE value="Version 1.7.3 dependency only, also about to add mega showdown as a dependency." />
     <MESSAGE value="Mega Showdown is now listed as a dependency :)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Mega Showdown is now listed as a dependency :)" />
+    <MESSAGE value="Tweaks to mega trade_pools" />
+    <option name="LAST_COMMIT_MESSAGE" value="Tweaks to mega trade_pools" />
   </component>
 </project>
