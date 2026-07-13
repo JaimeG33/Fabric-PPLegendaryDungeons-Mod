@@ -1,7 +1,6 @@
-
 package porker.pp_legendarydungeons.features;
 
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.decoration.ArmorStand;
@@ -35,23 +34,21 @@ public final class FeatureTicker {
             PLAYER_TRIGGER_DISTANCE * PLAYER_TRIGGER_DISTANCE;
 
     private static final int SCAN_INTERVAL_TICKS = 30;
-    private static int ticks = 0;
 
     private FeatureTicker() {
     }
 
-    public static void register() {
-        ServerTickEvents.END_SERVER_TICK.register(server -> {
-            ticks++;
+    /**
+     * Called once per server tick by the shared Architectury scheduler.
+     */
+    public static void tick(MinecraftServer server, long tickCount) {
+        if (tickCount % SCAN_INTERVAL_TICKS != 0L) {
+            return;
+        }
 
-            if (ticks % SCAN_INTERVAL_TICKS != 0) {
-                return;
-            }
-
-            for (ServerLevel level : server.getAllLevels()) {
-                checkLevel(level);
-            }
-        });
+        for (ServerLevel level : server.getAllLevels()) {
+            checkLevel(level);
+        }
     }
 
     private static void checkLevel(ServerLevel level) {

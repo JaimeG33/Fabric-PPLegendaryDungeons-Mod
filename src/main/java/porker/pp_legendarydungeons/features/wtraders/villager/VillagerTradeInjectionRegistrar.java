@@ -1,6 +1,6 @@
 package porker.pp_legendarydungeons.features.wtraders.villager;
 
-import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
+import dev.architectury.registry.level.entity.trade.TradeRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -8,15 +8,16 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.trading.MerchantOffer;
-import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import porker.pp_legendarydungeons.LegendaryDungeons;
 import porker.pp_legendarydungeons.features.wtraders.json.WTraderJsonTradeGenerator;
 import porker.pp_legendarydungeons.features.wtraders.runtime.LootTableTradeStackFactory;
 
 /**
  * Adds data-driven offers to vanilla villager profession candidate lists.
  *
- * <p>This uses Fabric's additive trade API. It does not replace the vanilla
- * cartographer table and does not remove trades registered by other mods.</p>
+ * <p>This uses Architectury's additive trade registry. It does not replace the
+ * vanilla cartographer table and does not remove trades registered by other
+ * mods.</p>
  *
  * <h2>Current cartographer additions</h2>
  *
@@ -56,17 +57,11 @@ public final class VillagerTradeInjectionRegistrar {
          * Vanilla level 1 has paper and empty-map candidates. These two
          * factories are appended to the same candidate list.
          */
-        TradeOfferHelper.registerVillagerOffers(
+        TradeRegistry.registerVillagerTrade(
                 VillagerProfession.CARTOGRAPHER,
                 1,
-                factories -> {
-                    factories.add(new TradePoolListing(
-                            CARTOGRAPHER_RANDOM_MISC_POOL
-                    ));
-                    factories.add(new TradePoolListing(
-                            CARTOGRAPHER_RANDOM_RESEARCH_POOL
-                    ));
-                }
+                new TradePoolListing(CARTOGRAPHER_RANDOM_MISC_POOL),
+                new TradePoolListing(CARTOGRAPHER_RANDOM_RESEARCH_POOL)
         );
 
         /*
@@ -74,22 +69,20 @@ public final class VillagerTradeInjectionRegistrar {
          * trade-injection mods installed, vanilla's two-trades-per-level logic
          * selects both the globe pattern and this dungeon map.
          */
-        TradeOfferHelper.registerVillagerOffers(
+        TradeRegistry.registerVillagerTrade(
                 VillagerProfession.CARTOGRAPHER,
                 5,
-                factories -> factories.add(new TradePoolListing(
-                        CARTOGRAPHER_RANDOM_DUNGEON_POOL
-                ))
+                new TradePoolListing(CARTOGRAPHER_RANDOM_DUNGEON_POOL)
         );
 
-        ProfessorPorkersLegendaryDungeons.LOGGER.info(
-                "[Villager Trades] Registered 3 additive cartographer trade-pool listings."
+        LegendaryDungeons.LOGGER.info(
+                "[Villager Trades] Registered 3 additive Architectury cartographer trade-pool listings."
         );
     }
 
     private static ResourceLocation modId(String path) {
         return ResourceLocation.fromNamespaceAndPath(
-                ProfessorPorkersLegendaryDungeons.MOD_ID,
+                LegendaryDungeons.MOD_ID,
                 path
         );
     }

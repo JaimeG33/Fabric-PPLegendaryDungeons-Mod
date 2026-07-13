@@ -1,7 +1,6 @@
-
 package porker.pp_legendarydungeons.summon.trigger;
 
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.decoration.ArmorStand;
@@ -25,31 +24,29 @@ public final class EntityLegendarySummonTicker {
     private static final double PLAYER_TRIGGER_DISTANCE = 20.0D;
     private static final double PLAYER_TRIGGER_DISTANCE_SQUARED =
             PLAYER_TRIGGER_DISTANCE * PLAYER_TRIGGER_DISTANCE;
-
-    private static int ticks = 0;
+    private static final int SCAN_INTERVAL_TICKS = 20;
 
     private EntityLegendarySummonTicker() {
     }
 
-    public static void register() {
-        ServerTickEvents.END_SERVER_TICK.register(server -> {
-            ticks++;
+    /**
+     * Called once per server tick by the shared Architectury scheduler.
+     */
+    public static void tick(MinecraftServer server, long tickCount) {
+        if (tickCount % SCAN_INTERVAL_TICKS != 0L) {
+            return;
+        }
 
-            if (ticks % 20 != 0) {
-                return;
-            }
+        /*
+         * Completion checks are not nested inside the player/marker search.
+         * A tracked encounter continues to resolve while its entity/chunk is loaded
+         * even if nobody is near the original armor stand.
+         */
+        DungeonCompletionTracker.tick(server);
 
-            /*
-             * Completion checks are not nested inside the player/marker search.
-             * A tracked encounter continues to resolve while its entity/chunk is loaded
-             * even if nobody is near the original armor stand.
-             */
-            DungeonCompletionTracker.tick(server);
-
-            for (ServerLevel level : server.getAllLevels()) {
-                checkLevel(level);
-            }
-        });
+        for (ServerLevel level : server.getAllLevels()) {
+            checkLevel(level);
+        }
     }
 
     private static void checkLevel(ServerLevel level) {

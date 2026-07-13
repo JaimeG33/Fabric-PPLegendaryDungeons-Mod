@@ -1,85 +1,42 @@
 package porker.pp_legendarydungeons;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import porker.pp_legendarydungeons.dungeon_rules.DungeonRuleManager;
-import porker.pp_legendarydungeons.dungeon_rules.DungeonRulePreviewManager;
 import porker.pp_legendarydungeons.dungeon_rules.events.DungeonRuleInteractionEvents;
 import porker.pp_legendarydungeons.dungeon_rules.network.DungeonRuleNetworking;
-import porker.pp_legendarydungeons.dungeon_rules.preset.DungeonRulePresetRegistry;
-import porker.pp_legendarydungeons.features.FeatureTicker;
-import porker.pp_legendarydungeons.features.wtraders.json.WTraderJsonReloadRegistrar;
-import porker.pp_legendarydungeons.features.wtraders.villager.VillagerTradeInjectionRegistrar;
-import porker.pp_legendarydungeons.items.ItemGimmickTicker;
-import porker.pp_legendarydungeons.loot.LootTableInjectionRegistrar;
-import porker.pp_legendarydungeons.secrets.SecretTicker;
-import porker.pp_legendarydungeons.setup.ModBlockEntities;
-import porker.pp_legendarydungeons.setup.ModBlocks;
-import porker.pp_legendarydungeons.setup.ModScoreboards;
-import porker.pp_legendarydungeons.summon.dungeon_completion.DungeonCompletionRegistry;
-import porker.pp_legendarydungeons.summon.trigger.EntityLegendarySummonTicker;
-import porker.pp_legendarydungeons.loot.pokemon.PokemonLootTableRegistrar;
 
 /**
- * Main mod initializer.
+ * Fabric loader entrypoint.
+ *
+ * <p>Most initialization now lives in {@link LegendaryDungeons}. The two
+ * registrations left here still use Fabric-specific APIs and will move into
+ * shared Architectury code during their dedicated migration phases.</p>
  */
-public class ProfessorPorkersLegendaryDungeons implements ModInitializer {
-    public static final String MOD_ID = "pp_legendarydungeons";
-    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+public final class ProfessorPorkersLegendaryDungeons implements ModInitializer {
+    /**
+     * Compatibility alias retained while existing classes are migrated away
+     * from referencing the Fabric entrypoint directly.
+     */
+    public static final String MOD_ID = LegendaryDungeons.MOD_ID;
+
+    /**
+     * Compatibility alias retained for existing logging call sites.
+     */
+    public static final Logger LOGGER = LegendaryDungeons.LOGGER;
 
     @Override
     public void onInitialize() {
+        LegendaryDungeons.init();
+
         /*
-         * Static registrations must happen before worlds create/load the block entities.
+         * Deferred to later phases:
+         * - Phase 3: interaction and protection events
+         * - Phase 5: networking and client boundary
          */
-        DungeonRulePresetRegistry.bootstrap();
-        DungeonCompletionRegistry.bootstrap();
-        ModBlocks.register();
-        ModBlockEntities.register();
         DungeonRuleNetworking.register();
         DungeonRuleInteractionEvents.register();
 
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-            ModScoreboards.setup(server);
-            DungeonRuleManager.bootstrap(server);
-        });
-        ServerLifecycleEvents.SERVER_STOPPED.register(server -> {
-            DungeonRuleManager.clear();
-            DungeonRulePreviewManager.clear();
-
-            /*
-             * Clears temporary battle-faint context used by Pokémon loot injection.
-             */
-            PokemonLootTableRegistrar.clear();
-        });
-
-        WTraderJsonReloadRegistrar.register();
-
-        /*
-         * Adds the three data-driven cartographer map factories to vanilla's
-         * candidate lists without replacing any vanilla or modded trades.
-         */
-        VillagerTradeInjectionRegistrar.register();
-
-        /*
-         * Adds independent pools to selected existing chest/entity loot tables.
-         * This preserves the original table and additions made by other mods.
-         */
-        LootTableInjectionRegistrar.register();
-        /*
-         * Bridges Cobblemon's native Pokémon drop events to additional Minecraft
-         * loot tables.
-         */
-        PokemonLootTableRegistrar.register();
-
-        EntityLegendarySummonTicker.register();
-        FeatureTicker.register();
-        ItemGimmickTicker.register();
-        SecretTicker.register();
-
-        LOGGER.info("Cobblemon: Explore Legendary Dungeons initialized.");
+        LOGGER.info("Cobblemon: Explore Legendary Dungeons initialized on Fabric.");
     }
 }
 // Whenever ready to export build, remember .\gradlew.bat clean build

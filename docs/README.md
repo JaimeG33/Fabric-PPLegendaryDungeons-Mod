@@ -19,7 +19,7 @@ Unless a newer phase document explicitly replaces these values, use this baselin
 | Accessories | `1.1.0-beta.52+1.21.1` |
 | NeoForge | planned; initial alignment target `21.1.214` |
 
-The current public repository is still a single-module Fabric project. Phase 1 makes Architectury API a direct dependency without yet changing gameplay code or splitting modules.
+The repository remains a single-module Fabric project. Phase 1 made Architectury API a direct dependency. Phase 2 begins moving low-risk lifecycle, tick, reload, trade, and loot boundaries into loader-neutral Architectury code while preserving Fabric as the only runnable platform for now.
 
 ## Start here for the multi-loader migration
 
@@ -27,6 +27,7 @@ The current public repository is still a single-module Fabric project. Phase 1 m
 2. [`migration/README.md`](migration/README.md)
 3. [`migration/PHASE_00_BRANCH_AND_BASELINE.md`](migration/PHASE_00_BRANCH_AND_BASELINE.md)
 4. [`migration/PHASE_01_ARCHITECTURY_DIRECT_DEPENDENCY.md`](migration/PHASE_01_ARCHITECTURY_DIRECT_DEPENDENCY.md)
+5. [`migration/PHASE_02_COMMON_EVENT_FOUNDATION.md`](migration/PHASE_02_COMMON_EVENT_FOUNDATION.md)
 
 The master plan is intended to be the durable context document for future development sessions. Each completed phase receives its own focused document containing the exact scope, changed paths, tests, risks, and completion criteria.
 
@@ -57,6 +58,7 @@ These identifiers are deliberately retained throughout the migration:
 | Mod ID / data namespace | `pp_legendarydungeons` |
 | Java package | `porker.pp_legendarydungeons` |
 | Current Fabric main entrypoint | `porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons` |
+| Future shared initializer | `porker.pp_legendarydungeons.LegendaryDungeons` |
 | Current Fabric client entrypoint | `porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeonsClient` |
 
 Do not rename the mod ID, Java package, resource namespace, saved-data IDs, scoreboard names, payload IDs, structure IDs, or other persistent identifiers as part of the loader migration.

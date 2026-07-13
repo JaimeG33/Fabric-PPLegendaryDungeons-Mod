@@ -1,6 +1,6 @@
 package porker.pp_legendarydungeons.secrets;
 
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.decoration.ArmorStand;
@@ -14,24 +14,22 @@ import java.util.UUID;
 public final class SecretTicker {
     private static final String SECRET_STARTER_TAG = "scs_secret_starter";
     private static final double PLAYER_TRIGGER_DISTANCE = 20.0D;
-
-    private static int ticks = 0;
+    private static final int SCAN_INTERVAL_TICKS = 20;
 
     private SecretTicker() {
     }
 
-    public static void register() {
-        ServerTickEvents.END_SERVER_TICK.register(server -> {
-            ticks++;
+    /**
+     * Called once per server tick by the shared Architectury scheduler.
+     */
+    public static void tick(MinecraftServer server, long tickCount) {
+        if (tickCount % SCAN_INTERVAL_TICKS != 0L) {
+            return;
+        }
 
-            if (ticks % 20 != 0) {
-                return;
-            }
-
-            for (ServerLevel level : server.getAllLevels()) {
-                checkLevel(level);
-            }
-        });
+        for (ServerLevel level : server.getAllLevels()) {
+            checkLevel(level);
+        }
     }
 
     private static void checkLevel(ServerLevel level) {

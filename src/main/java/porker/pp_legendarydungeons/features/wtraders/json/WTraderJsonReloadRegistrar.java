@@ -1,19 +1,21 @@
 package porker.pp_legendarydungeons.features.wtraders.json;
 
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
+import dev.architectury.registry.ReloadListenerRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.resources.ResourceManager;
-import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import porker.pp_legendarydungeons.LegendaryDungeons;
 
 /**
- * Registers the server-data reload listener for custom wandering-trader JSON.
- *
- * Requires the Fabric API resource loader module:
- * fabric-resource-loader-v0
+ * Registers the server-data reload listener for custom wandering-trader JSON
+ * through Architectury's loader-neutral reload-listener registry.
  */
 public final class WTraderJsonReloadRegistrar {
+    private static final ResourceLocation LISTENER_ID =
+            ResourceLocation.fromNamespaceAndPath(
+                    LegendaryDungeons.MOD_ID,
+                    "wtrader_json"
+            );
+
     private static boolean registered = false;
 
     private WTraderJsonReloadRegistrar() {
@@ -26,23 +28,14 @@ public final class WTraderJsonReloadRegistrar {
 
         registered = true;
 
-        ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
-            @Override
-            public ResourceLocation getFabricId() {
-                return ResourceLocation.fromNamespaceAndPath(
-                        ProfessorPorkersLegendaryDungeons.MOD_ID,
-                        "wtrader_json"
-                );
-            }
+        ReloadListenerRegistry.register(
+                PackType.SERVER_DATA,
+                WTraderJsonReloadListener.INSTANCE,
+                LISTENER_ID
+        );
 
-            @Override
-            public void onResourceManagerReload(ResourceManager resourceManager) {
-                WTraderJsonReloadListener.reload(resourceManager);
-            }
-        });
-
-        ProfessorPorkersLegendaryDungeons.LOGGER.info(
-                "[WTrader JSON] Registered server data reload listener."
+        LegendaryDungeons.LOGGER.info(
+                "[WTrader JSON] Registered Architectury server-data reload listener."
         );
     }
 }

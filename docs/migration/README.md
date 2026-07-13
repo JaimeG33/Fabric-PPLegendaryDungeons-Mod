@@ -24,9 +24,9 @@ Each phase document should contain:
 
 | Phase | Document | Status |
 |---|---|---|
-| 0 | `PHASE_00_BRANCH_AND_BASELINE.md` | Ready to perform |
-| 1 | `PHASE_01_ARCHITECTURY_DIRECT_DEPENDENCY.md` | Ready to perform |
-| 2 | Future: common event foundation | Planned |
+| 0 | `PHASE_00_BRANCH_AND_BASELINE.md` | Complete |
+| 1 | `PHASE_01_ARCHITECTURY_DIRECT_DEPENDENCY.md` | Complete and locally verified |
+| 2 | `PHASE_02_COMMON_EVENT_FOUNDATION.md` | Ready to apply and verify |
 | 3 | Future: interaction and protection events | Planned |
 | 4 | Future: deferred registries | Planned |
 | 5 | Future: networking and client boundary | Planned |
@@ -36,4 +36,4 @@ Each phase document should contain:
 | 9 | Future: parity and hardening | Planned |
 | 10 | Future: release workflow | Planned |
 
-Create the next focused document when that phase begins. Record actual changed paths and test outcomes rather than relying only on the original plan.
+Update a phase from “ready” to “complete” only after its clean build, client startup, dedicated-server startup, and focused gameplay tests have passed.

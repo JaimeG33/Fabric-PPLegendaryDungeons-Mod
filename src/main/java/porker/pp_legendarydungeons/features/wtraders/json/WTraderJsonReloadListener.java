@@ -6,22 +6,52 @@ import com.google.gson.JsonSyntaxException;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
-import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
+import net.minecraft.util.Unit;
+import net.minecraft.util.profiling.ProfilerFiller;
+import porker.pp_legendarydungeons.LegendaryDungeons;
 
 import java.io.Reader;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Loads custom wandering-trader JSON definitions from server data resources.
+ * Loads custom wandering-trader JSON definitions from server-data resources.
  *
- * This class does not register itself. WTraderJsonReloadRegistrar handles Fabric
- * registration so this class can stay focused on parsing and storing data.
+ * <p>The Architectury registrar owns loader integration. This class uses
+ * Minecraft's loader-neutral reload-listener base and remains focused on
+ * parsing, validation, and atomic registry replacement.</p>
  */
-public final class WTraderJsonReloadListener {
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+public final class WTraderJsonReloadListener
+        extends SimplePreparableReloadListener<Unit> {
+    public static final WTraderJsonReloadListener INSTANCE =
+            new WTraderJsonReloadListener();
+
+    private static final Gson GSON =
+            new GsonBuilder().setPrettyPrinting().create();
 
     private WTraderJsonReloadListener() {
+    }
+
+    /**
+     * No asynchronous preparation is required because the existing parser
+     * performs one atomic load/apply pass on the reload apply executor.
+     */
+    @Override
+    protected Unit prepare(
+            ResourceManager resourceManager,
+            ProfilerFiller profiler
+    ) {
+        return Unit.INSTANCE;
+    }
+
+    @Override
+    protected void apply(
+            Unit prepared,
+            ResourceManager resourceManager,
+            ProfilerFiller profiler
+    ) {
+        reload(resourceManager);
     }
 
     public static void reload(ResourceManager resourceManager) {
@@ -37,7 +67,7 @@ public final class WTraderJsonReloadListener {
                 mapOffers
         );
 
-        ProfessorPorkersLegendaryDungeons.LOGGER.info(
+        LegendaryDungeons.LOGGER.info(
                 "[WTrader JSON] Loaded {} trade pools, {} trader profiles, {} selection tables, and {} map offers.",
                 WTraderJsonRegistry.tradePoolCount(),
                 WTraderJsonRegistry.traderProfileCount(),
@@ -123,14 +153,14 @@ public final class WTraderJsonReloadListener {
         try (Reader reader = resource.openAsReader()) {
             return GSON.fromJson(reader, type);
         } catch (JsonSyntaxException exception) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "[WTrader JSON] {} has invalid JSON syntax: {}",
                     fileId,
                     exception.getMessage()
             );
             return null;
         } catch (Exception exception) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "[WTrader JSON] Failed to read {}: {}",
                     fileId,
                     exception.getMessage()
@@ -149,7 +179,7 @@ public final class WTraderJsonReloadListener {
         T previous = loaded.put(dataId, json);
 
         if (previous != null) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "[WTrader JSON] Duplicate {} id {}. Latest file {} replaced an earlier definition.",
                     typeName,
                     dataId,

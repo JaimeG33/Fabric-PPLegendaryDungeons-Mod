@@ -1,6 +1,6 @@
 package porker.pp_legendarydungeons.loot;
 
-import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
+import dev.architectury.event.events.common.LootEvent;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -8,7 +8,7 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import porker.pp_legendarydungeons.LegendaryDungeons;
 
 import java.util.List;
 import java.util.Set;
@@ -16,10 +16,10 @@ import java.util.Set;
 /**
  * Registers additive loot-table injections for vanilla or mod-bundled loot tables.
  *
- * <p>Each injection group connects one reusable loot table from this mod to a set
- * of existing target loot tables. Fabric adds the nested pool to the existing
- * builder; it does not replace the target table or remove pools added by vanilla
- * or other mods.</p>
+ * <p>Each injection group connects one reusable loot table from this mod to a
+ * set of existing target loot tables. Architectury adds the nested pool to the
+ * existing builder; it does not replace the target table or remove pools added
+ * by vanilla or other mods.</p>
  *
  * <p>The actual drop chances, weights, and generated items stay in JSON under:</p>
  *
@@ -136,9 +136,10 @@ public final class LootTableInjectionRegistrar {
     /**
      * A tag-like Java grouping of reusable injection tables and their targets.
      *
-     * <p>An actual loot-table datapack tag is unnecessary here because Fabric's
-     * MODIFY callback already supplies the exact target ResourceKey. Keeping the
-     * target lists here also makes the injection behavior visible in one file.</p>
+     * <p>An actual loot-table datapack tag is unnecessary because
+     * Architectury's modification callback supplies the exact target key.
+     * Keeping target lists here also makes injection behavior visible in one
+     * file.</p>
      *
      * <p>Each entry follows this syntax:</p>
      *
@@ -156,7 +157,7 @@ public final class LootTableInjectionRegistrar {
     }
 
     /**
-     * Registers the Fabric loot-table callback once during mod initialization.
+     * Registers the Architectury loot-table callback once during mod initialization.
      */
     public static void register() {
         if (registered) {
@@ -165,25 +166,24 @@ public final class LootTableInjectionRegistrar {
 
         registered = true;
 
-        LootTableEvents.MODIFY.register((key, tableBuilder, source, registries) -> {
+        LootEvent.MODIFY_LOOT_TABLE.register((key, context, builtin) -> {
             /*
              * Respect external datapack replacements. Vanilla tables and tables
-             * bundled by mods are builtin; external datapack and REPLACE-event
-             * tables are not.
+             * bundled by mods are built in; user datapack tables are not.
              */
-            if (!source.isBuiltin()) {
+            if (!builtin) {
                 return;
             }
 
             for (InjectionGroup group : INJECTION_GROUPS) {
                 if (group.targets().contains(key)) {
-                    addNestedInjection(tableBuilder, group.injectionTable());
+                    addNestedInjection(context, group.injectionTable());
                 }
             }
         });
 
-        ProfessorPorkersLegendaryDungeons.LOGGER.info(
-                "[Loot Injection] Registered {} additive loot-table injection groups.",
+        LegendaryDungeons.LOGGER.info(
+                "[Loot Injection] Registered {} additive Architectury loot-table injection groups.",
                 INJECTION_GROUPS.size()
         );
     }
@@ -193,10 +193,10 @@ public final class LootTableInjectionRegistrar {
      * The referenced JSON table decides whether anything drops and what it is.
      */
     private static void addNestedInjection(
-            LootTable.Builder tableBuilder,
+            LootEvent.LootTableModificationContext context,
             ResourceKey<LootTable> injectionTable
     ) {
-        tableBuilder.withPool(
+        context.addPool(
                 LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1.0F))
                         .add(NestedLootTable.lootTableReference(injectionTable))
@@ -221,7 +221,7 @@ public final class LootTableInjectionRegistrar {
      */
     private static ResourceKey<LootTable> modLootTable(String path) {
         return lootTable(
-                ProfessorPorkersLegendaryDungeons.MOD_ID,
+                LegendaryDungeons.MOD_ID,
                 path
         );
     }
