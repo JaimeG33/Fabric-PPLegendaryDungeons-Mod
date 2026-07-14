@@ -54,6 +54,6 @@ side = "BOTH"
 [[dependencies.pp_legendarydungeons]]
 modId = "mega_showdown"
 type = "required"
-versionRange = "[1.6.9,1.7.5)"
+versionRange = "[1.6.7,)"
 ordering = "AFTER"
 side = "BOTH"

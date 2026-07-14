@@ -26,6 +26,6 @@
     "fabric-api": "*",
     "architectury": ">=13.0.8",
     "cobblemon": "1.7.3",
-    "mega_showdown": ">=1.6.9 <=1.7.4"
+    "mega_showdown": ">=1.6.7"
   }
 }
