@@ -1,6 +1,8 @@
 package porker.pp_legendarydungeons.dungeon_rules.network;
 
 import dev.architectury.networking.NetworkManager;
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -21,6 +23,7 @@ import porker.pp_legendarydungeons.dungeon_rules.preset.DungeonRulePresetRegistr
 
 import java.util.Optional;
 
+
 public final class DungeonRuleNetworking {
     private static final double MAXIMUM_EDIT_DISTANCE_SQUARED =
             16.0D * 16.0D;
@@ -38,13 +41,19 @@ public final class DungeonRuleNetworking {
         registered = true;
 
         /*
-         * The S2C payload type must be known on the common/server side even
-         * though its receiver and screen are registered by client startup.
+         * A dedicated server has no client receiver registration, so it must
+         * register the S2C payload type here.
+         *
+         * On a physical client, DungeonRuleClientNetworking.register() registers
+         * both the payload type and its receiver. Registering the type here too
+         * would cause Fabric to report that the packet type is already registered.
          */
-        NetworkManager.registerS2CPayloadType(
-                OpenDungeonRuleEditorPayload.TYPE,
-                OpenDungeonRuleEditorPayload.CODEC
-        );
+        if (Platform.getEnvironment() == Env.SERVER) {
+            NetworkManager.registerS2CPayloadType(
+                    OpenDungeonRuleEditorPayload.TYPE,
+                    OpenDungeonRuleEditorPayload.CODEC
+            );
+        }
 
         /*
          * Register the C2S payload and receiver together through
