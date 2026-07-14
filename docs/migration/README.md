@@ -32,12 +32,12 @@ Each phase document should contain:
 | 3 | `PHASE_03_INTERACTION_AND_PROTECTION_EVENTS.md` | Complete and locally verified |
 | 4 | `PHASE_04_SHARED_DEFERRED_REGISTRIES.md` | Complete and locally verified |
 | 5 | `PHASE_05_SHARED_NETWORKING_AND_CLIENT_BOUNDARY.md` | Complete and user-tested |
-| 6 | `PHASE_06_FABRIC_REGRESSION_CHECKPOINT.md` | In progress |
-| 7 | Future: module split | Planned; do not start before Phase 6 completion |
+| 6 | `PHASE_06_FABRIC_REGRESSION_CHECKPOINT.md` | Complete and locally verified |
+| 7 | Future: module split | Ready to begin after the Phase 6 checkpoint tag |
 | 8 | Future: NeoForge bootstrap | Planned |
 | 9 | Future: cross-loader parity and hardening | Planned |
 | 10 | Future: release workflow | Planned |
 
 A phase may be changed to complete only after its required clean build, client startup, dedicated-server startup, focused gameplay tests, persistence checks, and documentation have passed.
 
-Phase 6 must end with a known-good pushed commit and preferably an annotated tag before any source or resource files are moved into `common`, `fabric`, or `neoforge`.
+Phase 6 has a known-good pushed implementation. Create the annotated checkpoint tag before applying Step 7B.

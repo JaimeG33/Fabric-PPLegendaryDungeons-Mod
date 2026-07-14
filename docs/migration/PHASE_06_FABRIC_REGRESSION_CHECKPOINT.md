@@ -2,9 +2,9 @@
 
 ## Status
 
-**In progress.**
+**Complete and locally verified.**
 
-Do not mark this phase complete until the full checklist has passed and the result is committed and pushed.
+The complete Fabric regression checklist was user-tested successfully before the Phase 6 push.
 
 ## Starting point
 
@@ -81,38 +81,38 @@ Fill this table during testing.
 
 | Area | Test | Result | Notes |
 |---|---|---|---|
-| Source control | Correct branch and clean start | Not run | |
-| Static audit | Obsolete Fabric networking absent | Not run | |
-| Static audit | Old migrated Fabric hooks absent | Not run | |
-| Static audit | Removed break/place mixins absent | Not run | |
-| Static audit | Fabric imports limited to entrypoints | Not run | |
-| Static audit | Client imports isolated | Not run | |
-| Build | `clean build --warning-mode all` | Not run | |
-| Artifact | Fabric JAR and sources JAR exist | Not run | |
-| Artifact | Metadata/classes/resources present | Not run | |
-| Client | Title screen | Not run | |
-| Fresh world | World creation and scoreboard setup | Not run | |
-| Existing world | Registry and controller compatibility | Not run | |
-| Persistence | Controller NBT survives reload | Not run | |
-| Networking | Parent editor matrix | Not run | |
-| Networking | Zone editor matrix | Not run | |
-| Networking | Invalid actions rejected | Not run | |
-| Restrictions | Beds, PCs, healers, portable items | Not run | |
-| Protection | Break rules | Not run | |
-| Protection | Placement rules | Not run | |
-| Protection | Explosion behavior | Not run | |
-| Summons | Rayquaza and completion tracking | Not run | |
-| Tick systems | Four shared ticker systems | Not run | |
-| Maps | Map conversion and saved targets | Not run | |
-| WTrader | Reload and natural replacement | Not run | |
-| Villagers | Cartographer injections | Not run | |
-| Loot | Minecraft loot injections | Not run | |
-| Loot | Pokémon loot bridge | Not run | |
-| Dependency | Mega Showdown integration | Not run | |
-| Server | Dedicated startup | Not run | |
-| Multiplayer | Connected client, both packet directions | Not run | |
-| Restart | Save, stop, restart, reconnect | Not run | |
-| Logs | Exceptions and warnings classified | Not run | |
+| Source control | Correct branch and clean start | Pass | User-tested successfully before the Phase 6 push. |
+| Static audit | Obsolete Fabric networking absent | Pass | User-tested successfully before the Phase 6 push. |
+| Static audit | Old migrated Fabric hooks absent | Pass | User-tested successfully before the Phase 6 push. |
+| Static audit | Removed break/place mixins absent | Pass | User-tested successfully before the Phase 6 push. |
+| Static audit | Fabric imports limited to entrypoints | Pass | User-tested successfully before the Phase 6 push. |
+| Static audit | Client imports isolated | Pass | User-tested successfully before the Phase 6 push. |
+| Build | `clean build --warning-mode all` | Pass | User-tested successfully before the Phase 6 push. |
+| Artifact | Fabric JAR and sources JAR exist | Pass | User-tested successfully before the Phase 6 push. |
+| Artifact | Metadata/classes/resources present | Pass | User-tested successfully before the Phase 6 push. |
+| Client | Title screen | Pass | User-tested successfully before the Phase 6 push. |
+| Fresh world | World creation and scoreboard setup | Pass | User-tested successfully before the Phase 6 push. |
+| Existing world | Registry and controller compatibility | Pass | User-tested successfully before the Phase 6 push. |
+| Persistence | Controller NBT survives reload | Pass | User-tested successfully before the Phase 6 push. |
+| Networking | Parent editor matrix | Pass | User-tested successfully before the Phase 6 push. |
+| Networking | Zone editor matrix | Pass | User-tested successfully before the Phase 6 push. |
+| Networking | Invalid actions rejected | Pass | User-tested successfully before the Phase 6 push. |
+| Restrictions | Beds, PCs, healers, portable items | Pass | User-tested successfully before the Phase 6 push. |
+| Protection | Break rules | Pass | User-tested successfully before the Phase 6 push. |
+| Protection | Placement rules | Pass | User-tested successfully before the Phase 6 push. |
+| Protection | Explosion behavior | Pass | User-tested successfully before the Phase 6 push. |
+| Summons | Rayquaza and completion tracking | Pass | User-tested successfully before the Phase 6 push. |
+| Tick systems | Four shared ticker systems | Pass | User-tested successfully before the Phase 6 push. |
+| Maps | Map conversion and saved targets | Pass | User-tested successfully before the Phase 6 push. |
+| WTrader | Reload and natural replacement | Pass | User-tested successfully before the Phase 6 push. |
+| Villagers | Cartographer injections | Pass | User-tested successfully before the Phase 6 push. |
+| Loot | Minecraft loot injections | Pass | User-tested successfully before the Phase 6 push. |
+| Loot | Pokémon loot bridge | Pass | User-tested successfully before the Phase 6 push. |
+| Dependency | Mega Showdown integration | Pass | User-tested successfully before the Phase 6 push. |
+| Server | Dedicated startup | Pass | User-tested successfully before the Phase 6 push. |
+| Multiplayer | Connected client, both packet directions | Pass | User-tested successfully before the Phase 6 push. |
+| Restart | Save, stop, restart, reconnect | Pass | User-tested successfully before the Phase 6 push. |
+| Logs | Exceptions and warnings classified | Pass | User-tested successfully before the Phase 6 push. |
 
 ## 1. Prepare the branch
 
@@ -850,17 +850,18 @@ Any fix should remain shared/common-friendly unless a loader difference is prove
 Fill after all testing:
 
 ```text
-Phase 6 decision: IN PROGRESS / PASS / FAIL
-Ending commit:
-Build result:
-Integrated client result:
-Fresh-world result:
-Existing-world result:
-Dedicated-server result:
-Connected multiplayer networking result:
-Persistence result:
-Known blockers:
-Deferred non-blockers:
+Phase 6 decision: PASS
+Tested implementation commit: 655be445787c8f9903dc7a6e9ad44e80aa05e0c9
+Final checkpoint: annotated tag architectury-fabric-checkpoint-phase6 after the cleanup commit
+Build result: PASS
+Integrated client result: PASS
+Fresh-world result: PASS
+Existing-world result: PASS
+Dedicated-server result: PASS
+Connected multiplayer networking result: PASS
+Persistence result: PASS
+Known blockers: None reported
+Deferred non-blockers: Previously documented third-party and optional-integration warnings only
 ```
 
 ## 26. Completion criteria

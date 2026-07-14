@@ -49,3 +49,7 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+.phase6-patch-backup/
+.phase7-migration-backup/
+**/build/
+**/run/
