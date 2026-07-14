@@ -37,21 +37,20 @@ dependencies {
     ) {
         exclude("net.neoforged.fancymodloader", "loader")
     }
+
     /*
- * Accessories' Architectury NeoForge setup requires these runtime libraries
- * explicitly because its jar-in-jar dependencies are not always resolved
- * correctly in an Architectury development environment.
- */
+     * Accessories' Architectury NeoForge development setup does not always
+     * expose all of its jar-in-jar libraries to the launch classpath.
+     */
     forgeRuntimeLibrary("io.wispforest:endec:0.1.8")
     forgeRuntimeLibrary("io.wispforest.endec:gson:0.1.5")
     forgeRuntimeLibrary("io.wispforest.endec:netty:0.1.4")
-    /*
- * oωo's configuration classes reference the Jankson 1.x API.
- * Architectury's NeoForge development runtime does not reliably expose
- * this jar-in-jar dependency, so provide it explicitly.
- */
-    forgeRuntimeLibrary("blue.endless:jankson:1.2.3")
+    forgeRuntimeLibrary("io.wispforest.endec:jankson:0.1.5")
 
+    /*
+     * The Endec Jankson adapter references the Jankson 1.x API directly.
+     */
+    forgeRuntimeLibrary("blue.endless:jankson:1.2.3")
 
     modRuntimeOnly(
         "io.wispforest:accessories-neoforge:${property("accessories_version")}"

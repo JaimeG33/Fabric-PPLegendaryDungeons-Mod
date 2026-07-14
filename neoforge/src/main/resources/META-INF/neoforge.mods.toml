@@ -2,6 +2,7 @@ modLoader = "javafml"
 loaderVersion = "[1,)"
 license = "MIT"
 
+# Array entry: a JAR may declare one or more mods.
 [[mods]]
 modId = "pp_legendarydungeons"
 version = "${version}"
@@ -11,12 +12,16 @@ description = '''
 A Cobblemon side mod that adds legendary dungeon content, structures, and related gameplay systems.
 '''
 
+# Single table for the feature requirements of this mod.
+# NeoForge 21.1.214 / FML loader 4.0.42 rejects this as [[features...]].
 [features.pp_legendarydungeons]
 javaVersion = "[21,)"
 
+# Array entry: a mod may declare one or more mixin configurations.
 [[mixins]]
 config = "pp_legendarydungeons.mixins.json"
 
+# Array entries: each required mod is a separate dependency object.
 [[dependencies.pp_legendarydungeons]]
 modId = "minecraft"
 type = "required"
