@@ -1,5 +1,3 @@
-// By default, this is how your built jar is called
-// TODO: you might want to change it
 rootProject.name = "cobblemon-explore-legendary-dungeons"
 
 pluginManagement {
@@ -10,3 +8,5 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
+include("common", "fabric", "neoforge")

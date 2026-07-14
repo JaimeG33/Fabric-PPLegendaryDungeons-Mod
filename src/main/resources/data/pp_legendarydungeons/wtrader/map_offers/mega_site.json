@@ -1,8 +1,0 @@
-{
-  "id": "pp_legendarydungeons:mega_site",
-  "loot_table": "pp_legendarydungeons:maps/mega_showdown/mega_site",
-  "tags": [
-    "mega_showdown",
-    "mega_site"
-  ]
-}

@@ -1,2 +1,0 @@
-# Tick function to find enemy spawns in the dungeon
-execute as @a at @s if entity @e[type=minecraft:armor_stand,tag=scs_dungeon_enemy,distance=..80] run function pp_legendarydungeons:other/dungeon/enemy/find

@@ -37,6 +37,14 @@ dependencies {
     ) {
         exclude("net.neoforged.fancymodloader", "loader")
     }
+    /*
+ * Accessories' Architectury NeoForge setup requires these runtime libraries
+ * explicitly because its jar-in-jar dependencies are not always resolved
+ * correctly in an Architectury development environment.
+ */
+    forgeRuntimeLibrary("io.wispforest:endec:0.1.8")
+    forgeRuntimeLibrary("io.wispforest.endec:gson:0.1.5")
+    forgeRuntimeLibrary("io.wispforest.endec:netty:0.1.4")
 
     modRuntimeOnly(
         "io.wispforest:accessories-neoforge:${property("accessories_version")}"

@@ -1,9 +1,0 @@
-{
-  "id": "pp_legendarydungeons:random_dungeon",
-  "loot_table": "pp_legendarydungeons:maps/random/find_random_dungeon",
-  "tags": [
-    "random_map",
-    "dungeon",
-    "legendary_dungeon"
-  ]
-}

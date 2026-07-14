@@ -1,9 +1,0 @@
-{
-  "id": "pp_legendarydungeons:fishing_boat",
-  "loot_table": "pp_legendarydungeons:maps/cobblemon/fishing_boats",
-  "tags": [
-    "ocean",
-    "cobblemon",
-    "fishing_boat"
-  ]
-}

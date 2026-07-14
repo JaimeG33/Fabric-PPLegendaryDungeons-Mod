@@ -1,1 +1,0 @@
-summon elder_guardian ~ ~ ~ {NoGravity:1b,Silent:1b,DeathLootTable:"pp_legendarydungeons:entities/dungeon_eguardian",PersistenceRequired:1b,Tags:["scs_eguardian"]}

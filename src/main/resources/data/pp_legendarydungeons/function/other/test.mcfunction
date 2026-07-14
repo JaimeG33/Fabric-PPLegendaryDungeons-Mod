@@ -1,1 +1,0 @@
-give @p decorated_pot[pot_decorations=["cobblemon:suspicious_sherd","cobblemon:suspicious_sherd","cobblemon:suspicious_sherd","cobblemon:suspicious_sherd"],block_entity_data={id:"minecraft:decorated_pot",LootTable:"pp_legendarydungeons:rayquaza_tower/pots/tm_craft/zyg"}] 1
