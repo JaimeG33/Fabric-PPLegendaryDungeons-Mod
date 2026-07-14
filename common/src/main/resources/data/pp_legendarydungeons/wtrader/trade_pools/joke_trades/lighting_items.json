@@ -1,0 +1,40 @@
+{
+  "id": "pp_legendarydungeons:lighting_items",
+  "category": "lighting_items",
+  "category_weight": 10,
+  "tags": [
+    "utility",
+    "lighting",
+    "cheap",
+    "joke_trade"
+  ],
+  "base_price": {
+    "item": "minecraft:torch",
+    "count": 1,
+    "variance_min": 0,
+    "variance_max": 0
+  },
+  "secondary_price": null,
+  "entries": [
+    {
+      "item": "minecraft:lantern",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 12,
+      "max_uses_max": 12,
+      "xp": 3,
+      "tags": []
+    },
+    {
+      "item": "minecraft:soul_lantern",
+      "weight": 4,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 8,
+      "max_uses_max": 8,
+      "xp": 3,
+      "tags": []
+    }
+  ]
+}

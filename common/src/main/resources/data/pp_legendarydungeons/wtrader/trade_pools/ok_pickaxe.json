@@ -1,0 +1,37 @@
+{
+  "id": "pp_legendarydungeons:ok_pickaxe",
+  "category": "ok_pickaxe",
+  "category_weight": 10,
+  "tags": [
+    "tools",
+    "pickaxes",
+    "secondary_price",
+    "relic_coin"
+  ],
+  "base_price": {
+    "item": "minecraft:emerald",
+    "count": 14,
+    "variance_min": -3,
+    "variance_max": 4
+  },
+  "secondary_price": {
+    "item": "cobblemon:relic_coin",
+    "count": 16,
+    "variance_min": -1,
+    "variance_max": 6
+  },
+  "entries": [
+    {
+      "loot_table": "pp_legendarydungeons:trades/enchants/ok_pickaxe1",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 12,
+      "tags": [
+        "custom_enchants"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "id": "pp_legendarydungeons:wtraders_map/random_research_outpost_map_trader",
+  "display_name": "Random Research Outpost Map Trader",
+  "show_display_name": false,
+  "trader_type": "custom_map",
+  "map_type": "random_research_outpost",
+  "total_trades": 5,
+  "guaranteed_trades": [
+    {
+      "type": "generated_map",
+      "map_offer": "pp_legendarydungeons:random_research_outpost",
+      "base_price": {
+        "item": "minecraft:emerald",
+        "count": 12,
+        "variance_min": -6,
+        "variance_max": 2
+      },
+      "secondary_price": {
+        "item": "cobblemon:relic_coin",
+        "count": 12,
+        "variance_min": -6,
+        "variance_max": 2
+      },
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 25
+    }
+  ],
+  "random_slots": [
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [
+        "mint_seeds_all",
+        "apricorn_seed_all",
+        "type_gems_all"
+      ],
+      "tag_filter_mode": "include",
+      "tags": []
+    },
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [],
+      "tag_filter_mode": "include_any_of",
+      "tags": [
+        "nature",
+        "pokemon"
+      ]
+    },
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [],
+      "tag_filter_mode": "include_any_of",
+      "tags": [
+        "cheap",
+        "fossils",
+        "joke_trade"
+      ]
+    },
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [],
+      "tag_filter_mode": "include",
+      "tags": [
+        "cheap",
+        "relic_coin"
+      ]
+    }
+  ]
+}

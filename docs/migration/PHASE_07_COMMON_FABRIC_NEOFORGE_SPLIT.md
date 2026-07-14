@@ -24,7 +24,7 @@ Physically separate the project into `common`, `fabric`, and `neoforge` modules 
 |---|---|---|
 | 7A | Complete and tag the Phase 6 checkpoint | Complete before Step 7B |
 | 7B | Stage module build files and directories | Applied; awaiting commit verification |
-| 7C | Copy and verify shared/platform source layout | Not applied |
+| 7C | Copy and verify shared/platform source layout | Applied; awaiting commit verification |
 | 7D | Activate the multi-project build and remove root `src` | Not applied |
 | 7E | Run static, artifact, Fabric, and NeoForge build checks | Not applied |
 

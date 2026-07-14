@@ -1,0 +1,68 @@
+{
+  "id": "pp_legendarydungeons:wtraders_map/to_trial_chambers",
+  "display_name": "Trial Chambers Map Trader",
+  "show_display_name": false,
+  "trader_type": "custom_map",
+  "map_type": "single_target",
+  "total_trades": 5,
+  "guaranteed_trades": [
+    {
+      "type": "generated_map",
+      "map_offer": "pp_legendarydungeons:trial_chambers",
+      "base_price": {
+        "item": "minecraft:emerald",
+        "count": 28,
+        "variance_min": -8,
+        "variance_max": 4
+      },
+      "secondary_price": {
+        "item": "cobblemon:relic_coin",
+        "count": 28,
+        "variance_min": -8,
+        "variance_max": 4
+      },
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 10
+    }
+  ],
+  "random_slots": [
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [
+        "custom_luck_foods"
+      ],
+      "tag_filter_mode": "include",
+      "tags": []
+    },
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [
+        "gems_trial_chambers"
+      ],
+      "tag_filter_mode": "include",
+      "tags": []
+    },
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [
+        "held_items_defensive"
+      ],
+      "tag_filter_mode": "include",
+      "tags": []
+    },
+    {
+      "count": 1,
+      "category_filter_mode": "include",
+      "categories": [
+        "trial_combat_tools",
+        "trial_chambers_misc"
+      ],
+      "tag_filter_mode": "include",
+      "tags": []
+    }
+  ]
+}

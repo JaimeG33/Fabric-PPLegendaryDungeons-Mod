@@ -1,0 +1,58 @@
+{
+  "type": "minecraft:archaeology",
+  "pools": [
+    {
+      "rolls": 1,
+      "bonus_rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:raw_iron",
+          "functions": [
+            {
+              "function": "minecraft:set_name",
+              "target": "item_name",
+              "name": {
+                "bold": true,
+                "color": "white",
+                "text": "Rare Cache Fragment"
+              }
+            },
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 1
+              }
+            },
+            {
+              "function": "minecraft:set_lore",
+              "mode": "replace_all",
+              "lore": [
+                {
+                  "text": "Throw this item onto the floor",
+                  "color": "gray",
+                  "italic": false
+                },
+                {
+                  "text": "next to the rubble you found it in",
+                  "color": "gray",
+                  "italic": false
+                },
+                {
+                  "text": "to crack it open.",
+                  "color": "gray",
+                  "italic": false
+                }
+              ]
+            },
+            {
+              "function": "minecraft:set_custom_model_data",
+              "value": 1113302
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

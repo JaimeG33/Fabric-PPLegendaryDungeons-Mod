@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "pp_legendarydungeons:overtaken_outpost/1",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 72,
+    "separation": 34,
+    "salt": 9651
+  }
+}

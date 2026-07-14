@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "mega_showdown:blue_orb",
+      "required": false
+    },
+    {
+      "id": "mega_showdown:blueorb",
+      "required": false
+    }
+  ]
+}

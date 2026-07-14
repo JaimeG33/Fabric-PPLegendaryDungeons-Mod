@@ -1,0 +1,1 @@
+execute as @a at @s if entity @e[type=minecraft:armor_stand,tag=scs_secret_vault_base,distance=..80] run function pp_legendarydungeons:other/dungeon/vaults/secret_base

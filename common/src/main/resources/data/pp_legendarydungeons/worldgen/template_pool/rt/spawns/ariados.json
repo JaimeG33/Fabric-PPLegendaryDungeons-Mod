@@ -1,0 +1,15 @@
+{
+	"name": "pp_legendarydungeons:rt/spawns/ariados",
+	"fallback": "minecraft:empty",
+	"elements": [
+		{
+			"weight": 1,
+			"element": {
+				"element_type": "minecraft:single_pool_element",
+				"projection": "rigid",
+				"location": "pp_legendarydungeons:rayquaza_tower/spawns_common/ariados",
+				"processors": "minecraft:empty"
+			}
+		}
+	]
+}

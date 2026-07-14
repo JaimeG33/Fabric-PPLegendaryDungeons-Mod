@@ -1,0 +1,7 @@
+
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "pp_legendarydungeons:block/dungeon_rule_parent"
+  }
+}

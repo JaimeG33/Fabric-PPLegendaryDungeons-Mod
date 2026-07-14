@@ -1,0 +1,53 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "MIT"
+
+[[mods]]
+modId = "pp_legendarydungeons"
+version = "${version}"
+displayName = "Cobblemon: Explore Legendary Dungeons"
+authors = "Professor Porker"
+description = '''
+A Cobblemon side mod that adds legendary dungeon content, structures, and related gameplay systems.
+'''
+
+[[features.pp_legendarydungeons]]
+javaVersion = "[21,)"
+
+[[mixins]]
+config = "pp_legendarydungeons.mixins.json"
+
+[[dependencies.pp_legendarydungeons]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1]"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.pp_legendarydungeons]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1.214,21.2)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.pp_legendarydungeons]]
+modId = "architectury"
+type = "required"
+versionRange = "[13.0.8,14)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.pp_legendarydungeons]]
+modId = "cobblemon"
+type = "required"
+versionRange = "[1.7.3,1.7.4)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.pp_legendarydungeons]]
+modId = "mega_showdown"
+type = "required"
+versionRange = "[1.6.9,1.7.5)"
+ordering = "AFTER"
+side = "BOTH"

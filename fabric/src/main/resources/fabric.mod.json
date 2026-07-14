@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "pp_legendarydungeons",
+  "version": "${version}",
+  "name": "Cobblemon: Explore Legendary Dungeons",
+  "description": "A Cobblemon side mod that adds legendary dungeon content, structures, and related gameplay systems.",
+  "authors": [
+    "Professor Porker"
+  ],
+  "license": "MIT",
+  "icon": "assets/pp_legendarydungeons/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons"
+    ],
+    "client": [
+      "porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeonsClient"
+    ]
+  },
+  "mixins": [
+    "pp_legendarydungeons.mixins.json"
+  ],
+  "depends": {
+    "minecraft": "1.21.1",
+    "fabric-api": "*",
+    "architectury": ">=13.0.8",
+    "cobblemon": "1.7.3",
+    "mega_showdown": ">=1.6.9 <=1.7.4"
+  }
+}

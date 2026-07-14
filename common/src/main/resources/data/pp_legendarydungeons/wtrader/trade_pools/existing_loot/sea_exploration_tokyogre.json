@@ -1,0 +1,37 @@
+{
+  "id": "pp_legendarydungeons:sea_exploration_tokyogre",
+  "category": "sea_exploration",
+  "category_weight": 10,
+  "tags": [
+    "exploration",
+    "ocean",
+    "fishing",
+    "cobblemon",
+    "secondary_price",
+    "relic_coin"
+  ],
+  "base_price": {
+    "item": "minecraft:emerald",
+    "count": 14,
+    "variance_min": -4,
+    "variance_max": 3
+  },
+  "secondary_price": {
+    "item": "cobblemon:relic_coin",
+    "count": 16,
+    "variance_min": -1,
+    "variance_max": 1
+  },
+  "entries": [
+    {
+      "loot_table": "pp_legendarydungeons:abandoned_research_outpost/004_magicarpjump/dig_fish_tokyogre_nomap",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 10,
+      "tags": []
+    }
+  ]
+}

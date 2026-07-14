@@ -1,0 +1,97 @@
+{
+  "id": "pp_legendarydungeons:berries_ev_reduction_all",
+  "category": "berries_ev_reduction_all",
+  "category_weight": 10,
+  "tags": [
+    "nature",
+    "pokemon",
+    "cheap",
+    "brewing",
+    "cooking",
+    "berry",
+    "ev",
+    "useful_recipe",
+    "emerald_only"
+  ],
+  "base_price": {
+    "item": "minecraft:emerald",
+    "count": 3,
+    "variance_min": -1,
+    "variance_max": 2
+  },
+  "secondary_price": null,
+  "entries": [
+    {
+      "item": "cobblemon:pomeg_berry",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 5,
+      "max_uses_max": 5,
+      "xp": 3,
+      "tags": [
+        "ev_berry"
+      ]
+    },
+    {
+      "item": "cobblemon:kelpsy_berry",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 5,
+      "max_uses_max": 5,
+      "xp": 3,
+      "tags": [
+        "ev_berry"
+      ]
+    },
+    {
+      "item": "cobblemon:qualot_berry",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 5,
+      "max_uses_max": 5,
+      "xp": 3,
+      "tags": [
+        "ev_berry"
+      ]
+    },
+    {
+      "item": "cobblemon:hondew_berry",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 5,
+      "max_uses_max": 5,
+      "xp": 3,
+      "tags": [
+        "ev_berry"
+      ]
+    },
+    {
+      "item": "cobblemon:grepa_berry",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 5,
+      "max_uses_max": 5,
+      "xp": 3,
+      "tags": [
+        "ev_berry"
+      ]
+    },
+    {
+      "item": "cobblemon:tamato_berry",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 5,
+      "max_uses_max": 5,
+      "xp": 3,
+      "tags": [
+        "ev_berry"
+      ]
+    }
+  ]
+}

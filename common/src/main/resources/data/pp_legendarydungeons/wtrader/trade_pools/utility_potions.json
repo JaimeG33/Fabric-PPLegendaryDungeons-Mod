@@ -1,0 +1,37 @@
+{
+  "id": "pp_legendarydungeons:utility_potions",
+  "category": "utility_potions",
+  "category_weight": 10,
+  "tags": [
+    "utility",
+    "potion",
+    "secondary_price",
+    "relic_coin"
+  ],
+  "base_price": {
+    "item": "minecraft:emerald",
+    "count": 24,
+    "variance_min": -4,
+    "variance_max": 4
+  },
+  "secondary_price": {
+    "item": "cobblemon:relic_coin",
+    "count": 32,
+    "variance_min": -16,
+    "variance_max": 16
+  },
+  "entries": [
+    {
+      "loot_table": "pp_legendarydungeons:trades/potions/advanced_night_vision",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 10,
+      "tags": [
+        "night_vision"
+      ]
+    }
+  ]
+}

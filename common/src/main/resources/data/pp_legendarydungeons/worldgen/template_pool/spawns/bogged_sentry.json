@@ -1,0 +1,16 @@
+{
+	"name": "pp_legendarydungeons:spawns/bogged_sentry",
+	"fallback": "minecraft:empty",
+	"elements": [
+		
+		{
+			"weight": 1,
+			"element": {
+				"element_type": "minecraft:single_pool_element",
+				"projection": "rigid",
+				"location": "pp_legendarydungeons:special/bogged_sentry",
+				"processors": "minecraft:empty"
+			}
+		}
+	]
+}

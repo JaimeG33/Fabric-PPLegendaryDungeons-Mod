@@ -1,0 +1,8 @@
+{
+  "id": "pp_legendarydungeons:wishing_weald",
+  "loot_table": "pp_legendarydungeons:maps/mega_showdown/wishing_weald",
+  "tags": [
+    "mega_showdown",
+    "wishing_weald"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "id": "pp_legendarydungeons:trial_chambers",
+  "loot_table": "pp_legendarydungeons:maps/find_trial_chambers",
+  "tags": [
+    "single_target",
+    "vanilla",
+    "trial_chambers"
+  ]
+}

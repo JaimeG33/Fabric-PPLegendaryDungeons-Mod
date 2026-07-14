@@ -1,0 +1,66 @@
+{
+  "id": "pp_legendarydungeons:trial_combat_tools",
+  "category": "trial_combat_tools",
+  "category_weight": 10,
+  "tags": [
+    "trial_chambers",
+    "combat",
+    "tools",
+    "secondary_price",
+    "relic_coin"
+  ],
+  "base_price": {
+    "item": "minecraft:emerald",
+    "count": 10,
+    "variance_min": -3,
+    "variance_max": 5
+  },
+  "secondary_price": {
+    "item": "cobblemon:relic_coin",
+    "count": 12,
+    "variance_min": -4,
+    "variance_max": 6
+  },
+  "entries": [
+    {
+      "item": "minecraft:iron_sword",
+      "weight": 8,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 2,
+      "max_uses_max": 2,
+      "xp": 6,
+      "tags": []
+    },
+    {
+      "item": "minecraft:tnt",
+      "weight": 8,
+      "count_min": 5,
+      "count_max": 10,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 6,
+      "tags": []
+    },
+    {
+      "item": "minecraft:crossbow",
+      "weight": 6,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 2,
+      "max_uses_max": 2,
+      "xp": 6,
+      "tags": []
+    },
+    {
+      "item": "minecraft:bow",
+      "weight": 6,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 2,
+      "max_uses_max": 2,
+      "xp": 5,
+      "tags": []
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "id": "pp_legendarydungeons:trial_chambers_misc",
+  "category": "trial_chambers_misc",
+  "category_weight": 10,
+  "tags": [
+    "trial_chambers",
+    "combat",
+    "utility",
+    "secondary_price",
+    "relic_coin"
+  ],
+  "base_price": {
+    "item": "minecraft:emerald",
+    "count": 7,
+    "variance_min": -2,
+    "variance_max": 3
+  },
+  "secondary_price": {
+    "item": "cobblemon:relic_coin",
+    "count": 5,
+    "variance_min": -2,
+    "variance_max": 3
+  },
+  "entries": [
+    {
+      "item": "minecraft:trial_key",
+      "weight": 5,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 2,
+      "max_uses_max": 2,
+      "xp": 6,
+      "tags": []
+    },
+    {
+      "item": "minecraft:ominous_trial_key",
+      "weight": 1,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 1,
+      "max_uses_max": 1,
+      "xp": 12,
+      "tags": [
+        "rare"
+      ]
+    },
+    {
+      "item": "minecraft:breeze_rod",
+      "weight": 4,
+      "count_min": 1,
+      "count_max": 2,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 5,
+      "tags": []
+    },
+    {
+      "item": "minecraft:wind_charge",
+      "weight": 8,
+      "count_min": 2,
+      "count_max": 6,
+      "max_uses_min": 5,
+      "max_uses_max": 5,
+      "xp": 3,
+      "tags": []
+    },
+    {
+      "item": "minecraft:copper_block",
+      "weight": 10,
+      "count_min": 6,
+      "count_max": 14,
+      "max_uses_min": 8,
+      "max_uses_max": 8,
+      "xp": 2,
+      "tags": []
+    }
+  ]
+}

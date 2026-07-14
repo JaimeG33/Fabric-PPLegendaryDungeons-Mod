@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 96
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": "pp_legendarydungeons:maps/random/find_random_research_outpost",
+          "weight": 1,
+          "quality": 1
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": "pp_legendarydungeons:maps/random/find_random_misc",
+          "weight": 1,
+          "quality": 2
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": "pp_legendarydungeons:maps/random/find_random_dungeon",
+          "weight": 1,
+          "quality": 3
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": "pp_legendarydungeons:key_dungeon_base",
+          "weight": 1,
+          "quality": 4
+        }
+      ]
+    }
+  ]
+}

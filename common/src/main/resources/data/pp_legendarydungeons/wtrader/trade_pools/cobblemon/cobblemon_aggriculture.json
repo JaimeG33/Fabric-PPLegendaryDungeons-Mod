@@ -1,0 +1,92 @@
+{
+  "id": "pp_legendarydungeons:cobblemon_aggriculture",
+  "category": "cobblemon_aggriculture",
+  "category_weight": 10,
+  "tags": [
+    "nature",
+    "pokemon",
+    "cheap",
+    "brewing",
+    "cooking",
+    "emerald_only"
+  ],
+  "base_price": {
+    "item": "minecraft:emerald",
+    "count": 6,
+    "variance_min": -3,
+    "variance_max": 0
+  },
+  "secondary_price": null,
+  "entries": [
+    {
+      "item": "cobblemon:medicinal_leek",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:big_root",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:energy_root",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:revival_herb",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:pep_up_flower",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:vivichoke",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": []
+    },
+    {
+      "item": "cobblemon:vivichoke_seeds",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": []
+    }
+  ]
+}

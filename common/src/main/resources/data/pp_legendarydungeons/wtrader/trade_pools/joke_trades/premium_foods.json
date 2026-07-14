@@ -1,0 +1,35 @@
+{
+  "id": "pp_legendarydungeons:premium_foods",
+  "category": "premium_foods",
+  "category_weight": 10,
+  "tags": [
+    "food",
+    "premium_food",
+    "cheap",
+    "joke_trade"
+  ],
+  "base_price": {
+    "item": "minecraft:carrot",
+    "count": 1,
+    "variance_min": 0,
+    "variance_max": 0
+  },
+  "secondary_price": {
+    "item": "cobblemon:relic_coin",
+    "count": 2,
+    "variance_min": -1,
+    "variance_max": 2
+  },
+  "entries": [
+    {
+      "item": "minecraft:golden_carrot",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 16,
+      "max_uses_max": 16,
+      "xp": 5,
+      "tags": []
+    }
+  ]
+}

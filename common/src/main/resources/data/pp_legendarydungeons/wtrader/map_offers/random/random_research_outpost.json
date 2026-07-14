@@ -1,0 +1,9 @@
+{
+  "id": "pp_legendarydungeons:random_research_outpost",
+  "loot_table": "pp_legendarydungeons:maps/random/find_random_research_outpost",
+  "tags": [
+    "random_map",
+    "research_outpost",
+    "abandoned_research_outpost"
+  ]
+}

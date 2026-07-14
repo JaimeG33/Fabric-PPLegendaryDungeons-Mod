@@ -1,0 +1,9 @@
+{
+  "id": "pp_legendarydungeons:sky_pillar",
+  "loot_table": "pp_legendarydungeons:maps/find_skypillar",
+  "tags": [
+    "single_target",
+    "legendary_dungeon",
+    "rayquaza"
+  ]
+}

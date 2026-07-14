@@ -1,0 +1,272 @@
+{
+  "id": "pp_legendarydungeons:type_gems_all",
+  "category": "type_gems_all",
+  "category_weight": 10,
+  "tags": [
+    "pokemon",
+    "cheap",
+    "emerald_only",
+    "cobblemon_type_gems"
+  ],
+  "base_price": {
+    "item": "minecraft:emerald",
+    "count": 5,
+    "variance_min": -3,
+    "variance_max": 1
+  },
+  "secondary_price": null,
+  "entries": [
+    {
+      "item": "cobblemon:normal_gem",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": [
+        "cobblemon",
+        "type_gem",
+        "normal_type"
+      ]
+    },
+    {
+      "item": "cobblemon:fire_gem",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": [
+        "cobblemon",
+        "type_gem",
+        "fire_type"
+      ]
+    },
+    {
+      "item": "cobblemon:water_gem",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": [
+        "cobblemon",
+        "type_gem",
+        "water_type"
+      ]
+    },
+    {
+      "item": "cobblemon:electric_gem",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": [
+        "cobblemon",
+        "type_gem",
+        "electric_type"
+      ]
+    },
+    {
+      "item": "cobblemon:grass_gem",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": [
+        "cobblemon",
+        "type_gem",
+        "grass_type"
+      ]
+    },
+    {
+      "item": "cobblemon:ice_gem",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": [
+        "cobblemon",
+        "type_gem",
+        "ice_type"
+      ]
+    },
+    {
+      "item": "cobblemon:fighting_gem",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": [
+        "cobblemon",
+        "type_gem",
+        "fighting_type"
+      ]
+    },
+    {
+      "item": "cobblemon:poison_gem",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": [
+        "cobblemon",
+        "type_gem",
+        "poison_type"
+      ]
+    },
+    {
+      "item": "cobblemon:ground_gem",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": [
+        "cobblemon",
+        "type_gem",
+        "ground_type"
+      ]
+    },
+    {
+      "item": "cobblemon:flying_gem",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": [
+        "cobblemon",
+        "type_gem",
+        "flying_type"
+      ]
+    },
+    {
+      "item": "cobblemon:psychic_gem",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": [
+        "cobblemon",
+        "type_gem",
+        "psychic_type"
+      ]
+    },
+    {
+      "item": "cobblemon:bug_gem",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": [
+        "cobblemon",
+        "type_gem",
+        "bug_type"
+      ]
+    },
+    {
+      "item": "cobblemon:rock_gem",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": [
+        "cobblemon",
+        "type_gem",
+        "rock_type"
+      ]
+    },
+    {
+      "item": "cobblemon:ghost_gem",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": [
+        "cobblemon",
+        "type_gem",
+        "ghost_type"
+      ]
+    },
+    {
+      "item": "cobblemon:dragon_gem",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": [
+        "cobblemon",
+        "type_gem",
+        "dragon_type"
+      ]
+    },
+    {
+      "item": "cobblemon:dark_gem",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": [
+        "cobblemon",
+        "type_gem",
+        "dark_type"
+      ]
+    },
+    {
+      "item": "cobblemon:steel_gem",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": [
+        "cobblemon",
+        "type_gem",
+        "steel_type"
+      ]
+    },
+    {
+      "item": "cobblemon:fairy_gem",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 3,
+      "max_uses_max": 3,
+      "xp": 3,
+      "tags": [
+        "cobblemon",
+        "type_gem",
+        "fairy_type"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+	"name": "pp_legendarydungeons:dungeon/crystal_caves/rooms/floor3/main_path/3_pool_r_main1",
+	"fallback": "minecraft:empty",
+	"elements": [
+		{
+			"weight": 1,
+			"element": {
+				"element_type": "minecraft:single_pool_element",
+				"projection": "rigid",
+				"location": "pp_legendarydungeons:dungeon/specific/crystal_caves/rooms/floor3/3_pool_r_main1",
+				"processors": "minecraft:empty"
+			}
+		}
+	]
+}

@@ -1,0 +1,163 @@
+{
+  "id": "pp_legendarydungeons:saplings",
+  "category": "saplings",
+  "category_weight": 10,
+  "tags": [
+    "nature",
+    "cheap",
+    "emerald_only"
+  ],
+  "base_price": {
+    "item": "minecraft:emerald",
+    "count": 4,
+    "variance_min": -1,
+    "variance_max": 1
+  },
+  "secondary_price": null,
+  "entries": [
+    {
+      "item": "minecraft:oak_sapling",
+      "weight": 8,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 5,
+      "max_uses_max": 5,
+      "xp": 3,
+      "tags": [
+        "minecraft",
+        "sapling",
+        "overworld"
+      ]
+    },
+    {
+      "item": "minecraft:spruce_sapling",
+      "weight": 9,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 5,
+      "max_uses_max": 5,
+      "xp": 3,
+      "tags": [
+        "minecraft",
+        "sapling",
+        "overworld"
+      ]
+    },
+    {
+      "item": "minecraft:birch_sapling",
+      "weight": 9,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 5,
+      "max_uses_max": 5,
+      "xp": 3,
+      "tags": [
+        "minecraft",
+        "sapling",
+        "overworld"
+      ]
+    },
+    {
+      "item": "minecraft:jungle_sapling",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 5,
+      "max_uses_max": 5,
+      "xp": 3,
+      "tags": [
+        "minecraft",
+        "sapling",
+        "overworld"
+      ]
+    },
+    {
+      "item": "minecraft:acacia_sapling",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 5,
+      "max_uses_max": 5,
+      "xp": 3,
+      "tags": [
+        "minecraft",
+        "sapling",
+        "overworld"
+      ]
+    },
+    {
+      "item": "minecraft:dark_oak_sapling",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 5,
+      "max_uses_max": 5,
+      "xp": 3,
+      "tags": [
+        "minecraft",
+        "sapling",
+        "overworld"
+      ]
+    },
+    {
+      "item": "minecraft:cherry_sapling",
+      "weight": 13,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 5,
+      "max_uses_max": 5,
+      "xp": 3,
+      "tags": [
+        "minecraft",
+        "sapling",
+        "overworld",
+        "cherry"
+      ]
+    },
+    {
+      "item": "minecraft:mangrove_propagule",
+      "weight": 12,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 5,
+      "max_uses_max": 5,
+      "xp": 3,
+      "tags": [
+        "minecraft",
+        "sapling",
+        "overworld",
+        "mangrove"
+      ]
+    },
+    {
+      "item": "minecraft:azalea",
+      "weight": 3,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 5,
+      "max_uses_max": 5,
+      "xp": 3,
+      "tags": [
+        "minecraft",
+        "sapling",
+        "overworld",
+        "azalea"
+      ]
+    },
+    {
+      "item": "minecraft:flowering_azalea",
+      "weight": 10,
+      "count_min": 1,
+      "count_max": 1,
+      "max_uses_min": 5,
+      "max_uses_max": 5,
+      "xp": 3,
+      "tags": [
+        "minecraft",
+        "sapling",
+        "overworld",
+        "azalea"
+      ]
+    }
+  ]
+}
