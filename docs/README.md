@@ -27,7 +27,7 @@ The repository is still physically a single-module Fabric project. Phases 1 thro
 - Shared Cobblemon event integration where Cobblemon already exposes common APIs.
 - Thin Fabric main and client entrypoints.
 
-Phase 6 passed the complete Fabric regression checkpoint. Phase 7 is the next phase and will split the project into `common`, `fabric`, and `neoforge` modules after the checkpoint tag is created.
+Phase 6 passed and is protected by the pre-split checkpoint tag. Phase 7 is now in progress; module build files are staged while the original root Fabric build remains active.
 
 ## Start here for the multi-loader migration
 
