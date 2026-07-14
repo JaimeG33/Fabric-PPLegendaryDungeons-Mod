@@ -2,7 +2,7 @@
 
 ## Status
 
-**In progress - Step 8C dedicated-server validation.**
+**In progress - Step 8D final validation and documentation.**
 
 ## Protected starting checkpoint
 
@@ -27,8 +27,8 @@ packet IDs, saved-data IDs, or data/resource identifiers.
 ## Workflow policy
 
 Phase 8 continues through manual file replacement and normal Gradle commands.
-The Phase 8 PowerShell tools committed during Step 8A are optional historical
-tooling and are not required by the remaining workflow.
+The PowerShell tools committed during Step 8A are optional historical tooling
+and are not required by the remaining workflow.
 
 ## Current NeoForge baseline
 
@@ -46,6 +46,7 @@ The NeoForge module contains:
 - Explicit Endec, Endec format-adapter, and Jankson development-runtime
   libraries.
 - A transformed common artifact and platform-qualified NeoForge JAR.
+- A NeoForge mod-list icon declared through `logoFile = "icon.png"`.
 
 ## Step status
 
@@ -53,8 +54,8 @@ The NeoForge module contains:
 |---|---|---|
 | 8A | Protect Phase 7 and begin Phase 8 documentation | Complete |
 | 8B | NeoForge client startup, fresh world, and controller smoke test | Complete |
-| 8C | NeoForge dedicated server, connected client, networking, persistence | In progress |
-| 8D | Missing-dependency check, validation record, final documentation | Not started |
+| 8C | NeoForge dedicated server, connected client, networking, persistence | Complete |
+| 8D | Missing-dependency check, validation record, final documentation | In progress |
 
 ## Step 8B - NeoForge client bootstrap
 
@@ -87,82 +88,48 @@ saved data, or the release artifact layout.
 The previously documented GUI-scale-4 zone-screen overflow remains deferred
 and does not block Phase 8.
 
-## Step 8C - NeoForge dedicated server
+## Step 8C - NeoForge dedicated-server result
 
-Start the server once:
+The NeoForge dedicated server reached its ready state and accepted a connected
+NeoForge development client on `localhost:25566`.
 
-```powershell
-.\gradlew.bat :neoforge:runServer --no-parallel --max-workers=2
-```
+The connected-client test confirmed:
 
-On the first run, NeoForge may create `neoforge/run/eula.txt` and stop. Change:
-
-```text
-eula=false
-```
-
-to:
-
-```text
-eula=true
-```
-
-In `neoforge/run/server.properties`, use:
-
-```properties
-level-name=phase8_neoforge_validation_world
-motd=Phase 8 NeoForge Validation
-online-mode=false
-server-port=25566
-allow-flight=true
-```
-
-Start the server again, then launch a second NeoForge client terminal:
-
-```powershell
-.\gradlew.bat :neoforge:runClient --no-parallel --max-workers=2
-```
-
-Connect to:
-
-```text
-localhost:25566
-```
-
-Required server checks:
-
-- Dedicated server reaches the ready state.
-- Client connects without registry or packet mismatch.
-- Parent and zone controller screens work while connected.
-- A saved setting survives disconnect and reconnect.
-- The setting survives a full server stop and restart.
-- No physical-client-only class is loaded by the dedicated server.
-
-Use `stop` in the server console. After all dimensions report as saved,
-`Ctrl+C` is safe if Gradle remains open after Minecraft has stopped.
+- No registry or packet mismatch.
+- Parent and zone controller screens opened while connected.
+- Controller settings saved through the server.
+- Saved settings survived disconnect and reconnect.
+- Saved settings survived a full server stop and restart.
+- The server shut down cleanly after saving players, worlds, and dimensions.
+- No physical-client-only class-loading failure occurred on the server.
 
 ## Step 8D - Missing dependency and finalization
 
-Build the NeoForge release JAR:
+Build the final NeoForge artifact:
 
 ```powershell
-.\gradlew.bat :neoforge:build --no-daemon --no-parallel --max-workers=2
+.\gradlew.bat :neoforge:clean :neoforge:build --no-daemon --no-parallel --max-workers=2 --console=plain
 ```
 
-Use a disposable NeoForge 1.21.1 instance and place only the built
-`cobblemon-eld-*-neoforge-mc1.21.1-cob1.7.3.jar` in its mods folder. Confirm
-NeoForge displays clear missing-dependency messages for the required mods
-rather than an unexplained class-loading crash.
+Inspect the final JAR and confirm it contains:
+
+- `META-INF/neoforge.mods.toml`
+- `icon.png`
+
+It must not contain `fabric.mod.json`.
+
+Use a disposable NeoForge 1.21.1 instance containing only the final
+`cobblemon-eld-*-neoforge-mc1.21.1-cob1.7.3.jar`. Confirm NeoForge displays a
+clear missing-dependency message naming required mods rather than an
+unexplained class-loading crash.
 
 After all checks pass:
 
-1. Create `PHASE_08_VALIDATION_RESULTS.md`.
-2. Commit and push the validation record.
-3. Mark all Phase 8 steps complete in this document.
-4. Change the Phase 8 row in `docs/migration/README.md` to
-   `Complete and user-tested`.
-5. Update `docs/README.md` to state that Phase 8 is complete and Phase 9 is
-   next.
+1. Add and commit `PHASE_08_VALIDATION_RESULTS.md`.
+2. Push and verify the validation-results commit.
+3. Mark Phase 8 complete in this document.
+4. Mark Phase 8 complete in `docs/migration/README.md`.
+5. Update `docs/README.md` to hand off to Phase 9.
 6. Commit and push the final Phase 8 documentation.
 
 ## Completion conditions
@@ -175,5 +142,7 @@ After all checks pass:
 - Controller networking and restart persistence pass.
 - Required dependencies load in the development runtime.
 - Missing required dependencies produce clear loader messages.
+- The final NeoForge JAR contains NeoForge metadata and the mod icon.
+- The final NeoForge JAR does not contain Fabric metadata.
 - Concrete runtime fixes are documented and committed.
 - Phase 8 validation results and final documentation are committed.
