@@ -90,12 +90,17 @@ Require-Phase8Text $neoBuild 'kotlinforforge-neoforge'
 Require-Phase8Text $neoBuild 'io.wispforest:endec:0.1.8'
 Require-Phase8Text $neoBuild 'io.wispforest.endec:gson:0.1.5'
 Require-Phase8Text $neoBuild 'io.wispforest.endec:netty:0.1.4'
+Require-Phase8Text $neoBuild 'blue.endless:jankson:1.2.3'
 Require-Phase8Text $neoBuild 'accessories-neoforge'
 Require-Phase8Text $neoBuild 'cobblemon-mega-showdown'
 Require-Phase8Text $neoBuild 'transformProductionNeoForge'
 
 Require-Phase8Regex $neoMetadata '(?m)^\s*modLoader\s*=\s*"javafml"\s*$' "javafml loader metadata"
 Require-Phase8Regex $neoMetadata '(?m)^\s*modId\s*=\s*"pp_legendarydungeons"\s*$' "stable mod ID"
+Require-Phase8Regex `
+    $neoMetadata `
+    '(?m)^\s*\[features\.pp_legendarydungeons\]\s*$' `
+    "single-table Java feature metadata"
 Require-Phase8Regex $neoMetadata '(?m)^\s*config\s*=\s*"pp_legendarydungeons\.mixins\.json"\s*$' "shared mixin configuration"
 Require-Phase8Regex $neoMetadata '(?ms)\[\[dependencies\.pp_legendarydungeons\]\].*?modId\s*=\s*"minecraft"' "Minecraft dependency"
 Require-Phase8Regex $neoMetadata '(?ms)\[\[dependencies\.pp_legendarydungeons\]\].*?modId\s*=\s*"neoforge"' "NeoForge dependency"

@@ -45,6 +45,13 @@ dependencies {
     forgeRuntimeLibrary("io.wispforest:endec:0.1.8")
     forgeRuntimeLibrary("io.wispforest.endec:gson:0.1.5")
     forgeRuntimeLibrary("io.wispforest.endec:netty:0.1.4")
+    /*
+ * oωo's configuration classes reference the Jankson 1.x API.
+ * Architectury's NeoForge development runtime does not reliably expose
+ * this jar-in-jar dependency, so provide it explicitly.
+ */
+    forgeRuntimeLibrary("blue.endless:jankson:1.2.3")
+
 
     modRuntimeOnly(
         "io.wispforest:accessories-neoforge:${property("accessories_version")}"

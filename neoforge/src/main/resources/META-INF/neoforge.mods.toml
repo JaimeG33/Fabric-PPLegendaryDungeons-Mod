@@ -11,7 +11,7 @@ description = '''
 A Cobblemon side mod that adds legendary dungeon content, structures, and related gameplay systems.
 '''
 
-[[features.pp_legendarydungeons]]
+[features.pp_legendarydungeons]
 javaVersion = "[21,)"
 
 [[mixins]]
