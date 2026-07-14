@@ -2,280 +2,154 @@
 
 ## Status
 
-**Ready to apply and verify.**
+**Complete and user-tested.**
 
-Remote verification before this phase:
+Final correction commit:
+
+```text
+407787814c56007849305b9ba89fe6ab55f5e175
+```
+
+Verified branch relationship after completion:
 
 ```text
 Branch: architectury-multiloader-migration
-Ahead of master: 6 commits
+Ahead of master: 10 commits
 Behind master: 0 commits
 ```
 
-Phase 4's deferred block, item, and block-entity registrations are present on GitHub.
+## Goal
 
----
+Replace direct Fabric networking APIs with Architectury typed payload transport and establish a shared client initialization boundary without changing packet IDs, field order, controller behavior, or server-authoritative validation.
 
-## 1. Goal
+## Stable packet IDs
 
-Replace the remaining direct Fabric networking APIs with Architectury networking and establish a shared client initialization boundary.
-
-This phase migrates:
-
-- Client-to-server controller updates.
-- Server-to-client editor snapshots.
-- Global receiver registration.
-- Packet sending.
-- Main-thread scheduling.
-- Shared client initialization.
-- Thin Fabric main and client entrypoints.
-
-The two existing payload IDs, payload records, field order, codecs, permission checks, distance checks, block-entity checks, and screen behavior remain.
-
----
-
-## 2. API replacement
-
-| Direct Fabric API | Phase 5 replacement |
-|---|---|
-| `PayloadTypeRegistry` | Payload-owned `StreamCodec<FriendlyByteBuf, ...>` |
-| `ServerPlayNetworking.registerGlobalReceiver` | `NetworkManager.registerReceiver(Side.C2S, ...)` |
-| `ClientPlayNetworking.registerGlobalReceiver` | `NetworkManager.registerReceiver(Side.S2C, ...)` |
-| `ServerPlayNetworking.send` | `NetworkManager.sendToPlayer` |
-| `ClientPlayNetworking.send` | `NetworkManager.sendToServer` |
-| Fabric receiver context execution | `NetworkManager.PacketContext.queue(...)` |
-
-Architectury's receiver accepts a `FriendlyByteBuf` and a cross-loader packet context. The context exposes the receiving player and a queue for the correct game thread.
-
----
-
-## 3. Stable payload IDs
-
-These IDs remain exactly unchanged:
+These IDs remain unchanged:
 
 ```text
 pp_legendarydungeons:open_dungeon_rule_editor
 pp_legendarydungeons:update_dungeon_rule_block
 ```
 
-Both records continue implementing `CustomPacketPayload` and retain a vanilla `Type` and `StreamCodec`.
+The payload records continue implementing `CustomPacketPayload` and retain vanilla `Type` and `StreamCodec` definitions.
 
-The codec buffer type changes from `RegistryFriendlyByteBuf` to `FriendlyByteBuf` because none of the fields require registry-aware serialization and Architectury's transport uses `FriendlyByteBuf`.
+## Final implementation
 
----
+### Shared server-safe registration
 
-## 4. New shared client initializer
+Full path:
+
+```text
+D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\dungeon_rules\network\DungeonRuleNetworking.java
+```
+
+The class now:
+
+- Registers the C2S payload and receiver through Architectury's typed payload API.
+- Registers the S2C payload type without a receiver only on a physical dedicated server.
+- Queues all game-state work through the Architectury packet context.
+- Sends editor snapshots with `NetworkManager.sendToPlayer(player, payload)`.
+- Preserves permission, distance, block-entity, preset, persistence, completion, and preview validation on the server.
+
+### Shared client-only registration
+
+Full paths:
 
 ```text
 D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\LegendaryDungeonsClient.java
+D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\dungeon_rules\client\DungeonRuleClientNetworking.java
 ```
 
-Fabric and the future NeoForge client bootstrap both call:
+The client boundary:
+
+- Is called only from the loader client entrypoint.
+- Registers the S2C payload and receiver together.
+- Queues screen creation to the client thread.
+- Sends controller updates with `NetworkManager.sendToServer(payload)`.
+
+### Thin Fabric entrypoints
+
+Full paths:
+
+```text
+D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\ProfessorPorkersLegendaryDungeons.java
+D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\ProfessorPorkersLegendaryDungeonsClient.java
+```
+
+The Fabric main entrypoint delegates to:
+
+```java
+LegendaryDungeons.init();
+```
+
+The Fabric client entrypoint delegates to:
 
 ```java
 LegendaryDungeonsClient.init();
 ```
 
-This class must never be referenced from dedicated-server initialization.
+## Final API model
 
----
+| Previous Fabric API | Final shared replacement |
+|---|---|
+| Fabric payload type registration | Architectury typed receiver/type registration |
+| `ServerPlayNetworking.registerGlobalReceiver` | `NetworkManager.registerReceiver(Side.C2S, TYPE, CODEC, receiver)` |
+| `ClientPlayNetworking.registerGlobalReceiver` | `NetworkManager.registerReceiver(Side.S2C, TYPE, CODEC, receiver)` |
+| `ServerPlayNetworking.send` | `NetworkManager.sendToPlayer` |
+| `ClientPlayNetworking.send` | `NetworkManager.sendToServer` |
+| Fabric receiver execution context | `NetworkManager.PacketContext.queue(...)` |
+| Manually allocated packet buffers | Typed payload objects and payload-owned codecs |
 
-## 5. Full replacement files
+The final payload codecs use `RegistryFriendlyByteBuf`. Architectury handles cross-loader transport around the typed payload object; no raw `Unpooled` buffer or manual Fabric send remains.
 
-```text
-D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\LegendaryDungeons.java
-D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\ProfessorPorkersLegendaryDungeons.java
-D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\ProfessorPorkersLegendaryDungeonsClient.java
-D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\dungeon_rules\client\DungeonRuleClientNetworking.java
-D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\dungeon_rules\network\OpenDungeonRuleEditorPayload.java
-D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\dungeon_rules\network\UpdateDungeonRuleBlockPayload.java
-D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\docs\README.md
-D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\docs\migration\README.md
-D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\docs\migration\PHASE_04_SHARED_DEFERRED_REGISTRIES.md
-D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\docs\migration\PHASE_05_SHARED_NETWORKING_AND_CLIENT_BOUNDARY.md
-```
+## Corrections made during Phase 5
 
----
+### Typed payload overload
 
-## 6. Script-patched files
+An initial attempt used the wrong raw-buffer overload. The final implementation registers the payload `TYPE`, `CODEC`, and receiver together through Architectury's typed API.
 
-The application script makes small targeted changes to:
+### Duplicate S2C registration
 
-```text
-D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\dungeon_rules\network\DungeonRuleNetworking.java
-D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\dungeon_rules\client\DungeonRuleParentScreen.java
-D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\dungeon_rules\client\DungeonRuleZoneScreen.java
-```
+Integrated singleplayer runs the physical client and integrated server in the same JVM. Registering the S2C type in both common initialization and client initialization caused duplicate registration.
 
-The server class registers the C2S receiver with Architectury, queues all world/player work to the server thread, and sends editor snapshots with `NetworkManager.sendToPlayer`.
+The final rule is:
 
-Both screens route updates through:
+- Physical client: `DungeonRuleClientNetworking.register()` registers the S2C type and receiver.
+- Physical dedicated server: `DungeonRuleNetworking.register()` registers only the S2C type required for sending.
 
-```java
-DungeonRuleClientNetworking.sendUpdate(payload)
-```
+Both classes retain one-time guards.
 
----
+### Remaining direct Fabric sends
 
-## 7. Threading behavior
+The parent and zone screens initially still called `ClientPlayNetworking.send(...)` after the server networking boundary had migrated.
 
-Packet decoding occurs when the Architectury receiver is called.
-
-All game-state work is queued.
-
-### Server
+Final correction commit `4077878...` changed both screens to call:
 
 ```java
-context.queue(() -> handleUpdate(serverPlayer, payload));
+DungeonRuleClientNetworking.sendUpdate(payload);
 ```
 
-This keeps permission checks, distance checks, block-entity access, saved data, preview actions, completion actions, and feedback on the server thread.
+No direct Fabric networking import remains in either screen.
 
-### Client
+## Threading and authority
 
-```java
-context.queue(() -> openEditorScreen(payload));
-```
+Server receiver work is queued before accessing players, levels, block entities, saved data, completion state, or previews.
 
-Screen creation and `Minecraft.setScreen(...)` therefore occur on the client thread.
+Client receiver work is queued before calling `Minecraft.setScreen(...)`.
 
----
+The client only requests actions. The server remains authoritative and checks:
 
-## 8. Applying the patch
+- Operator/bypass permission.
+- Maximum editing distance.
+- Whether the controller still exists.
+- Whether the payload's expected controller type matches the actual block entity.
+- Preset parsing and fallback.
+- Completion and reactivation state.
+- Parent/zone persistence and linking.
 
-Extract the package and open PowerShell in the extracted package directory.
+## Client isolation
 
-Run:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File ".\APPLY_PHASE_5.ps1"
-```
-
-Default project root:
-
-```text
-D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons
-```
-
-For another clone:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File ".\APPLY_PHASE_5.ps1" -ProjectRoot "D:\Other\Path"
-```
-
-The script verifies the project root, copies full replacement files, applies three guarded source edits, and refuses to silently produce a partial migration when an expected old snippet is absent.
-
-No files are deleted.
-
----
-
-## 9. Pre-build checks
-
-```powershell
-git branch --show-current
-git status --short
-
-Get-ChildItem -Recurse ".\src\main\java" -Filter "*.java" |
-    Select-String "PayloadTypeRegistry|ServerPlayNetworking|ClientPlayNetworking"
-```
-
-Expected branch:
-
-```text
-architectury-multiloader-migration
-```
-
-Expected search result: no matches.
-
-The two Fabric entrypoint interfaces remain intentionally until the module split.
-
----
-
-## 10. Build test
-
-```powershell
-.\gradlew.bat clean build
-```
-
-Expected:
-
-```text
-BUILD SUCCESSFUL
-```
-
-Likely compile failure categories:
-
-- A screen was not patched.
-- An expected codec generic did not update.
-- A direct Fabric networking import remains.
-- The script was run against the wrong branch/version.
-- A copied file landed under the package directory instead of the project root.
-
----
-
-## 11. Integrated-client tests
-
-```powershell
-.\gradlew.bat runClient
-```
-
-### Parent controller
-
-- Open the editor.
-- Save preset, channel, enabled state, and rule overrides.
-- Toggle preview.
-- Complete the dungeon.
-- Reactivate it.
-- Close and reopen to confirm current values.
-
-### Zone controller
-
-- Open the editor.
-- Save offsets, sizes, priority, maximum parent distance, channel, preset, and rule overrides.
-- Toggle preview.
-- Confirm parent-link feedback.
-- Close and reopen to confirm current values.
-
-### Server validation
-
-- Move more than 16 blocks away while a screen is open, then send an action.
-- Remove the controller while its screen is open, then send.
-- Test a non-operator.
-- Confirm normal dungeon interaction and protection still works.
-
----
-
-## 12. Dedicated-server two-way test
-
-```powershell
-.\gradlew.bat runServer
-```
-
-Connect using a matching development client and verify:
-
-- The dedicated server starts without loading client screen classes.
-- Both editors open.
-- C2S updates reach the server.
-- S2C snapshots reach the client.
-- Save, preview, complete, and reactivate work.
-- Disconnect and reconnect work.
-- Restarting does not produce duplicate receiver errors.
-
-A server startup without a connected client does not fully test Phase 5.
-
----
-
-## 13. Compatibility rule
-
-Use the same Phase 5 build on the client and server.
-
-The IDs and field order remain unchanged, but mixed pre-Phase-5/Phase-5 compatibility should not be promised because the registration and transport boundary changed.
-
----
-
-## 14. Dedicated-server class-loading check
-
-The server log must not report loading:
+The shared server initializer does not reference:
 
 ```text
 LegendaryDungeonsClient
@@ -285,47 +159,50 @@ DungeonRuleZoneScreen
 net.minecraft.client.Minecraft
 ```
 
-The common server initializer references only the server-safe networking class.
+Client classes are reached only from the Fabric client entrypoint and, later, the NeoForge client bootstrap.
 
----
+## Reported verification
 
-## 15. Commit instructions
+The final Phase 5 build was reported to have passed these focused tests:
 
-```powershell
-git add src/main/java/porker/pp_legendarydungeons/LegendaryDungeons.java
-git add src/main/java/porker/pp_legendarydungeons/LegendaryDungeonsClient.java
-git add src/main/java/porker/pp_legendarydungeons/ProfessorPorkersLegendaryDungeons.java
-git add src/main/java/porker/pp_legendarydungeons/ProfessorPorkersLegendaryDungeonsClient.java
-git add src/main/java/porker/pp_legendarydungeons/dungeon_rules/network
-git add src/main/java/porker/pp_legendarydungeons/dungeon_rules/client
-git add docs
+- Fabric client startup.
+- Existing and manually placed parent/zone controllers open.
+- Parent and zone save actions work.
+- Preview actions work.
+- Dungeon rules continue functioning.
+- Final direct-Fabric-send corrections were pushed.
 
-git status
-git diff --cached
-git commit -m "Migrate dungeon networking to Architectury"
-git push origin architectury-multiloader-migration
+Phase 6 performs the broader build, dedicated-server, existing-world, persistence, multiplayer, and full-feature regression checkpoint.
+
+## Files changed during Phase 5
+
+```text
+D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\LegendaryDungeons.java
+D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\LegendaryDungeonsClient.java
+D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\ProfessorPorkersLegendaryDungeons.java
+D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\ProfessorPorkersLegendaryDungeonsClient.java
+D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\dungeon_rules\network\DungeonRuleNetworking.java
+D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\dungeon_rules\network\OpenDungeonRuleEditorPayload.java
+D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\dungeon_rules\network\UpdateDungeonRuleBlockPayload.java
+D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\dungeon_rules\client\DungeonRuleClientNetworking.java
+D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\dungeon_rules\client\DungeonRuleParentScreen.java
+D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\src\main\java\porker\pp_legendarydungeons\dungeon_rules\client\DungeonRuleZoneScreen.java
 ```
 
----
+## Completion criteria
 
-## 16. Completion criteria
+Phase 5 is complete because:
 
-Phase 5 is complete only when:
-
-- No direct Fabric networking imports remain.
-- The shared initializer registers C2S networking.
-- The shared client initializer registers S2C networking.
+- Direct Fabric networking imports and sends were removed from the migrated networking path.
+- Shared initialization registers C2S networking.
+- Shared client initialization registers S2C networking.
 - Both Fabric entrypoints are thin.
-- Both payload IDs and field orders are unchanged.
-- Server validation remains intact.
-- Both handlers queue game-state work correctly.
-- The clean build succeeds.
-- Integrated-client tests pass.
-- Dedicated-server two-way networking tests pass.
-- Changes are pushed only to the migration branch.
+- Packet IDs and payload field order remain unchanged.
+- Server-authoritative validation remains intact.
+- Client screen creation remains isolated from dedicated-server initialization.
+- Focused client/controller tests passed.
+- The final corrections were pushed only to the migration branch.
 
----
+## Next phase
 
-## 17. Next phase
-
-Phase 6 is the full Fabric regression checkpoint before splitting the project into `common`, `fabric`, and `neoforge` modules.
+Phase 6 is the full Fabric regression checkpoint. Do not begin the physical `common`, `fabric`, and `neoforge` module split until Phase 6 is fully tested, documented, committed, and preferably tagged.
