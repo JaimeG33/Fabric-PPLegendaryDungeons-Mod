@@ -5,7 +5,7 @@ import com.cobblemon.mod.common.api.pokemon.PokemonProperties;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import net.minecraft.server.level.ServerLevel;
-import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import porker.pp_legendarydungeons.LegendaryDungeons;
 
 import java.util.Optional;
 
@@ -60,7 +60,7 @@ public final class LegendarySummonHelper {
                     pitch
             );
         } catch (Throwable throwable) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.error(
+            LegendaryDungeons.LOGGER.error(
                     "Failed to create/spawn Cobblemon Pokemon '{}'",
                     species,
                     throwable
@@ -103,7 +103,7 @@ public final class LegendarySummonHelper {
                     pitch
             );
         } catch (Throwable throwable) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.error(
+            LegendaryDungeons.LOGGER.error(
                     "Failed to create/spawn Cobblemon Pokemon from spec '{}'",
                     pokemonSpec,
                     throwable
@@ -136,7 +136,7 @@ public final class LegendarySummonHelper {
         boolean spawned = level.addFreshEntity(entity);
 
         if (!spawned) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "Failed to spawn {} at {}, {}, {}",
                     debugName,
                     x,

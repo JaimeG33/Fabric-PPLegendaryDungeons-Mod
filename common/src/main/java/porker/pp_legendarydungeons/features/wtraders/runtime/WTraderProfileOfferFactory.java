@@ -5,7 +5,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffers;
-import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import porker.pp_legendarydungeons.LegendaryDungeons;
 import porker.pp_legendarydungeons.features.wtraders.json.MapOfferJson;
 import porker.pp_legendarydungeons.features.wtraders.json.TraderProfileJson;
 import porker.pp_legendarydungeons.features.wtraders.json.TraderTradeJson;
@@ -58,7 +58,7 @@ public final class WTraderProfileOfferFactory {
         );
 
         if (offers.isEmpty()) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "[WTrader Runtime] Profile {} generated zero offers.",
                     profile.id
             );
@@ -82,7 +82,7 @@ public final class WTraderProfileOfferFactory {
             }
 
             if (WTraderJsonValues.isBlank(trade.mapOffer)) {
-                ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                LegendaryDungeons.LOGGER.warn(
                         "[WTrader Runtime] Profile {} has generated_map trade with missing map_offer.",
                         profile.id
                 );
@@ -94,7 +94,7 @@ public final class WTraderProfileOfferFactory {
             try {
                 mapOfferId = ResourceLocation.parse(trade.mapOffer);
             } catch (Exception exception) {
-                ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                LegendaryDungeons.LOGGER.warn(
                         "[WTrader Runtime] Profile {} has invalid map_offer id {}.",
                         profile.id,
                         trade.mapOffer
@@ -110,7 +110,7 @@ public final class WTraderProfileOfferFactory {
                     WTraderJsonRegistry.getMapOffer(mapOfferId);
 
             if (mapOffer.isEmpty()) {
-                ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                LegendaryDungeons.LOGGER.warn(
                         "[WTrader Runtime] Profile {} referenced missing map offer {}.",
                         profile.id,
                         mapOfferId
@@ -127,7 +127,7 @@ public final class WTraderProfileOfferFactory {
                     );
 
             if (generatedMap.isEmpty()) {
-                ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                LegendaryDungeons.LOGGER.warn(
                         "[WTrader Runtime] Could not generate map {} for profile {} at {}.",
                         mapOffer.get().lootTable,
                         profile.id,

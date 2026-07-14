@@ -2,7 +2,7 @@
 package porker.pp_legendarydungeons.dungeon_rules.preset;
 
 import net.minecraft.resources.ResourceLocation;
-import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import porker.pp_legendarydungeons.LegendaryDungeons;
 import porker.pp_legendarydungeons.dungeon_rules.DungeonRule;
 
 import java.util.Collections;
@@ -80,7 +80,7 @@ public final class DungeonRulePresetRegistry {
 
     private static ResourceLocation id(String path) {
         return ResourceLocation.fromNamespaceAndPath(
-                ProfessorPorkersLegendaryDungeons.MOD_ID,
+                LegendaryDungeons.MOD_ID,
                 path
         );
     }

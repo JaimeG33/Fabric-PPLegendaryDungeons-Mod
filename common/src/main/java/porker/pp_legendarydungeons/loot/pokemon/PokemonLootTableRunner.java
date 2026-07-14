@@ -13,7 +13,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import porker.pp_legendarydungeons.LegendaryDungeons;
 
 import java.util.List;
 import java.util.Map;
@@ -151,7 +151,7 @@ public final class PokemonLootTableRunner {
                 }
             }
 
-            ProfessorPorkersLegendaryDungeons.LOGGER.info(
+            LegendaryDungeons.LOGGER.info(
                     "[Pokemon Loot] Generated {} stack(s) from {} for species {}.",
                     spawnedStacks,
                     lootTableKey.location(),
@@ -162,7 +162,7 @@ public final class PokemonLootTableRunner {
 
             return spawnedStacks;
         } catch (Exception exception) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.error(
+            LegendaryDungeons.LOGGER.error(
                     "[Pokemon Loot] Failed to execute loot table {} for species {}.",
                     lootTableKey.location(),
                     pokemonEntity.getPokemon()
@@ -179,7 +179,7 @@ public final class PokemonLootTableRunner {
         return ResourceKey.create(
                 Registries.LOOT_TABLE,
                 ResourceLocation.fromNamespaceAndPath(
-                        ProfessorPorkersLegendaryDungeons.MOD_ID,
+                        LegendaryDungeons.MOD_ID,
                         path
                 )
         );

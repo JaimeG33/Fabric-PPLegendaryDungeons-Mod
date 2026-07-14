@@ -5,7 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import porker.pp_legendarydungeons.LegendaryDungeons;
 
 public final class ModTags {
     public static final TagKey<Block> DUNGEON_PC_BLOCKS =
@@ -41,7 +41,7 @@ public final class ModTags {
         return TagKey.create(
                 Registries.BLOCK,
                 ResourceLocation.fromNamespaceAndPath(
-                        ProfessorPorkersLegendaryDungeons.MOD_ID,
+                        LegendaryDungeons.MOD_ID,
                         path
                 )
         );
@@ -51,7 +51,7 @@ public final class ModTags {
         return TagKey.create(
                 Registries.ITEM,
                 ResourceLocation.fromNamespaceAndPath(
-                        ProfessorPorkersLegendaryDungeons.MOD_ID,
+                        LegendaryDungeons.MOD_ID,
                         path
                 )
         );

@@ -2,7 +2,7 @@ package porker.pp_legendarydungeons.features.wtraders.json;
 
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.trading.MerchantOffers;
-import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import porker.pp_legendarydungeons.LegendaryDungeons;
 
 /**
  * Temporary logging smoke test for the JSON trade generator.
@@ -35,7 +35,7 @@ public final class WTraderJsonGeneratorSmokeTest {
                     profile
             );
 
-            ProfessorPorkersLegendaryDungeons.LOGGER.info(
+            LegendaryDungeons.LOGGER.info(
                     "[WTrader JSON] Generator smoke test created {} offers for profile {}.",
                     offers.size(),
                     profile.id
@@ -45,7 +45,7 @@ public final class WTraderJsonGeneratorSmokeTest {
         }
 
         if (testedProfiles == 0) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.info(
+            LegendaryDungeons.LOGGER.info(
                     "[WTrader JSON] Generator smoke test found no custom_no_map profiles to test."
             );
         }

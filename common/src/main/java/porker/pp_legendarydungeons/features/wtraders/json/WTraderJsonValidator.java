@@ -4,7 +4,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import porker.pp_legendarydungeons.LegendaryDungeons;
 
 import java.util.List;
 
@@ -421,7 +421,7 @@ public final class WTraderJsonValidator {
             String message,
             Object... args
     ) {
-        ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+        LegendaryDungeons.LOGGER.warn(
                 "[WTrader JSON] {}: " + message,
                 prepend(fileId, args)
         );

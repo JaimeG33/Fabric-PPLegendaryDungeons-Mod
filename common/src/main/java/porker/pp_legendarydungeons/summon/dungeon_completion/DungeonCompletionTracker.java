@@ -2,7 +2,7 @@
 package porker.pp_legendarydungeons.summon.dungeon_completion;
 
 import net.minecraft.server.MinecraftServer;
-import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import porker.pp_legendarydungeons.LegendaryDungeons;
 import porker.pp_legendarydungeons.dungeon_rules.instance.DungeonCompletionService;
 import porker.pp_legendarydungeons.dungeon_rules.instance.DungeonRuleSavedData;
 
@@ -40,7 +40,7 @@ public final class DungeonCompletionTracker {
                     .orElse(null);
 
             if (condition == null) {
-                ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                LegendaryDungeons.LOGGER.warn(
                         "[Dungeon Completion] Missing condition '{}' for watch {}.",
                         watch.conditionId(),
                         watch.watchId()

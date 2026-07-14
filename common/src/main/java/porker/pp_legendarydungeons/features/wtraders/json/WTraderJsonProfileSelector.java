@@ -2,7 +2,7 @@ package porker.pp_legendarydungeons.features.wtraders.json;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import porker.pp_legendarydungeons.LegendaryDungeons;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.Optional;
  */
 public final class WTraderJsonProfileSelector {
     public static final ResourceLocation DEFAULT_SELECTION_TABLE = ResourceLocation.fromNamespaceAndPath(
-            ProfessorPorkersLegendaryDungeons.MOD_ID,
+            LegendaryDungeons.MOD_ID,
             "default"
     );
 
@@ -199,7 +199,7 @@ public final class WTraderJsonProfileSelector {
             try {
                 profileId = ResourceLocation.parse(ref.profile);
             } catch (Exception exception) {
-                ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                LegendaryDungeons.LOGGER.warn(
                         "[WTrader JSON] Selection table has invalid profile id: {}",
                         ref.profile
                 );
@@ -211,7 +211,7 @@ public final class WTraderJsonProfileSelector {
             );
 
             if (profile.isEmpty()) {
-                ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                LegendaryDungeons.LOGGER.warn(
                         "[WTrader JSON] Selection table referenced missing trader profile {}.",
                         profileId
                 );
@@ -219,7 +219,7 @@ public final class WTraderJsonProfileSelector {
             }
 
             if (!requiredTraderType.equals(profile.get().traderType)) {
-                ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                LegendaryDungeons.LOGGER.warn(
                         "[WTrader JSON] Selection table profile {} has trader_type {}, but expected {}.",
                         profileId,
                         profile.get().traderType,

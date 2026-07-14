@@ -4,7 +4,7 @@ package porker.pp_legendarydungeons.dungeon_rules.instance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import porker.pp_legendarydungeons.LegendaryDungeons;
 import porker.pp_legendarydungeons.dungeon_rules.DungeonRuleManager;
 
 import java.util.Optional;
@@ -26,7 +26,7 @@ public final class DungeonCompletionService {
 
         if (changed) {
             DungeonRuleManager.onInstanceStateChanged(server, instanceId);
-            ProfessorPorkersLegendaryDungeons.LOGGER.info(
+            LegendaryDungeons.LOGGER.info(
                     "[Dungeon Rules] Completed dungeon instance {}.",
                     instanceId
             );
@@ -42,7 +42,7 @@ public final class DungeonCompletionService {
 
         if (changed) {
             DungeonRuleManager.onInstanceStateChanged(server, instanceId);
-            ProfessorPorkersLegendaryDungeons.LOGGER.info(
+            LegendaryDungeons.LOGGER.info(
                     "[Dungeon Rules] Reactivated dungeon instance {}.",
                     instanceId
             );

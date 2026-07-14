@@ -9,7 +9,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
-import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import porker.pp_legendarydungeons.LegendaryDungeons;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,7 +114,7 @@ public final class WTraderTradeGenerator {
 
             case WTraderJsonTradeTypes.GENERATED_MAP -> createGeneratedMapOffer(random, profile, trade, generatedMaps).ifPresent(offers::add);
 
-            default -> ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            default -> LegendaryDungeons.LOGGER.warn(
                     "[WTrader JSON] Profile {} has unsupported trade type: {}",
                     profile.id,
                     trade.type
@@ -124,7 +124,7 @@ public final class WTraderTradeGenerator {
 
     private static Optional<MerchantOffer> createDirectItemOffer(RandomSource random, TraderTradeJson trade) {
         if (WTraderJsonValues.isBlank(trade.sellItem)) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "[WTrader JSON] direct_item trade is missing sell_item."
             );
             return Optional.empty();
@@ -149,7 +149,7 @@ public final class WTraderTradeGenerator {
             Map<ResourceLocation, ItemStack> generatedMaps
     ) {
         if (WTraderJsonValues.isBlank(trade.mapOffer)) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "[WTrader JSON] generated_map trade in profile {} is missing map_offer.",
                     profile.id
             );
@@ -161,7 +161,7 @@ public final class WTraderTradeGenerator {
         try {
             mapOfferId = ResourceLocation.parse(trade.mapOffer);
         } catch (Exception exception) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "[WTrader JSON] generated_map trade in profile {} has invalid map_offer id: {}",
                     profile.id,
                     trade.mapOffer
@@ -172,7 +172,7 @@ public final class WTraderTradeGenerator {
         ItemStack generatedMap = generatedMaps.get(mapOfferId);
 
         if (generatedMap == null || generatedMap.isEmpty()) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "[WTrader JSON] Profile {} requested generated map {}, but no generated map ItemStack was supplied yet.",
                     profile.id,
                     mapOfferId
@@ -223,7 +223,7 @@ public final class WTraderTradeGenerator {
         );
 
         if (pickedPool.isEmpty()) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "[WTrader JSON] No trade pools matched category filter {} {} and tag filter {} {}.",
                     categoryFilterMode,
                     categories,
@@ -243,7 +243,7 @@ public final class WTraderTradeGenerator {
         );
 
         if (pickedEntry.isEmpty()) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "[WTrader JSON] Trade pool {} had no weighted matching entries.",
                     pool.id
             );
@@ -362,7 +362,7 @@ public final class WTraderTradeGenerator {
             Item item = BuiltInRegistries.ITEM.get(id);
 
             if (item == Items.AIR && !id.equals(ResourceLocation.withDefaultNamespace("air"))) {
-                ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                LegendaryDungeons.LOGGER.warn(
                         "[WTrader JSON] Item id {} resolved to minecraft:air.",
                         itemId
                 );
@@ -371,7 +371,7 @@ public final class WTraderTradeGenerator {
 
             return item;
         } catch (Exception exception) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "[WTrader JSON] Invalid item id: {}",
                     itemId
             );

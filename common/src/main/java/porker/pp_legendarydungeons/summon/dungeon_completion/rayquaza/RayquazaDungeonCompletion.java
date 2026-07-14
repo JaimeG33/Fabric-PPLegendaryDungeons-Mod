@@ -4,7 +4,7 @@ package porker.pp_legendarydungeons.summon.dungeon_completion.rayquaza;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import porker.pp_legendarydungeons.LegendaryDungeons;
 import porker.pp_legendarydungeons.dungeon_rules.DungeonRuleManager;
 import porker.pp_legendarydungeons.dungeon_rules.instance.DungeonInstanceRecord;
 import porker.pp_legendarydungeons.dungeon_rules.instance.DungeonRuleSavedData;
@@ -50,7 +50,7 @@ public final class RayquazaDungeonCompletion {
                 .map(DungeonInstanceRecord::instanceId);
 
         if (instanceId.isEmpty()) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "[Dungeon Completion] Rayquaza spawned at {}, but no active Sky Pillar dungeon instance was found.",
                     origin
             );
@@ -73,7 +73,7 @@ public final class RayquazaDungeonCompletion {
         spawnedRayquaza.addTag("pp_dungeon_completion_tracked");
         DungeonCompletionTracker.add(level.getServer(), watch);
 
-        ProfessorPorkersLegendaryDungeons.LOGGER.info(
+        LegendaryDungeons.LOGGER.info(
                 "[Dungeon Completion] Armed Rayquaza completion watch {} for instance {}.",
                 watch.watchId(),
                 watch.instanceId()

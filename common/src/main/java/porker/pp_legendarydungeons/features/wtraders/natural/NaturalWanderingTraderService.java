@@ -5,7 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.item.trading.MerchantOffers;
-import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import porker.pp_legendarydungeons.LegendaryDungeons;
 import porker.pp_legendarydungeons.features.wtraders.json.TraderProfileJson;
 import porker.pp_legendarydungeons.features.wtraders.json.WTraderJsonProfileSelector;
 import porker.pp_legendarydungeons.features.wtraders.json.WTraderJsonTraderTypes;
@@ -27,7 +27,7 @@ import net.minecraft.world.level.storage.ServerLevelData;
 public final class NaturalWanderingTraderService {
     private static final ResourceLocation NATURAL_SPAWN_SELECTION_TABLE =
             ResourceLocation.fromNamespaceAndPath(
-                    ProfessorPorkersLegendaryDungeons.MOD_ID,
+                    LegendaryDungeons.MOD_ID,
                     "vanilla_wtrader_spawns"
             );
 
@@ -77,7 +77,7 @@ public final class NaturalWanderingTraderService {
                 );
 
         if (rolledResult.isEmpty()) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "[Natural WTrader] Selection table {} was missing or had no valid result. Keeping vanilla offers.",
                     NATURAL_SPAWN_SELECTION_TABLE
             );
@@ -87,7 +87,7 @@ public final class NaturalWanderingTraderService {
         if (WTraderJsonTraderTypes.VANILLA_WANDERING_TRADER.equals(
                 rolledResult.get()
         )) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.debug(
+            LegendaryDungeons.LOGGER.debug(
                     "[Natural WTrader] {} rolled the unaltered vanilla result.",
                     trader.getUUID()
             );
@@ -109,7 +109,7 @@ public final class NaturalWanderingTraderService {
                     NATURAL_SPAWN_SELECTION_TABLE
             );
         } else {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "[Natural WTrader] Selection table {} returned unknown result {}. Keeping vanilla offers.",
                     NATURAL_SPAWN_SELECTION_TABLE,
                     rolledResult.get()
@@ -118,7 +118,7 @@ public final class NaturalWanderingTraderService {
         }
 
         if (selectedProfile.isEmpty()) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "[Natural WTrader] Result {} had no valid profile in table {}. Keeping vanilla offers.",
                     rolledResult.get(),
                     NATURAL_SPAWN_SELECTION_TABLE
@@ -134,7 +134,7 @@ public final class NaturalWanderingTraderService {
                 );
 
         if (generatedOffers.isEmpty()) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "[Natural WTrader] Profile {} failed to generate. Keeping vanilla offers.",
                     selectedProfile.get().id
             );
@@ -172,7 +172,7 @@ public final class NaturalWanderingTraderService {
             trader.addTag("pp_no_map_trader");
         }
 
-        ProfessorPorkersLegendaryDungeons.LOGGER.info(
+        LegendaryDungeons.LOGGER.info(
                 "[Natural WTrader] Replaced natural trader {} with profile {} containing {} offers.",
                 trader.getUUID(),
                 selectedProfile.get().id,
@@ -194,7 +194,7 @@ public final class NaturalWanderingTraderService {
             WanderingTrader trader
     ) {
         if (!(level.getLevelData() instanceof ServerLevelData serverLevelData)) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "[Natural WTrader] Server level data did not implement ServerLevelData; "
                             + "natural trader detection was skipped."
             );

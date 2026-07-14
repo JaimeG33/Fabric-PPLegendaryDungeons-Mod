@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
-import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import porker.pp_legendarydungeons.LegendaryDungeons;
 import porker.pp_legendarydungeons.blocks.entity.DungeonRuleParentBlockEntity;
 import porker.pp_legendarydungeons.blocks.entity.DungeonRuleZoneBlockEntity;
 import porker.pp_legendarydungeons.dungeon_rules.instance.DungeonInstanceRecord;
@@ -185,7 +185,7 @@ public final class DungeonRuleManager {
                     .get(server)
                     .setZoneResolvedInstance(record.zoneKey(), "");
 
-            ProfessorPorkersLegendaryDungeons.LOGGER.debug(
+            LegendaryDungeons.LOGGER.debug(
                     "[Dungeon Rules] Zone at {} is waiting for a {} parent on channel {}.",
                     record.anchorPos(),
                     record.presetId(),

@@ -3,7 +3,7 @@ package porker.pp_legendarydungeons.features.custom_mobs;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.phys.AABB;
-import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import porker.pp_legendarydungeons.LegendaryDungeons;
 import porker.pp_legendarydungeons.features.FeatureContext;
 
 import java.util.List;
@@ -106,7 +106,7 @@ public final class CustomMobFeature {
             String message,
             Object... args
     ) {
-        ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+        LegendaryDungeons.LOGGER.warn(
                 "[Custom Mob Marker] {} at {}",
                 formatMessage(message, args),
                 marker.blockPosition()

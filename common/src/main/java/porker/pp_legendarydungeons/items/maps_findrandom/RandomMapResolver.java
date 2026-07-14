@@ -2,7 +2,7 @@ package porker.pp_legendarydungeons.items.maps_findrandom;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import porker.pp_legendarydungeons.LegendaryDungeons;
 
 import java.util.Optional;
 
@@ -62,7 +62,7 @@ public final class RandomMapResolver {
                     bestResolution = new RandomMapResolution(target, nearest, distanceSquared);
                 }
             } catch (Exception exception) {
-                ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                LegendaryDungeons.LOGGER.warn(
                         "Could not check random map target {} using structure tag {}.",
                         target.id(),
                         target.structureTagId(),

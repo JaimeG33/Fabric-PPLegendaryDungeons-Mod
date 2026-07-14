@@ -11,7 +11,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
-import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import porker.pp_legendarydungeons.LegendaryDungeons;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public final class LootTableTradeStackFactory {
         try {
             parsedId = ResourceLocation.parse(lootTableId);
         } catch (Exception exception) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "[WTrader Runtime] Invalid trade loot-table id: {}",
                     lootTableId
             );
@@ -82,7 +82,7 @@ public final class LootTableTradeStackFactory {
             }
 
             if (nonEmptyStacks.isEmpty()) {
-                ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                LegendaryDungeons.LOGGER.warn(
                         "[WTrader Runtime] Loot table {} generated no usable trade stack at {}.",
                         parsedId,
                         origin
@@ -91,7 +91,7 @@ public final class LootTableTradeStackFactory {
             }
 
             if (nonEmptyStacks.size() > 1) {
-                ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                LegendaryDungeons.LOGGER.warn(
                         "[WTrader Runtime] Loot table {} generated {} stacks for one trade; using the first stack.",
                         parsedId,
                         nonEmptyStacks.size()
@@ -100,7 +100,7 @@ public final class LootTableTradeStackFactory {
 
             return Optional.of(nonEmptyStacks.getFirst().copy());
         } catch (Throwable throwable) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.error(
+            LegendaryDungeons.LOGGER.error(
                     "[WTrader Runtime] Failed to generate trade stack from loot table {}.",
                     parsedId,
                     throwable

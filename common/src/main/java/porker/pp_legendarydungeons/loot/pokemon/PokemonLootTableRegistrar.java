@@ -11,7 +11,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.storage.loot.LootTable;
-import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import porker.pp_legendarydungeons.LegendaryDungeons;
 
 import java.util.Map;
 import java.util.Optional;
@@ -82,7 +82,7 @@ public final class PokemonLootTableRegistrar {
                 }
         );
 
-        ProfessorPorkersLegendaryDungeons.LOGGER.info(
+        LegendaryDungeons.LOGGER.info(
                 "[Pokemon Loot] Registered Cobblemon battle-faint and loot-drop listeners. Execution enabled: {}",
                 EXECUTE_LOOT_TABLES
         );
@@ -128,7 +128,7 @@ public final class PokemonLootTableRegistrar {
                 )
         );
 
-        ProfessorPorkersLegendaryDungeons.LOGGER.debug(
+        LegendaryDungeons.LOGGER.debug(
                 "[Pokemon Loot Diagnostic] BATTLE_FAINTED species={} pokemonUuid={} wild={} player={} table={}",
                 faintedPokemon.getSpecies().getResourceIdentifier(),
                 faintedPokemon.getUuid(),
@@ -149,7 +149,7 @@ public final class PokemonLootTableRegistrar {
         cleanupExpiredContexts();
 
         if (!(event.getEntity() instanceof PokemonEntity pokemonEntity)) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.debug(
+            LegendaryDungeons.LOGGER.debug(
                     "[Pokemon Loot Diagnostic] LOOT_DROPPED without PokemonEntity. entityPresent={} player={} selectedNativeDrops={}",
                     event.getEntity() != null,
                     playerName(event.getPlayer()),
@@ -191,7 +191,7 @@ public final class PokemonLootTableRegistrar {
                 ? -1L
                 : System.currentTimeMillis() - battleContext.createdAtMillis();
 
-        ProfessorPorkersLegendaryDungeons.LOGGER.info(
+        LegendaryDungeons.LOGGER.info(
                 "[Pokemon Loot Diagnostic] LOOT_DROPPED species={} pokemonUuid={} entityPresent=true wild={} eventPlayer={} cachedBattlePlayer={} killCredit={} resolvedPlayer={} battleContextAgeMs={} selectedNativeDrops={} table={} executionEnabled={}",
                 pokemon.getSpecies().getResourceIdentifier(),
                 pokemon.getUuid(),
@@ -211,7 +211,7 @@ public final class PokemonLootTableRegistrar {
         }
 
         if (!(pokemonEntity.level() instanceof ServerLevel serverLevel)) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "[Pokemon Loot] Ignored loot execution outside a ServerLevel for species {}.",
                     pokemon.getSpecies().getResourceIdentifier()
             );

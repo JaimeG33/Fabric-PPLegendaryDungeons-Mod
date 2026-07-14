@@ -11,7 +11,7 @@ import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.phys.AABB;
-import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import porker.pp_legendarydungeons.LegendaryDungeons;
 import porker.pp_legendarydungeons.features.FeatureContext;
 import porker.pp_legendarydungeons.features.wtraders.json.MapOfferJson;
 import porker.pp_legendarydungeons.features.wtraders.json.TraderProfileJson;
@@ -162,7 +162,7 @@ public final class WanderingTraderCommandSpawner {
         WanderingTrader trader = EntityType.WANDERING_TRADER.create(context.level());
 
         if (trader == null) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "Could not create regular wandering trader entity at {}.",
                     traderMarker.blockPosition()
             );
@@ -186,14 +186,14 @@ public final class WanderingTraderCommandSpawner {
         boolean added = context.level().addFreshEntity(trader);
 
         if (!added) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "Regular wandering trader entity was not added to the world at {}.",
                     traderMarker.blockPosition()
             );
             return false;
         }
 
-        ProfessorPorkersLegendaryDungeons.LOGGER.info(
+        LegendaryDungeons.LOGGER.info(
                 "Spawned regular wandering trader at {}.",
                 trader.blockPosition()
         );
@@ -209,7 +209,7 @@ public final class WanderingTraderCommandSpawner {
                 return true;
             }
 
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "[WTrader JSON] Failed to spawn JSON no-map profile {}; falling back to hardcoded trader.",
                     jsonProfile.get().id
             );
@@ -227,7 +227,7 @@ public final class WanderingTraderCommandSpawner {
                 return true;
             }
 
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "[WTrader JSON] Failed to spawn JSON map profile {}; falling back to hardcoded trader.",
                     jsonProfile.get().id
             );
@@ -270,7 +270,7 @@ public final class WanderingTraderCommandSpawner {
         );
 
         if (offers.isEmpty()) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "[WTrader JSON] Profile {} generated 0 offers.",
                     profile.id
             );
@@ -298,7 +298,7 @@ public final class WanderingTraderCommandSpawner {
             }
 
             if (WTraderJsonValues.isBlank(trade.mapOffer)) {
-                ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                LegendaryDungeons.LOGGER.warn(
                         "[WTrader JSON] Profile {} has generated_map trade with missing map_offer.",
                         profile.id
                 );
@@ -310,7 +310,7 @@ public final class WanderingTraderCommandSpawner {
             try {
                 mapOfferId = ResourceLocation.parse(trade.mapOffer);
             } catch (Exception exception) {
-                ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                LegendaryDungeons.LOGGER.warn(
                         "[WTrader JSON] Profile {} has invalid map_offer id {}.",
                         profile.id,
                         trade.mapOffer
@@ -321,7 +321,7 @@ public final class WanderingTraderCommandSpawner {
             Optional<MapOfferJson> mapOffer = WTraderJsonRegistry.getMapOffer(mapOfferId);
 
             if (mapOffer.isEmpty()) {
-                ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                LegendaryDungeons.LOGGER.warn(
                         "[WTrader JSON] Profile {} references missing map offer {}.",
                         profile.id,
                         mapOfferId
@@ -336,7 +336,7 @@ public final class WanderingTraderCommandSpawner {
             );
 
             if (generatedMap.isEmpty()) {
-                ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                LegendaryDungeons.LOGGER.warn(
                         "[WTrader JSON] Could not generate map {} for profile {} at {}.",
                         mapOffer.get().lootTable,
                         profile.id,
@@ -360,7 +360,7 @@ public final class WanderingTraderCommandSpawner {
         WanderingTrader trader = EntityType.WANDERING_TRADER.create(context.level());
 
         if (trader == null) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "[WTrader JSON] Could not create custom wandering trader entity at {}.",
                     traderMarker.blockPosition()
             );
@@ -403,7 +403,7 @@ public final class WanderingTraderCommandSpawner {
         boolean added = context.level().addFreshEntity(trader);
 
         if (!added) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "[WTrader JSON] Custom wandering trader entity was not added to the world at {}.",
                     traderMarker.blockPosition()
             );
@@ -415,7 +415,7 @@ public final class WanderingTraderCommandSpawner {
         activeOffers.addAll(offers);
         trader.overrideOffers(activeOffers);
 
-        ProfessorPorkersLegendaryDungeons.LOGGER.info(
+        LegendaryDungeons.LOGGER.info(
                 "[WTrader JSON] Spawned JSON wandering trader profile {} at {} with {} offers.",
                 profile.id,
                 trader.blockPosition(),
@@ -448,7 +448,7 @@ public final class WanderingTraderCommandSpawner {
             );
 
             if (generatedMap.isEmpty()) {
-                ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+                LegendaryDungeons.LOGGER.warn(
                         "Could not generate map {} for wandering trader profile {} at {}.",
                         mapOffer.lootTableId(),
                         profile.id(),
@@ -478,7 +478,7 @@ public final class WanderingTraderCommandSpawner {
         WanderingTrader trader = EntityType.WANDERING_TRADER.create(context.level());
 
         if (trader == null) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "Could not create custom wandering trader entity at {}.",
                     traderMarker.blockPosition()
             );
@@ -512,7 +512,7 @@ public final class WanderingTraderCommandSpawner {
         boolean added = context.level().addFreshEntity(trader);
 
         if (!added) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "Custom wandering trader entity was not added to the world at {}.",
                     traderMarker.blockPosition()
             );
@@ -524,7 +524,7 @@ public final class WanderingTraderCommandSpawner {
         activeOffers.addAll(offers);
         trader.overrideOffers(activeOffers);
 
-        ProfessorPorkersLegendaryDungeons.LOGGER.info(
+        LegendaryDungeons.LOGGER.info(
                 "Spawned wandering trader profile {} at {} with {} offers.",
                 profile.id(),
                 trader.blockPosition(),
@@ -649,7 +649,7 @@ public final class WanderingTraderCommandSpawner {
             return Optional.of(generatedStack);
         }
 
-        ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+        LegendaryDungeons.LOGGER.warn(
                 "Loot table {} ran at {}, but no generated item was captured.",
                 lootTableId,
                 marker.blockPosition()
@@ -687,7 +687,7 @@ public final class WanderingTraderCommandSpawner {
             context.level().getServer().getCommands().performPrefixedCommand(source, command);
             return true;
         } catch (Exception exception) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.error(
+            LegendaryDungeons.LOGGER.error(
                     "Failed to run wandering trader helper command at {}: {}",
                     marker.blockPosition(),
                     command,
@@ -703,7 +703,7 @@ public final class WanderingTraderCommandSpawner {
             String message,
             Object... args
     ) {
-        ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+        LegendaryDungeons.LOGGER.warn(
                 "[WTrader Marker] {} at {}",
                 formatMessage(message, args),
                 marker.blockPosition()

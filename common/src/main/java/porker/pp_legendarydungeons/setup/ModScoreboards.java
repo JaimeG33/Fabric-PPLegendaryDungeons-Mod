@@ -6,7 +6,7 @@ import net.minecraft.world.scores.PlayerTeam;
 import net.minecraft.world.scores.Scoreboard;
 import net.minecraft.world.scores.Objective;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
-import porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons;
+import porker.pp_legendarydungeons.LegendaryDungeons;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.scores.ScoreAccess;
 
@@ -79,7 +79,7 @@ public final class ModScoreboards {
         setupObjectives(scoreboard);
         setupTeams(scoreboard);
 
-        ProfessorPorkersLegendaryDungeons.LOGGER.info(
+        LegendaryDungeons.LOGGER.info(
                 "Professor Porker's Legendary Dungeons scoreboard/team setup complete."
         );
     }
@@ -140,7 +140,7 @@ public final class ModScoreboards {
                 null
         );
 
-        ProfessorPorkersLegendaryDungeons.LOGGER.info(
+        LegendaryDungeons.LOGGER.info(
                 "Created scoreboard objective '{}'",
                 objectiveName
         );
@@ -162,7 +162,7 @@ public final class ModScoreboards {
 
         PlayerTeam newTeam = scoreboard.addPlayerTeam(teamName);
 
-        ProfessorPorkersLegendaryDungeons.LOGGER.info(
+        LegendaryDungeons.LOGGER.info(
                 "Created team '{}'",
                 teamName
         );
@@ -207,7 +207,7 @@ public final class ModScoreboards {
         }
 
         if (objective == null) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "Could not get missing scoreboard objective '{}'",
                     objectiveName
             );
@@ -235,7 +235,7 @@ public final class ModScoreboards {
         }
 
         if (objective == null) {
-            ProfessorPorkersLegendaryDungeons.LOGGER.warn(
+            LegendaryDungeons.LOGGER.warn(
                     "Could not set missing scoreboard objective '{}'",
                     objectiveName
             );
