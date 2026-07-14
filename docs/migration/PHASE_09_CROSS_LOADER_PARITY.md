@@ -2,11 +2,14 @@
 
 ## Status
 
-**In progress — Phase 9A matrix created.**
+**Release-candidate smoke validation complete — extended parity and hardening
+remain deferred to post-release testing.**
 
 ## Protected baseline
 
 - Branch: `architectury-multiloader-migration`
+- Validation commit:
+  `39724ef2fbba6e556454c80e2f31ccbc6b8923f4`
 - Phase 8 runtime head before documentation closure:
   `d7038af0fff54831f10e83c277cc92bc0a45ac64`
 - Required Phase 8 tag: `architectury-multiloader-checkpoint-phase8`
@@ -17,9 +20,37 @@
 - NeoForge: `21.1.214`
 - Architectury API: `13.0.8`
 - Development Mega Showdown: `1.6.9+1.7.3+1.21.1`
-- Compatibility-floor test: `1.6.7+1.7.3+1.21.1`
+- Compatibility-floor target: `1.6.7+1.7.3+1.21.1`
 
 Do not modify or merge `master` during this phase.
+
+## Release-candidate scope decision
+
+The initial release is closing Phase 9 at a practical smoke-validation scope.
+
+Completed manual testing covered:
+
+- Fabric and NeoForge client startup.
+- Fabric Mod Menu metadata and icon visibility.
+- Fresh singleplayer worlds on both loaders.
+- Local Fabric and NeoForge dedicated-server startup and shutdown.
+- Representative controller, zone, rule, protection, editor, persistence, and
+  restart behavior in singleplayer and local server environments.
+- Normal and secret/alternate Rayquaza summon behavior on both loaders.
+- Repeat-prevention behavior observed during representative Rayquaza testing.
+
+The following remain deferred rather than being reported as passed:
+
+- Exhaustive editor boundary and malformed-input testing.
+- Packet distance, stale-controller, and adversarial permission testing.
+- Two-client simultaneous actions and multiplayer race-condition testing.
+- Full Mega Showdown version-floor verification.
+- Exhaustive loot, Pokémon-drop attribution, trader, map, structure, reload,
+  existing-world, target-modpack, and performance/leak matrices.
+
+Deferred items may be exercised through release-candidate testing and initial
+player feedback. Any reproduced failure should be documented and fixed in a
+small shared/common patch where possible.
 
 ## Result vocabulary
 
@@ -31,110 +62,104 @@ Use only:
 - `NOT APPLICABLE`
 - `DEFERRED`
 
-A result is `PASS` only after that exact scenario was performed. Phase 7 or
-Phase 8 results may guide setup, but they do not automatically satisfy Phase 9.
+A result is `PASS` only when the corresponding representative scenario was
+performed. A `PASS` in this release-candidate matrix does not claim exhaustive
+coverage beyond the notes for that row.
 
 ## Phase rules
 
-1. Test one feature group on both loaders before moving to the next group.
-2. Preserve exact logs, world names, pack versions, commands, and reproduction
-   steps for every failure.
-3. Prefer shared fixes in `common`.
-4. Prefer vanilla, Cobblemon common APIs, and Architectury common APIs before
+1. Preserve exact logs, world names, pack versions, commands, and reproduction
+   steps for every reported failure.
+2. Prefer shared fixes in `common`.
+3. Prefer vanilla, Cobblemon common APIs, and Architectury common APIs before
    loader-specific hooks.
-5. Keep public registry IDs, packet IDs, saved-data names, function IDs, tags,
+4. Keep public registry IDs, packet IDs, saved-data names, function IDs, tags,
    and structure IDs unchanged.
-6. Retest the failing loader, the other loader, and dedicated-server behavior
+5. Retest the failing loader, the other loader, and dedicated-server behavior
    after every code fix.
-7. Do not enable or rebalance Crystal Caves.
-8. Treat the GUI-scale-4 zone-editor overflow as `DEFERRED` unless loaders differ.
+6. Do not enable or rebalance Crystal Caves.
+7. Keep the GUI-scale-4 zone-editor overflow `DEFERRED` unless loaders differ.
 
 ## Parity matrix
 
 | Group | Feature | Fabric SP | Fabric dedicated | NeoForge SP | NeoForge dedicated | Existing-world result | Notes / failure details |
 |---|---|---|---|---|---|---|---|
-| 9B | Clean common, Fabric, and NeoForge build | NOT TESTED | NOT APPLICABLE | NOT TESTED | NOT APPLICABLE | NOT APPLICABLE |  |
-| 9B | Client title screen, mod list, and icon | NOT TESTED | NOT APPLICABLE | NOT TESTED | NOT APPLICABLE | NOT APPLICABLE |  |
-| 9B | Fresh world startup and registry/resource baseline | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT APPLICABLE |  |
-| 9C | Parent plus two linked zone controllers | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9C | Controller save, reopen, world reopen, and server restart persistence | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9C | Overlapping-zone priority and removal fallback | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9C | Parent inheritance, unlinked zones, and relinking | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9C | Block breaking and allowlisted breaks | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9C | Block placement and allowlisted placement | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9C | Doors, trapdoors, gates, buttons, levers, and containers | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9C | Beds and respawn anchors where applicable | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9C | Cobblemon PCs, healers, portable utilities, and other utility blocks | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9C | Buckets, fluids, fire, entity interaction, item use, vehicles, teleport items | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9C | Operator, creative, survival, and ordinary-player authority | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9C | TNT, creeper, bed, and respawn-anchor explosions | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9C | Fire spread, mob griefing, pistons, and fluid spread where handled | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9C | Two-player simultaneous controller/rule activity | NOT APPLICABLE | NOT TESTED | NOT APPLICABLE | NOT TESTED | NOT TESTED |  |
-| 9D | Parent editor: every field, save, cancel, preview, invalid values | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9D | Zone editor: every field, save, cancel, preview, numeric boundaries | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9D | Packet permission, distance, block-type, and stale-controller checks | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
+| 9B | Clean common, Fabric, and NeoForge build | PASS | NOT APPLICABLE | PASS | NOT APPLICABLE | NOT APPLICABLE | Both loader development builds launched successfully during validation. |
+| 9B | Client title screen, mod list, and icon | PASS | NOT APPLICABLE | PASS | NOT APPLICABLE | NOT APPLICABLE | Fabric Mod Menu was added as a development-only runtime dependency; Fabric and NeoForge icons were confirmed. |
+| 9B | Fresh world startup and registry/resource baseline | PASS | PASS | PASS | PASS | NOT APPLICABLE | Fresh client worlds and local dedicated servers started without observed blocking errors. |
+| 9C | Parent plus two linked zone controllers | PASS | PASS | PASS | PASS | DEFERRED | Representative controller and linked-zone behavior was manually tested. |
+| 9C | Controller save, reopen, world reopen, and server restart persistence | PASS | PASS | PASS | PASS | DEFERRED | Representative persistence and restart behavior was manually tested; broader existing-world migration remains deferred. |
+| 9C | Overlapping-zone priority and removal fallback | PASS | PASS | PASS | PASS | DEFERRED | Representative priority and fallback behavior was manually tested. |
+| 9C | Parent inheritance, unlinked zones, and relinking | PASS | PASS | PASS | PASS | DEFERRED | Representative linking behavior was manually tested. |
+| 9C | Block breaking and allowlisted breaks | PASS | PASS | PASS | PASS | DEFERRED | Representative protection behavior was manually tested. |
+| 9C | Block placement and allowlisted placement | PASS | PASS | PASS | PASS | DEFERRED | Representative protection behavior was manually tested. |
+| 9C | Doors, trapdoors, gates, buttons, levers, and containers | PASS | PASS | PASS | PASS | DEFERRED | Representative interactions were manually tested; exhaustive block coverage remains deferred. |
+| 9C | Beds and respawn anchors where applicable | DEFERRED | DEFERRED | DEFERRED | DEFERRED | DEFERRED | Deferred to release-candidate and player testing. |
+| 9C | Cobblemon PCs, healers, portable utilities, and other utility blocks | PASS | PASS | PASS | PASS | DEFERRED | Representative Cobblemon utility interaction was manually tested. |
+| 9C | Buckets, fluids, fire, entity interaction, item use, vehicles, teleport items | PASS | PASS | PASS | PASS | DEFERRED | Representative interactions were tested; exhaustive item/entity coverage remains deferred. |
+| 9C | Operator, creative, survival, and ordinary-player authority | PASS | PASS | PASS | PASS | DEFERRED | Representative authority behavior was manually tested; adversarial permission testing remains deferred. |
+| 9C | TNT, creeper, bed, and respawn-anchor explosions | PASS | PASS | PASS | PASS | DEFERRED | Representative explosion protection was tested; every explosion source was not exhaustively repeated. |
+| 9C | Fire spread, mob griefing, pistons, and fluid spread where handled | DEFERRED | DEFERRED | DEFERRED | DEFERRED | DEFERRED | Deferred to release-candidate and player testing. |
+| 9C | Two-player simultaneous controller/rule activity | NOT APPLICABLE | DEFERRED | NOT APPLICABLE | DEFERRED | DEFERRED | Multi-client race and simultaneous edit testing was not completed. |
+| 9D | Parent editor: representative fields, save, cancel, and preview | PASS | PASS | PASS | PASS | DEFERRED | Representative editor use was tested. Exhaustive invalid-value and boundary testing remains deferred. |
+| 9D | Zone editor: representative fields, save, cancel, and preview | PASS | PASS | PASS | PASS | DEFERRED | Representative editor use was tested. Exhaustive numeric-boundary testing remains deferred. |
+| 9D | Packet permission, distance, block-type, and stale-controller checks | DEFERRED | DEFERRED | DEFERRED | DEFERRED | DEFERRED | Normal server-authoritative use was observed; adversarial packet validation remains deferred. |
 | 9D | GUI scale 4 overflow | DEFERRED | DEFERRED | DEFERRED | DEFERRED | DEFERRED | Known non-blocking issue unless loaders differ. |
-| 9E | Active static feature trigger distance, cleanup, re-entry, and restart | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9E | Two-player static-feature duplicate prevention | NOT APPLICABLE | NOT TESTED | NOT APPLICABLE | NOT TESTED | NOT TESTED |  |
-| 9E | Rayquaza Tower normal summon flow | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9E | Rayquaza Tower secret/alternate summon flow | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
+| 9E | Active static feature trigger distance, cleanup, re-entry, and restart | DEFERRED | DEFERRED | DEFERRED | DEFERRED | DEFERRED | Rayquaza was tested, but the complete generic static-feature lifecycle matrix was not. |
+| 9E | Two-player static-feature duplicate prevention | NOT APPLICABLE | DEFERRED | NOT APPLICABLE | DEFERRED | DEFERRED | Multi-client duplicate-race testing was not completed. |
+| 9E | Rayquaza Tower normal summon flow | PASS | PASS | PASS | PASS | DEFERRED | Normal Rayquaza summoning was reported consistent across Fabric and NeoForge. |
+| 9E | Rayquaza Tower secret/alternate summon flow | PASS | PASS | PASS | PASS | DEFERRED | Secret/alternate Rayquaza summoning was reported consistent across Fabric and NeoForge. |
 | 9E | Crystal Caves activation or balancing | NOT APPLICABLE | NOT APPLICABLE | NOT APPLICABLE | NOT APPLICABLE | NOT APPLICABLE | Intentionally dormant; do not enable. |
-| 9F | Mega Showdown 1.6.7 item IDs, tags, loot, trades, and secret checks | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9F | Mega Showdown 1.6.9 item IDs, tags, loot, trades, and secret checks | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9F | Blue Orb, Red Orb, Deoxys Meteorite, blank stones/Z-Crystals | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9F | Mega trader/loot items, special pools, and Zygarde tower items | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9G | Vanilla chest, igloo, cartographer, and entity loot injection | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9G | Repeated `/reload` does not duplicate or invalidate loot injection | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9G | Cobblemon Pokémon loot: direct player defeat | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9G | Cobblemon Pokémon loot: battle and multiplayer attribution | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | Verify the correct player, not merely the first battle player. |
-| 9G | Cobblemon Pokémon loot: non-player defeat and duplicate prevention | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9H | Natural wandering trader replacement and persistent one-roll tag | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9H | Natural trader llama behavior and no restart/replacement loop | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9H | Static/custom trader spawn, marker cleanup, profile, and persistence | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9H | Representative basic, Cobblemon, map, Mega, joke, weighted pools | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9H | Cartographer additions, vanilla retention, and no reload duplication | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9I | Active maps create and locate the correct structure target | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9I | Map survives restart and copied-world cross-loader opening | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9J | Every enabled structure generates with matching biome/height/terrain | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9J | Jigsaw pools, internal loot, markers, and new chunks after reload/restart | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9K | Objectives, teams, load/tick functions, and scheduled functions | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9K | Several `/reload` cycles without duplicate messages/entities/tasks | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9L | Old Fabric-only world copy | NOT APPLICABLE | NOT APPLICABLE | NOT APPLICABLE | NOT APPLICABLE | NOT TESTED |  |
-| 9L | Current split Fabric world copy opened on Fabric | NOT APPLICABLE | NOT APPLICABLE | NOT APPLICABLE | NOT APPLICABLE | NOT TESTED |  |
-| 9L | Current NeoForge world copy reopened on NeoForge | NOT APPLICABLE | NOT APPLICABLE | NOT APPLICABLE | NOT APPLICABLE | NOT TESTED |  |
-| 9L | Current Fabric world copy opened on NeoForge | NOT APPLICABLE | NOT APPLICABLE | NOT APPLICABLE | NOT APPLICABLE | NOT TESTED |  |
-| 9L | Controller NBT and saved-data bounds hardening | NOT APPLICABLE | NOT APPLICABLE | NOT APPLICABLE | NOT APPLICABLE | NOT TESTED | Review max clamps before opening hand-edited/corrupt copies. |
-| 9M | Fabric development environment with Mega Showdown 1.6.9 | NOT TESTED | NOT TESTED | NOT APPLICABLE | NOT APPLICABLE | NOT TESTED |  |
-| 9M | Fabric target modpack with Mega Showdown 1.6.7 | NOT TESTED | NOT TESTED | NOT APPLICABLE | NOT APPLICABLE | NOT TESTED |  |
-| 9M | NeoForge development environment with Mega Showdown 1.6.9 | NOT APPLICABLE | NOT APPLICABLE | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9M | NeoForge target modpack with Mega Showdown 1.6.7 | NOT APPLICABLE | NOT APPLICABLE | NOT TESTED | NOT TESTED | NOT TESTED |  |
-| 9N | 20–30 minute Fabric dedicated-server performance/leak run | NOT APPLICABLE | NOT TESTED | NOT APPLICABLE | NOT APPLICABLE | NOT TESTED |  |
-| 9N | 20–30 minute NeoForge dedicated-server performance/leak run | NOT APPLICABLE | NOT APPLICABLE | NOT APPLICABLE | NOT TESTED | NOT TESTED |  |
-| 9N | Repeated connect/disconnect, reload, area traversal, and two-player cases | NOT APPLICABLE | NOT TESTED | NOT APPLICABLE | NOT TESTED | NOT TESTED |  |
+| 9F | Mega Showdown 1.6.7 item IDs, tags, loot, trades, and secret checks | DEFERRED | DEFERRED | DEFERRED | DEFERRED | DEFERRED | Deferred to target-modpack and player testing. |
+| 9F | Mega Showdown 1.6.9 item IDs, tags, loot, trades, and secret checks | DEFERRED | DEFERRED | DEFERRED | DEFERRED | DEFERRED | Deferred beyond startup-level dependency validation. |
+| 9F | Blue Orb, Red Orb, Deoxys Meteorite, blank stones/Z-Crystals | DEFERRED | DEFERRED | DEFERRED | DEFERRED | DEFERRED | Deferred. |
+| 9F | Mega trader/loot items, special pools, and Zygarde tower items | DEFERRED | DEFERRED | DEFERRED | DEFERRED | DEFERRED | Deferred. |
+| 9G | Vanilla chest, igloo, cartographer, and entity loot injection | DEFERRED | DEFERRED | DEFERRED | DEFERRED | DEFERRED | Deferred. |
+| 9G | Repeated `/reload` does not duplicate or invalidate loot injection | DEFERRED | DEFERRED | DEFERRED | DEFERRED | DEFERRED | Deferred. |
+| 9G | Cobblemon Pokémon loot: direct player defeat | DEFERRED | DEFERRED | DEFERRED | DEFERRED | DEFERRED | Deferred. |
+| 9G | Cobblemon Pokémon loot: battle and multiplayer attribution | DEFERRED | DEFERRED | DEFERRED | DEFERRED | DEFERRED | Verify the correct player, not merely the first battle player, when resumed. |
+| 9G | Cobblemon Pokémon loot: non-player defeat and duplicate prevention | DEFERRED | DEFERRED | DEFERRED | DEFERRED | DEFERRED | Deferred. |
+| 9H | Natural wandering trader replacement and persistent one-roll tag | DEFERRED | DEFERRED | DEFERRED | DEFERRED | DEFERRED | Deferred. |
+| 9H | Natural trader llama behavior and no restart/replacement loop | DEFERRED | DEFERRED | DEFERRED | DEFERRED | DEFERRED | Deferred. |
+| 9H | Static/custom trader spawn, marker cleanup, profile, and persistence | DEFERRED | DEFERRED | DEFERRED | DEFERRED | DEFERRED | Deferred. |
+| 9H | Representative basic, Cobblemon, map, Mega, joke, weighted pools | DEFERRED | DEFERRED | DEFERRED | DEFERRED | DEFERRED | Deferred. |
+| 9H | Cartographer additions, vanilla retention, and no reload duplication | DEFERRED | DEFERRED | DEFERRED | DEFERRED | DEFERRED | Deferred. |
+| 9I | Active maps create and locate the correct structure target | DEFERRED | DEFERRED | DEFERRED | DEFERRED | DEFERRED | Deferred. |
+| 9I | Map survives restart and copied-world cross-loader opening | DEFERRED | DEFERRED | DEFERRED | DEFERRED | DEFERRED | Deferred. |
+| 9J | Every enabled structure generates with matching biome/height/terrain | DEFERRED | DEFERRED | DEFERRED | DEFERRED | DEFERRED | Deferred. |
+| 9J | Jigsaw pools, internal loot, markers, and new chunks after reload/restart | DEFERRED | DEFERRED | DEFERRED | DEFERRED | DEFERRED | Deferred. |
+| 9K | Objectives, teams, load/tick functions, and scheduled functions | DEFERRED | DEFERRED | DEFERRED | DEFERRED | DEFERRED | Deferred. |
+| 9K | Several `/reload` cycles without duplicate messages/entities/tasks | DEFERRED | DEFERRED | DEFERRED | DEFERRED | DEFERRED | Deferred. |
+| 9L | Old Fabric-only world copy | NOT APPLICABLE | NOT APPLICABLE | NOT APPLICABLE | NOT APPLICABLE | DEFERRED | Deferred; always test a copy rather than the original world. |
+| 9L | Current split Fabric world copy opened on Fabric | NOT APPLICABLE | NOT APPLICABLE | NOT APPLICABLE | NOT APPLICABLE | DEFERRED | Deferred. |
+| 9L | Current NeoForge world copy reopened on NeoForge | NOT APPLICABLE | NOT APPLICABLE | NOT APPLICABLE | NOT APPLICABLE | DEFERRED | Deferred. |
+| 9L | Current Fabric world copy opened on NeoForge | NOT APPLICABLE | NOT APPLICABLE | NOT APPLICABLE | NOT APPLICABLE | DEFERRED | Deferred. |
+| 9L | Controller NBT and saved-data bounds hardening | NOT APPLICABLE | NOT APPLICABLE | NOT APPLICABLE | NOT APPLICABLE | DEFERRED | Review maximum clamps before opening hand-edited or corrupt copies. |
+| 9M | Fabric development environment with Mega Showdown 1.6.9 | DEFERRED | DEFERRED | NOT APPLICABLE | NOT APPLICABLE | DEFERRED | Startup-level validation occurred; full feature matrix deferred. |
+| 9M | Fabric target modpack with Mega Showdown 1.6.7 | DEFERRED | DEFERRED | NOT APPLICABLE | NOT APPLICABLE | DEFERRED | Deferred. |
+| 9M | NeoForge development environment with Mega Showdown 1.6.9 | NOT APPLICABLE | NOT APPLICABLE | DEFERRED | DEFERRED | DEFERRED | Startup-level validation occurred; full feature matrix deferred. |
+| 9M | NeoForge target modpack with Mega Showdown 1.6.7 | NOT APPLICABLE | NOT APPLICABLE | DEFERRED | DEFERRED | DEFERRED | Deferred. |
+| 9N | 20–30 minute Fabric dedicated-server performance/leak run | NOT APPLICABLE | DEFERRED | NOT APPLICABLE | NOT APPLICABLE | DEFERRED | Deferred. |
+| 9N | 20–30 minute NeoForge dedicated-server performance/leak run | NOT APPLICABLE | NOT APPLICABLE | NOT APPLICABLE | DEFERRED | DEFERRED | Deferred. |
+| 9N | Repeated connect/disconnect, reload, area traversal, and two-player cases | NOT APPLICABLE | DEFERRED | NOT APPLICABLE | DEFERRED | DEFERRED | Deferred. |
 
-## Evidence log
+## Evidence summary
 
-Create one entry per test session.
+Validation was performed manually and reported during development. Exact per-session
+logs and screenshots were not retained for every matrix row.
 
 ```text
-Date/time:
-Branch commit:
-Loader:
-Environment:
-Minecraft:
-Cobblemon:
-Mega Showdown:
-Other relevant mods:
-World copy / fresh world:
-Commands or setup:
-Rows tested:
-Result:
-Log path:
-Screenshots or recordings:
-Notes:
+Date: 2026-07-14
+Branch commit: 39724ef2fbba6e556454c80e2f31ccbc6b8923f4
+Loaders: Fabric and NeoForge
+Environments: Development clients, fresh singleplayer worlds, local dedicated servers
+Result: Release-candidate smoke validation passed with extended testing deferred
+Known blocking failures: None reported
 ```
 
 ## Failure record
+
+Use this template for any issue found during release-candidate or player testing:
 
 ```text
 Failure ID:
@@ -161,26 +186,25 @@ Existing-world retest:
 Final status:
 ```
 
-## Completion gate
+## Closure decision
 
-Phase 9 is complete only when:
+Phase 9 is closed for the initial release candidate with these conclusions:
 
-- Both loader JARs build cleanly.
-- Fabric and NeoForge fresh worlds pass.
-- Fabric and NeoForge dedicated servers pass.
-- Controller, protection, networking, and persistence behavior match.
-- Active static features and legendary summons match.
-- Supported Mega Showdown versions and secret-item systems match.
-- Loot, Pokémon drops, traders, cartographers, maps, and structures match.
-- Scoreboards, functions, reloads, and scheduled systems remain idempotent.
-- Existing-world copies retain blocks, NBT, links, saved data, maps, structures,
-  traders, teams, and scoreboards.
-- The four required development/target-modpack combinations pass.
-- Performance/leak sessions do not show unexplained growth or tick degradation.
-- Intentional differences and deferred issues are documented.
-- `PHASE_09_VALIDATION_RESULTS.md` is committed.
-- The migration index says `Complete and user-tested`.
-- The checkpoint tag exists:
+- Shared, Fabric, and NeoForge development builds reached playable client states.
+- Fresh worlds opened on Fabric and NeoForge.
+- Local Fabric and NeoForge dedicated servers started and stopped successfully.
+- Representative controller, protection, networking, editor, and persistence
+  behavior worked in the tested environments.
+- Normal and secret/alternate Rayquaza summoning worked across both loaders.
+- No blocking cross-loader regression was reported during smoke testing.
+- All unperformed extended tests are recorded as `DEFERRED`, not `PASS`.
+- Crystal Caves remains intentionally dormant.
+- `PHASE_09_VALIDATION_RESULTS.md` records the release-candidate conclusion.
+
+The full exhaustive parity gate remains deferred. Deferred work may be resumed
+after initial release feedback or before a later stability-focused release.
+
+Recommended checkpoint tag:
 
 ```text
 architectury-multiloader-checkpoint-phase9

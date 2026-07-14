@@ -36,8 +36,9 @@ Each phase document should contain:
 | 6 | `PHASE_06_FABRIC_REGRESSION_CHECKPOINT.md` | Complete and locally verified |
 | 7 | `PHASE_07_COMMON_FABRIC_NEOFORGE_SPLIT.md` | Complete and user-tested |
 | 8 | `PHASE_08_NEOFORGE_BOOTSTRAP.md` | Complete and user-tested |
-| 9 | `PHASE_09_CROSS_LOADER_PARITY.md` | In progress - cross-loader parity and hardening |
+| 9 | `PHASE_09_CROSS_LOADER_PARITY.md` | Release-candidate smoke validation complete; extended hardening deferred |
 | 10 | Future: release workflow | Planned |
 
-A phase may be changed to complete only after its required build, startup,
-artifact, multiplayer, persistence, and documentation checks have passed.
+Phase 9 is closed for the initial release candidate. Its validation-results
+document clearly separates completed smoke tests from deferred exhaustive
+parity, multiplayer, compatibility, persistence, and performance work.

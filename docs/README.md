@@ -38,7 +38,11 @@ user-tested the NeoForge client, fresh-world startup, dedicated server,
 connected-client networking, persistence, release artifact, dependency errors,
 mod-list icon, and Mega Showdown 1.6.7 compatibility.
 
-Phase 9 is in progress and owns complete cross-loader parity, regression, existing-world compatibility, target-modpack compatibility, and hardening.
+Phase 9 completed release-candidate smoke validation across Fabric and NeoForge
+clients, fresh worlds, local dedicated servers, representative dungeon-rule
+behavior, and normal and secret Rayquaza summoning. Exhaustive multiplayer,
+dependency-floor, loot, trader, map, structure, existing-world, reload, and
+performance validation remains explicitly deferred.
 
 ## Start here for the multi-loader migration
 
@@ -57,6 +61,7 @@ Phase 9 is in progress and owns complete cross-loader parity, regression, existi
 13. [`migration/PHASE_08_NEOFORGE_BOOTSTRAP.md`](migration/PHASE_08_NEOFORGE_BOOTSTRAP.md)
 14. [`migration/PHASE_08_VALIDATION_RESULTS.md`](migration/PHASE_08_VALIDATION_RESULTS.md)
 15. [`migration/PHASE_09_CROSS_LOADER_PARITY.md`](migration/PHASE_09_CROSS_LOADER_PARITY.md)
+16. [`migration/PHASE_09_VALIDATION_RESULTS.md`](migration/PHASE_09_VALIDATION_RESULTS.md)
 
 ## Documentation precedence
 
