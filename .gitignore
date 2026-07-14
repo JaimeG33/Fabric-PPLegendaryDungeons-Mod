@@ -54,6 +54,7 @@ bin/
 .phase6-patch-backup/
 .phase7-migration-backup/
 .phase7-validation/
+.phase8-validation/
 **/build/
 **/run/
 .idea/runConfigurations/

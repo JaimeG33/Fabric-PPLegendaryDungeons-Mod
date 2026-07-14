@@ -35,7 +35,7 @@ Each phase document should contain:
 | 5 | `PHASE_05_SHARED_NETWORKING_AND_CLIENT_BOUNDARY.md` | Complete and user-tested |
 | 6 | `PHASE_06_FABRIC_REGRESSION_CHECKPOINT.md` | Complete and locally verified |
 | 7 | `PHASE_07_COMMON_FABRIC_NEOFORGE_SPLIT.md` | Complete and user-tested |
-| 8 | Future: NeoForge bootstrap and runtime validation | Planned |
+| 8 | `PHASE_08_NEOFORGE_BOOTSTRAP.md` | In progress - NeoForge runtime bootstrap |
 | 9 | Future: cross-loader parity and hardening | Planned |
 | 10 | Future: release workflow | Planned |
 

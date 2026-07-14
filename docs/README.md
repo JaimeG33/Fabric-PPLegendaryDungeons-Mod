@@ -33,7 +33,8 @@ through 7D completed the physical module split and restored a working split
 Fabric client. Phase 7 is complete. The shared/common, Fabric, and NeoForge module split
 has passed static ownership checks, both release-artifact builds, Fabric
 integrated and dedicated-server multiplayer tests, and restart persistence.
-Phase 8 begins NeoForge client and dedicated-server runtime validation.
+Phase 8 is in progress and is validating the NeoForge client, fresh-world startup,
+dedicated server, connected-client networking, persistence, and dependency errors.
 
 ## Start here for the multi-loader migration
 
@@ -48,6 +49,7 @@ Phase 8 begins NeoForge client and dedicated-server runtime validation.
 9. [`migration/PHASE_06_FABRIC_REGRESSION_CHECKPOINT.md`](migration/PHASE_06_FABRIC_REGRESSION_CHECKPOINT.md)
 10. [`migration/PHASE_07_COMMON_FABRIC_NEOFORGE_SPLIT.md`](migration/PHASE_07_COMMON_FABRIC_NEOFORGE_SPLIT.md)
 11. [`migration/PHASE_07_VALIDATION_CHECKLIST.md`](migration/PHASE_07_VALIDATION_CHECKLIST.md)
+12. [`migration/PHASE_08_NEOFORGE_BOOTSTRAP.md`](migration/PHASE_08_NEOFORGE_BOOTSTRAP.md)
 
 ## Documentation precedence
 
