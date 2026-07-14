@@ -1,6 +1,5 @@
 package porker.pp_legendarydungeons.dungeon_rules.client;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -192,23 +191,25 @@ public final class DungeonRuleParentScreen extends Screen {
 
         updateRuleStatusButton();
 
-        ClientPlayNetworking.send(new UpdateDungeonRuleBlockPayload(
-                snapshot.pos(),
-                true,
-                presetBox.getValue(),
-                parseInt(channelBox.getValue(), 0),
-                enabled,
-                0,
-                0,
-                0,
-                1,
-                1,
-                1,
-                0,
-                512,
-                decisions.toPackedInt(),
-                action
-        ));
+        DungeonRuleClientNetworking.sendUpdate(
+                new UpdateDungeonRuleBlockPayload(
+                        snapshot.pos(),
+                        true,
+                        presetBox.getValue(),
+                        parseInt(channelBox.getValue(), 0),
+                        enabled,
+                        0,
+                        0,
+                        0,
+                        1,
+                        1,
+                        1,
+                        0,
+                        512,
+                        decisions.toPackedInt(),
+                        action
+                )
+        );
 
         if (UpdateDungeonRuleBlockPayload.ACTION_SAVE.equals(action)) {
             onClose();

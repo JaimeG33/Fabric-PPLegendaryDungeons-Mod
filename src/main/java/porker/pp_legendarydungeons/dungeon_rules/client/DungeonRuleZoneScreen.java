@@ -1,6 +1,5 @@
 package porker.pp_legendarydungeons.dungeon_rules.client;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -211,26 +210,49 @@ public final class DungeonRuleZoneScreen extends Screen {
     }
 
     private void send(String action) {
-        ClientPlayNetworking.send(new UpdateDungeonRuleBlockPayload(
-                snapshot.pos(),
-                false,
-                presetBox.getValue(),
-                parseInt(channelBox.getValue(), 0),
-                true,
-                parseInt(offsetXBox.getValue(), snapshot.offsetX()),
-                parseInt(offsetYBox.getValue(), snapshot.offsetY()),
-                parseInt(offsetZBox.getValue(), snapshot.offsetZ()),
-                parseInt(sizeXBox.getValue(), snapshot.sizeX()),
-                parseInt(sizeYBox.getValue(), snapshot.sizeY()),
-                parseInt(sizeZBox.getValue(), snapshot.sizeZ()),
-                parseInt(priorityBox.getValue(), snapshot.priority()),
-                parseInt(
-                        parentDistanceBox.getValue(),
-                        snapshot.maximumParentDistance()
-                ),
-                decisions.toPackedInt(),
-                action
-        ));
+        DungeonRuleClientNetworking.sendUpdate(
+                new UpdateDungeonRuleBlockPayload(
+                        snapshot.pos(),
+                        false,
+                        presetBox.getValue(),
+                        parseInt(channelBox.getValue(), 0),
+                        true,
+                        parseInt(
+                                offsetXBox.getValue(),
+                                snapshot.offsetX()
+                        ),
+                        parseInt(
+                                offsetYBox.getValue(),
+                                snapshot.offsetY()
+                        ),
+                        parseInt(
+                                offsetZBox.getValue(),
+                                snapshot.offsetZ()
+                        ),
+                        parseInt(
+                                sizeXBox.getValue(),
+                                snapshot.sizeX()
+                        ),
+                        parseInt(
+                                sizeYBox.getValue(),
+                                snapshot.sizeY()
+                        ),
+                        parseInt(
+                                sizeZBox.getValue(),
+                                snapshot.sizeZ()
+                        ),
+                        parseInt(
+                                priorityBox.getValue(),
+                                snapshot.priority()
+                        ),
+                        parseInt(
+                                parentDistanceBox.getValue(),
+                                snapshot.maximumParentDistance()
+                        ),
+                        decisions.toPackedInt(),
+                        action
+                )
+        );
 
         if (UpdateDungeonRuleBlockPayload.ACTION_SAVE.equals(action)) {
             onClose();
