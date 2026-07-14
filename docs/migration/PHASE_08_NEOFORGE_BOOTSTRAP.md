@@ -2,7 +2,7 @@
 
 ## Status
 
-**In progress - Step 8B runtime validation.**
+**In progress - Step 8C dedicated-server validation.**
 
 ## Protected starting checkpoint
 
@@ -43,7 +43,8 @@ The NeoForge module contains:
 - Mega Showdown NeoForge.
 - Accessories NeoForge.
 - Kotlin for Forge.
-- Explicit Endec and Jankson development-runtime libraries.
+- Explicit Endec, Endec format-adapter, and Jankson development-runtime
+  libraries.
 - A transformed common artifact and platform-qualified NeoForge JAR.
 
 ## Step status
@@ -51,69 +52,40 @@ The NeoForge module contains:
 | Step | Purpose | Status |
 |---|---|---|
 | 8A | Protect Phase 7 and begin Phase 8 documentation | Complete |
-| 8B | NeoForge client startup, fresh world, and controller smoke test | In progress |
-| 8C | NeoForge dedicated server, connected client, networking, persistence | Not started |
+| 8B | NeoForge client startup, fresh world, and controller smoke test | Complete |
+| 8C | NeoForge dedicated server, connected client, networking, persistence | In progress |
 | 8D | Missing-dependency check, validation record, final documentation | Not started |
 
 ## Step 8B - NeoForge client bootstrap
 
-### Initial runtime findings
+### Runtime findings and corrections
 
-The first NeoForge client attempt produced two concrete bootstrap failures:
+The NeoForge client bootstrap exposed three concrete development-runtime
+problems:
 
 1. NeoForge 21.1.214 rejected `[[features.pp_legendarydungeons]]` as a
    multi-object list. The header is now `[features.pp_legendarydungeons]`.
-2. Accessories/owo-lib reached Jankson configuration classes without Jankson
-   being exposed on the Architectury NeoForge development classpath.
+2. Accessories/owo-lib required the Jankson 1.x API at runtime.
    `blue.endless:jankson:1.2.3` is now an explicit
    `forgeRuntimeLibrary`.
+3. Accessories also required Endec's separate Jankson format adapter.
+   `io.wispforest.endec:jankson:0.1.5` is now an explicit
+   `forgeRuntimeLibrary`.
 
-These are NeoForge development-runtime corrections. They do not change shared
-gameplay code, public identifiers, saved data, or the release artifact layout.
+The NeoForge client subsequently reached the title screen, loaded a fresh
+world, registered the mod and controller blocks, and opened and saved both
+controller editors without fatal mixin, registry, packet, or class-loading
+errors.
 
-### Build
+A cosmetic metadata omission prevented the mod icon from appearing in the
+NeoForge mod list. The NeoForge metadata now declares `logoFile = "icon.png"`,
+and the existing shared icon is copied to the root of the NeoForge resources.
 
-From the project root:
-
-```powershell
-.\gradlew.bat :common:build :neoforge:clean :neoforge:build --no-daemon --no-parallel --max-workers=2 --console=plain
-```
-
-Required result:
-
-```text
-BUILD SUCCESSFUL
-```
-
-### Launch
-
-```powershell
-.\gradlew.bat :neoforge:runClient --no-parallel --max-workers=2
-```
-
-### Required client checks
-
-- Reach the title screen.
-- Confirm the mod appears as loaded.
-- Create a fresh world.
-- Confirm the parent and zone controller blocks are registered.
-- Open both controller screens.
-- Change and save a recognizable controller setting.
-- Close and reopen the world.
-- Confirm the setting persists.
-- Confirm there is no fatal mixin, registry, packet, or client-class-loading
-  error.
+These corrections do not change shared gameplay code, public identifiers,
+saved data, or the release artifact layout.
 
 The previously documented GUI-scale-4 zone-screen overflow remains deferred
 and does not block Phase 8.
-
-If startup fails again, stop and preserve:
-
-- `neoforge/run/logs/latest.log`
-- The newest file in `neoforge/run/crash-reports/`
-- The complete terminal output
-
-Do not advance to Step 8C until Step 8B passes.
 
 ## Step 8C - NeoForge dedicated server
 
@@ -145,8 +117,13 @@ server-port=25566
 allow-flight=true
 ```
 
-Start the server again, then launch a second NeoForge client terminal and
-connect to:
+Start the server again, then launch a second NeoForge client terminal:
+
+```powershell
+.\gradlew.bat :neoforge:runClient --no-parallel --max-workers=2
+```
+
+Connect to:
 
 ```text
 localhost:25566

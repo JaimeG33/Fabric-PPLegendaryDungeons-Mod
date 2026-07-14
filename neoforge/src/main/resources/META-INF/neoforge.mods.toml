@@ -7,10 +7,11 @@ license = "MIT"
 modId = "pp_legendarydungeons"
 version = "${version}"
 displayName = "Cobblemon: Explore Legendary Dungeons"
+logoFile = "icon.png"
 authors = "Professor Porker"
-description = '''
+description = """
 A Cobblemon side mod that adds legendary dungeon content, structures, and related gameplay systems.
-'''
+"""
 
 # Single table for the feature requirements of this mod.
 # NeoForge 21.1.214 / FML loader 4.0.42 rejects this as [[features...]].
