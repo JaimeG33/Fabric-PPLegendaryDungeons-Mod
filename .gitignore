@@ -4,7 +4,7 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-# Minecraft/Fabric dev runtime files
+# Minecraft dev runtime files
 run/
 
 # IntelliJ local workspace files
@@ -49,8 +49,11 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+# Migration backups and generated validation evidence
 .phase6-patch-backup/
 .phase7-migration-backup/
+.phase7-validation/
 **/build/
 **/run/
 .idea/runConfigurations/

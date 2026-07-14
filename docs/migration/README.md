@@ -2,7 +2,8 @@
 
 ## Purpose
 
-This directory stores the focused records for each stage of the Architectury Fabric + NeoForge migration.
+This directory stores the focused records for each stage of the Architectury
+Fabric + NeoForge migration.
 
 The high-level source of truth is:
 
@@ -33,11 +34,10 @@ Each phase document should contain:
 | 4 | `PHASE_04_SHARED_DEFERRED_REGISTRIES.md` | Complete and locally verified |
 | 5 | `PHASE_05_SHARED_NETWORKING_AND_CLIENT_BOUNDARY.md` | Complete and user-tested |
 | 6 | `PHASE_06_FABRIC_REGRESSION_CHECKPOINT.md` | Complete and locally verified |
-| 7 | `PHASE_07_COMMON_FABRIC_NEOFORGE_SPLIT.md` | In progress — module structure staged |
-| 8 | Future: NeoForge bootstrap | Planned |
+| 7 | `PHASE_07_COMMON_FABRIC_NEOFORGE_SPLIT.md` | In progress — Step 7E validation |
+| 8 | Future: NeoForge bootstrap and runtime validation | Planned |
 | 9 | Future: cross-loader parity and hardening | Planned |
 | 10 | Future: release workflow | Planned |
 
-A phase may be changed to complete only after its required clean build, client startup, dedicated-server startup, focused gameplay tests, persistence checks, and documentation have passed.
-
-Phase 6 has a known-good pushed implementation. Create the annotated checkpoint tag before applying Step 7B.
+A phase may be changed to complete only after its required build, startup,
+artifact, multiplayer, persistence, and documentation checks have passed.

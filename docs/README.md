@@ -1,10 +1,12 @@
 # Cobblemon: Explore Legendary Dungeons — Documentation
 
-This directory contains the project documentation for the current Fabric build and the Architectury Fabric + NeoForge migration.
+This directory contains the project documentation for the Architectury-based
+Fabric + NeoForge codebase.
 
 ## Authoritative current baseline
 
-Unless a newer completed phase document explicitly replaces these values, use this baseline:
+Unless a newer completed phase document explicitly replaces these values, use
+this baseline:
 
 | Component | Current target |
 |---|---|
@@ -17,17 +19,19 @@ Unless a newer completed phase document explicitly replaces these values, use th
 | Fabric API | `0.116.6+1.21.1` |
 | Fabric Language Kotlin | `1.13.6+kotlin.2.2.20` |
 | Accessories | `1.1.0-beta.52+1.21.1` |
-| NeoForge | Planned; initial alignment target `21.1.214` |
-| Kotlin for Forge | Planned target `5.10.0` |
+| NeoForge | `21.1.214` |
+| Kotlin for Forge | `5.10.0` |
 
-The repository is still physically a single-module Fabric project. Phases 1 through 5 moved its important internal boundaries to shared or loader-neutral APIs:
+The repository is now physically split into:
 
-- Shared common and client initializers.
-- Architectury lifecycle, tick, interaction, break, placement, reload, trade, loot, registry, and networking boundaries.
-- Shared Cobblemon event integration where Cobblemon already exposes common APIs.
-- Thin Fabric main and client entrypoints.
+- `common` for shared gameplay, resources, Architectury APIs, and shared Cobblemon integration.
+- `fabric` for thin Fabric entrypoints, metadata, dependencies, and build/run configuration.
+- `neoforge` for thin NeoForge entrypoints, metadata, dependencies, and build/run configuration.
 
-Phase 6 passed and is protected by the pre-split checkpoint tag. Phase 7 is now in progress; module build files are staged while the original root Fabric build remains active.
+Phases 1 through 6 established and verified the shared boundaries. Phase 7A
+through 7D completed the physical module split and restored a working split
+Fabric client. Phase 7E is validating static ownership, both release artifacts,
+and Fabric dedicated-server multiplayer/persistence behavior.
 
 ## Start here for the multi-loader migration
 
@@ -40,8 +44,8 @@ Phase 6 passed and is protected by the pre-split checkpoint tag. Phase 7 is now 
 7. [`migration/PHASE_04_SHARED_DEFERRED_REGISTRIES.md`](migration/PHASE_04_SHARED_DEFERRED_REGISTRIES.md)
 8. [`migration/PHASE_05_SHARED_NETWORKING_AND_CLIENT_BOUNDARY.md`](migration/PHASE_05_SHARED_NETWORKING_AND_CLIENT_BOUNDARY.md)
 9. [`migration/PHASE_06_FABRIC_REGRESSION_CHECKPOINT.md`](migration/PHASE_06_FABRIC_REGRESSION_CHECKPOINT.md)
-
-The master plan is the durable high-level source of truth. Each phase document records the exact scope, changed paths, tests, risks, corrections, and completion criteria for that stage.
+10. [`migration/PHASE_07_COMMON_FABRIC_NEOFORGE_SPLIT.md`](migration/PHASE_07_COMMON_FABRIC_NEOFORGE_SPLIT.md)
+11. [`migration/PHASE_07_VALIDATION_CHECKLIST.md`](migration/PHASE_07_VALIDATION_CHECKLIST.md)
 
 ## Documentation precedence
 
@@ -51,8 +55,6 @@ When older documentation conflicts with newer migration work, use this order:
 2. `MULTILOADER_MIGRATION_MASTER_PLAN.md`.
 3. This documentation index.
 4. Older gameplay and development pages.
-
-Some older pages were written before Mega Showdown became required and before the project moved to a Cobblemon 1.7.3-only baseline.
 
 ## Existing gameplay documentation
 
@@ -72,8 +74,6 @@ Some older pages were written before Mega Showdown became required and before th
 
 ## Stable project identifiers
 
-These identifiers must remain stable throughout the migration:
-
 | Purpose | Stable value |
 |---|---|
 | Public display name | `Cobblemon: Explore Legendary Dungeons` |
@@ -81,14 +81,16 @@ These identifiers must remain stable throughout the migration:
 | Java package | `porker.pp_legendarydungeons` |
 | Shared main initializer | `porker.pp_legendarydungeons.LegendaryDungeons` |
 | Shared client initializer | `porker.pp_legendarydungeons.LegendaryDungeonsClient` |
-| Current Fabric main entrypoint | `porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons` |
-| Current Fabric client entrypoint | `porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeonsClient` |
+| Fabric main entrypoint | `porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons` |
+| Fabric client entrypoint | `porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeonsClient` |
+| NeoForge main entrypoint | `porker.pp_legendarydungeons.neoforge.ProfessorPorkersLegendaryDungeonsNeoForge` |
+| NeoForge client entrypoint | `porker.pp_legendarydungeons.neoforge.ProfessorPorkersLegendaryDungeonsNeoForgeClient` |
 
-Do not rename the mod ID, Java package, resource namespace, registry IDs, block-entity IDs, saved-data IDs, scoreboard names, command tags, payload IDs, structure IDs, function IDs, loot-table IDs, WTrader IDs, or map target IDs as part of the loader migration.
+Do not rename persistent or public identifiers as part of the loader migration.
 
 ## Migration design rules
 
-New and migrated gameplay should use shared/common code by default. Use this priority:
+New and migrated gameplay should use shared/common code by default:
 
 1. Vanilla Minecraft API or standard resources.
 2. Cobblemon shared/common API.
@@ -97,4 +99,6 @@ New and migrated gameplay should use shared/common code by default. Use this pri
 5. A small platform interface or `@ExpectPlatform` boundary.
 6. Separate Fabric and NeoForge implementations only when no reliable shared approach exists.
 
-Platform modules should stay thin. Stability, scalability, multiplayer correctness, server-authoritative validation, and dedicated-server safety take priority over loader-specific shortcuts.
+Platform modules should stay thin. Stability, scalability, multiplayer
+correctness, server-authoritative validation, and dedicated-server safety take
+priority over loader-specific shortcuts.
