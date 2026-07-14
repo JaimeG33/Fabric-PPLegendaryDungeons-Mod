@@ -34,7 +34,7 @@ Each phase document should contain:
 | 4 | `PHASE_04_SHARED_DEFERRED_REGISTRIES.md` | Complete and locally verified |
 | 5 | `PHASE_05_SHARED_NETWORKING_AND_CLIENT_BOUNDARY.md` | Complete and user-tested |
 | 6 | `PHASE_06_FABRIC_REGRESSION_CHECKPOINT.md` | Complete and locally verified |
-| 7 | `PHASE_07_COMMON_FABRIC_NEOFORGE_SPLIT.md` | In progress — Step 7E validation |
+| 7 | `PHASE_07_COMMON_FABRIC_NEOFORGE_SPLIT.md` | Complete and user-tested |
 | 8 | Future: NeoForge bootstrap and runtime validation | Planned |
 | 9 | Future: cross-loader parity and hardening | Planned |
 | 10 | Future: release workflow | Planned |

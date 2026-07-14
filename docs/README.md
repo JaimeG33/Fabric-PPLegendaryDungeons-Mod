@@ -30,8 +30,10 @@ The repository is now physically split into:
 
 Phases 1 through 6 established and verified the shared boundaries. Phase 7A
 through 7D completed the physical module split and restored a working split
-Fabric client. Phase 7E is validating static ownership, both release artifacts,
-and Fabric dedicated-server multiplayer/persistence behavior.
+Fabric client. Phase 7 is complete. The shared/common, Fabric, and NeoForge module split
+has passed static ownership checks, both release-artifact builds, Fabric
+integrated and dedicated-server multiplayer tests, and restart persistence.
+Phase 8 begins NeoForge client and dedicated-server runtime validation.
 
 ## Start here for the multi-loader migration
 

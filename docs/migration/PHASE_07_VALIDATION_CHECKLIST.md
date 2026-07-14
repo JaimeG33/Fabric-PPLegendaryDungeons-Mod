@@ -2,7 +2,7 @@
 
 ## Status
 
-**In progress.**
+**Complete.**
 
 ## Automated validation
 
@@ -99,3 +99,9 @@ D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\docs\migrat
 ```
 
 Commit and push that result before applying the final Phase 7 documentation step.
+
+## Final result
+
+**PASS**
+
+The committed results are recorded in `PHASE_07_VALIDATION_RESULTS.md`.
