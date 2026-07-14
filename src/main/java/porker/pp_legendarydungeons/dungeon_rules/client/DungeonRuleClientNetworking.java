@@ -1,9 +1,7 @@
 package porker.pp_legendarydungeons.dungeon_rules.client;
 
 import dev.architectury.networking.NetworkManager;
-import io.netty.buffer.Unpooled;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.FriendlyByteBuf;
 import porker.pp_legendarydungeons.dungeon_rules.network.OpenDungeonRuleEditorPayload;
 import porker.pp_legendarydungeons.dungeon_rules.network.UpdateDungeonRuleBlockPayload;
 
@@ -27,24 +25,23 @@ public final class DungeonRuleClientNetworking {
 
         NetworkManager.registerReceiver(
                 NetworkManager.Side.S2C,
-                OpenDungeonRuleEditorPayload.ID,
-                (buffer, context) -> {
-                    OpenDungeonRuleEditorPayload payload =
-                            OpenDungeonRuleEditorPayload.CODEC.decode(buffer);
-
-                    context.queue(() -> openEditorScreen(payload));
-                }
+                OpenDungeonRuleEditorPayload.TYPE,
+                OpenDungeonRuleEditorPayload.CODEC,
+                (payload, context) ->
+                        context.queue(() -> openEditorScreen(payload))
         );
     }
 
-    public static void sendUpdate(UpdateDungeonRuleBlockPayload payload) {
-        FriendlyByteBuf buffer = new FriendlyByteBuf(Unpooled.buffer());
-        UpdateDungeonRuleBlockPayload.CODEC.encode(buffer, payload);
-
-        NetworkManager.sendToServer(
-                UpdateDungeonRuleBlockPayload.ID,
-                buffer
-        );
+    /**
+     * Sends one typed controller update to the server.
+     *
+     * <p>The packet payload already contains its type and codec information,
+     * so no manually allocated byte buffer is required.</p>
+     */
+    public static void sendUpdate(
+            UpdateDungeonRuleBlockPayload payload
+    ) {
+        NetworkManager.sendToServer(payload);
     }
 
     private static void openEditorScreen(

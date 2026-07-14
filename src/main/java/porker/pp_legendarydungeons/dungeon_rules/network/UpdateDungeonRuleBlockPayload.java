@@ -1,17 +1,17 @@
 package porker.pp_legendarydungeons.dungeon_rules.network;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import porker.pp_legendarydungeons.LegendaryDungeons;
 
 /**
- * Client-to-server edit/action request.
+ * Client-to-server edit or action request.
  *
  * <p>The server re-validates permission, distance, block type, and value
- * ranges. Architectury owns the cross-loader transport.</p>
+ * ranges. Architectury handles the cross-loader transport.</p>
  */
 public record UpdateDungeonRuleBlockPayload(
         BlockPos pos,
@@ -44,13 +44,15 @@ public record UpdateDungeonRuleBlockPayload(
     public static final Type<UpdateDungeonRuleBlockPayload> TYPE =
             new Type<>(ID);
 
-    public static final StreamCodec<FriendlyByteBuf, UpdateDungeonRuleBlockPayload> CODEC =
-            StreamCodec.of(
-                    (buffer, payload) -> payload.write(buffer),
-                    UpdateDungeonRuleBlockPayload::read
-            );
+    public static final StreamCodec<
+            RegistryFriendlyByteBuf,
+            UpdateDungeonRuleBlockPayload
+            > CODEC = StreamCodec.of(
+            (buffer, payload) -> payload.write(buffer),
+            UpdateDungeonRuleBlockPayload::read
+    );
 
-    private void write(FriendlyByteBuf buffer) {
+    private void write(RegistryFriendlyByteBuf buffer) {
         buffer.writeBlockPos(pos);
         buffer.writeBoolean(parent);
         buffer.writeUtf(presetId);
@@ -69,7 +71,7 @@ public record UpdateDungeonRuleBlockPayload(
     }
 
     private static UpdateDungeonRuleBlockPayload read(
-            FriendlyByteBuf buffer
+            RegistryFriendlyByteBuf buffer
     ) {
         return new UpdateDungeonRuleBlockPayload(
                 buffer.readBlockPos(),

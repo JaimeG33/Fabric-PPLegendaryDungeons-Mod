@@ -1,7 +1,7 @@
 package porker.pp_legendarydungeons.dungeon_rules.network;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
@@ -10,8 +10,8 @@ import porker.pp_legendarydungeons.LegendaryDungeons;
 /**
  * Server-to-client snapshot used to open either the parent or child editor.
  *
- * <p>The payload keeps its vanilla payload type and stream codec while
- * Architectury owns the cross-loader transport.</p>
+ * <p>The payload retains a vanilla payload type and stream codec while
+ * Architectury handles the cross-loader transport.</p>
  */
 public record OpenDungeonRuleEditorPayload(
         BlockPos pos,
@@ -41,13 +41,15 @@ public record OpenDungeonRuleEditorPayload(
     public static final Type<OpenDungeonRuleEditorPayload> TYPE =
             new Type<>(ID);
 
-    public static final StreamCodec<FriendlyByteBuf, OpenDungeonRuleEditorPayload> CODEC =
-            StreamCodec.of(
-                    (buffer, payload) -> payload.write(buffer),
-                    OpenDungeonRuleEditorPayload::read
-            );
+    public static final StreamCodec<
+            RegistryFriendlyByteBuf,
+            OpenDungeonRuleEditorPayload
+            > CODEC = StreamCodec.of(
+            (buffer, payload) -> payload.write(buffer),
+            OpenDungeonRuleEditorPayload::read
+    );
 
-    private void write(FriendlyByteBuf buffer) {
+    private void write(RegistryFriendlyByteBuf buffer) {
         buffer.writeBlockPos(pos);
         buffer.writeBoolean(parent);
         buffer.writeUtf(presetId);
@@ -68,7 +70,7 @@ public record OpenDungeonRuleEditorPayload(
     }
 
     private static OpenDungeonRuleEditorPayload read(
-            FriendlyByteBuf buffer
+            RegistryFriendlyByteBuf buffer
     ) {
         return new OpenDungeonRuleEditorPayload(
                 buffer.readBlockPos(),
