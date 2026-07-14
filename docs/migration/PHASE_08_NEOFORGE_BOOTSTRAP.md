@@ -2,19 +2,22 @@
 
 ## Status
 
-**In progress - Step 8D final validation and documentation.**
+**Complete.**
 
 ## Protected starting checkpoint
 
 - Branch: `architectury-multiloader-migration`
 - Phase 7 completion commit: `01edde6c0c5f4dc0fda9c3fa96d8d3a859ee34cc`
-- Checkpoint tag: `architectury-multiloader-checkpoint-phase7`
+- Phase 7 checkpoint tag: `architectury-multiloader-checkpoint-phase7`
+- Phase 8 validated branch head: `d7038af0fff54831f10e83c277cc92bc0a45ac64`
+- Phase 8 checkpoint tag: `architectury-multiloader-checkpoint-phase8`
 - Minecraft: `1.21.1`
 - Java: `21`
 - NeoForge: `21.1.214`
 - Cobblemon: `1.7.3+1.21.1`
 - Architectury API: `13.0.8`
-- Mega Showdown: `1.6.9+1.7.3+1.21.1`
+- Development Mega Showdown: `1.6.9+1.7.3+1.21.1`
+- Tested Mega Showdown compatibility floor: `1.6.7+1.7.3+1.21.1`
 - Accessories: `1.1.0-beta.52+1.21.1`
 - Kotlin for Forge: `5.10.0`
 
@@ -26,11 +29,11 @@ packet IDs, saved-data IDs, or data/resource identifiers.
 
 ## Workflow policy
 
-Phase 8 continues through manual file replacement and normal Gradle commands.
-The PowerShell tools committed during Step 8A are optional historical tooling
-and are not required by the remaining workflow.
+Phase 8 used manual file replacement and normal Gradle commands. The PowerShell
+tools committed during Step 8A remain optional historical tooling and are not
+required by later migration work.
 
-## Current NeoForge baseline
+## Final NeoForge baseline
 
 The NeoForge module contains:
 
@@ -55,7 +58,7 @@ The NeoForge module contains:
 | 8A | Protect Phase 7 and begin Phase 8 documentation | Complete |
 | 8B | NeoForge client startup, fresh world, and controller smoke test | Complete |
 | 8C | NeoForge dedicated server, connected client, networking, persistence | Complete |
-| 8D | Missing-dependency check, validation record, final documentation | In progress |
+| 8D | Missing-dependency check, validation record, final documentation | Complete |
 
 ## Step 8B - NeoForge client bootstrap
 
@@ -67,8 +70,7 @@ problems:
 1. NeoForge 21.1.214 rejected `[[features.pp_legendarydungeons]]` as a
    multi-object list. The header is now `[features.pp_legendarydungeons]`.
 2. Accessories/owo-lib required the Jankson 1.x API at runtime.
-   `blue.endless:jankson:1.2.3` is now an explicit
-   `forgeRuntimeLibrary`.
+   `blue.endless:jankson:1.2.3` is now an explicit `forgeRuntimeLibrary`.
 3. Accessories also required Endec's separate Jankson format adapter.
    `io.wispforest.endec:jankson:0.1.5` is now an explicit
    `forgeRuntimeLibrary`.
@@ -80,7 +82,7 @@ errors.
 
 A cosmetic metadata omission prevented the mod icon from appearing in the
 NeoForge mod list. The NeoForge metadata now declares `logoFile = "icon.png"`,
-and the existing shared icon is copied to the root of the NeoForge resources.
+and the shared icon is copied to the root of the NeoForge resources.
 
 These corrections do not change shared gameplay code, public identifiers,
 saved data, or the release artifact layout.
@@ -105,44 +107,27 @@ The connected-client test confirmed:
 
 ## Step 8D - Missing dependency and finalization
 
-Build the final NeoForge artifact:
+The final NeoForge artifact was built and inspected.
 
-```powershell
-.\gradlew.bat :neoforge:clean :neoforge:build --no-daemon --no-parallel --max-workers=2 --console=plain
-```
+Confirmed:
 
-Inspect the final JAR and confirm it contains:
+- `META-INF/neoforge.mods.toml` is present.
+- `icon.png` is present.
+- `fabric.mod.json` is absent.
+- A disposable NeoForge instance without required dependencies displayed a
+  clear missing-dependency message instead of an unexplained class-loading
+  crash.
+- Mega Showdown `1.6.7+1.7.3+1.21.1` compatibility was tested.
+- Fabric metadata accepts `mega_showdown >=1.6.7`.
+- NeoForge metadata accepts `mega_showdown [1.6.7,)`.
+- `gradle.properties` continues to use Mega Showdown `1.6.9` for development.
 
-- `META-INF/neoforge.mods.toml`
-- `icon.png`
+The detailed record is `PHASE_08_VALIDATION_RESULTS.md`.
 
-It must not contain `fabric.mod.json`.
+## Final result
 
-Use a disposable NeoForge 1.21.1 instance containing only the final
-`cobblemon-eld-*-neoforge-mc1.21.1-cob1.7.3.jar`. Confirm NeoForge displays a
-clear missing-dependency message naming required mods rather than an
-unexplained class-loading crash.
+**PASS**
 
-After all checks pass:
-
-1. Add and commit `PHASE_08_VALIDATION_RESULTS.md`.
-2. Push and verify the validation-results commit.
-3. Mark Phase 8 complete in this document.
-4. Mark Phase 8 complete in `docs/migration/README.md`.
-5. Update `docs/README.md` to hand off to Phase 9.
-6. Commit and push the final Phase 8 documentation.
-
-## Completion conditions
-
-- NeoForge client reaches the title screen.
-- A fresh world loads.
-- Controller blocks and screens work in NeoForge singleplayer.
-- NeoForge dedicated server starts.
-- A NeoForge client connects.
-- Controller networking and restart persistence pass.
-- Required dependencies load in the development runtime.
-- Missing required dependencies produce clear loader messages.
-- The final NeoForge JAR contains NeoForge metadata and the mod icon.
-- The final NeoForge JAR does not contain Fabric metadata.
-- Concrete runtime fixes are documented and committed.
-- Phase 8 validation results and final documentation are committed.
+Phase 8 is complete and user-tested. Phase 9 owns cross-loader feature parity,
+regression testing, existing-world compatibility, target-modpack compatibility,
+and hardening.

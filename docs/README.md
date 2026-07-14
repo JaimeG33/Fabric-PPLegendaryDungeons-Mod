@@ -13,7 +13,8 @@ this baseline:
 | Minecraft | `1.21.1` |
 | Java | `21` |
 | Cobblemon | `1.7.3+1.21.1` |
-| Mega Showdown | `1.6.9+1.7.3+1.21.1` |
+| Development Mega Showdown | `1.6.9+1.7.3+1.21.1` |
+| Loader-accepted Mega Showdown | `1.6.7` or newer |
 | Architectury API | `13.0.8` |
 | Fabric Loader | `0.17.2` |
 | Fabric API | `0.116.6+1.21.1` |
@@ -22,19 +23,22 @@ this baseline:
 | NeoForge | `21.1.214` |
 | Kotlin for Forge | `5.10.0` |
 
-The repository is now physically split into:
+The repository is physically split into:
 
-- `common` for shared gameplay, resources, Architectury APIs, and shared Cobblemon integration.
-- `fabric` for thin Fabric entrypoints, metadata, dependencies, and build/run configuration.
-- `neoforge` for thin NeoForge entrypoints, metadata, dependencies, and build/run configuration.
+- `common` for shared gameplay, resources, Architectury APIs, and shared
+  Cobblemon integration.
+- `fabric` for thin Fabric entrypoints, metadata, dependencies, and build/run
+  configuration.
+- `neoforge` for thin NeoForge entrypoints, metadata, dependencies, and
+  build/run configuration.
 
-Phases 1 through 6 established and verified the shared boundaries. Phase 7A
-through 7D completed the physical module split and restored a working split
-Fabric client. Phase 7 is complete. The shared/common, Fabric, and NeoForge module split
-has passed static ownership checks, both release-artifact builds, Fabric
-integrated and dedicated-server multiplayer tests, and restart persistence.
-Phase 8 is in progress and is validating the NeoForge client, fresh-world startup,
-dedicated server, connected-client networking, persistence, and dependency errors.
+Phases 1 through 6 established and verified the shared boundaries. Phase 7
+completed and validated the physical module split. Phase 8 completed and
+user-tested the NeoForge client, fresh-world startup, dedicated server,
+connected-client networking, persistence, release artifact, dependency errors,
+mod-list icon, and Mega Showdown 1.6.7 compatibility.
+
+Phase 9 is the next phase and owns complete cross-loader parity and hardening.
 
 ## Start here for the multi-loader migration
 
@@ -49,7 +53,9 @@ dedicated server, connected-client networking, persistence, and dependency error
 9. [`migration/PHASE_06_FABRIC_REGRESSION_CHECKPOINT.md`](migration/PHASE_06_FABRIC_REGRESSION_CHECKPOINT.md)
 10. [`migration/PHASE_07_COMMON_FABRIC_NEOFORGE_SPLIT.md`](migration/PHASE_07_COMMON_FABRIC_NEOFORGE_SPLIT.md)
 11. [`migration/PHASE_07_VALIDATION_CHECKLIST.md`](migration/PHASE_07_VALIDATION_CHECKLIST.md)
-12. [`migration/PHASE_08_NEOFORGE_BOOTSTRAP.md`](migration/PHASE_08_NEOFORGE_BOOTSTRAP.md)
+12. [`migration/PHASE_07_VALIDATION_RESULTS.md`](migration/PHASE_07_VALIDATION_RESULTS.md)
+13. [`migration/PHASE_08_NEOFORGE_BOOTSTRAP.md`](migration/PHASE_08_NEOFORGE_BOOTSTRAP.md)
+14. [`migration/PHASE_08_VALIDATION_RESULTS.md`](migration/PHASE_08_VALIDATION_RESULTS.md)
 
 ## Documentation precedence
 
@@ -101,7 +107,8 @@ New and migrated gameplay should use shared/common code by default:
 3. Architectury common API.
 4. Shared mixin against stable vanilla or Cobblemon classes.
 5. A small platform interface or `@ExpectPlatform` boundary.
-6. Separate Fabric and NeoForge implementations only when no reliable shared approach exists.
+6. Separate Fabric and NeoForge implementations only when no reliable shared
+   approach exists.
 
 Platform modules should stay thin. Stability, scalability, multiplayer
 correctness, server-authoritative validation, and dedicated-server safety take
