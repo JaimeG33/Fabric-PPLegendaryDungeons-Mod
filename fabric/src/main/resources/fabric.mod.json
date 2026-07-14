@@ -8,7 +8,7 @@
     "Professor Porker"
   ],
   "license": "MIT",
-  "icon": "assets/pp_legendarydungeons/icon.png",
+  "icon": "icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [

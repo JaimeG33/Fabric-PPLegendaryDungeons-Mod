@@ -45,6 +45,9 @@ dependencies {
 
     modImplementation("com.cobblemon:fabric:${property("cobblemon_version")}")
 
+    // Development convenience only; not bundled into the published mod.
+    modRuntimeOnly("maven.modrinth:modmenu:11.0.3")
+
     modRuntimeOnly(
         "io.wispforest:accessories-fabric:${property("accessories_version")}"
     )
