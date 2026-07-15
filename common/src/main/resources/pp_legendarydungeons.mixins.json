@@ -5,7 +5,8 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "dungeon_rules.DungeonExplosionMixin",
-    "trades.NaturalWanderingTraderMixin"
+    "trades.NaturalWanderingTraderMixin",
+    "worldgen.FixedJigsawRotationMixin"
   ],
   "client": [],
   "server": [],
