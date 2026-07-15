@@ -22,9 +22,9 @@ import java.util.Optional;
 /**
  * Server-persistent dungeon instance and child-zone registry.
  *
- * Stored in the overworld's DimensionDataStorage so all dimensions share one
+ * <p>Stored in the overworld's DimensionDataStorage so all dimensions share one
  * authoritative table. Persisting child zones means a large rule box continues
- * to work even if the chunk containing its invisible controller block unloads.
+ * to work even if the chunk containing its invisible controller block unloads.</p>
  */
 public final class DungeonRuleSavedData extends SavedData {
     private static final String DATA_NAME = "pp_legendarydungeons_dungeon_rules";
@@ -110,6 +110,7 @@ public final class DungeonRuleSavedData extends SavedData {
                     zoneKey,
                     dimension.location().toString(),
                     zone.getBlockPos().asLong(),
+                    zone.getFacing(),
                     zone.getPresetId(),
                     zone.getLinkChannel(),
                     zone.getOffsetX(),
@@ -128,6 +129,7 @@ public final class DungeonRuleSavedData extends SavedData {
             record.update(
                     dimension.location().toString(),
                     zone.getBlockPos(),
+                    zone.getFacing(),
                     zone.getPresetResourceLocation(),
                     zone.getLinkChannel(),
                     zone.getOffsetX(),
@@ -318,7 +320,10 @@ public final class DungeonRuleSavedData extends SavedData {
         return tag;
     }
 
-    private static DungeonRuleSavedData load(CompoundTag tag, HolderLookup.Provider registries) {
+    private static DungeonRuleSavedData load(
+            CompoundTag tag,
+            HolderLookup.Provider registries
+    ) {
         DungeonRuleSavedData data = new DungeonRuleSavedData();
         ListTag instanceList = tag.getList("Instances", Tag.TAG_COMPOUND);
 

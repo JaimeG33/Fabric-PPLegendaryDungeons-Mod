@@ -1,7 +1,15 @@
-
 {
   "variants": {
-    "": {
+    "facing=north": {
+      "model": "pp_legendarydungeons:block/dungeon_rule_zone"
+    },
+    "facing=east": {
+      "model": "pp_legendarydungeons:block/dungeon_rule_zone"
+    },
+    "facing=south": {
+      "model": "pp_legendarydungeons:block/dungeon_rule_zone"
+    },
+    "facing=west": {
       "model": "pp_legendarydungeons:block/dungeon_rule_zone"
     }
   }

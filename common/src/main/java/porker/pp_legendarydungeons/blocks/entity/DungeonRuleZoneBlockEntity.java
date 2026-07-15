@@ -1,6 +1,7 @@
 package porker.pp_legendarydungeons.blocks.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -8,16 +9,22 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import porker.pp_legendarydungeons.blocks.dungeon_rules.DungeonRuleZoneBlock;
 import porker.pp_legendarydungeons.dungeon_rules.DungeonRuleManager;
 import porker.pp_legendarydungeons.dungeon_rules.DungeonRuleSet;
+import porker.pp_legendarydungeons.dungeon_rules.DungeonRuleZoneBounds;
 import porker.pp_legendarydungeons.dungeon_rules.preset.DungeonRulePresetRegistry;
 import porker.pp_legendarydungeons.setup.ModBlockEntities;
 
 /**
  * Non-ticking child box controller.
  *
- * Offsets and sizes are relative to this block. The zone links at runtime to the
- * nearest parent with the same preset and channel.
+ * <p>Offsets and sizes are authored relative to this block while it faces north.
+ * The controller block state records the horizontal structure rotation, allowing
+ * the local box to be transformed into the correct world-space bounds.</p>
+ *
+ * <p>The zone links at runtime to the nearest parent with the same preset and
+ * channel.</p>
  */
 public final class DungeonRuleZoneBlockEntity extends BlockEntity {
     private String presetId = DungeonRulePresetRegistry.STANDARD_DUNGEON_ID.toString();
@@ -88,17 +95,35 @@ public final class DungeonRuleZoneBlockEntity extends BlockEntity {
         return DungeonRuleSet.fromPackedInt(ruleOverrides.toPackedInt());
     }
 
+    public Direction getFacing() {
+        BlockState state = getBlockState();
+
+        if (state.hasProperty(DungeonRuleZoneBlock.FACING)) {
+            return state.getValue(DungeonRuleZoneBlock.FACING);
+        }
+
+        return Direction.NORTH;
+    }
+
+    public DungeonRuleZoneBounds getWorldBounds() {
+        return DungeonRuleZoneBounds.fromLocalBox(
+                worldPosition,
+                getFacing(),
+                offsetX,
+                offsetY,
+                offsetZ,
+                sizeX,
+                sizeY,
+                sizeZ
+        );
+    }
+
     public BlockPos getWorldMinPos() {
-        return worldPosition.offset(offsetX, offsetY, offsetZ);
+        return getWorldBounds().minPos();
     }
 
     public BlockPos getWorldMaxPos() {
-        BlockPos min = getWorldMinPos();
-        return min.offset(
-                Math.max(1, sizeX) - 1,
-                Math.max(1, sizeY) - 1,
-                Math.max(1, sizeZ) - 1
-        );
+        return getWorldBounds().maxPos();
     }
 
     public void updateConfiguration(

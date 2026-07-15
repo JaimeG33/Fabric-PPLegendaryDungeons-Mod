@@ -1,20 +1,28 @@
 package porker.pp_legendarydungeons.dungeon_rules.instance;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import porker.pp_legendarydungeons.dungeon_rules.DungeonRuleSet;
+import porker.pp_legendarydungeons.dungeon_rules.DungeonRuleZoneBounds;
+
+import java.util.Locale;
 
 /**
  * Persistent definition of one child rule box.
  *
- * Once a generated controller block has loaded at least once, this record allows
- * its zone to remain indexed even when the controller's own chunk later unloads.
+ * <p>Once a generated controller block has loaded at least once, this record allows
+ * its zone to remain indexed even when the controller's own chunk later unloads.</p>
+ *
+ * <p>The controller facing is persisted so server restarts rebuild the same
+ * rotation-aware bounds even when the controller chunk is not loaded.</p>
  */
 public final class DungeonZoneRecord {
     private final String zoneKey;
     private String dimensionId;
     private long anchorPos;
+    private Direction facing;
     private String presetId;
     private int linkChannel;
     private int offsetX;
@@ -32,6 +40,7 @@ public final class DungeonZoneRecord {
             String zoneKey,
             String dimensionId,
             long anchorPos,
+            Direction facing,
             String presetId,
             int linkChannel,
             int offsetX,
@@ -48,6 +57,7 @@ public final class DungeonZoneRecord {
         this.zoneKey = zoneKey;
         this.dimensionId = dimensionId;
         this.anchorPos = anchorPos;
+        this.facing = horizontalFacingOrNorth(facing);
         this.presetId = presetId;
         this.linkChannel = linkChannel;
         this.offsetX = offsetX;
@@ -74,11 +84,18 @@ public final class DungeonZoneRecord {
         return BlockPos.of(anchorPos);
     }
 
+    public Direction facing() {
+        return facing;
+    }
+
     public ResourceLocation presetId() {
         try {
             return ResourceLocation.parse(presetId);
         } catch (Exception ignored) {
-            return ResourceLocation.fromNamespaceAndPath("pp_legendarydungeons", "standard_dungeon");
+            return ResourceLocation.fromNamespaceAndPath(
+                    "pp_legendarydungeons",
+                    "standard_dungeon"
+            );
         }
     }
 
@@ -102,17 +119,31 @@ public final class DungeonZoneRecord {
         return resolvedInstanceId;
     }
 
+    public DungeonRuleZoneBounds bounds() {
+        return DungeonRuleZoneBounds.fromLocalBox(
+                anchorPos(),
+                facing,
+                offsetX,
+                offsetY,
+                offsetZ,
+                sizeX,
+                sizeY,
+                sizeZ
+        );
+    }
+
     public BlockPos minPos() {
-        return anchorPos().offset(offsetX, offsetY, offsetZ);
+        return bounds().minPos();
     }
 
     public BlockPos maxPos() {
-        return minPos().offset(sizeX - 1, sizeY - 1, sizeZ - 1);
+        return bounds().maxPos();
     }
 
     public void update(
             String dimensionId,
             BlockPos anchorPos,
+            Direction facing,
             ResourceLocation presetId,
             int linkChannel,
             int offsetX,
@@ -127,6 +158,7 @@ public final class DungeonZoneRecord {
     ) {
         this.dimensionId = dimensionId;
         this.anchorPos = anchorPos.asLong();
+        this.facing = horizontalFacingOrNorth(facing);
         this.presetId = presetId.toString();
         this.linkChannel = linkChannel;
         this.offsetX = offsetX;
@@ -149,6 +181,7 @@ public final class DungeonZoneRecord {
         tag.putString("ZoneKey", zoneKey);
         tag.putString("Dimension", dimensionId);
         tag.putLong("AnchorPos", anchorPos);
+        tag.putString("Facing", facing.name().toLowerCase(Locale.ROOT));
         tag.putString("PresetId", presetId);
         tag.putInt("LinkChannel", linkChannel);
         tag.putInt("OffsetX", offsetX);
@@ -169,6 +202,11 @@ public final class DungeonZoneRecord {
                 tag.getString("ZoneKey"),
                 tag.getString("Dimension"),
                 tag.getLong("AnchorPos"),
+                parseFacing(
+                        tag.contains("Facing")
+                                ? tag.getString("Facing")
+                                : "north"
+                ),
                 tag.getString("PresetId"),
                 tag.getInt("LinkChannel"),
                 tag.getInt("OffsetX"),
@@ -184,5 +222,26 @@ public final class DungeonZoneRecord {
                 tag.getInt("RuleOverrides"),
                 tag.getString("ResolvedInstanceId")
         );
+    }
+
+    private static Direction parseFacing(String value) {
+        try {
+            return horizontalFacingOrNorth(
+                    Direction.valueOf(value.toUpperCase(Locale.ROOT))
+            );
+        } catch (Exception ignored) {
+            return Direction.NORTH;
+        }
+    }
+
+    private static Direction horizontalFacingOrNorth(Direction value) {
+        if (value == null) {
+            return Direction.NORTH;
+        }
+
+        return switch (value) {
+            case NORTH, EAST, SOUTH, WEST -> value;
+            default -> Direction.NORTH;
+        };
     }
 }
