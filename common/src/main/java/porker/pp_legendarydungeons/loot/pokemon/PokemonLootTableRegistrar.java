@@ -35,10 +35,8 @@ import kotlin.Unit;
  */
 public final class PokemonLootTableRegistrar {
     /*
-     * Keep this false for the first diagnostic build.
-     *
-     * Once the logs confirm that battle and non-battle deaths both reach the
-     * expected event, change it to true to enable the injected loot tables.
+     * Master switch for the Cobblemon-to-Minecraft loot-table bridge.
+     * Keep enabled in release builds.
      */
     private static final boolean EXECUTE_LOOT_TABLES = true;
 
@@ -123,13 +121,15 @@ public final class PokemonLootTableRegistrar {
         RECENT_BATTLE_FAINTS.put(
                 faintedPokemon.getUuid(),
                 new BattleFaintContext(
-                        battlePlayer == null ? null : battlePlayer.getUUID(),
+                        battlePlayer == null
+                                ? null
+                                : battlePlayer.getUUID(),
                         System.currentTimeMillis()
                 )
         );
 
         LegendaryDungeons.LOGGER.debug(
-                "[Pokemon Loot Diagnostic] BATTLE_FAINTED species={} pokemonUuid={} wild={} player={} table={}",
+                "[Pokemon Loot] BATTLE_FAINTED species={} pokemonUuid={} wild={} player={} table={}",
                 faintedPokemon.getSpecies().getResourceIdentifier(),
                 faintedPokemon.getUuid(),
                 faintedPokemon.isWild(),
@@ -150,7 +150,7 @@ public final class PokemonLootTableRegistrar {
 
         if (!(event.getEntity() instanceof PokemonEntity pokemonEntity)) {
             LegendaryDungeons.LOGGER.debug(
-                    "[Pokemon Loot Diagnostic] LOOT_DROPPED without PokemonEntity. entityPresent={} player={} selectedNativeDrops={}",
+                    "[Pokemon Loot] LOOT_DROPPED without PokemonEntity. entityPresent={} player={} selectedNativeDrops={}",
                     event.getEntity() != null,
                     playerName(event.getPlayer()),
                     event.getDrops().size()
@@ -189,10 +189,11 @@ public final class PokemonLootTableRegistrar {
 
         long battleContextAge = battleContext == null
                 ? -1L
-                : System.currentTimeMillis() - battleContext.createdAtMillis();
+                : System.currentTimeMillis()
+                - battleContext.createdAtMillis();
 
-        LegendaryDungeons.LOGGER.info(
-                "[Pokemon Loot Diagnostic] LOOT_DROPPED species={} pokemonUuid={} entityPresent=true wild={} eventPlayer={} cachedBattlePlayer={} killCredit={} resolvedPlayer={} battleContextAgeMs={} selectedNativeDrops={} table={} executionEnabled={}",
+        LegendaryDungeons.LOGGER.debug(
+                "[Pokemon Loot] LOOT_DROPPED species={} pokemonUuid={} entityPresent=true wild={} eventPlayer={} cachedBattlePlayer={} killCredit={} resolvedPlayer={} battleContextAgeMs={} selectedNativeDrops={} table={} executionEnabled={}",
                 pokemon.getSpecies().getResourceIdentifier(),
                 pokemon.getUuid(),
                 pokemon.isWild(),
@@ -210,7 +211,8 @@ public final class PokemonLootTableRegistrar {
             return;
         }
 
-        if (!(pokemonEntity.level() instanceof ServerLevel serverLevel)) {
+        if (!(pokemonEntity.level()
+                instanceof ServerLevel serverLevel)) {
             LegendaryDungeons.LOGGER.warn(
                     "[Pokemon Loot] Ignored loot execution outside a ServerLevel for species {}.",
                     pokemon.getSpecies().getResourceIdentifier()
@@ -235,7 +237,8 @@ public final class PokemonLootTableRegistrar {
             return null;
         }
 
-        if (!(pokemonEntity.level() instanceof ServerLevel serverLevel)) {
+        if (!(pokemonEntity.level()
+                instanceof ServerLevel serverLevel)) {
             return null;
         }
 
@@ -285,10 +288,13 @@ public final class PokemonLootTableRegistrar {
 
     private static void cleanupExpiredContexts() {
         long oldestAllowedTime =
-                System.currentTimeMillis() - BATTLE_CONTEXT_LIFETIME_MILLIS;
+                System.currentTimeMillis()
+                        - BATTLE_CONTEXT_LIFETIME_MILLIS;
 
         RECENT_BATTLE_FAINTS.entrySet().removeIf(
-                entry -> entry.getValue().createdAtMillis() < oldestAllowedTime
+                entry ->
+                        entry.getValue().createdAtMillis()
+                                < oldestAllowedTime
         );
     }
 
