@@ -1,15 +1,13 @@
 # Cobblemon: Explore Legendary Dungeons — Documentation
 
-This directory contains the project documentation for the Architectury-based
-Fabric + NeoForge codebase.
+This is the main documentation index for the Architectury-based Fabric and
+NeoForge project.
 
-## Authoritative current baseline
-
-Unless a newer completed phase document explicitly replaces these values, use
-this baseline:
+## Current release baseline
 
 | Component | Current target |
 |---|---|
+| Mod version | `1.1.0` |
 | Minecraft | `1.21.1` |
 | Java | `21` |
 | Cobblemon | `1.7.3+1.21.1` |
@@ -23,70 +21,151 @@ this baseline:
 | NeoForge | `21.1.214` |
 | Kotlin for Forge | `5.10.0` |
 
-The repository is physically split into:
+The authoritative version value is `mod_version` in the root
+`gradle.properties`. Fabric and NeoForge metadata expand that value during
+resource processing.
 
-- `common` for shared gameplay, resources, Architectury APIs, and shared
-  Cobblemon integration.
-- `fabric` for thin Fabric entrypoints, metadata, dependencies, and build/run
-  configuration.
-- `neoforge` for thin NeoForge entrypoints, metadata, dependencies, and
-  build/run configuration.
+## Architecture at a glance
 
-Phases 1 through 6 established and verified the shared boundaries. Phase 7
-completed and validated the physical module split. Phase 8 completed and
-user-tested the NeoForge client, fresh-world startup, dedicated server,
-connected-client networking, persistence, release artifact, dependency errors,
-mod-list icon, and Mega Showdown 1.6.7 compatibility.
+The repository has three Gradle modules:
 
-Phase 9 completed release-candidate smoke validation across Fabric and NeoForge
-clients, fresh worlds, local dedicated servers, representative dungeon-rule
-behavior, and normal and secret Rayquaza summoning. Exhaustive multiplayer,
-dependency-floor, loot, trader, map, structure, existing-world, reload, and
-performance validation remains explicitly deferred.
+```text
+common/
+fabric/
+neoforge/
+```
 
-## Start here for the multi-loader migration
+### `common`
 
-1. [`MULTILOADER_MIGRATION_MASTER_PLAN.md`](MULTILOADER_MIGRATION_MASTER_PLAN.md)
-2. [`migration/README.md`](migration/README.md)
-3. [`migration/PHASE_00_BRANCH_AND_BASELINE.md`](migration/PHASE_00_BRANCH_AND_BASELINE.md)
-4. [`migration/PHASE_01_ARCHITECTURY_DIRECT_DEPENDENCY.md`](migration/PHASE_01_ARCHITECTURY_DIRECT_DEPENDENCY.md)
-5. [`migration/PHASE_02_COMMON_EVENT_FOUNDATION.md`](migration/PHASE_02_COMMON_EVENT_FOUNDATION.md)
-6. [`migration/PHASE_03_INTERACTION_AND_PROTECTION_EVENTS.md`](migration/PHASE_03_INTERACTION_AND_PROTECTION_EVENTS.md)
-7. [`migration/PHASE_04_SHARED_DEFERRED_REGISTRIES.md`](migration/PHASE_04_SHARED_DEFERRED_REGISTRIES.md)
-8. [`migration/PHASE_05_SHARED_NETWORKING_AND_CLIENT_BOUNDARY.md`](migration/PHASE_05_SHARED_NETWORKING_AND_CLIENT_BOUNDARY.md)
-9. [`migration/PHASE_06_FABRIC_REGRESSION_CHECKPOINT.md`](migration/PHASE_06_FABRIC_REGRESSION_CHECKPOINT.md)
-10. [`migration/PHASE_07_COMMON_FABRIC_NEOFORGE_SPLIT.md`](migration/PHASE_07_COMMON_FABRIC_NEOFORGE_SPLIT.md)
-11. [`migration/PHASE_07_VALIDATION_CHECKLIST.md`](migration/PHASE_07_VALIDATION_CHECKLIST.md)
-12. [`migration/PHASE_07_VALIDATION_RESULTS.md`](migration/PHASE_07_VALIDATION_RESULTS.md)
-13. [`migration/PHASE_08_NEOFORGE_BOOTSTRAP.md`](migration/PHASE_08_NEOFORGE_BOOTSTRAP.md)
-14. [`migration/PHASE_08_VALIDATION_RESULTS.md`](migration/PHASE_08_VALIDATION_RESULTS.md)
-15. [`migration/PHASE_09_CROSS_LOADER_PARITY.md`](migration/PHASE_09_CROSS_LOADER_PARITY.md)
-16. [`migration/PHASE_09_VALIDATION_RESULTS.md`](migration/PHASE_09_VALIDATION_RESULTS.md)
+This is the default home for project code and resources.
 
-## Documentation precedence
+Place the following in `common` whenever the behavior can be shared:
 
-When older documentation conflicts with newer migration work, use this order:
+- Gameplay systems and rules.
+- Blocks, block entities, items, registries, saved data, and services.
+- Server-authoritative networking handlers and validation.
+- Cobblemon integration that uses shared Cobblemon APIs.
+- Architectury event registration and lifecycle hooks.
+- Mixins that target shared vanilla or Cobblemon classes.
+- Datapack functions, tags, loot tables, structures, template pools, recipes,
+  language files, and other loader-neutral resources.
+- Tests for shared behavior.
 
-1. Newest completed migration phase document.
-2. `MULTILOADER_MIGRATION_MASTER_PLAN.md`.
-3. This documentation index.
-4. Older gameplay and development pages.
+Primary paths:
 
-## Existing gameplay documentation
+```text
+common/src/main/java/
+common/src/main/resources/
+common/src/test/
+```
 
-- `gameplay/MAPS.md`
-- `gameplay/LOOT_INJECTIONS.md`
-- `gameplay/TRADERS.md`
-- `gameplay/LEGENDARY_SUMMONS_AND_DUNGEON_RULES.md`
+### `fabric`
 
-## Existing development documentation
+Keep this module thin. It should contain only Fabric-specific entrypoints,
+metadata, development dependencies, run configuration, and an adapter or hook
+that cannot be implemented reliably in shared code.
 
-- `development/ADDING_CONTENT.md`
-- `development/PROJECT_IDENTIFIERS_AND_BUILD.md`
-- `development/WTRADER_JSON_SCHEMA.md`
-- `development/DEVELOPMENT_MEMORY_AND_BUILD_PERFORMANCE.md`
-- `COMPATIBILITY.md`
-- `RELEASE_CHECKLIST.md`
+Primary paths:
+
+```text
+fabric/src/main/java/
+fabric/src/main/resources/fabric.mod.json
+fabric/src/main/resources/icon.png
+```
+
+### `neoforge`
+
+Keep this module thin for the same reason. It should contain NeoForge-specific
+entrypoints, metadata, development dependencies, client distribution setup,
+and unavoidable NeoForge adapters.
+
+Primary paths:
+
+```text
+neoforge/src/main/java/
+neoforge/src/main/resources/META-INF/neoforge.mods.toml
+neoforge/src/main/resources/icon.png
+```
+
+Read [`development/ARCHITECTURE_GUIDE.md`](development/ARCHITECTURE_GUIDE.md)
+before adding a new system or moving code between modules.
+
+## Design priorities
+
+All new work should favor:
+
+1. **Shared/common implementation.**
+2. **Server-authoritative behavior.**
+3. **Per-world or per-instance state instead of global mutable state.**
+4. **Bounded and data-driven processing that scales to multiple players.**
+5. **Idempotent load, reload, registration, and scheduled behavior.**
+6. **Persistent identifiers that remain compatible with existing worlds.**
+7. **Thin loader modules with the same visible behavior on both loaders.**
+
+Preferred implementation order:
+
+1. Vanilla Minecraft API or standard data/resource files.
+2. Cobblemon shared/common API.
+3. Architectury common API.
+4. Shared mixin against a stable vanilla or Cobblemon target.
+5. A small platform abstraction or `@ExpectPlatform` boundary.
+6. Separate Fabric and NeoForge implementations only as a last resort.
+
+Do not duplicate an entire gameplay system in both loader modules merely
+because the project has two loaders.
+
+## Multiplayer and stability rules
+
+- Make the server the source of truth for gameplay changes.
+- Validate packet sender, permission, dimension, distance, block/entity type,
+  and current state before applying a request.
+- Store dungeon state by world, block entity, saved-data record, or persistent
+  UUID rather than a global “current player” or “current dungeon.”
+- Avoid one full entity scan per player per tick.
+- Clamp user-controlled and persisted numeric values before using them in loops
+  or spatial indexes.
+- Make cleanup and completion operations safe to run more than once.
+- Keep client-only classes out of common server initialization paths.
+- Preserve registry IDs, packet IDs, NBT keys, saved-data IDs, function IDs,
+  tags, and structure IDs unless a migration plan exists.
+- Test both singleplayer and a dedicated server whenever networking,
+  persistence, permissions, or multiple players are involved.
+
+## Build and output
+
+Run a full release build from the repository root:
+
+```powershell
+.\gradlew.bat `
+    clean `
+    :common:build `
+    :fabric:build `
+    :neoforge:build `
+    --no-daemon `
+    --no-parallel `
+    --max-workers=2 `
+    --console=plain
+```
+
+The uploadable remapped JARs are expected at:
+
+```text
+fabric/build/libs/cobblemon-eld-1.1.0-fabric-mc1.21.1-cob1.7.3.jar
+neoforge/build/libs/cobblemon-eld-1.1.0-neoforge-mc1.21.1-cob1.7.3.jar
+```
+
+Do not upload:
+
+```text
+*-sources.jar
+*-dev-slim.jar
+*-dev-shadow.jar
+common/build/libs/*
+```
+
+The Fabric and NeoForge release JARs are uploaded separately to Modrinth and
+CurseForge. A GitHub Release is not part of the project’s required publication
+workflow.
 
 ## Stable project identifiers
 
@@ -102,20 +181,39 @@ When older documentation conflicts with newer migration work, use this order:
 | NeoForge main entrypoint | `porker.pp_legendarydungeons.neoforge.ProfessorPorkersLegendaryDungeonsNeoForge` |
 | NeoForge client entrypoint | `porker.pp_legendarydungeons.neoforge.ProfessorPorkersLegendaryDungeonsNeoForgeClient` |
 
-Do not rename persistent or public identifiers as part of the loader migration.
+Do not rename public or persistent identifiers as routine cleanup. Existing
+worlds, datapacks, structure templates, loot tables, saved data, packets, and
+other addons may depend on them.
 
-## Migration design rules
+## Development guides
 
-New and migrated gameplay should use shared/common code by default:
+Start with:
 
-1. Vanilla Minecraft API or standard resources.
-2. Cobblemon shared/common API.
-3. Architectury common API.
-4. Shared mixin against stable vanilla or Cobblemon classes.
-5. A small platform interface or `@ExpectPlatform` boundary.
-6. Separate Fabric and NeoForge implementations only when no reliable shared
-   approach exists.
+1. [`development/ARCHITECTURE_GUIDE.md`](development/ARCHITECTURE_GUIDE.md)
+2. [`development/PROJECT_IDENTIFIERS_AND_BUILD.md`](development/PROJECT_IDENTIFIERS_AND_BUILD.md)
+3. [`development/ADDING_CONTENT.md`](development/ADDING_CONTENT.md)
+4. [`COMPATIBILITY.md`](COMPATIBILITY.md)
+5. [`RELEASE_CHECKLIST.md`](RELEASE_CHECKLIST.md)
 
-Platform modules should stay thin. Stability, scalability, multiplayer
-correctness, server-authoritative validation, and dedicated-server safety take
-priority over loader-specific shortcuts.
+Additional guides:
+
+- `development/WTRADER_JSON_SCHEMA.md`
+- `development/DEVELOPMENT_MEMORY_AND_BUILD_PERFORMANCE.md`
+- `gameplay/MAPS.md`
+- `gameplay/LOOT_INJECTIONS.md`
+- `gameplay/TRADERS.md`
+- `gameplay/LEGENDARY_SUMMONS_AND_DUNGEON_RULES.md`
+- [`development/RUNNING_DEVELOPMENT_CLIENTS.md`](development/RUNNING_DEVELOPMENT_CLIENTS.md)
+
+## Migration history
+
+The migration documents explain how the original Fabric project became the
+current common/Fabric/NeoForge layout:
+
+1. [`MULTILOADER_MIGRATION_MASTER_PLAN.md`](MULTILOADER_MIGRATION_MASTER_PLAN.md)
+2. [`migration/README.md`](migration/README.md)
+3. [`migration/PHASE_09_VALIDATION_RESULTS.md`](migration/PHASE_09_VALIDATION_RESULTS.md)
+4. [`migration/PHASE_10_RELEASE_WORKFLOW.md`](migration/PHASE_10_RELEASE_WORKFLOW.md)
+
+Migration documents are historical records. For current development decisions,
+use this README and the architecture guide before older phase notes.

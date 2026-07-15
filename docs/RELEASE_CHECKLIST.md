@@ -1,217 +1,234 @@
-# Release Checklist — 1.0.0
+# Release Checklist — 1.1.0
 
-## Release blockers found in the current repository
+## Publication scope
 
-### 1. Remove the disabled Crystal Caves branch from the active random-dungeon loot table
+The project publishes release files through:
 
-The worldgen structure, structure set, structure tag, Java map registry entry, and legacy enum entries were removed correctly. However, this active file still contains a second map entry pointing to the deleted Crystal Caves tag:
+- Modrinth
+- CurseForge
 
-```text
-src/main/resources/data/pp_legendarydungeons/loot_table/maps/random/find_random_dungeon.json
-```
+A GitHub Release is not required.
 
-Replace it with:
-
-```json
-{
-  "pools": [
-    {
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "weight": 1,
-          "name": "minecraft:map",
-          "functions": [
-            {
-              "function": "minecraft:exploration_map",
-              "destination": "pp_legendarydungeons:skypillar_tag",
-              "decoration": "target_x",
-              "zoom": 2,
-              "skip_existing_chunks": false
-            },
-            {
-              "function": "minecraft:set_name",
-              "name": {
-                "text": "Random Legendary Dungeon Map"
-              }
-            },
-            {
-              "function": "minecraft:set_components",
-              "components": {
-                "minecraft:rarity": "rare",
-                "minecraft:custom_data": {
-                  "pp_gimmick": "random_map_lore",
-                  "pp_random_map_group": "dungeons",
-                  "pp_coords_revealed": false,
-                  "pp_random_map_resolved": true,
-                  "pp_random_map_resolved_target": "skypillar"
-                }
-              }
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
-```
-
-Until another legendary dungeon is enabled, the “Random Legendary Dungeon Map” resolves to Sky Pillar every time. Keeping the generic name preserves the data model for future expansion.
-
-### 2. Disable the retired voucher-map tick path
-
-The following tick function is still active:
+Each platform receives two separate files:
 
 ```text
-pp_legendarydungeons:other/maps/voucher_check
+Fabric:
+fabric/build/libs/cobblemon-eld-1.1.0-fabric-mc1.21.1-cob1.7.3.jar
+
+NeoForge:
+neoforge/build/libs/cobblemon-eld-1.1.0-neoforge-mc1.21.1-cob1.7.3.jar
 ```
 
-It scans players every tick, calls `other/maps/find_map`, and still contains the Crystal Caves custom-model-data branch.
+## 1. Confirm source state
 
-Edit:
+From the repository root:
 
-```text
-src/main/resources/data/pp_legendarydungeons/tags/function/tick.json
+```powershell
+git status --short
+git branch --show-current
+git log -1 --oneline
 ```
 
-Recommended release version:
+Require a clean working tree before the final build.
 
-```json
-{
-  "values": [
-    "pp_legendarydungeons:rt/event_start_rayquaza",
-    "pp_legendarydungeons:rt/event_secret_check",
-    "pp_legendarydungeons:other/bannedblocks",
-    "pp_legendarydungeons:other/dungeon/which_vault",
-    "pp_legendarydungeons:other/dungeon/mc_enemies"
-  ]
-}
+Confirm in `gradle.properties`:
+
+```properties
+mod_version=1.1.0
+minecraft_version=1.21.1
+cobblemon_version=1.7.3+1.21.1
 ```
 
-After removing the tick entry, these legacy files can be deleted or moved outside `src/main/resources`:
+## 2. Confirm dormant content remains dormant
 
-```text
-src/main/resources/data/pp_legendarydungeons/function/other/maps/voucher_check.mcfunction
-src/main/resources/data/pp_legendarydungeons/function/other/maps/find_map.mcfunction
-src/main/resources/data/pp_legendarydungeons/function/other/maps/load/crystal_caves.mcfunction
-src/main/resources/data/pp_legendarydungeons/loot_table/maps/find_crystal_caves.json
-```
+- Crystal Caves has no active structure registration.
+- No active random-map entry points to Crystal Caves.
+- No active tick function calls the retired voucher-map path.
+- Public descriptions do not advertise Crystal Caves as released content.
 
-The dormant Crystal Caves template pools, NBT pieces, rubble functions, and crystal-heart functions can remain. Without active worldgen registration or an active caller, they do not generate the dungeon.
+The dormant templates and functions may remain in the common source tree when
+nothing active calls or registers them.
 
-## Metadata decisions
-
-Recommended internal release version:
-
-```kotlin
-version = "1.0.0"
-```
-
-Recommended public author metadata:
-
-```json
-"authors": [
-  "Professor Porker"
-]
-```
-
-Recommended release file name after the build:
-
-```text
-cobblemon-eld-1.0.0-mc1.21.1-cob1.6.1-1.7.3.jar
-```
-
-Renaming the completed remapped JAR does not change the Fabric mod ID, entrypoints, internal version, or runtime behavior.
-
-## Release-polish items
-
-### Pokémon loot logging
-
-`PokemonLootTableRegistrar` still contains diagnostic-oriented comments and INFO logs. The feature is enabled, so update the old comment above:
-
-```java
-private static final boolean EXECUTE_LOOT_TABLES = true;
-```
-
-Recommended wording:
-
-```java
-/*
- * Master switch for the Cobblemon-to-Minecraft loot-table bridge.
- * Keep enabled in release builds.
- */
-```
-
-Consider changing the per-defeat diagnostic messages from `LOGGER.info` to `LOGGER.debug`. Keep warnings and errors at their current levels.
-
-### Dependency metadata
-
-The current metadata is functional, but release metadata can be more explicit:
-
-```json
-"depends": {
-  "fabricloader": ">=0.17.2",
-  "minecraft": "1.21.1",
-  "java": ">=21",
-  "fabric-api": ">=0.116.6+1.21.1",
-  "fabric-language-kotlin": ">=1.13.6+kotlin.2.2.20",
-  "cobblemon": ">=1.6.1 <1.8.0"
-}
-```
-
-The project directly uses Kotlin `Unit` in Java event subscriptions, so declaring Fabric Language Kotlin is clearer even though Cobblemon also brings it into normal installations.
-
-## Build and artifact checks
+## 3. Clean build
 
 Run:
 
 ```powershell
-.\gradlew.bat clean build
+.\gradlew.bat `
+    clean `
+    :common:build `
+    :fabric:build `
+    :neoforge:build `
+    --no-daemon `
+    --no-parallel `
+    --max-workers=2 `
+    --console=plain
 ```
 
-Use the remapped JAR from:
+Require:
 
 ```text
-build/libs/
+BUILD SUCCESSFUL
 ```
 
-Do not upload the `-sources.jar`.
+## 4. Select the correct files
 
-Open the finished JAR with 7-Zip and verify:
+Upload only:
+
+```text
+fabric/build/libs/cobblemon-eld-1.1.0-fabric-mc1.21.1-cob1.7.3.jar
+neoforge/build/libs/cobblemon-eld-1.1.0-neoforge-mc1.21.1-cob1.7.3.jar
+```
+
+Do not upload:
+
+```text
+common/build/libs/*
+*-sources.jar
+*-dev-slim.jar
+*-dev-shadow.jar
+```
+
+## 5. Inspect JAR contents
+
+Fabric must contain:
 
 ```text
 fabric.mod.json
-assets/pp_legendarydungeons/icon.png
+icon.png
 pp_legendarydungeons.mixins.json
 data/pp_legendarydungeons/
+porker/pp_legendarydungeons/
 ```
 
-Confirm the processed `fabric.mod.json` contains:
+NeoForge must contain:
 
-```json
-"version": "1.0.0"
+```text
+META-INF/neoforge.mods.toml
+icon.png
+pp_legendarydungeons.mixins.json
+data/pp_legendarydungeons/
+porker/pp_legendarydungeons/
 ```
 
-## Fresh-world checks
+NeoForge should not contain `fabric.mod.json`.
 
-- `/locate structure pp_legendarydungeons:dungeon/crystal_caves` does not resolve.
-- A newly generated Random Legendary Dungeon Map points to Sky Pillar.
-- No log errors mention `crystal_caves_tag`.
-- Sky Pillar generates and can be located.
-- Rayquaza normal and secret summons still work.
-- Ancient Key opens the intended configured vault.
-- Cartographer novice and master injected trades work.
-- A natural wandering trader can remain vanilla or become a custom profile.
-- Klefki battle defeat and direct player kill can roll the injected table.
-- Warden, Elder Guardian, and Wither retain normal loot and can roll the key injection.
-- Cartographer and igloo/taiga chest injections retain vanilla loot.
+Confirm both processed metadata files contain version `1.1.0`, not
+`${version}`.
 
-## Two-version smoke test
+## 6. Test the exact release JARs
 
-Repeat the core checks in two separate instances:
+Use clean launcher instances rather than only Gradle `runClient`.
 
-1. Cobblemon 1.6.1 + Minecraft 1.21.1
-2. Cobblemon 1.7.3 + Minecraft 1.21.1
+Fabric instance:
 
-Do not reuse one instance’s Cobblemon configuration or world folder for the other test.
+- Minecraft 1.21.1
+- Fabric Loader
+- Fabric API
+- Fabric Language Kotlin
+- Architectury API
+- Cobblemon 1.7.3
+- Mega Showdown 1.6.7 or newer compatible build
+- Required transitive dependencies
+
+NeoForge instance:
+
+- Minecraft 1.21.1
+- NeoForge 21.1.x
+- Architectury API
+- Cobblemon 1.7.3
+- Mega Showdown 1.6.7 or newer compatible build
+- Required transitive dependencies
+
+Minimum checks on both:
+
+- Title screen loads.
+- Mod name, version, description, and icon are correct.
+- Fresh world opens.
+- `/reload` completes without a blocking error.
+- Parent and zone controller blocks exist.
+- Controller screens open.
+- Sky Pillar can generate or be located.
+- Normal Rayquaza summon works.
+- Secret/alternate Rayquaza summon works.
+- World saves and reopens.
+- `latest.log` has no blocking error from `pp_legendarydungeons`.
+
+## 7. Optional existing-world smoke check
+
+Use copies only.
+
+- Open a Fabric test-world copy on Fabric.
+- Open a NeoForge test-world copy on NeoForge.
+- Confirm controllers, links, saved values, scoreboards, functions, and Sky
+  Pillar content remain present.
+- Do not represent Fabric-to-NeoForge world migration as certified unless it was
+  separately tested.
+
+## 8. Prepare platform metadata
+
+For both Modrinth and CurseForge:
+
+- Version number: `1.1.0`
+- Minecraft version: `1.21.1`
+- Select the correct loader for each file.
+- Mark the required dependencies rather than bundling them.
+- Use the same release notes and known-limitations summary.
+- Upload the Fabric and NeoForge JARs as separate loader files.
+
+Recommended dependency summary:
+
+```text
+Required:
+- Cobblemon 1.7.3
+- Architectury API
+- Mega Showdown 1.6.7 or newer compatible 1.21.1 build
+
+Fabric file also requires:
+- Fabric API
+- Fabric Language Kotlin
+
+NeoForge file requires:
+- NeoForge 21.1.x
+- Kotlin for Forge when required by the installed dependency set
+```
+
+Check each platform’s dependency selector before publishing. Do not rely only on
+text in the description.
+
+## 9. Release notes
+
+Include:
+
+- Architectury-based Fabric and NeoForge support.
+- Current released dungeons and systems.
+- Minecraft and Cobblemon versions.
+- Required dependencies.
+- Crystal Caves intentionally disabled.
+- GUI scale 4 editor limitation.
+- Any deferred multiplayer or compatibility tests that materially affect users.
+
+Do not claim exhaustive validation when only smoke testing was performed.
+
+## 10. Publish order
+
+1. Upload both files as drafts when the platform supports drafts.
+2. Recheck filename, loader, Minecraft version, dependencies, and release notes.
+3. Publish the Fabric file.
+4. Publish the NeoForge file.
+5. Download each published file once and compare its filename and size with the
+   locally tested artifact.
+6. Start one clean instance with each downloaded file when practical.
+
+## 11. Documentation closure
+
+Update:
+
+```text
+docs/migration/PHASE_10_RELEASE_WORKFLOW.md
+docs/migration/README.md
+```
+
+Record the exact build commit, artifact filenames, platform project version,
+publication date, and any issue discovered during upload or post-upload smoke
+testing.

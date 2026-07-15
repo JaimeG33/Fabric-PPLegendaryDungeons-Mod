@@ -1,120 +1,193 @@
 # Project Identifiers, Metadata, and Build
 
-## Public name versus internal names
+## Stable public and internal identifiers
 
-The following mismatch is valid and intentional:
+The public display name and internal identifiers intentionally differ:
 
 ```text
 Public name:
 Cobblemon: Explore Legendary Dungeons
 
-Fabric mod ID:
+Mod ID and data namespace:
 pp_legendarydungeons
 
 Java package:
 porker.pp_legendarydungeons
-
-Main class:
-ProfessorPorkersLegendaryDungeons
-
-Client class:
-ProfessorPorkersLegendaryDungeonsClient
 ```
 
-Fabric does not infer entrypoints from the public display name. It loads the exact fully qualified classes listed in `fabric.mod.json`. Renaming the public mod does not require renaming Java packages, classes, assets, data namespaces, scoreboards, or saved-data IDs.
-
-Keeping the legacy identifiers avoids a large migration that could break:
-
-- Existing worlds and saved data.
-- Resource locations.
-- Datapack functions and tags.
-- Mixins and networking payloads.
-- Other addons that reference the namespace.
-- Existing structure templates and loot tables.
-
-## Author pseudonym
-
-This is valid:
-
-```json
-"authors": [
-  "Professor Porker"
-]
-```
-
-The authors field is display metadata. It does not need to match the GitHub username, Java package, or legal name.
-
-## Version
-
-The release version comes from:
+Primary entrypoints:
 
 ```text
-build.gradle.kts
+Shared main initializer:
+porker.pp_legendarydungeons.LegendaryDungeons
+
+Shared client initializer:
+porker.pp_legendarydungeons.LegendaryDungeonsClient
+
+Fabric main:
+porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeons
+
+Fabric client:
+porker.pp_legendarydungeons.ProfessorPorkersLegendaryDungeonsClient
+
+NeoForge main:
+porker.pp_legendarydungeons.neoforge.ProfessorPorkersLegendaryDungeonsNeoForge
+
+NeoForge client:
+porker.pp_legendarydungeons.neoforge.ProfessorPorkersLegendaryDungeonsNeoForgeClient
 ```
 
-Recommended:
+These names are compatibility surfaces. Renaming them can break existing
+worlds, resource locations, functions, tags, mixins, packets, structures, loot
+tables, or integrations.
 
-```kotlin
-version = "1.0.0"
-```
+## Author metadata
 
-`processResources` expands this value into:
-
-```json
-"version": "${version}"
-```
-
-inside `fabric.mod.json`.
-
-## Recommended artifact name
-
-Use:
+The release author is displayed as:
 
 ```text
-cobblemon-eld-1.0.0-mc1.21.1-cob1.6.1-1.7.3.jar
+Professor Porker
 ```
 
-Meaning:
+This does not need to match the repository username, Java package, or legal
+name.
+
+## Version source
+
+The release version comes from the root:
 
 ```text
-cobblemon-eld  = Cobblemon: Explore Legendary Dungeons
-1.0.0          = mod release version
-mc1.21.1       = Minecraft version
-cob1.6.1-1.7.3 = tested Cobblemon endpoints
+gradle.properties
 ```
 
-The safest release workflow is:
+Current value:
 
-1. Keep the internal Gradle version as `1.0.0`.
-2. Run the normal clean build.
-3. Take the remapped non-sources JAR.
-4. Rename that copy to the public artifact name.
+```properties
+mod_version=1.1.0
+```
 
-The JAR filename is not the Fabric mod ID and is not used to locate entrypoint classes.
+The root Gradle build assigns this project version to every module. Each
+platform’s `processResources` task expands it into:
+
+```text
+fabric/src/main/resources/fabric.mod.json
+neoforge/src/main/resources/META-INF/neoforge.mods.toml
+```
+
+The source metadata correctly contains `${version}`. The completed release JAR
+must contain `1.1.0` after resource processing.
+
+## Module layout
+
+```text
+common/
+fabric/
+neoforge/
+```
+
+Use `common` for shared code and resources. Use the loader modules only for
+entrypoints, metadata, dependencies, run configuration, and unavoidable
+platform adapters.
+
+See:
+
+```text
+docs/development/ARCHITECTURE_GUIDE.md
+```
 
 ## Root project name
 
-The current setting:
+The Gradle root project name is:
 
 ```kotlin
 rootProject.name = "cobblemon-explore-legendary-dungeons"
 ```
 
-is valid. It only contributes to Gradle/IDE naming and the default archive name.
+It is an IDE and Gradle project label. It is not the mod ID and does not need to
+match the public artifact filename.
 
-Changing it to `cobblemon-eld` would be reasonable, but it also changes generated task/archive naming and Loom’s default refmap name. Because the current release already works, manually renaming the final artifact is the lower-risk 1.0.0 choice.
+## Build command
 
-Remove the stale TODO comment in `settings.gradle.kts`, but the project name itself can stay.
+From the repository root:
 
-## Stable namespace rule
-
-Do not rename for 1.0.0:
-
-```text
-pp_legendarydungeons
-porker.pp_legendarydungeons
-ProfessorPorkersLegendaryDungeons
-ProfessorPorkersLegendaryDungeonsClient
+```powershell
+.\gradlew.bat `
+    clean `
+    :common:build `
+    :fabric:build `
+    :neoforge:build `
+    --no-daemon `
+    --no-parallel `
+    --max-workers=2 `
+    --console=plain
 ```
 
-A future internal rename should be treated as a separate migration release with aliases or data-fixer planning.
+Require:
+
+```text
+BUILD SUCCESSFUL
+```
+
+## Release artifacts
+
+Fabric:
+
+```text
+fabric/build/libs/cobblemon-eld-1.1.0-fabric-mc1.21.1-cob1.7.3.jar
+```
+
+NeoForge:
+
+```text
+neoforge/build/libs/cobblemon-eld-1.1.0-neoforge-mc1.21.1-cob1.7.3.jar
+```
+
+Do not upload:
+
+```text
+common/build/libs/*
+*-sources.jar
+*-dev-slim.jar
+*-dev-shadow.jar
+```
+
+The two release JARs are uploaded separately to Modrinth and CurseForge. The
+project does not require a GitHub Release.
+
+## Metadata inspection
+
+The Fabric JAR must include:
+
+```text
+fabric.mod.json
+icon.png
+pp_legendarydungeons.mixins.json
+data/pp_legendarydungeons/
+porker/pp_legendarydungeons/
+```
+
+The NeoForge JAR must include:
+
+```text
+META-INF/neoforge.mods.toml
+icon.png
+pp_legendarydungeons.mixins.json
+data/pp_legendarydungeons/
+porker/pp_legendarydungeons/
+```
+
+The NeoForge JAR should not include `fabric.mod.json`.
+
+Verify the processed version in both metadata files before uploading.
+
+## Versioning guidance
+
+Use semantic versioning as a project convention:
+
+- Patch, such as `1.1.1`: fixes without intended feature or compatibility
+  changes.
+- Minor, such as `1.2.0`: backward-compatible features or substantial content.
+- Major, such as `2.0.0`: intentionally incompatible behavior or data changes.
+
+A version change should be made before the final clean build so both loader
+artifacts receive the same version.

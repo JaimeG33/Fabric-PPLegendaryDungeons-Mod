@@ -2,26 +2,18 @@
 
 ## Purpose
 
-This directory stores the focused records for each stage of the Architectury
-Fabric + NeoForge migration.
+This directory records the migration from the original Fabric-only layout to
+the current Architectury common/Fabric/NeoForge project.
 
-The high-level source of truth is:
+Current development guidance lives in:
 
 ```text
-D:\Minecraft Stuff\Mod Projects\professor-porkers-legendary-dungeons\docs\MULTILOADER_MIGRATION_MASTER_PLAN.md
+docs/README.md
+docs/development/ARCHITECTURE_GUIDE.md
 ```
 
-Each phase document should contain:
-
-- The phase goal.
-- Exact files changed.
-- APIs being replaced.
-- Behavior that must remain unchanged.
-- Step-by-step implementation notes.
-- Build and gameplay tests.
-- Known risks.
-- Completion status.
-- Follow-up items deliberately deferred to later phases.
+Older phase documents are historical records and may contain obsolete paths,
+versions, or one-loader assumptions.
 
 ## Phase status
 
@@ -37,8 +29,54 @@ Each phase document should contain:
 | 7 | `PHASE_07_COMMON_FABRIC_NEOFORGE_SPLIT.md` | Complete and user-tested |
 | 8 | `PHASE_08_NEOFORGE_BOOTSTRAP.md` | Complete and user-tested |
 | 9 | `PHASE_09_CROSS_LOADER_PARITY.md` | Release-candidate smoke validation complete; extended hardening deferred |
-| 10 | Future: release workflow | Planned |
+| 10 | `PHASE_10_RELEASE_WORKFLOW.md` | In progress — 1.1.0 documentation, artifact, and platform-publication preparation |
 
-Phase 9 is closed for the initial release candidate. Its validation-results
-document clearly separates completed smoke tests from deferred exhaustive
-parity, multiplayer, compatibility, persistence, and performance work.
+## Current architecture result
+
+The migration produced three modules:
+
+```text
+common
+fabric
+neoforge
+```
+
+`common` owns shared gameplay and resources. Fabric and NeoForge own thin
+entrypoints, metadata, dependencies, run configuration, and only the platform
+adapters that cannot be shared reliably.
+
+All new development should follow the current architecture guide rather than
+copying implementation patterns from an intermediate migration phase.
+
+## Phase 9 closure
+
+Phase 9 closed for the initial release candidate after representative Fabric
+and NeoForge client, fresh-world, dedicated-server, controller, and Rayquaza
+testing.
+
+The following remain explicitly deferred:
+
+- Exhaustive two-player race testing.
+- Adversarial packet and invalid-input testing.
+- Full dependency-floor combinations.
+- Complete loot, trader, map, and structure matrices.
+- Cross-loader existing-world certification.
+- Extended performance and leak sessions.
+
+Deferred means not completed, not passed.
+
+## Phase 10 scope
+
+Phase 10 prepares version `1.1.0` for distribution through Modrinth and
+CurseForge.
+
+It owns:
+
+- Version and documentation consistency.
+- Common-first architecture guidance.
+- Clean Fabric and NeoForge artifact generation.
+- Inspection and clean-instance testing of the exact release JARs.
+- Platform metadata and dependency declarations.
+- Recording publication results.
+
+A GitHub Release is not required.
