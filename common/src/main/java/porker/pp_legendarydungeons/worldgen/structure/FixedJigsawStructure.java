@@ -26,11 +26,22 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
- * Vanilla-compatible jigsaw structure whose root piece can use a configured
- * horizontal rotation instead of vanilla's random root rotation.
+ * Vanilla-compatible jigsaw structure with configurable root rotation and
+ * surface-aware high-terrain placement.
  *
- * <p>Only the initial/root rotation is overridden. Child pieces continue to use
- * vanilla jigsaw connector logic and may rotate as needed to connect.</p>
+ * <p>The normal placement is still produced by vanilla JigsawPlacement. After
+ * vanilla builds the complete piece set, {@link FixedJigsawTerrainPlacement}
+ * may move every piece together so that:</p>
+ *
+ * <ul>
+ *     <li>the root start is never closer to the dimension ceiling than the
+ *     configured clearance;</li>
+ *     <li>a nearby lower site is preferred when the original terrain is too
+ *     high;</li>
+ *     <li>the complete generated bounding box remains inside the dimension.</li>
+ * </ul>
+ *
+ * <p>Child pieces retain vanilla jigsaw rotation and connector behavior.</p>
  */
 public final class FixedJigsawStructure extends Structure {
     public static final DimensionPadding DEFAULT_DIMENSION_PADDING =
@@ -38,7 +49,14 @@ public final class FixedJigsawStructure extends Structure {
     public static final LiquidSettings DEFAULT_LIQUID_SETTINGS =
             LiquidSettings.APPLY_WATERLOGGING;
 
+    public static final int DEFAULT_MINIMUM_CLEARANCE_BELOW_TOP = 175;
+    public static final int DEFAULT_TERRAIN_SEARCH_RADIUS = 32;
+    public static final int DEFAULT_TERRAIN_SEARCH_STEP = 8;
+
     private static final int MAX_TOTAL_STRUCTURE_RANGE = 128;
+    private static final int MAX_CLEARANCE = 4096;
+    private static final int MAX_SEARCH_RADIUS = 128;
+    private static final int MAX_SEARCH_STEP = 64;
 
     public static final MapCodec<FixedJigsawStructure> CODEC =
             RecordCodecBuilder.<FixedJigsawStructure>mapCodec(instance ->
@@ -85,9 +103,36 @@ public final class FixedJigsawStructure extends Structure {
                                             "rotation",
                                             FixedJigsawRotation.NONE
                                     )
-                                    .forGetter(structure -> structure.rotation)
+                                    .forGetter(structure -> structure.rotation),
+                            Codec.intRange(0, MAX_CLEARANCE)
+                                    .optionalFieldOf(
+                                            "minimum_clearance_below_top",
+                                            DEFAULT_MINIMUM_CLEARANCE_BELOW_TOP
+                                    )
+                                    .forGetter(
+                                            structure ->
+                                                    structure.minimumClearanceBelowTop
+                                    ),
+                            Codec.intRange(0, MAX_SEARCH_RADIUS)
+                                    .optionalFieldOf(
+                                            "terrain_search_radius",
+                                            DEFAULT_TERRAIN_SEARCH_RADIUS
+                                    )
+                                    .forGetter(
+                                            structure ->
+                                                    structure.terrainSearchRadius
+                                    ),
+                            Codec.intRange(1, MAX_SEARCH_STEP)
+                                    .optionalFieldOf(
+                                            "terrain_search_step",
+                                            DEFAULT_TERRAIN_SEARCH_STEP
+                                    )
+                                    .forGetter(
+                                            structure ->
+                                                    structure.terrainSearchStep
+                                    )
                     ).apply(instance, FixedJigsawStructure::new)
-            ).validate(FixedJigsawStructure::verifyRange);
+            ).validate(FixedJigsawStructure::verifyConfiguration);
 
     private final Holder<StructureTemplatePool> startPool;
     private final Optional<ResourceLocation> startJigsawName;
@@ -100,6 +145,9 @@ public final class FixedJigsawStructure extends Structure {
     private final DimensionPadding dimensionPadding;
     private final LiquidSettings liquidSettings;
     private final FixedJigsawRotation rotation;
+    private final int minimumClearanceBelowTop;
+    private final int terrainSearchRadius;
+    private final int terrainSearchStep;
 
     public FixedJigsawStructure(
             StructureSettings settings,
@@ -113,7 +161,10 @@ public final class FixedJigsawStructure extends Structure {
             List<PoolAliasBinding> poolAliases,
             DimensionPadding dimensionPadding,
             LiquidSettings liquidSettings,
-            FixedJigsawRotation rotation
+            FixedJigsawRotation rotation,
+            int minimumClearanceBelowTop,
+            int terrainSearchRadius,
+            int terrainSearchStep
     ) {
         super(settings);
         this.startPool = startPool;
@@ -127,9 +178,12 @@ public final class FixedJigsawStructure extends Structure {
         this.dimensionPadding = dimensionPadding;
         this.liquidSettings = liquidSettings;
         this.rotation = rotation;
+        this.minimumClearanceBelowTop = minimumClearanceBelowTop;
+        this.terrainSearchRadius = terrainSearchRadius;
+        this.terrainSearchStep = terrainSearchStep;
     }
 
-    private static DataResult<FixedJigsawStructure> verifyRange(
+    private static DataResult<FixedJigsawStructure> verifyConfiguration(
             FixedJigsawStructure structure
     ) {
         int terrainMargin = switch (structure.terrainAdaptation()) {
@@ -146,6 +200,15 @@ public final class FixedJigsawStructure extends Structure {
             );
         }
 
+        if (structure.terrainSearchRadius > 0
+                && structure.terrainSearchStep
+                > structure.terrainSearchRadius) {
+            return DataResult.error(
+                    () -> "terrain_search_step must be less than or equal to "
+                            + "terrain_search_radius, unless the radius is 0"
+            );
+        }
+
         return DataResult.success(structure);
     }
 
@@ -154,16 +217,24 @@ public final class FixedJigsawStructure extends Structure {
             GenerationContext context
     ) {
         ChunkPos chunkPos = context.chunkPos();
-        int startY = startHeight.sample(
-                context.random(),
+        WorldGenerationContext worldContext =
                 new WorldGenerationContext(
                         context.chunkGenerator(),
                         context.heightAccessor()
-                )
+                );
+
+        /*
+         * When heightmap projection is enabled, vanilla treats this sampled
+         * value as an offset added to the terrain height.
+         */
+        int sampledStartHeight = startHeight.sample(
+                context.random(),
+                worldContext
         );
+
         BlockPos startPos = new BlockPos(
                 chunkPos.getMinBlockX(),
-                startY,
+                sampledStartHeight,
                 chunkPos.getMinBlockZ()
         );
 
@@ -186,13 +257,28 @@ public final class FixedJigsawStructure extends Structure {
                         liquidSettings
                 );
 
+        Optional<GenerationStub> generated;
+
         if (rotation.isRandom()) {
-            return generate.get();
+            generated = generate.get();
+        } else {
+            generated = FixedJigsawRotationContext.withRotation(
+                    rotation.fixedRotation(),
+                    generate
+            );
         }
 
-        return FixedJigsawRotationContext.withRotation(
-                rotation.fixedRotation(),
-                generate
+        return generated.map(stub ->
+                FixedJigsawTerrainPlacement.adjust(
+                        context,
+                        stub,
+                        projectStartToHeightmap,
+                        sampledStartHeight,
+                        minimumClearanceBelowTop,
+                        terrainSearchRadius,
+                        terrainSearchStep,
+                        dimensionPadding
+                )
         );
     }
 
