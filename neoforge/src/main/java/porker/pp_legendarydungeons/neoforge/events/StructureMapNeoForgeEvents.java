@@ -8,12 +8,18 @@ import porker.pp_legendarydungeons.items.maps.structure.StructureMapInteractionE
 /**
  * NeoForge bridge for armor-stand interactions.
  *
- * <p>NeoForge fires {@link PlayerInteractEvent.EntityInteractSpecific} before
- * its general entity-interaction event. Armor stands normally complete their
- * equipment swap during this specific event, preventing Architectury's general
- * {@code INTERACT_ENTITY} bridge from seeing the click. This listener forwards
- * the earlier event to the shared map-claim handler and cancels vanilla swapping
- * whenever the common handler claims the interaction.</p>
+ * <p>This feature must use a loader-specific event boundary. NeoForge exposes
+ * armor stands' position-aware interaction as
+ * {@link PlayerInteractEvent.EntityInteractSpecific}, which fires before the
+ * general entity event. Vanilla can complete the equipment swap there, so an
+ * Architectury {@code INTERACT_ENTITY} listener would run too late or not run at
+ * all. This bridge forwards the earlier specific event to the shared map-claim
+ * handler and cancels vanilla swapping when the handler claims the click.</p>
+ *
+ * <p>Fabric requires its own equivalent bridge through
+ * {@code UseEntityCallback}. Only interception differs between loaders; map
+ * validation, loot-table execution, duplicate prevention, and delivery remain
+ * in the common {@link StructureMapInteractionEvents} implementation.</p>
  */
 public final class StructureMapNeoForgeEvents {
     private static boolean registered = false;

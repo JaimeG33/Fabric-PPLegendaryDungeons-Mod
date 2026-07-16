@@ -1,7 +1,6 @@
 package porker.pp_legendarydungeons.items.maps.structure;
 
 import dev.architectury.event.EventResult;
-import dev.architectury.event.events.common.InteractionEvent;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -34,6 +33,15 @@ import java.util.Optional;
  *
  * <p>No ticker is involved. The functional exploration map is generated only
  * when a player actually interacts with a valid holder.</p>
+ *
+ * <p>Only the event interception is loader-specific. Armor stands choose an
+ * equipment slot through Minecraft's position-aware interaction path. The
+ * Architectury general entity event does not consistently intercept that path
+ * before vanilla swaps the armor-stand item. Fabric therefore delegates from
+ * {@code UseEntityCallback}, while NeoForge delegates from
+ * {@code EntityInteractSpecific}. Both loaders call the same method below, so
+ * validation, loot generation, multiplayer claiming, and item delivery remain
+ * shared.</p>
  */
 public final class StructureMapInteractionEvents {
     public static final String HOLDER_TAG = "pp_grab_map";
@@ -46,34 +54,18 @@ public final class StructureMapInteractionEvents {
 
     private static final double MAX_INTERACTION_DISTANCE_SQUARED = 36.0D;
 
-    private static boolean registered = false;
-
-    private StructureMapInteractionEvents() {
-    }
-
-    public static void register() {
-        if (registered) {
-            return;
-        }
-
-        registered = true;
-        InteractionEvent.INTERACT_ENTITY.register(
-                StructureMapInteractionEvents::handleInteraction
-        );
-    }
-
     /**
-     * Shared interaction implementation used by Architectury and loader-specific
-     * bridges. NeoForge armor stands complete equipment swaps through its
-     * EntityInteractSpecific event before the general Architectury entity event,
-     * so the NeoForge module invokes this method directly.
+     * Loader-neutral map-claim implementation invoked by the Fabric and
+     * NeoForge interaction bridges. The loaders differ only in how they intercept
+     * armor stands before vanilla equipment swapping occurs.
      */
     public static EventResult handleInteraction(
             Player player,
             Entity entity,
             InteractionHand hand
     ) {
-        if (!(entity instanceof ArmorStand holder)) {
+        if (!(entity instanceof ArmorStand holder)
+                || player.isSpectator()) {
             return EventResult.pass();
         }
 
