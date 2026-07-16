@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "#pp_legendarydungeons:trial_chamber",
+    "#pp_legendarydungeons:ancient_city",
+    "#pp_legendarydungeons:stronghold",
+    "#pp_legendarydungeons:cobblemon_shipwreck_coves",
+    "#pp_legendarydungeons:mega_showdown_wishing_weald",
+    "#pp_legendarydungeons:mega_showdown_megaroid"
+  ]
+}

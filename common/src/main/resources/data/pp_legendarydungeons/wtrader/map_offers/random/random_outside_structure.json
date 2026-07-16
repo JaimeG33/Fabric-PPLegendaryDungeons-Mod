@@ -1,0 +1,9 @@
+{
+  "id": "pp_legendarydungeons:random_outside_structure",
+  "loot_table": "pp_legendarydungeons:maps/random/find_random_outside_structure",
+  "tags": [
+    "random_map",
+    "outside_structure",
+    "external_structure"
+  ]
+}
