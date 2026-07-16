@@ -58,11 +58,17 @@ public final class StructureMapInteractionEvents {
 
         registered = true;
         InteractionEvent.INTERACT_ENTITY.register(
-                StructureMapInteractionEvents::onInteractEntity
+                StructureMapInteractionEvents::handleInteraction
         );
     }
 
-    private static EventResult onInteractEntity(
+    /**
+     * Shared interaction implementation used by Architectury and loader-specific
+     * bridges. NeoForge armor stands complete equipment swaps through its
+     * EntityInteractSpecific event before the general Architectury entity event,
+     * so the NeoForge module invokes this method directly.
+     */
+    public static EventResult handleInteraction(
             Player player,
             Entity entity,
             InteractionHand hand

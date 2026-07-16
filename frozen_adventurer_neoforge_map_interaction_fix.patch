@@ -1,0 +1,101 @@
+diff --git a/common/src/main/java/porker/pp_legendarydungeons/items/maps/structure/StructureMapInteractionEvents.java b/common/src/main/java/porker/pp_legendarydungeons/items/maps/structure/StructureMapInteractionEvents.java
+index 6901ba7..29433b3 100644
+--- a/common/src/main/java/porker/pp_legendarydungeons/items/maps/structure/StructureMapInteractionEvents.java
++++ b/common/src/main/java/porker/pp_legendarydungeons/items/maps/structure/StructureMapInteractionEvents.java
+@@ -58,11 +58,17 @@ public final class StructureMapInteractionEvents {
+ 
+         registered = true;
+         InteractionEvent.INTERACT_ENTITY.register(
+-                StructureMapInteractionEvents::onInteractEntity
++                StructureMapInteractionEvents::handleInteraction
+         );
+     }
+ 
+-    private static EventResult onInteractEntity(
++    /**
++     * Shared interaction implementation used by Architectury and loader-specific
++     * bridges. NeoForge armor stands complete equipment swaps through its
++     * EntityInteractSpecific event before the general Architectury entity event,
++     * so the NeoForge module invokes this method directly.
++     */
++    public static EventResult handleInteraction(
+             Player player,
+             Entity entity,
+             InteractionHand hand
+diff --git a/neoforge/src/main/java/porker/pp_legendarydungeons/neoforge/ProfessorPorkersLegendaryDungeonsNeoForge.java b/neoforge/src/main/java/porker/pp_legendarydungeons/neoforge/ProfessorPorkersLegendaryDungeonsNeoForge.java
+index fa374a3..1bfcdfa 100644
+--- a/neoforge/src/main/java/porker/pp_legendarydungeons/neoforge/ProfessorPorkersLegendaryDungeonsNeoForge.java
++++ b/neoforge/src/main/java/porker/pp_legendarydungeons/neoforge/ProfessorPorkersLegendaryDungeonsNeoForge.java
+@@ -2,6 +2,7 @@ package porker.pp_legendarydungeons.neoforge;
+ 
+ import net.neoforged.fml.common.Mod;
+ import porker.pp_legendarydungeons.LegendaryDungeons;
++import porker.pp_legendarydungeons.neoforge.events.StructureMapNeoForgeEvents;
+ 
+ /**
+  * Thin NeoForge loader entrypoint. Shared initialization remains in common.
+@@ -10,6 +11,7 @@ import porker.pp_legendarydungeons.LegendaryDungeons;
+ public final class ProfessorPorkersLegendaryDungeonsNeoForge {
+     public ProfessorPorkersLegendaryDungeonsNeoForge() {
+         LegendaryDungeons.init();
++        StructureMapNeoForgeEvents.register();
+         LegendaryDungeons.LOGGER.info(
+                 "Cobblemon: Explore Legendary Dungeons initialized on NeoForge."
+         );
+diff --git a/neoforge/src/main/java/porker/pp_legendarydungeons/neoforge/events/StructureMapNeoForgeEvents.java b/neoforge/src/main/java/porker/pp_legendarydungeons/neoforge/events/StructureMapNeoForgeEvents.java
+new file mode 100644
+index 0000000..2e9fc99
+--- /dev/null
++++ b/neoforge/src/main/java/porker/pp_legendarydungeons/neoforge/events/StructureMapNeoForgeEvents.java
+@@ -0,0 +1,51 @@
++package porker.pp_legendarydungeons.neoforge.events;
++
++import dev.architectury.event.EventResult;
++import net.neoforged.neoforge.common.NeoForge;
++import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
++import porker.pp_legendarydungeons.items.maps.structure.StructureMapInteractionEvents;
++
++/**
++ * NeoForge bridge for armor-stand interactions.
++ *
++ * <p>NeoForge fires {@link PlayerInteractEvent.EntityInteractSpecific} before
++ * its general entity-interaction event. Armor stands normally complete their
++ * equipment swap during this specific event, preventing Architectury's general
++ * {@code INTERACT_ENTITY} bridge from seeing the click. This listener forwards
++ * the earlier event to the shared map-claim handler and cancels vanilla swapping
++ * whenever the common handler claims the interaction.</p>
++ */
++public final class StructureMapNeoForgeEvents {
++    private static boolean registered = false;
++
++    private StructureMapNeoForgeEvents() {
++    }
++
++    public static void register() {
++        if (registered) {
++            return;
++        }
++
++        registered = true;
++        NeoForge.EVENT_BUS.addListener(
++                StructureMapNeoForgeEvents::onEntityInteractSpecific
++        );
++    }
++
++    private static void onEntityInteractSpecific(
++            PlayerInteractEvent.EntityInteractSpecific event
++    ) {
++        EventResult result = StructureMapInteractionEvents.handleInteraction(
++                event.getEntity(),
++                event.getTarget(),
++                event.getHand()
++        );
++
++        if (!result.isPresent()) {
++            return;
++        }
++
++        event.setCanceled(true);
++        event.setCancellationResult(result.asMinecraft());
++    }
++}
