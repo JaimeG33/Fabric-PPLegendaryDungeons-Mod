@@ -1,0 +1,15 @@
+{
+  "name": "pp_legendarydungeons:misc/frozen_adventurers/exterior",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "pp_legendarydungeons:special/frozen_adventurers/exterior/0",
+        "processors": "minecraft:empty"
+      }
+    }
+  ]
+}

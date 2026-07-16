@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "pp_legendarydungeons:misc/frozen_adventurers/frozen_adventurer_icespike",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 32,
+    "separation": 16,
+    "salt": 803993479
+  }
+}
