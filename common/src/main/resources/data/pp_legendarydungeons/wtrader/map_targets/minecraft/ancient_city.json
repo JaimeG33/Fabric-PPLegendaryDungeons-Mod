@@ -1,0 +1,19 @@
+{
+  "id": "minecraft:ancient_city",
+  "display_name": "Ancient City",
+  "description_lines": [
+    {
+      "text": "This map leads toward an Ancient City deep beneath the surface.",
+      "color": "gray",
+      "italic": false
+    }
+  ],
+  "structure_tag": "pp_legendarydungeons:ancient_city",
+  "groups": [
+    "pp_legendarydungeons:outside_structures"
+  ],
+  "aliases": [
+    "ancient_city",
+    "pp_legendarydungeons:ancient_city"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "id": "pp_legendarydungeons:abandoned_research_outpost/004_magicarpjump_cold",
+  "display_name": "Magikarp Jump Research Outpost",
+  "description_lines": [
+    {
+      "text": "An outpost connected to aquatic research and rumors of Kyogre ruins.",
+      "color": "gray",
+      "italic": false
+    }
+  ],
+  "structure_tag": "pp_legendarydungeons:map_targets/abandoned_research_outpost/004_magicarpjump_cold",
+  "groups": [
+    "pp_legendarydungeons:research_outposts"
+  ],
+  "aliases": []
+}

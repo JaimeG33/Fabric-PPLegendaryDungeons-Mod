@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "pp_legendarydungeons:abandoned_research_outpost/004_magicarpjump_cold",
+      "required": false
+    }
+  ]
+}

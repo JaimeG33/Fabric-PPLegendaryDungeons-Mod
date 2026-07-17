@@ -1,0 +1,16 @@
+{
+  "id": "pp_legendarydungeons:abandoned_research_outpost/001_tortera_variants_swamp",
+  "display_name": "Torterra Variants Research Outpost",
+  "description_lines": [
+    {
+      "text": "An outpost studying unusual Torterra variants.",
+      "color": "gray",
+      "italic": false
+    }
+  ],
+  "structure_tag": "pp_legendarydungeons:map_targets/abandoned_research_outpost/001_tortera_variants_swamp",
+  "groups": [
+    "pp_legendarydungeons:research_outposts"
+  ],
+  "aliases": []
+}

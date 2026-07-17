@@ -1,0 +1,13 @@
+{
+  "id": "pp_legendarydungeons:crystal_caves",
+  "display_name": "Crystal Caves",
+  "description_lines": [
+    {
+      "text": "This map leads to a Carbink colony said to be watched over by Diancie.",
+      "color": "gray",
+      "italic": false
+    }
+  ],
+  "groups": [],
+  "aliases": []
+}

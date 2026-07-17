@@ -1,0 +1,19 @@
+{
+  "id": "pp_legendarydungeons:ancient_battles/gvk/island_1",
+  "display_name": "Ancient Battle Island",
+  "description_lines": [
+    {
+      "text": "A remote island tied to an ancient clash between powerful forces of land and sea.",
+      "color": "gray",
+      "italic": false
+    }
+  ],
+  "structure_tag": "pp_legendarydungeons:random/specific/ancient_battle_gvk_island_1",
+  "groups": [
+    "pp_legendarydungeons:misc"
+  ],
+  "aliases": [
+    "ancient_battle_gvk_island_1",
+    "pp_legendarydungeons:ancient_battle_gvk_island_1"
+  ]
+}

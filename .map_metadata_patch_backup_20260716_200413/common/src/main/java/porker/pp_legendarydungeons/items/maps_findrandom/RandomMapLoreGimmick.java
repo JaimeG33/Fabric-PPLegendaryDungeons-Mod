@@ -9,11 +9,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.ItemLore;
-import porker.pp_legendarydungeons.LegendaryDungeons;
 import porker.pp_legendarydungeons.items.ItemGimmickContext;
 import porker.pp_legendarydungeons.items.maps.MapCoordinateHelper;
 import porker.pp_legendarydungeons.items.maps.MapCoordinates;
-import porker.pp_legendarydungeons.items.maps.MapResolutionRetry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +20,13 @@ import java.util.Optional;
 /**
  * Adds post-purchase lore to broad random maps.
  *
- * <p>Failed target resolution is retried twice at six-second intervals. The
- * second and third attempts use one saturated doubling of the locate radius.</p>
+ * Required custom data:
+ * - pp_gimmick = "random_map_lore"
+ * - pp_random_map_group = "dungeons", "misc", or "research_outposts"
+ * - pp_coords_revealed = false
+ *
+ * The handler tries to identify the exact selected structure by comparing the
+ * generated map center to each possible target in the random group.
  */
 public final class RandomMapLoreGimmick {
     private RandomMapLoreGimmick() {
@@ -54,52 +57,10 @@ public final class RandomMapLoreGimmick {
             return false;
         }
 
-        long gameTime = context.player().serverLevel().getGameTime();
-
-        if (MapResolutionRetry.isWaiting(tag, gameTime)) {
-            return false;
-        }
-
-        int attempt = MapResolutionRetry.nextAttempt(tag);
         Optional<MapCoordinates> coordinates = MapCoordinateHelper.getStoredCoordinates(tag)
-                .or(() -> MapCoordinateHelper.getMapCenter(
-                        stack,
-                        context.player().serverLevel()
-                ));
+                .or(() -> MapCoordinateHelper.getMapCenter(stack, context.player().serverLevel()));
 
-        Optional<RandomMapTarget> resolvedTarget = resolveTarget(
-                context,
-                tag,
-                group.get(),
-                coordinates,
-                attempt
-        );
-
-        boolean fullyResolved = coordinates.isPresent() && resolvedTarget.isPresent();
-
-        if (!fullyResolved && MapResolutionRetry.hasAnotherAttempt(attempt)) {
-            CustomData.update(DataComponents.CUSTOM_DATA, stack, updatedTag -> {
-                coordinates.ifPresent(coords -> {
-                    updatedTag.putInt(RandomMapGimmickData.TARGET_X_KEY, coords.x());
-                    updatedTag.putInt(RandomMapGimmickData.TARGET_Z_KEY, coords.z());
-                });
-
-                if (resolvedTarget.isPresent()) {
-                    updatedTag.putBoolean(RandomMapGimmickData.RESOLVED_KEY, true);
-                    updatedTag.putString(
-                            RandomMapGimmickData.RESOLVED_TARGET_KEY,
-                            resolvedTarget.get().id()
-                    );
-                } else {
-                    updatedTag.putBoolean(RandomMapGimmickData.RESOLVED_KEY, false);
-                    updatedTag.remove(RandomMapGimmickData.RESOLVED_TARGET_KEY);
-                }
-
-                MapResolutionRetry.markPending(updatedTag, attempt, gameTime);
-            });
-
-            return true;
-        }
+        Optional<RandomMapTarget> resolvedTarget = resolveTarget(context, tag, group.get(), coordinates);
 
         addLore(stack, group.get(), resolvedTarget, coordinates);
 
@@ -113,31 +74,11 @@ public final class RandomMapLoreGimmick {
 
             if (resolvedTarget.isPresent()) {
                 updatedTag.putBoolean(RandomMapGimmickData.RESOLVED_KEY, true);
-                updatedTag.putString(
-                        RandomMapGimmickData.RESOLVED_TARGET_KEY,
-                        resolvedTarget.get().id()
-                );
+                updatedTag.putString(RandomMapGimmickData.RESOLVED_TARGET_KEY, resolvedTarget.get().id());
             } else {
                 updatedTag.putBoolean(RandomMapGimmickData.RESOLVED_KEY, false);
-                updatedTag.remove(RandomMapGimmickData.RESOLVED_TARGET_KEY);
             }
-
-            MapResolutionRetry.clear(updatedTag);
         });
-
-        if (resolvedTarget.isEmpty()) {
-            LegendaryDungeons.LOGGER.warn(
-                    "[Random Map] Could not identify a target for group {} after {} attempts. Map center: {}. Final locate radius: {} chunks. Checked tags: {}.",
-                    group.get().id(),
-                    attempt,
-                    coordinates.map(coords -> "X=" + coords.x() + ", Z=" + coords.z())
-                            .orElse("unknown"),
-                    RandomMapResolver.locateRadiusForAttempt(attempt),
-                    group.get().targets().stream()
-                            .map(RandomMapTarget::structureTagId)
-                            .toList()
-            );
-        }
 
         return true;
     }
@@ -146,17 +87,12 @@ public final class RandomMapLoreGimmick {
             ItemGimmickContext context,
             CompoundTag tag,
             RandomMapGroup group,
-            Optional<MapCoordinates> coordinates,
-            int attempt
+            Optional<MapCoordinates> coordinates
     ) {
         if (tag.contains(RandomMapGimmickData.RESOLVED_TARGET_KEY)) {
-            String resolvedTargetId = tag.getString(
-                    RandomMapGimmickData.RESOLVED_TARGET_KEY
-            );
+            String resolvedTargetId = tag.getString(RandomMapGimmickData.RESOLVED_TARGET_KEY);
 
-            Optional<RandomMapTarget> existingTarget = group.getTarget(
-                    resolvedTargetId
-            );
+            Optional<RandomMapTarget> existingTarget = group.getTarget(resolvedTargetId);
 
             if (existingTarget.isPresent()) {
                 return existingTarget;
@@ -177,8 +113,7 @@ public final class RandomMapLoreGimmick {
         return RandomMapResolver.resolve(
                         context.player().serverLevel(),
                         mapCenter,
-                        group,
-                        attempt
+                        group
                 )
                 .map(RandomMapResolution::target);
     }

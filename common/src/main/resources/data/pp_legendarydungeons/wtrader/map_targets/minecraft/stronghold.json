@@ -1,0 +1,19 @@
+{
+  "id": "minecraft:stronghold",
+  "display_name": "Stronghold",
+  "description_lines": [
+    {
+      "text": "A buried stronghold containing the path to the End.",
+      "color": "gray",
+      "italic": false
+    }
+  ],
+  "structure_tag": "pp_legendarydungeons:stronghold",
+  "groups": [
+    "pp_legendarydungeons:outside_structures"
+  ],
+  "aliases": [
+    "stronghold",
+    "pp_legendarydungeons:stronghold"
+  ]
+}

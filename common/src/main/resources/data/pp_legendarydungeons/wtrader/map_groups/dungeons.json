@@ -1,0 +1,14 @@
+{
+  "id": "pp_legendarydungeons:dungeons",
+  "display_name": "Random Legendary Dungeon",
+  "description_lines": [
+    {
+      "text": "This map points toward one of the legendary dungeon structures.",
+      "color": "gray",
+      "italic": false
+    }
+  ],
+  "aliases": [
+    "dungeons"
+  ]
+}

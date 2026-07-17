@@ -1,8 +1,6 @@
 package porker.pp_legendarydungeons.items.maps_findrandom;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import porker.pp_legendarydungeons.features.wtraders.json.MapMetadataJsonRegistry;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,17 +15,8 @@ public record RandomMapGroup(
         List<RandomMapTarget> targets
 ) {
     public Optional<RandomMapTarget> getTarget(String targetId) {
-        Optional<ResourceLocation> resolvedId =
-                MapMetadataJsonRegistry.resolveTargetId(targetId);
-
-        if (resolvedId.isEmpty()) {
-            return Optional.empty();
-        }
-
-        String canonicalId = resolvedId.get().toString();
-
         return targets.stream()
-                .filter(target -> target.id().equals(canonicalId))
+                .filter(target -> target.id().equals(targetId))
                 .findFirst();
     }
 }

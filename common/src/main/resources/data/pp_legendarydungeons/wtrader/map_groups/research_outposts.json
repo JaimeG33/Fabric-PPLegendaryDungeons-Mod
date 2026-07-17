@@ -1,0 +1,14 @@
+{
+  "id": "pp_legendarydungeons:research_outposts",
+  "display_name": "Random Abandoned Research Outpost",
+  "description_lines": [
+    {
+      "text": "This map points toward one of Professor Sans' abandoned research outposts.",
+      "color": "gray",
+      "italic": false
+    }
+  ],
+  "aliases": [
+    "research_outposts"
+  ]
+}

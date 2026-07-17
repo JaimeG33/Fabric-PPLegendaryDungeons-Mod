@@ -1,0 +1,18 @@
+{
+  "id": "pp_legendarydungeons:abandoned_research_outpost/002_ap_and_tumblestones",
+  "display_name": "Apricorn and Tumblestone Research Outpost",
+  "description_lines": [
+    {
+      "text": "An outpost studying ancient Poke Balls and tumblestones.",
+      "color": "gray",
+      "italic": false
+    }
+  ],
+  "structure_tag": "pp_legendarydungeons:random/specific/research_002_ap_and_tumblestones",
+  "groups": [
+    "pp_legendarydungeons:research_outposts"
+  ],
+  "aliases": [
+    "research_002_ap_and_tumblestones"
+  ]
+}

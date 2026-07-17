@@ -16,8 +16,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Loads custom wandering-trader and functional-map JSON definitions from
- * server-data resources.
+ * Loads custom wandering-trader JSON definitions from server-data resources.
+ *
+ * <p>The Architectury registrar owns loader integration. This class uses
+ * Minecraft's loader-neutral reload-listener base and remains focused on
+ * parsing, validation, and atomic registry replacement.</p>
  */
 public final class WTraderJsonReloadListener
         extends SimplePreparableReloadListener<Unit> {
@@ -30,6 +33,10 @@ public final class WTraderJsonReloadListener
     private WTraderJsonReloadListener() {
     }
 
+    /**
+     * No asynchronous preparation is required because the existing parser
+     * performs one atomic load/apply pass on the reload apply executor.
+     */
     @Override
     protected Unit prepare(
             ResourceManager resourceManager,
@@ -52,8 +59,6 @@ public final class WTraderJsonReloadListener
         Map<ResourceLocation, TraderProfileJson> traderProfiles = loadTraderProfiles(resourceManager);
         Map<ResourceLocation, SelectionTableJson> selectionTables = loadSelectionTables(resourceManager);
         Map<ResourceLocation, MapOfferJson> mapOffers = loadMapOffers(resourceManager);
-        Map<ResourceLocation, MapTargetJson> mapTargets = loadMapTargets(resourceManager);
-        Map<ResourceLocation, MapGroupJson> mapGroups = loadMapGroups(resourceManager);
 
         WTraderJsonRegistry.replaceAll(
                 tradePools,
@@ -61,7 +66,6 @@ public final class WTraderJsonReloadListener
                 selectionTables,
                 mapOffers
         );
-        MapMetadataJsonRegistry.replaceAll(mapTargets, mapGroups);
 
         LegendaryDungeons.LOGGER.info(
                 "[WTrader JSON] Loaded {} trade pools, {} trader profiles, {} selection tables, and {} map offers.",
@@ -69,11 +73,6 @@ public final class WTraderJsonReloadListener
                 WTraderJsonRegistry.traderProfileCount(),
                 WTraderJsonRegistry.selectionTableCount(),
                 WTraderJsonRegistry.mapOfferCount()
-        );
-        LegendaryDungeons.LOGGER.info(
-                "[Map Metadata JSON] Loaded {} map targets and {} map groups.",
-                MapMetadataJsonRegistry.mapTargetCount(),
-                MapMetadataJsonRegistry.mapGroupCount()
         );
 
         WTraderJsonGeneratorSmokeTest.logSmokeTest();
@@ -137,38 +136,6 @@ public final class WTraderJsonReloadListener
             if (WTraderJsonValidator.validateMapOffer(fileId, json)) {
                 ResourceLocation dataId = ResourceLocation.parse(json.id);
                 putDefinition(loaded, dataId, json, fileId, "map offer");
-            }
-        }
-
-        return loaded;
-    }
-
-    private static Map<ResourceLocation, MapTargetJson> loadMapTargets(ResourceManager resourceManager) {
-        Map<ResourceLocation, MapTargetJson> loaded = new LinkedHashMap<>();
-
-        for (Map.Entry<ResourceLocation, Resource> entry : listJsonResources(resourceManager, WTraderJsonFolders.MAP_TARGETS).entrySet()) {
-            ResourceLocation fileId = entry.getKey();
-            MapTargetJson json = readJson(fileId, entry.getValue(), MapTargetJson.class);
-
-            if (MapMetadataJsonValidator.validateMapTarget(fileId, json)) {
-                ResourceLocation dataId = ResourceLocation.parse(json.id);
-                putDefinition(loaded, dataId, json, fileId, "map target");
-            }
-        }
-
-        return loaded;
-    }
-
-    private static Map<ResourceLocation, MapGroupJson> loadMapGroups(ResourceManager resourceManager) {
-        Map<ResourceLocation, MapGroupJson> loaded = new LinkedHashMap<>();
-
-        for (Map.Entry<ResourceLocation, Resource> entry : listJsonResources(resourceManager, WTraderJsonFolders.MAP_GROUPS).entrySet()) {
-            ResourceLocation fileId = entry.getKey();
-            MapGroupJson json = readJson(fileId, entry.getValue(), MapGroupJson.class);
-
-            if (MapMetadataJsonValidator.validateMapGroup(fileId, json)) {
-                ResourceLocation dataId = ResourceLocation.parse(json.id);
-                putDefinition(loaded, dataId, json, fileId, "map group");
             }
         }
 

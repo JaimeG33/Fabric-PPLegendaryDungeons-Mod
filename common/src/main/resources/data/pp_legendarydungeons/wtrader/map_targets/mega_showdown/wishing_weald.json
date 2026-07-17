@@ -1,0 +1,24 @@
+{
+  "id": "mega_showdown:wishing_weald",
+  "display_name": "Wishing Weald",
+  "description_lines": [
+    {
+      "text": "This map points toward a Wishing Weald site.",
+      "color": "gray",
+      "italic": false
+    },
+    {
+      "text": "If no destination appears, the required structure may not exist in this world or modpack.",
+      "color": "dark_gray",
+      "italic": false
+    }
+  ],
+  "structure_tag": "pp_legendarydungeons:mega_showdown_wishing_weald",
+  "groups": [
+    "pp_legendarydungeons:outside_structures"
+  ],
+  "aliases": [
+    "wishing_weald",
+    "pp_legendarydungeons:wishing_weald"
+  ]
+}

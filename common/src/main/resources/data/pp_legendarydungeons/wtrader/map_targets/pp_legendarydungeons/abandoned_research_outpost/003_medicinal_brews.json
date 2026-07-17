@@ -1,0 +1,18 @@
+{
+  "id": "pp_legendarydungeons:abandoned_research_outpost/003_medicinal_brews",
+  "display_name": "Medicinal Brews Research Outpost",
+  "description_lines": [
+    {
+      "text": "An outpost studying unusual brews and medicinal supplies.",
+      "color": "gray",
+      "italic": false
+    }
+  ],
+  "structure_tag": "pp_legendarydungeons:random/specific/research_003_medicinal_brews",
+  "groups": [
+    "pp_legendarydungeons:research_outposts"
+  ],
+  "aliases": [
+    "research_003_medicinal_brews"
+  ]
+}

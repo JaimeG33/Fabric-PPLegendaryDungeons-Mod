@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "pp_legendarydungeons:abandoned_research_outpost/001_tortera_variants_swamp",
+      "required": false
+    }
+  ]
+}

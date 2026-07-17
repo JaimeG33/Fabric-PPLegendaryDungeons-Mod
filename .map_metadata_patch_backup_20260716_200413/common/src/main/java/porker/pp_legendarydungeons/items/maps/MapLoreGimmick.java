@@ -43,26 +43,8 @@ public final class MapLoreGimmick {
             return false;
         }
 
-        long gameTime = context.player().serverLevel().getGameTime();
-
-        if (MapResolutionRetry.isWaiting(tag, gameTime)) {
-            return false;
-        }
-
-        int attempt = MapResolutionRetry.nextAttempt(tag);
         Optional<MapCoordinates> coordinates = MapCoordinateHelper.getStoredCoordinates(tag)
-                .or(() -> MapCoordinateHelper.getMapCenter(
-                        stack,
-                        context.player().serverLevel()
-                ));
-
-        if (coordinates.isEmpty()
-                && MapResolutionRetry.hasAnotherAttempt(attempt)) {
-            CustomData.update(DataComponents.CUSTOM_DATA, stack, updatedTag ->
-                    MapResolutionRetry.markPending(updatedTag, attempt, gameTime)
-            );
-            return true;
-        }
+                .or(() -> MapCoordinateHelper.getMapCenter(stack, context.player().serverLevel()));
 
         addLore(stack, loreEntry.get(), coordinates);
 
@@ -73,8 +55,6 @@ public final class MapLoreGimmick {
                 updatedTag.putInt(MapGimmickData.TARGET_X_KEY, coords.x());
                 updatedTag.putInt(MapGimmickData.TARGET_Z_KEY, coords.z());
             });
-
-            MapResolutionRetry.clear(updatedTag);
         });
 
         return true;

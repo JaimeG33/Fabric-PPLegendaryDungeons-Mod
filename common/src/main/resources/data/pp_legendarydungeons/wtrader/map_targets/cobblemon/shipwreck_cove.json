@@ -1,0 +1,19 @@
+{
+  "id": "cobblemon:shipwreck_cove",
+  "display_name": "Shipwreck Cove",
+  "description_lines": [
+    {
+      "text": "This map points toward a shipwreck cove deep underground.",
+      "color": "gray",
+      "italic": false
+    }
+  ],
+  "structure_tag": "pp_legendarydungeons:cobblemon_shipwreck_coves",
+  "groups": [
+    "pp_legendarydungeons:outside_structures"
+  ],
+  "aliases": [
+    "shipwreck_coves",
+    "pp_legendarydungeons:shipwreck_coves"
+  ]
+}

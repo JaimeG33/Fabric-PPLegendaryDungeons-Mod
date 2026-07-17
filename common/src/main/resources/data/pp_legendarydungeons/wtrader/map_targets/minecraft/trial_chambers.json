@@ -1,0 +1,19 @@
+{
+  "id": "minecraft:trial_chambers",
+  "display_name": "Trial Chambers",
+  "description_lines": [
+    {
+      "text": "This map leads toward Trial Chambers deep underground.",
+      "color": "gray",
+      "italic": false
+    }
+  ],
+  "structure_tag": "pp_legendarydungeons:trial_chamber",
+  "groups": [
+    "pp_legendarydungeons:outside_structures"
+  ],
+  "aliases": [
+    "trial_chambers",
+    "pp_legendarydungeons:trial_chambers"
+  ]
+}

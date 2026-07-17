@@ -1,0 +1,19 @@
+{
+  "id": "pp_legendarydungeons:overtaken_outpost/1",
+  "display_name": "Overtaken Outpost",
+  "description_lines": [
+    {
+      "text": "Known hideout of a local gang of troublemaking Squirtles.",
+      "color": "gray",
+      "italic": false
+    }
+  ],
+  "structure_tag": "pp_legendarydungeons:random/specific/overtaken_outpost_1",
+  "groups": [
+    "pp_legendarydungeons:misc"
+  ],
+  "aliases": [
+    "overtaken_outpost_1",
+    "pp_legendarydungeons:overtaken_outpost_1"
+  ]
+}

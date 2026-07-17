@@ -1,0 +1,19 @@
+{
+  "id": "pp_legendarydungeons:sky_pillar",
+  "display_name": "Sky Pillar",
+  "description_lines": [
+    {
+      "text": "This map shows the location to the legendary Sky Pillar of Rayquaza.",
+      "color": "gray",
+      "italic": false
+    }
+  ],
+  "structure_tag": "pp_legendarydungeons:skypillar_tag",
+  "groups": [
+    "pp_legendarydungeons:dungeons"
+  ],
+  "aliases": [
+    "skypillar",
+    "pp_legendarydungeons:skypillar"
+  ]
+}

@@ -3,6 +3,24 @@
 This is the main documentation index for the Architectury-based Fabric and
 NeoForge project.
 
+## Build and output
+
+Run a full release build from the repository root:
+
+```powershell
+.\gradlew.bat `
+    :common:clean `
+    :common:build `
+    :fabric:clean `
+    :fabric:build `
+    :neoforge:clean `
+    :neoforge:build `
+    --no-daemon `
+    --no-parallel `
+    --max-workers=2 `
+    --console=plain
+```
+
 ## Current release baseline
 
 | Component | Current target |
@@ -131,21 +149,7 @@ because the project has two loaders.
 - Test both singleplayer and a dedicated server whenever networking,
   persistence, permissions, or multiple players are involved.
 
-## Build and output
 
-Run a full release build from the repository root:
-
-```powershell
-.\gradlew.bat `
-    clean `
-    :common:build `
-    :fabric:build `
-    :neoforge:build `
-    --no-daemon `
-    --no-parallel `
-    --max-workers=2 `
-    --console=plain
-```
 
 The uploadable remapped JARs are expected at:
 

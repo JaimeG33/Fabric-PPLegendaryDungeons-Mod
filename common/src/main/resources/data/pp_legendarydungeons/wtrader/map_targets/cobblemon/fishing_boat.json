@@ -1,0 +1,17 @@
+{
+  "id": "cobblemon:fishing_boat",
+  "display_name": "Old Fishing Boat",
+  "description_lines": [
+    {
+      "text": "This map points toward an old fishing boat structure along the coast.",
+      "color": "gray",
+      "italic": false
+    }
+  ],
+  "structure_tag": "pp_legendarydungeons:cobblemon_fishing_boats",
+  "groups": [],
+  "aliases": [
+    "fishing_boats",
+    "pp_legendarydungeons:fishing_boats"
+  ]
+}

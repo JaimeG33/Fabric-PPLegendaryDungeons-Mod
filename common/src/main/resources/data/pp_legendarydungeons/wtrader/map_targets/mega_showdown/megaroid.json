@@ -1,0 +1,24 @@
+{
+  "id": "mega_showdown:megaroid",
+  "display_name": "Mega Showdown Megaroid",
+  "description_lines": [
+    {
+      "text": "An underground Mega Showdown megaroid.",
+      "color": "gray",
+      "italic": false
+    },
+    {
+      "text": "The same structure ID covers megaroids associated with Keystone and blank Mega Stone finds.",
+      "color": "dark_gray",
+      "italic": false
+    }
+  ],
+  "structure_tag": "pp_legendarydungeons:mega_showdown_megaroid",
+  "groups": [
+    "pp_legendarydungeons:outside_structures"
+  ],
+  "aliases": [
+    "megaroid",
+    "pp_legendarydungeons:megaroid"
+  ]
+}

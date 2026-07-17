@@ -1,0 +1,22 @@
+{
+  "id": "mega_showdown:mega_site",
+  "display_name": "Mega Site",
+  "description_lines": [
+    {
+      "text": "This map points toward a Mega Site.",
+      "color": "gray",
+      "italic": false
+    },
+    {
+      "text": "If no destination appears, the required structure may not exist in this world or modpack.",
+      "color": "dark_gray",
+      "italic": false
+    }
+  ],
+  "structure_tag": "pp_legendarydungeons:mega_showdown_mega_site",
+  "groups": [],
+  "aliases": [
+    "mega_site",
+    "pp_legendarydungeons:mega_site"
+  ]
+}

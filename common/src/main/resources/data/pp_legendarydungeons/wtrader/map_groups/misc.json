@@ -1,0 +1,14 @@
+{
+  "id": "pp_legendarydungeons:misc",
+  "display_name": "Random Strange Structure",
+  "description_lines": [
+    {
+      "text": "This map points toward one of the smaller strange structures.",
+      "color": "gray",
+      "italic": false
+    }
+  ],
+  "aliases": [
+    "misc"
+  ]
+}

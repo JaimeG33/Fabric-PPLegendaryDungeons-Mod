@@ -1,0 +1,14 @@
+{
+  "id": "pp_legendarydungeons:outside_structures",
+  "display_name": "Random Outside Structure",
+  "description_lines": [
+    {
+      "text": "This map points toward a notable structure originating outside Professor Porker's dungeon collection.",
+      "color": "gray",
+      "italic": false
+    }
+  ],
+  "aliases": [
+    "outside_structures"
+  ]
+}
