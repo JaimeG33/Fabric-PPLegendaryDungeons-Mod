@@ -3,7 +3,7 @@
   "aggression": {
     "enabled": true,
     "target_players": true,
-    "exclude_creative": true,
+    "exclude_creative": false,
     "exclude_spectators": true,
     "requires_active_dungeon_instance": false,
     "detection_range": 16.0,
