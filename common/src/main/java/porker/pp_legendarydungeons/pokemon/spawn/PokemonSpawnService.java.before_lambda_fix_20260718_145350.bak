@@ -1,0 +1,207 @@
+package porker.pp_legendarydungeons.pokemon.spawn;
+
+import com.cobblemon.mod.common.CobblemonEntities;
+import com.cobblemon.mod.common.api.pokemon.PokemonProperties;
+import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
+import com.cobblemon.mod.common.pokemon.Pokemon;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.phys.Vec3;
+import porker.pp_legendarydungeons.LegendaryDungeons;
+
+import java.util.Optional;
+
+/**
+ * Shared low-level Pokémon creation boundary.
+ *
+ * Legendary encounter code, dungeon-enemy markers, and future non-hostile
+ * features should call this service instead of duplicating Cobblemon entity
+ * construction.
+ */
+public final class PokemonSpawnService {
+    private PokemonSpawnService() {
+    }
+
+    public static Optional<PokemonSpawnResult> spawn(PokemonSpawnRequest request) {
+        return spawn(request, "");
+    }
+
+    private static Optional<PokemonSpawnResult> spawn(
+            PokemonSpawnRequest request,
+            String additionalProperties
+    ) {
+        Optional<PokemonSpawnProfileJson> profile =
+                PokemonSpawnProfileRegistry.get(request.profileId());
+
+        if (profile.isEmpty()) {
+            LegendaryDungeons.LOGGER.warn(
+                    "[Pokemon Spawn] Missing profile {}.",
+                    request.profileId()
+            );
+            return Optional.empty();
+        }
+
+        PokemonSpawnProfileJson definition = profile.get();
+        String resolvedProperties = PokemonGenerationResolver.resolve(
+                definition,
+                request.level().getRandom()
+        );
+
+        if (additionalProperties != null && !additionalProperties.isBlank()) {
+            resolvedProperties =
+                    resolvedProperties + " " + additionalProperties.trim();
+        }
+
+        Optional<PokemonEntity> entity = spawnFromResolvedProperties(
+                request.level(),
+                resolvedProperties,
+                request.position(),
+                request.yaw(),
+                request.pitch(),
+                definition.entity
+        );
+
+        return entity.map(spawned -> new PokemonSpawnResult(
+                request.profileId(),
+                resolvedProperties,
+                spawned
+        ));
+    }
+
+    public static Optional<PokemonEntity> spawnProfile(
+            ServerLevel level,
+            ResourceLocation profileId,
+            double x,
+            double y,
+            double z,
+            float yaw,
+            float pitch
+    ) {
+        return spawn(new PokemonSpawnRequest(
+                level,
+                profileId,
+                new Vec3(x, y, z),
+                yaw,
+                pitch
+        )).map(PokemonSpawnResult::entity);
+    }
+
+    public static Optional<PokemonEntity> spawnProfile(
+            ServerLevel level,
+            ResourceLocation profileId,
+            double x,
+            double y,
+            double z,
+            float yaw,
+            float pitch,
+            String additionalProperties
+    ) {
+        return spawn(
+                new PokemonSpawnRequest(
+                        level,
+                        profileId,
+                        new Vec3(x, y, z),
+                        yaw,
+                        pitch
+                ),
+                additionalProperties
+        ).map(PokemonSpawnResult::entity);
+    }
+
+    /**
+     * Compatibility/fallback path for programmatic callers that already have a
+     * full Cobblemon property string.
+     */
+    public static Optional<PokemonEntity> spawnFromSpec(
+            ServerLevel level,
+            String pokemonProperties,
+            double x,
+            double y,
+            double z,
+            float yaw,
+            float pitch
+    ) {
+        return spawnFromResolvedProperties(
+                level,
+                pokemonProperties,
+                new Vec3(x, y, z),
+                yaw,
+                pitch,
+                new PokemonSpawnProfileJson.EntitySettings()
+        );
+    }
+
+    private static Optional<PokemonEntity> spawnFromResolvedProperties(
+            ServerLevel level,
+            String pokemonProperties,
+            Vec3 position,
+            float yaw,
+            float pitch,
+            PokemonSpawnProfileJson.EntitySettings entitySettings
+    ) {
+        if (pokemonProperties == null || pokemonProperties.isBlank()) {
+            LegendaryDungeons.LOGGER.warn(
+                    "[Pokemon Spawn] Refused to spawn from blank Pokémon properties."
+            );
+            return Optional.empty();
+        }
+
+        try {
+            PokemonProperties properties =
+                    PokemonProperties.Companion.parse(pokemonProperties);
+            Pokemon pokemon = properties.create();
+
+            PokemonEntity entity = new PokemonEntity(
+                    level,
+                    pokemon,
+                    CobblemonEntities.POKEMON
+            );
+            entity.moveTo(
+                    position.x(),
+                    position.y(),
+                    position.z(),
+                    yaw,
+                    pitch
+            );
+
+            PokemonSpawnProfileJson.EntitySettings settings =
+                    entitySettings == null
+                            ? new PokemonSpawnProfileJson.EntitySettings()
+                            : entitySettings;
+
+            if (settings.persistent) {
+                entity.setPersistenceRequired();
+            }
+
+            entity.setCountsTowardsSpawnCap(settings.counts_towards_spawn_cap);
+
+            if (!level.addFreshEntity(entity)) {
+                LegendaryDungeons.LOGGER.warn(
+                        "[Pokemon Spawn] Failed to add '{}' at {}, {}, {}.",
+                        pokemonProperties,
+                        position.x(),
+                        position.y(),
+                        position.z()
+                );
+                return Optional.empty();
+            }
+
+            LegendaryDungeons.LOGGER.info(
+                    "[Pokemon Spawn] Spawned '{}' at {}, {}, {}.",
+                    pokemonProperties,
+                    position.x(),
+                    position.y(),
+                    position.z()
+            );
+
+            return Optional.of(entity);
+        } catch (Throwable throwable) {
+            LegendaryDungeons.LOGGER.error(
+                    "[Pokemon Spawn] Failed to create/spawn '{}'.",
+                    pokemonProperties,
+                    throwable
+            );
+            return Optional.empty();
+        }
+    }
+}

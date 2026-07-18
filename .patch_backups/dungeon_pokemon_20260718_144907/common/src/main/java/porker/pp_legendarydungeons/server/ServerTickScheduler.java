@@ -3,7 +3,6 @@ package porker.pp_legendarydungeons.server;
 import dev.architectury.event.events.common.TickEvent;
 import net.minecraft.server.MinecraftServer;
 import porker.pp_legendarydungeons.features.FeatureTicker;
-import porker.pp_legendarydungeons.features.dungeon_pokemon.DungeonPokemonManager;
 import porker.pp_legendarydungeons.items.ItemGimmickTicker;
 import porker.pp_legendarydungeons.secrets.SecretTicker;
 import porker.pp_legendarydungeons.summon.trigger.EntityLegendarySummonTicker;
@@ -11,9 +10,9 @@ import porker.pp_legendarydungeons.summon.trigger.EntityLegendarySummonTicker;
 /**
  * One shared post-server-tick listener for the mod's interval-driven systems.
  *
- * <p>Each subsystem keeps its own interval and gameplay implementation.
- * Consolidating the event boundary prevents separate loader event
- * registrations and gives the common module one scheduler to own.</p>
+ * <p>Each subsystem keeps its original interval and gameplay implementation.
+ * Consolidating the event boundary prevents four separate loader event
+ * registrations and gives the future common module one scheduler to own.</p>
  */
 public final class ServerTickScheduler {
     private static boolean registered = false;
@@ -35,12 +34,10 @@ public final class ServerTickScheduler {
         tickCount++;
 
         /*
-         * Preserve the existing subsystem order, then update only the loaded
-         * Pokémon explicitly registered with the dungeon encounter manager.
+         * Preserve the previous listener registration order.
          */
         EntityLegendarySummonTicker.tick(server, tickCount);
         FeatureTicker.tick(server, tickCount);
-        DungeonPokemonManager.tick(server, tickCount);
         ItemGimmickTicker.tick(server, tickCount);
         SecretTicker.tick(server, tickCount);
     }

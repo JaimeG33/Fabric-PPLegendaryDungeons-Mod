@@ -1,7 +1,6 @@
 package porker.pp_legendarydungeons.features;
 
 import porker.pp_legendarydungeons.features.custom_mobs.CustomMobFeature;
-import porker.pp_legendarydungeons.features.dungeon_pokemon.DungeonPokemonFeature;
 import porker.pp_legendarydungeons.features.wtraders.WanderingTraderFeature;
 
 /**
@@ -10,7 +9,6 @@ import porker.pp_legendarydungeons.features.wtraders.WanderingTraderFeature;
  * Current routed systems:
  * - WTrader markers
  * - Custom dungeon enemy markers
- * - Deterministic dungeon Pokémon markers
  *
  * Later this can also route crystal heart loops, altar particles, portal effects,
  * dungeon rule zones, vault fix markers, etc.
@@ -22,6 +20,5 @@ public final class FeatureService {
     public static void checkFeatures(FeatureContext context) {
         WanderingTraderFeature.check(context);
         CustomMobFeature.check(context);
-        DungeonPokemonFeature.check(context);
     }
 }

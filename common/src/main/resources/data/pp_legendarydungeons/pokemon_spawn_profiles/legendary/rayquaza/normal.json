@@ -1,0 +1,23 @@
+{
+  "base_properties": "rayquaza",
+  "generation": {
+    "level": {
+      "min": 70,
+      "max": 70
+    },
+    "nature": {
+      "mode": "default"
+    },
+    "shiny": {
+      "mode": "default"
+    },
+    "ivs": {
+      "mode": "default",
+      "minimum_perfect": 0
+    }
+  },
+  "entity": {
+    "persistent": true,
+    "counts_towards_spawn_cap": false
+  }
+}

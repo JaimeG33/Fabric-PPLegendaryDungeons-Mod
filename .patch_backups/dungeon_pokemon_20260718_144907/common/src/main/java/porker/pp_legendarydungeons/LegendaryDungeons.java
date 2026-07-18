@@ -9,13 +9,10 @@ import porker.pp_legendarydungeons.dungeon_rules.events.DungeonRuleBlockEvents;
 import porker.pp_legendarydungeons.dungeon_rules.events.DungeonRuleInteractionEvents;
 import porker.pp_legendarydungeons.dungeon_rules.network.DungeonRuleNetworking;
 import porker.pp_legendarydungeons.dungeon_rules.preset.DungeonRulePresetRegistry;
-import porker.pp_legendarydungeons.features.dungeon_pokemon.DungeonPokemonEventRegistrar;
-import porker.pp_legendarydungeons.features.dungeon_pokemon.DungeonPokemonManager;
 import porker.pp_legendarydungeons.features.wtraders.json.WTraderJsonReloadRegistrar;
 import porker.pp_legendarydungeons.features.wtraders.villager.VillagerTradeInjectionRegistrar;
 import porker.pp_legendarydungeons.loot.LootTableInjectionRegistrar;
 import porker.pp_legendarydungeons.loot.pokemon.PokemonLootTableRegistrar;
-import porker.pp_legendarydungeons.pokemon.spawn.PokemonProfileReloadRegistrar;
 import porker.pp_legendarydungeons.server.ServerTickScheduler;
 import porker.pp_legendarydungeons.setup.ModBlockEntities;
 import porker.pp_legendarydungeons.setup.ModBlocks;
@@ -24,7 +21,11 @@ import porker.pp_legendarydungeons.setup.ModStructureTypes;
 import porker.pp_legendarydungeons.summon.dungeon_completion.DungeonCompletionRegistry;
 
 /**
- * Loader-neutral initialization entrypoint shared by Fabric and NeoForge.
+ * Loader-neutral initialization entrypoint.
+ *
+ * <p>The current project is still a single-module Fabric project, but this
+ * class avoids Fabric entrypoint and Fabric event/networking types. Future
+ * Fabric and NeoForge entrypoints will both call {@link #init()}.</p>
  */
 public final class LegendaryDungeons {
     public static final String MOD_ID = "pp_legendarydungeons";
@@ -61,7 +62,6 @@ public final class LegendaryDungeons {
         DungeonRuleBlockEvents.register();
 
         WTraderJsonReloadRegistrar.register();
-        PokemonProfileReloadRegistrar.register();
 
         /*
          * Adds the three data-driven cartographer map factories to vanilla's
@@ -76,11 +76,10 @@ public final class LegendaryDungeons {
         LootTableInjectionRegistrar.register();
 
         /*
-         * Cobblemon exposes these events from shared code, so both integrations
-         * remain in common and work on Fabric and NeoForge.
+         * Cobblemon exposes these Pokémon defeat/drop events from shared code,
+         * so this bridge is already suitable for the future common module.
          */
         PokemonLootTableRegistrar.register();
-        DungeonPokemonEventRegistrar.register();
 
         ServerTickScheduler.register();
     }
@@ -94,7 +93,6 @@ public final class LegendaryDungeons {
         LifecycleEvent.SERVER_STOPPED.register(server -> {
             DungeonRuleManager.clear();
             DungeonRulePreviewManager.clear();
-            DungeonPokemonManager.clear();
 
             /*
              * Clears temporary battle-faint context used by Pokémon loot

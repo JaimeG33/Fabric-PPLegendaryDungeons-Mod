@@ -1,0 +1,36 @@
+{
+  "spawn_profile": "pp_legendarydungeons:dungeon_enemy/standard/carbink_guard",
+  "aggression": {
+    "enabled": true,
+    "target_players": true,
+    "exclude_creative": true,
+    "exclude_spectators": true,
+    "requires_active_dungeon_instance": false,
+    "detection_range": 16.0,
+    "chase_range": 28.0,
+    "home_radius": 12.0,
+    "return_speed": 1.0,
+    "update_interval_ticks": 10
+  },
+  "combat_effects": [
+    {
+      "effect": "minecraft:resistance",
+      "amplifier": 0,
+      "duration_ticks": 60,
+      "refresh_interval_ticks": 20,
+      "ambient": false,
+      "show_particles": true,
+      "show_icon": true
+    }
+  ],
+  "capture": {
+    "allowed": true,
+    "remove_dungeon_state": true
+  },
+  "targets": [
+    {
+      "type": "player",
+      "value": ""
+    }
+  ]
+}

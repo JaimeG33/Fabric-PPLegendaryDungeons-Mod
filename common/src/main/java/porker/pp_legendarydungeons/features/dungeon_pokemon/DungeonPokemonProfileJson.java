@@ -1,0 +1,51 @@
+package porker.pp_legendarydungeons.features.dungeon_pokemon;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Datapack-backed behavior applied to a Pokémon spawned from a dungeon marker.
+ */
+public final class DungeonPokemonProfileJson {
+    public String spawn_profile = "";
+    public Aggression aggression = new Aggression();
+    public List<CombatEffect> combat_effects = new ArrayList<>();
+    public Capture capture = new Capture();
+    public List<TargetRule> targets = new ArrayList<>();
+
+    public static final class Aggression {
+        public boolean enabled = true;
+        public boolean target_players = true;
+        public boolean exclude_creative = true;
+        public boolean exclude_spectators = true;
+        public boolean requires_active_dungeon_instance = false;
+        public double detection_range = 16.0D;
+        public double chase_range = 28.0D;
+        public double home_radius = 12.0D;
+        public double return_speed = 1.0D;
+        public int update_interval_ticks = 10;
+    }
+
+    public static final class CombatEffect {
+        public String effect = "";
+        public int amplifier = 0;
+        public int duration_ticks = 60;
+        public int refresh_interval_ticks = 20;
+        public boolean ambient = false;
+        public boolean show_particles = true;
+        public boolean show_icon = true;
+    }
+
+    public static final class Capture {
+        public boolean allowed = true;
+        public boolean remove_dungeon_state = true;
+    }
+
+    public static final class TargetRule {
+        /**
+         * player, entity_tag, scoreboard_team, or entity_type_tag.
+         */
+        public String type = "player";
+        public String value = "";
+    }
+}

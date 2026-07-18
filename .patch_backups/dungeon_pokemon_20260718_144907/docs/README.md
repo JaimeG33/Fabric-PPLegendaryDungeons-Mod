@@ -137,8 +137,8 @@ because the project has two loaders.
 - Make the server the source of truth for gameplay changes.
 - Validate packet sender, permission, dimension, distance, block/entity type,
   and current state before applying a request.
-- Store dungeon state by world, block entity, saved-data record, persistent
-  entity NBT, or UUID rather than a global “current player” or “current dungeon.”
+- Store dungeon state by world, block entity, saved-data record, or persistent
+  UUID rather than a global “current player” or “current dungeon.”
 - Avoid one full entity scan per player per tick.
 - Clamp user-controlled and persisted numeric values before using them in loops
   or spatial indexes.
@@ -148,6 +148,8 @@ because the project has two loaders.
   tags, and structure IDs unless a migration plan exists.
 - Test both singleplayer and a dedicated server whenever networking,
   persistence, permissions, or multiple players are involved.
+
+
 
 The uploadable remapped JARs are expected at:
 
@@ -199,16 +201,12 @@ Start with:
 
 Additional guides:
 
-- [`development/WTRADER_JSON_SCHEMA.md`](development/WTRADER_JSON_SCHEMA.md)
-- [`development/POKEMON_SPAWN_PROFILE_SCHEMA.md`](development/POKEMON_SPAWN_PROFILE_SCHEMA.md)
-- [`development/SERVER_TICK_SCHEDULER.md`](development/SERVER_TICK_SCHEDULER.md)
+- `development/WTRADER_JSON_SCHEMA.md`
 - `development/DEVELOPMENT_MEMORY_AND_BUILD_PERFORMANCE.md`
 - `gameplay/MAPS.md`
 - `gameplay/LOOT_INJECTIONS.md`
 - `gameplay/TRADERS.md`
-- [`gameplay/LEGENDARY_SUMMONS_AND_DUNGEON_RULES.md`](gameplay/LEGENDARY_SUMMONS_AND_DUNGEON_RULES.md)
-- [`gameplay/DUNGEON_POKEMON_ENCOUNTERS.md`](gameplay/DUNGEON_POKEMON_ENCOUNTERS.md)
-- [`testing/DUNGEON_POKEMON_TEST_MATRIX.md`](testing/DUNGEON_POKEMON_TEST_MATRIX.md)
+- `gameplay/LEGENDARY_SUMMONS_AND_DUNGEON_RULES.md`
 - [`development/RUNNING_DEVELOPMENT_CLIENTS.md`](development/RUNNING_DEVELOPMENT_CLIENTS.md)
 
 ## Migration history

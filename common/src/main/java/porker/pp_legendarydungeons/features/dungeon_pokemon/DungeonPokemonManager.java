@@ -1,0 +1,606 @@
+package porker.pp_legendarydungeons.features.dungeon_pokemon;
+
+import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import porker.pp_legendarydungeons.LegendaryDungeons;
+import porker.pp_legendarydungeons.dungeon_rules.instance.DungeonRuleSavedData;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+
+/**
+ * One bounded lifecycle manager for all loaded dungeon Pokémon.
+ *
+ * Persistence is written into the Pokémon entity's own NBT by
+ * DungeonPokemonEventRegistrar. This runtime map intentionally tracks loaded
+ * entities only; a later load event restores the record after chunk reload.
+ */
+public final class DungeonPokemonManager {
+    public static final String MANAGED_ENTITY_TAG = "pp_dungeon_pokemon";
+
+    private static final int MIN_UPDATE_INTERVAL = 5;
+    private static final int MAX_UPDATE_INTERVAL = 100;
+
+    private static final double MAX_DETECTION_RANGE = 96.0D;
+    private static final double MAX_CHASE_RANGE = 192.0D;
+    private static final double MAX_HOME_RADIUS = 192.0D;
+
+    private static final Map<UUID, DungeonPokemonRecord> RECORDS =
+            new HashMap<>();
+
+    private DungeonPokemonManager() {
+    }
+
+    public static void register(
+            PokemonEntity entity,
+            ResourceLocation profileId,
+            BlockPos homePosition,
+            String instanceId
+    ) {
+        if (!(entity.level() instanceof ServerLevel level)) {
+            return;
+        }
+
+        entity.addTag(MANAGED_ENTITY_TAG);
+        entity.setPersistenceRequired();
+        entity.setCountsTowardsSpawnCap(false);
+
+        DungeonPokemonRecord record = new DungeonPokemonRecord(
+                entity.getUUID(),
+                entity.getPokemon().getUuid(),
+                level.dimension(),
+                profileId,
+                homePosition.immutable(),
+                instanceId == null ? "" : instanceId
+        );
+
+        RECORDS.put(entity.getUUID(), record);
+    }
+
+    public static Optional<DungeonPokemonRecord> getRecord(UUID entityUuid) {
+        return Optional.ofNullable(RECORDS.get(entityUuid));
+    }
+
+    public static void unregister(UUID entityUuid) {
+        RECORDS.remove(entityUuid);
+    }
+
+    public static void onCaptured(
+            MinecraftServer server,
+            UUID pokemonUuid
+    ) {
+        Iterator<Map.Entry<UUID, DungeonPokemonRecord>> iterator =
+                RECORDS.entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            Map.Entry<UUID, DungeonPokemonRecord> entry = iterator.next();
+            DungeonPokemonRecord record = entry.getValue();
+
+            if (!record.pokemonUuid().equals(pokemonUuid)) {
+                continue;
+            }
+
+            ServerLevel level = server.getLevel(record.dimension());
+
+            if (level != null) {
+                Entity entity = level.getEntity(record.entityUuid());
+
+                if (entity instanceof PokemonEntity pokemon) {
+                    clearProfileEffects(pokemon, record.profileId());
+                    CobblemonAggressionBridge.clearTarget(pokemon);
+                    pokemon.removeTag(MANAGED_ENTITY_TAG);
+                }
+            }
+
+            iterator.remove();
+        }
+    }
+
+    public static void tick(
+            MinecraftServer server,
+            long tickCount
+    ) {
+        Iterator<Map.Entry<UUID, DungeonPokemonRecord>> iterator =
+                RECORDS.entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            Map.Entry<UUID, DungeonPokemonRecord> entry = iterator.next();
+            DungeonPokemonRecord record = entry.getValue();
+            ServerLevel level = server.getLevel(record.dimension());
+
+            if (level == null) {
+                iterator.remove();
+                continue;
+            }
+
+            Entity resolved = level.getEntity(record.entityUuid());
+
+            /*
+             * An unloaded entity will be restored by POKEMON_ENTITY_LOAD using
+             * the NBT written on unload. The runtime record can be released now.
+             */
+            if (!(resolved instanceof PokemonEntity pokemon)) {
+                iterator.remove();
+                continue;
+            }
+
+            if (!pokemon.isAlive()
+                    || pokemon.getPokemon().isPlayerOwned()
+                    || pokemon.getOwnerUUID() != null) {
+                clearProfileEffects(pokemon, record.profileId());
+                CobblemonAggressionBridge.clearTarget(pokemon);
+                iterator.remove();
+                continue;
+            }
+
+            Optional<DungeonPokemonProfileJson> profileOptional =
+                    DungeonPokemonProfileRegistry.get(record.profileId());
+
+            if (profileOptional.isEmpty()) {
+                CobblemonAggressionBridge.clearTarget(pokemon);
+                iterator.remove();
+                continue;
+            }
+
+            DungeonPokemonProfileJson profile = profileOptional.get();
+            DungeonPokemonProfileJson.Aggression aggression =
+                    profile.aggression == null
+                            ? new DungeonPokemonProfileJson.Aggression()
+                            : profile.aggression;
+
+            int interval = clamp(
+                    aggression.update_interval_ticks,
+                    MIN_UPDATE_INTERVAL,
+                    MAX_UPDATE_INTERVAL
+            );
+
+            int bucket = Math.floorMod(record.entityUuid().hashCode(), interval);
+
+            if (Math.floorMod(tickCount, interval) != bucket) {
+                continue;
+            }
+
+            updateOne(
+                    server,
+                    level,
+                    pokemon,
+                    record,
+                    profile,
+                    aggression,
+                    tickCount
+            );
+        }
+    }
+
+    private static void updateOne(
+            MinecraftServer server,
+            ServerLevel level,
+            PokemonEntity pokemon,
+            DungeonPokemonRecord record,
+            DungeonPokemonProfileJson profile,
+            DungeonPokemonProfileJson.Aggression aggression,
+            long tickCount
+    ) {
+        if (!aggression.enabled
+                || !instanceAllowsAggression(server, record, aggression)
+                || pokemon.isBattling()
+                || pokemon.isBusy()) {
+            CobblemonAggressionBridge.clearTarget(pokemon);
+            returnHomeIfNeeded(pokemon, record, aggression);
+            return;
+        }
+
+        LivingEntity target = pokemon.getTarget();
+
+        if (!isValidTarget(level, target, record, profile, aggression)) {
+            if (target != null) {
+                CobblemonAggressionBridge.clearTarget(pokemon);
+            }
+
+            target = findTarget(level, pokemon, record, profile, aggression);
+        }
+
+        if (target != null) {
+            if (pokemon.getTarget() != target) {
+                CobblemonAggressionBridge.setTarget(pokemon, target);
+            } else {
+                /*
+                 * Fight or Flight and other AI mods may clear only Brain memory
+                 * while leaving the inherited target reference. Refreshing the
+                 * bridge at this bounded cadence keeps dungeon intent authoritative.
+                 */
+                CobblemonAggressionBridge.setTarget(pokemon, target);
+            }
+
+            refreshCombatEffects(
+                    pokemon,
+                    profile,
+                    tickCount,
+                    record.entityUuid()
+            );
+        } else {
+            returnHomeIfNeeded(pokemon, record, aggression);
+        }
+    }
+
+    private static boolean instanceAllowsAggression(
+            MinecraftServer server,
+            DungeonPokemonRecord record,
+            DungeonPokemonProfileJson.Aggression aggression
+    ) {
+        if (!aggression.requires_active_dungeon_instance) {
+            return true;
+        }
+
+        if (record.instanceId() == null || record.instanceId().isBlank()) {
+            return false;
+        }
+
+        return DungeonRuleSavedData
+                .get(server)
+                .get(record.instanceId())
+                .map(instance -> instance.rulesAreActive())
+                .orElse(false);
+    }
+
+    private static LivingEntity findTarget(
+            ServerLevel level,
+            PokemonEntity pokemon,
+            DungeonPokemonRecord record,
+            DungeonPokemonProfileJson profile,
+            DungeonPokemonProfileJson.Aggression aggression
+    ) {
+        double detectionRange = clamp(
+                aggression.detection_range,
+                0.0D,
+                MAX_DETECTION_RANGE
+        );
+
+        if (detectionRange <= 0.0D) {
+            return null;
+        }
+
+        List<LivingEntity> candidates = new ArrayList<>();
+
+        if (aggression.target_players || hasPlayerRule(profile)) {
+            for (ServerPlayer player : level.players()) {
+                if (isValidPlayer(player, aggression)
+                        && withinDetection(pokemon, player, detectionRange)
+                        && withinChaseHome(player, record, aggression)) {
+                    candidates.add(player);
+                }
+            }
+        }
+
+        List<DungeonPokemonProfileJson.TargetRule> nonPlayerRules =
+                nonPlayerRules(profile);
+
+        if (!nonPlayerRules.isEmpty()) {
+            AABB box = pokemon.getBoundingBox().inflate(detectionRange);
+
+            candidates.addAll(level.getEntitiesOfClass(
+                    LivingEntity.class,
+                    box,
+                    candidate ->
+                            candidate != pokemon
+                                    && candidate.isAlive()
+                                    && matchesAnyNonPlayerRule(candidate, nonPlayerRules)
+                                    && withinChaseHome(candidate, record, aggression)
+            ));
+        }
+
+        return candidates.stream()
+                .min(Comparator.comparingDouble(candidate -> pokemon.distanceToSqr(candidate)))
+                .orElse(null);
+    }
+
+    private static boolean isValidTarget(
+            ServerLevel level,
+            LivingEntity target,
+            DungeonPokemonRecord record,
+            DungeonPokemonProfileJson profile,
+            DungeonPokemonProfileJson.Aggression aggression
+    ) {
+        if (target == null
+                || !target.isAlive()
+                || target.level() != level
+                || !withinChaseHome(target, record, aggression)) {
+            return false;
+        }
+
+        if (target instanceof ServerPlayer player) {
+            return (aggression.target_players || hasPlayerRule(profile))
+                    && isValidPlayer(player, aggression);
+        }
+
+        return matchesAnyNonPlayerRule(target, nonPlayerRules(profile));
+    }
+
+    private static boolean isValidPlayer(
+            ServerPlayer player,
+            DungeonPokemonProfileJson.Aggression aggression
+    ) {
+        if (!player.isAlive()) {
+            return false;
+        }
+
+        if (aggression.exclude_spectators && player.isSpectator()) {
+            return false;
+        }
+
+        return !aggression.exclude_creative || !player.isCreative();
+    }
+
+    private static boolean withinDetection(
+            PokemonEntity pokemon,
+            LivingEntity target,
+            double detectionRange
+    ) {
+        return pokemon.distanceToSqr(target)
+                <= detectionRange * detectionRange;
+    }
+
+    private static boolean withinChaseHome(
+            LivingEntity target,
+            DungeonPokemonRecord record,
+            DungeonPokemonProfileJson.Aggression aggression
+    ) {
+        double chaseRange = clamp(
+                aggression.chase_range,
+                0.0D,
+                MAX_CHASE_RANGE
+        );
+
+        if (chaseRange <= 0.0D) {
+            return false;
+        }
+
+        BlockPos home = record.homePosition();
+
+        return target.distanceToSqr(
+                home.getX() + 0.5D,
+                home.getY() + 0.5D,
+                home.getZ() + 0.5D
+        ) <= chaseRange * chaseRange;
+    }
+
+    private static boolean hasPlayerRule(DungeonPokemonProfileJson profile) {
+        if (profile.targets == null) {
+            return false;
+        }
+
+        return profile.targets.stream()
+                .filter(java.util.Objects::nonNull)
+                .map(rule -> normalized(rule.type))
+                .anyMatch("player"::equals);
+    }
+
+    private static List<DungeonPokemonProfileJson.TargetRule> nonPlayerRules(
+            DungeonPokemonProfileJson profile
+    ) {
+        if (profile.targets == null || profile.targets.isEmpty()) {
+            return List.of();
+        }
+
+        return profile.targets.stream()
+                .filter(java.util.Objects::nonNull)
+                .filter(rule -> !normalized(rule.type).equals("player"))
+                .toList();
+    }
+
+    private static boolean matchesAnyNonPlayerRule(
+            LivingEntity candidate,
+            List<DungeonPokemonProfileJson.TargetRule> rules
+    ) {
+        for (DungeonPokemonProfileJson.TargetRule rule : rules) {
+            String type = normalized(rule.type);
+            String value = rule.value == null ? "" : rule.value.trim();
+
+            switch (type) {
+                case "entity_tag" -> {
+                    if (candidate.getTags().contains(value)) {
+                        return true;
+                    }
+                }
+                case "scoreboard_team" -> {
+                    if (candidate.getTeam() != null
+                            && candidate.getTeam().getName().equals(value)) {
+                        return true;
+                    }
+                }
+                case "entity_type_tag" -> {
+                    try {
+                        ResourceLocation id = ResourceLocation.parse(value);
+                        TagKey<EntityType<?>> tag =
+                                TagKey.create(Registries.ENTITY_TYPE, id);
+
+                        if (candidate.getType().is(tag)) {
+                            return true;
+                        }
+                    } catch (Exception ignored) {
+                        // Invalid IDs were already rejected by profile validation.
+                    }
+                }
+                default -> {
+                    // Unknown types were already rejected by validation.
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static void returnHomeIfNeeded(
+            PokemonEntity pokemon,
+            DungeonPokemonRecord record,
+            DungeonPokemonProfileJson.Aggression aggression
+    ) {
+        double homeRadius = clamp(
+                aggression.home_radius,
+                0.0D,
+                MAX_HOME_RADIUS
+        );
+
+        BlockPos home = record.homePosition();
+        double distanceSquared = pokemon.distanceToSqr(
+                home.getX() + 0.5D,
+                home.getY() + 0.5D,
+                home.getZ() + 0.5D
+        );
+
+        if (distanceSquared <= homeRadius * homeRadius) {
+            return;
+        }
+
+        PathNavigation navigation = pokemon.getNavigation();
+
+        if (navigation.isDone()) {
+            navigation.moveTo(
+                    home.getX() + 0.5D,
+                    home.getY(),
+                    home.getZ() + 0.5D,
+                    clamp(aggression.return_speed, 0.1D, 3.0D)
+            );
+        }
+    }
+
+    private static void refreshCombatEffects(
+            PokemonEntity pokemon,
+            DungeonPokemonProfileJson profile,
+            long tickCount,
+            UUID entityUuid
+    ) {
+        if (profile.combat_effects == null) {
+            return;
+        }
+
+        for (DungeonPokemonProfileJson.CombatEffect configured :
+                profile.combat_effects) {
+            if (configured == null) {
+                continue;
+            }
+
+            int refreshInterval = clamp(
+                    configured.refresh_interval_ticks,
+                    1,
+                    1200
+            );
+
+            int bucket = Math.floorMod(entityUuid.hashCode(), refreshInterval);
+
+            if (Math.floorMod(tickCount, refreshInterval) != bucket) {
+                continue;
+            }
+
+            Optional<Holder.Reference<MobEffect>> effect =
+                    effectHolder(configured.effect);
+
+            if (effect.isEmpty()) {
+                continue;
+            }
+
+            MobEffectInstance existing = pokemon.getEffect(effect.get());
+
+            if (existing != null
+                    && existing.getDuration() > refreshInterval + 5) {
+                continue;
+            }
+
+            pokemon.addEffect(new MobEffectInstance(
+                    effect.get(),
+                    clamp(configured.duration_ticks, 1, 72_000),
+                    clamp(configured.amplifier, 0, 255),
+                    configured.ambient,
+                    configured.show_particles,
+                    configured.show_icon
+            ));
+        }
+    }
+
+    private static void clearProfileEffects(
+            PokemonEntity pokemon,
+            ResourceLocation profileId
+    ) {
+        DungeonPokemonProfileRegistry.get(profileId).ifPresent(profile -> {
+            if (profile.combat_effects == null) {
+                return;
+            }
+
+            for (DungeonPokemonProfileJson.CombatEffect configured :
+                    profile.combat_effects) {
+                if (configured == null) {
+                    continue;
+                }
+
+                effectHolder(configured.effect).ifPresent(pokemon::removeEffect);
+            }
+        });
+    }
+
+    private static Optional<Holder.Reference<MobEffect>> effectHolder(
+            String effectId
+    ) {
+        try {
+            ResourceLocation id = ResourceLocation.parse(effectId);
+            Optional<Holder.Reference<MobEffect>> holder =
+                    BuiltInRegistries.MOB_EFFECT.getHolder(id);
+
+            if (holder.isEmpty()) {
+                LegendaryDungeons.LOGGER.warn(
+                        "[Dungeon Pokemon] Unknown mob effect {}.",
+                        effectId
+                );
+            }
+
+            return holder;
+        } catch (Exception exception) {
+            return Optional.empty();
+        }
+    }
+
+    private static String normalized(String value) {
+        return value == null
+                ? ""
+                : value.trim().toLowerCase(Locale.ROOT);
+    }
+
+    private static int clamp(int value, int min, int max) {
+        return Math.max(min, Math.min(max, value));
+    }
+
+    private static double clamp(double value, double min, double max) {
+        return Math.max(min, Math.min(max, value));
+    }
+
+    public static void clear() {
+        RECORDS.clear();
+    }
+
+    public static int loadedCount() {
+        return RECORDS.size();
+    }
+}

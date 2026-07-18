@@ -1,0 +1,59 @@
+{
+  "base_properties": "carbink",
+  "generation": {
+    "level": {
+      "min": 28,
+      "max": 36
+    },
+    "nature": {
+      "mode": "weighted_pool",
+      "entries": [
+        {
+          "id": "cobblemon:bold",
+          "weight": 4
+        },
+        {
+          "id": "cobblemon:impish",
+          "weight": 4
+        },
+        {
+          "id": "cobblemon:calm",
+          "weight": 2
+        }
+      ]
+    },
+    "shiny": {
+      "mode": "default"
+    },
+    "ivs": {
+      "mode": "weighted_ranges",
+      "minimum_perfect": 0,
+      "ranges": [
+        {
+          "min": 0,
+          "max": 15,
+          "weight": 1
+        },
+        {
+          "min": 16,
+          "max": 25,
+          "weight": 3
+        },
+        {
+          "min": 26,
+          "max": 30,
+          "weight": 5
+        },
+        {
+          "min": 31,
+          "max": 31,
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "entity": {
+    "persistent": true,
+    "counts_towards_spawn_cap": false
+  }
+}
