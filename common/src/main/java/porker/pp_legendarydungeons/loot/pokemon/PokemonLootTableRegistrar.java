@@ -6,11 +6,9 @@ import com.cobblemon.mod.common.api.events.battles.BattleFaintedEvent;
 import com.cobblemon.mod.common.api.events.drops.LootDroppedEvent;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.cobblemon.mod.common.pokemon.Pokemon;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.storage.loot.LootTable;
 import porker.pp_legendarydungeons.LegendaryDungeons;
 
 import java.util.Map;
@@ -30,7 +28,7 @@ import kotlin.Unit;
  *
  * <pre>
  * BATTLE_FAINTED -> cache context only
- * LOOT_DROPPED   -> execute the additional loot table once
+ * LOOT_DROPPED   -> optionally clear native drops, then execute one table
  * </pre>
  */
 public final class PokemonLootTableRegistrar {
@@ -73,7 +71,7 @@ public final class PokemonLootTableRegistrar {
         );
 
         CobblemonEvents.LOOT_DROPPED.subscribe(
-                Priority.NORMAL,
+                Priority.LOWEST,
                 event -> {
                     onLootDropped(event);
                     return Unit.INSTANCE;
@@ -104,10 +102,10 @@ public final class PokemonLootTableRegistrar {
 
         Pokemon faintedPokemon = event.getKilled().getEffectedPokemon();
 
-        Optional<ResourceKey<LootTable>> configuredTable =
-                PokemonLootTableRunner.findLootTable(faintedPokemon);
+        Optional<DungeonPokemonLootResolver.Selection> configuredLoot =
+                DungeonPokemonLootResolver.resolve(faintedPokemon);
 
-        if (configuredTable.isEmpty()) {
+        if (configuredLoot.isEmpty()) {
             return;
         }
 
@@ -128,13 +126,18 @@ public final class PokemonLootTableRegistrar {
                 )
         );
 
+        DungeonPokemonLootResolver.Selection selection =
+                configuredLoot.get();
+
         LegendaryDungeons.LOGGER.debug(
-                "[Pokemon Loot] BATTLE_FAINTED species={} pokemonUuid={} wild={} player={} table={}",
+                "[Pokemon Loot] BATTLE_FAINTED species={} pokemonUuid={} wild={} player={} mode={} table={} source={}",
                 faintedPokemon.getSpecies().getResourceIdentifier(),
                 faintedPokemon.getUuid(),
                 faintedPokemon.isWild(),
                 playerName(battlePlayer),
-                configuredTable.get().location()
+                selection.mode(),
+                selection.table().location(),
+                selection.source()
         );
     }
 
@@ -142,8 +145,9 @@ public final class PokemonLootTableRegistrar {
      * Handles the point where Cobblemon is about to perform a Pokémon's native
      * species drops.
      *
-     * <p>The native drop list is not cancelled or modified. When execution is
-     * enabled, this listener runs one additional Minecraft loot table.</p>
+     * <p>Additional mode preserves Cobblemon's chosen native drops. Replace
+     * mode clears that mutable list immediately before running the configured
+     * Minecraft loot table.</p>
      */
     private static void onLootDropped(LootDroppedEvent event) {
         cleanupExpiredContexts();
@@ -161,10 +165,10 @@ public final class PokemonLootTableRegistrar {
 
         Pokemon pokemon = pokemonEntity.getPokemon();
 
-        Optional<ResourceKey<LootTable>> configuredTable =
-                PokemonLootTableRunner.findLootTable(pokemon);
+        Optional<DungeonPokemonLootResolver.Selection> configuredLoot =
+                DungeonPokemonLootResolver.resolve(pokemon);
 
-        if (configuredTable.isEmpty()) {
+        if (configuredLoot.isEmpty()) {
             return;
         }
 
@@ -192,21 +196,6 @@ public final class PokemonLootTableRegistrar {
                 : System.currentTimeMillis()
                 - battleContext.createdAtMillis();
 
-        LegendaryDungeons.LOGGER.debug(
-                "[Pokemon Loot] LOOT_DROPPED species={} pokemonUuid={} entityPresent=true wild={} eventPlayer={} cachedBattlePlayer={} killCredit={} resolvedPlayer={} battleContextAgeMs={} selectedNativeDrops={} table={} executionEnabled={}",
-                pokemon.getSpecies().getResourceIdentifier(),
-                pokemon.getUuid(),
-                pokemon.isWild(),
-                playerName(eventPlayer),
-                playerName(cachedBattlePlayer),
-                playerName(vanillaKillCredit),
-                playerName(resolvedPlayer),
-                battleContextAge,
-                event.getDrops().size(),
-                configuredTable.get().location(),
-                EXECUTE_LOOT_TABLES
-        );
-
         if (!EXECUTE_LOOT_TABLES) {
             return;
         }
@@ -221,11 +210,38 @@ public final class PokemonLootTableRegistrar {
             return;
         }
 
+        DungeonPokemonLootResolver.Selection selection =
+                configuredLoot.get();
+        int selectedNativeDropsBefore = event.getDrops().size();
+
+        if (selection.mode()
+                == DungeonPokemonLootResolver.Mode.REPLACE) {
+            event.getDrops().clear();
+        }
+
+        LegendaryDungeons.LOGGER.debug(
+                "[Pokemon Loot] LOOT_DROPPED species={} pokemonUuid={} entityPresent=true wild={} eventPlayer={} cachedBattlePlayer={} killCredit={} resolvedPlayer={} battleContextAgeMs={} nativeDropsBefore={} nativeDropsAfter={} mode={} table={} source={} executionEnabled={}",
+                pokemon.getSpecies().getResourceIdentifier(),
+                pokemon.getUuid(),
+                pokemon.isWild(),
+                playerName(eventPlayer),
+                playerName(cachedBattlePlayer),
+                playerName(vanillaKillCredit),
+                playerName(resolvedPlayer),
+                battleContextAge,
+                selectedNativeDropsBefore,
+                event.getDrops().size(),
+                selection.mode(),
+                selection.table().location(),
+                selection.source(),
+                EXECUTE_LOOT_TABLES
+        );
+
         PokemonLootTableRunner.run(
                 serverLevel,
                 pokemonEntity,
                 resolvedPlayer,
-                configuredTable.get()
+                selection.table()
         );
     }
 

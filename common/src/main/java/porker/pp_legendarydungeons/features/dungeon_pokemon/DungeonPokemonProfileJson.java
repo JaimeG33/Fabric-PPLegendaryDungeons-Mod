@@ -11,6 +11,7 @@ public final class DungeonPokemonProfileJson {
     public Aggression aggression = new Aggression();
     public List<CombatEffect> combat_effects = new ArrayList<>();
     public Capture capture = new Capture();
+    public Loot loot = new Loot();
     public List<TargetRule> targets = new ArrayList<>();
 
     public static final class Aggression {
@@ -39,6 +40,14 @@ public final class DungeonPokemonProfileJson {
     public static final class Capture {
         public boolean allowed = true;
         public boolean remove_dungeon_state = true;
+    }
+
+    public static final class Loot {
+        /**
+         * default, additional, or replace.
+         */
+        public String mode = "default";
+        public String table = "";
     }
 
     public static final class TargetRule {

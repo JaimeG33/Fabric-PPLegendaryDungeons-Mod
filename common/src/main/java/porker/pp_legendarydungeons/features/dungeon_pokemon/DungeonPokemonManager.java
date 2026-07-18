@@ -67,7 +67,6 @@ public final class DungeonPokemonManager {
 
         entity.addTag(MANAGED_ENTITY_TAG);
         entity.setPersistenceRequired();
-        entity.setCountsTowardsSpawnCap(false);
 
         DungeonPokemonRecord record = new DungeonPokemonRecord(
                 entity.getUUID(),
@@ -83,6 +82,18 @@ public final class DungeonPokemonManager {
 
     public static Optional<DungeonPokemonRecord> getRecord(UUID entityUuid) {
         return Optional.ofNullable(RECORDS.get(entityUuid));
+    }
+
+    public static Optional<DungeonPokemonRecord> getRecordByPokemonUuid(
+            UUID pokemonUuid
+    ) {
+        if (pokemonUuid == null) {
+            return Optional.empty();
+        }
+
+        return RECORDS.values().stream()
+                .filter(record -> record.pokemonUuid().equals(pokemonUuid))
+                .findFirst();
     }
 
     public static void unregister(UUID entityUuid) {
@@ -148,12 +159,22 @@ public final class DungeonPokemonManager {
                 continue;
             }
 
-            if (!pokemon.isAlive()
-                    || pokemon.getPokemon().isPlayerOwned()
+            if (pokemon.getPokemon().isPlayerOwned()
                     || pokemon.getOwnerUUID() != null) {
                 clearProfileEffects(pokemon, record.profileId());
                 CobblemonAggressionBridge.clearTarget(pokemon);
                 iterator.remove();
+                continue;
+            }
+
+            /*
+             * Cobblemon waits through its death animation before firing the final
+             * LOOT_DROPPED event. Keep the dungeon record until the entity is
+             * actually removed so profile-specific loot can still be resolved.
+             */
+            if (!pokemon.isAlive()) {
+                clearProfileEffects(pokemon, record.profileId());
+                CobblemonAggressionBridge.clearTarget(pokemon);
                 continue;
             }
 

@@ -1,0 +1,1008 @@
+diff --git a/common/src/main/java/porker/pp_legendarydungeons/features/dungeon_pokemon/DungeonPokemonProfileJson.java b/common/src/main/java/porker/pp_legendarydungeons/features/dungeon_pokemon/DungeonPokemonProfileJson.java
+--- a/common/src/main/java/porker/pp_legendarydungeons/features/dungeon_pokemon/DungeonPokemonProfileJson.java
++++ b/common/src/main/java/porker/pp_legendarydungeons/features/dungeon_pokemon/DungeonPokemonProfileJson.java
+@@ -11,6 +11,7 @@
+     public Aggression aggression = new Aggression();
+     public List<CombatEffect> combat_effects = new ArrayList<>();
+     public Capture capture = new Capture();
++    public Loot loot = new Loot();
+     public List<TargetRule> targets = new ArrayList<>();
+ 
+     public static final class Aggression {
+@@ -41,6 +42,14 @@
+         public boolean remove_dungeon_state = true;
+     }
+ 
++    public static final class Loot {
++        /**
++         * default, additional, or replace.
++         */
++        public String mode = "default";
++        public String table = "";
++    }
++
+     public static final class TargetRule {
+         /**
+          * player, entity_tag, scoreboard_team, or entity_type_tag.
+diff --git a/common/src/main/java/porker/pp_legendarydungeons/features/dungeon_pokemon/DungeonPokemonProfileValidator.java b/common/src/main/java/porker/pp_legendarydungeons/features/dungeon_pokemon/DungeonPokemonProfileValidator.java
+--- a/common/src/main/java/porker/pp_legendarydungeons/features/dungeon_pokemon/DungeonPokemonProfileValidator.java
++++ b/common/src/main/java/porker/pp_legendarydungeons/features/dungeon_pokemon/DungeonPokemonProfileValidator.java
+@@ -17,6 +17,11 @@
+             "scoreboard_team",
+             "entity_type_tag"
+     );
++    private static final Set<String> LOOT_MODES = Set.of(
++            "default",
++            "additional",
++            "replace"
++    );
+ 
+     private DungeonPokemonProfileValidator() {
+     }
+@@ -91,6 +96,10 @@
+                     );
+                 }
+             }
++        }
++
++        if (!validateLoot(fileId, profileId, profile.loot)) {
++            return false;
+         }
+ 
+         if (profile.targets != null) {
+@@ -126,6 +135,48 @@
+                     }
+                 }
+             }
++        }
++
++        return true;
++    }
++
++    private static boolean validateLoot(
++            ResourceLocation fileId,
++            ResourceLocation profileId,
++            DungeonPokemonProfileJson.Loot loot
++    ) {
++        if (loot == null) {
++            return true;
++        }
++
++        String mode = normalized(loot.mode);
++
++        if (mode.isBlank()) {
++            mode = "default";
++        }
++
++        if (!LOOT_MODES.contains(mode)) {
++            return invalid(fileId, profileId, "unknown loot mode: " + mode);
++        }
++
++        String table = loot.table == null ? "" : loot.table.trim();
++
++        if (table.isBlank() || table.equalsIgnoreCase("default")) {
++            return true;
++        }
++
++        if (mode.equals("default")) {
++            return invalid(
++                    fileId,
++                    profileId,
++                    "an explicit loot table requires mode additional or replace."
++            );
++        }
++
++        try {
++            ResourceLocation.parse(table);
++        } catch (Exception exception) {
++            return invalid(fileId, profileId, "invalid loot table ID: " + table);
+         }
+ 
+         return true;
+diff --git a/common/src/main/java/porker/pp_legendarydungeons/features/dungeon_pokemon/DungeonPokemonManager.java b/common/src/main/java/porker/pp_legendarydungeons/features/dungeon_pokemon/DungeonPokemonManager.java
+--- a/common/src/main/java/porker/pp_legendarydungeons/features/dungeon_pokemon/DungeonPokemonManager.java
++++ b/common/src/main/java/porker/pp_legendarydungeons/features/dungeon_pokemon/DungeonPokemonManager.java
+@@ -67,7 +67,6 @@
+ 
+         entity.addTag(MANAGED_ENTITY_TAG);
+         entity.setPersistenceRequired();
+-        entity.setCountsTowardsSpawnCap(false);
+ 
+         DungeonPokemonRecord record = new DungeonPokemonRecord(
+                 entity.getUUID(),
+@@ -85,6 +84,18 @@
+         return Optional.ofNullable(RECORDS.get(entityUuid));
+     }
+ 
++    public static Optional<DungeonPokemonRecord> getRecordByPokemonUuid(
++            UUID pokemonUuid
++    ) {
++        if (pokemonUuid == null) {
++            return Optional.empty();
++        }
++
++        return RECORDS.values().stream()
++                .filter(record -> record.pokemonUuid().equals(pokemonUuid))
++                .findFirst();
++    }
++
+     public static void unregister(UUID entityUuid) {
+         RECORDS.remove(entityUuid);
+     }
+@@ -148,12 +159,22 @@
+                 continue;
+             }
+ 
+-            if (!pokemon.isAlive()
+-                    || pokemon.getPokemon().isPlayerOwned()
++            if (pokemon.getPokemon().isPlayerOwned()
+                     || pokemon.getOwnerUUID() != null) {
+                 clearProfileEffects(pokemon, record.profileId());
+                 CobblemonAggressionBridge.clearTarget(pokemon);
+                 iterator.remove();
++                continue;
++            }
++
++            /*
++             * Cobblemon waits through its death animation before firing the final
++             * LOOT_DROPPED event. Keep the dungeon record until the entity is
++             * actually removed so profile-specific loot can still be resolved.
++             */
++            if (!pokemon.isAlive()) {
++                clearProfileEffects(pokemon, record.profileId());
++                CobblemonAggressionBridge.clearTarget(pokemon);
+                 continue;
+             }
+ 
+diff --git a/common/src/main/java/porker/pp_legendarydungeons/loot/pokemon/DungeonPokemonLootResolver.java b/common/src/main/java/porker/pp_legendarydungeons/loot/pokemon/DungeonPokemonLootResolver.java
+new file mode 100644
+--- /dev/null
++++ b/common/src/main/java/porker/pp_legendarydungeons/loot/pokemon/DungeonPokemonLootResolver.java
+@@ -0,0 +1,122 @@
++package porker.pp_legendarydungeons.loot.pokemon;
++
++import com.cobblemon.mod.common.pokemon.Pokemon;
++import net.minecraft.core.registries.Registries;
++import net.minecraft.resources.ResourceKey;
++import net.minecraft.resources.ResourceLocation;
++import net.minecraft.world.level.storage.loot.LootTable;
++import porker.pp_legendarydungeons.features.dungeon_pokemon.DungeonPokemonManager;
++import porker.pp_legendarydungeons.features.dungeon_pokemon.DungeonPokemonProfileJson;
++import porker.pp_legendarydungeons.features.dungeon_pokemon.DungeonPokemonProfileRegistry;
++import porker.pp_legendarydungeons.features.dungeon_pokemon.DungeonPokemonRecord;
++
++import java.util.Locale;
++import java.util.Optional;
++
++/**
++ * Resolves the one Minecraft loot table, if any, that should be run for a
++ * defeated Pokémon.
++ *
++ * <p>Dungeon-profile configuration takes precedence over the older
++ * species-level supplemental mapping. A blank/default dungeon configuration
++ * falls through to the species mapping so existing Klefki behavior remains
++ * unchanged.</p>
++ */
++public final class DungeonPokemonLootResolver {
++    private DungeonPokemonLootResolver() {
++    }
++
++    public static Optional<Selection> resolve(Pokemon pokemon) {
++        if (pokemon == null || pokemon.getSpecies() == null) {
++            return Optional.empty();
++        }
++
++        Optional<DungeonPokemonRecord> dungeonRecord =
++                DungeonPokemonManager.getRecordByPokemonUuid(
++                        pokemon.getUuid()
++                );
++
++        if (dungeonRecord.isPresent()) {
++            DungeonPokemonRecord record = dungeonRecord.get();
++            Optional<DungeonPokemonProfileJson> profile =
++                    DungeonPokemonProfileRegistry.get(record.profileId());
++
++            if (profile.isPresent()) {
++                Optional<Selection> profileSelection =
++                        fromProfile(record, profile.get());
++
++                if (profileSelection.isPresent()) {
++                    return profileSelection;
++                }
++            }
++        }
++
++        return PokemonLootTableRunner
++                .findLootTable(pokemon)
++                .map(table -> new Selection(
++                        Mode.ADDITIONAL,
++                        table,
++                        "species:"
++                                + pokemon.getSpecies().getResourceIdentifier()
++                ));
++    }
++
++    private static Optional<Selection> fromProfile(
++            DungeonPokemonRecord record,
++            DungeonPokemonProfileJson profile
++    ) {
++        DungeonPokemonProfileJson.Loot loot = profile.loot;
++
++        if (loot == null) {
++            return Optional.empty();
++        }
++
++        String tableValue = loot.table == null
++                ? ""
++                : loot.table.trim();
++
++        if (tableValue.isBlank()
++                || tableValue.equalsIgnoreCase("default")) {
++            return Optional.empty();
++        }
++
++        try {
++            ResourceLocation tableId =
++                    ResourceLocation.parse(tableValue);
++            Mode mode = normalized(loot.mode).equals("replace")
++                    ? Mode.REPLACE
++                    : Mode.ADDITIONAL;
++
++            return Optional.of(new Selection(
++                    mode,
++                    ResourceKey.create(Registries.LOOT_TABLE, tableId),
++                    "dungeon_profile:" + record.profileId()
++            ));
++        } catch (Exception ignored) {
++            /*
++             * Invalid values are rejected during datapack reload validation.
++             * Returning empty here keeps runtime behavior safe if a profile is
++             * replaced between validation and use.
++             */
++            return Optional.empty();
++        }
++    }
++
++    private static String normalized(String value) {
++        return value == null
++                ? ""
++                : value.trim().toLowerCase(Locale.ROOT);
++    }
++
++    public enum Mode {
++        ADDITIONAL,
++        REPLACE
++    }
++
++    public record Selection(
++            Mode mode,
++            ResourceKey<LootTable> table,
++            String source
++    ) {
++    }
++}
+diff --git a/common/src/main/java/porker/pp_legendarydungeons/loot/pokemon/PokemonLootTableRegistrar.java b/common/src/main/java/porker/pp_legendarydungeons/loot/pokemon/PokemonLootTableRegistrar.java
+--- a/common/src/main/java/porker/pp_legendarydungeons/loot/pokemon/PokemonLootTableRegistrar.java
++++ b/common/src/main/java/porker/pp_legendarydungeons/loot/pokemon/PokemonLootTableRegistrar.java
+@@ -6,11 +6,9 @@
+ import com.cobblemon.mod.common.api.events.drops.LootDroppedEvent;
+ import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
+ import com.cobblemon.mod.common.pokemon.Pokemon;
+-import net.minecraft.resources.ResourceKey;
+ import net.minecraft.server.level.ServerLevel;
+ import net.minecraft.server.level.ServerPlayer;
+ import net.minecraft.world.entity.LivingEntity;
+-import net.minecraft.world.level.storage.loot.LootTable;
+ import porker.pp_legendarydungeons.LegendaryDungeons;
+ 
+ import java.util.Map;
+@@ -30,7 +28,7 @@
+  *
+  * <pre>
+  * BATTLE_FAINTED -> cache context only
+- * LOOT_DROPPED   -> execute the additional loot table once
++ * LOOT_DROPPED   -> optionally clear native drops, then execute one table
+  * </pre>
+  */
+ public final class PokemonLootTableRegistrar {
+@@ -73,7 +71,7 @@
+         );
+ 
+         CobblemonEvents.LOOT_DROPPED.subscribe(
+-                Priority.NORMAL,
++                Priority.LOWEST,
+                 event -> {
+                     onLootDropped(event);
+                     return Unit.INSTANCE;
+@@ -104,10 +102,10 @@
+ 
+         Pokemon faintedPokemon = event.getKilled().getEffectedPokemon();
+ 
+-        Optional<ResourceKey<LootTable>> configuredTable =
+-                PokemonLootTableRunner.findLootTable(faintedPokemon);
+-
+-        if (configuredTable.isEmpty()) {
++        Optional<DungeonPokemonLootResolver.Selection> configuredLoot =
++                DungeonPokemonLootResolver.resolve(faintedPokemon);
++
++        if (configuredLoot.isEmpty()) {
+             return;
+         }
+ 
+@@ -128,13 +126,18 @@
+                 )
+         );
+ 
++        DungeonPokemonLootResolver.Selection selection =
++                configuredLoot.get();
++
+         LegendaryDungeons.LOGGER.debug(
+-                "[Pokemon Loot] BATTLE_FAINTED species={} pokemonUuid={} wild={} player={} table={}",
++                "[Pokemon Loot] BATTLE_FAINTED species={} pokemonUuid={} wild={} player={} mode={} table={} source={}",
+                 faintedPokemon.getSpecies().getResourceIdentifier(),
+                 faintedPokemon.getUuid(),
+                 faintedPokemon.isWild(),
+                 playerName(battlePlayer),
+-                configuredTable.get().location()
++                selection.mode(),
++                selection.table().location(),
++                selection.source()
+         );
+     }
+ 
+@@ -142,8 +145,9 @@
+      * Handles the point where Cobblemon is about to perform a Pokémon's native
+      * species drops.
+      *
+-     * <p>The native drop list is not cancelled or modified. When execution is
+-     * enabled, this listener runs one additional Minecraft loot table.</p>
++     * <p>Additional mode preserves Cobblemon's chosen native drops. Replace
++     * mode clears that mutable list immediately before running the configured
++     * Minecraft loot table.</p>
+      */
+     private static void onLootDropped(LootDroppedEvent event) {
+         cleanupExpiredContexts();
+@@ -161,10 +165,10 @@
+ 
+         Pokemon pokemon = pokemonEntity.getPokemon();
+ 
+-        Optional<ResourceKey<LootTable>> configuredTable =
+-                PokemonLootTableRunner.findLootTable(pokemon);
+-
+-        if (configuredTable.isEmpty()) {
++        Optional<DungeonPokemonLootResolver.Selection> configuredLoot =
++                DungeonPokemonLootResolver.resolve(pokemon);
++
++        if (configuredLoot.isEmpty()) {
+             return;
+         }
+ 
+@@ -192,8 +196,31 @@
+                 : System.currentTimeMillis()
+                 - battleContext.createdAtMillis();
+ 
++        if (!EXECUTE_LOOT_TABLES) {
++            return;
++        }
++
++        if (!(pokemonEntity.level()
++                instanceof ServerLevel serverLevel)) {
++            LegendaryDungeons.LOGGER.warn(
++                    "[Pokemon Loot] Ignored loot execution outside a ServerLevel for species {}.",
++                    pokemon.getSpecies().getResourceIdentifier()
++            );
++
++            return;
++        }
++
++        DungeonPokemonLootResolver.Selection selection =
++                configuredLoot.get();
++        int selectedNativeDropsBefore = event.getDrops().size();
++
++        if (selection.mode()
++                == DungeonPokemonLootResolver.Mode.REPLACE) {
++            event.getDrops().clear();
++        }
++
+         LegendaryDungeons.LOGGER.debug(
+-                "[Pokemon Loot] LOOT_DROPPED species={} pokemonUuid={} entityPresent=true wild={} eventPlayer={} cachedBattlePlayer={} killCredit={} resolvedPlayer={} battleContextAgeMs={} selectedNativeDrops={} table={} executionEnabled={}",
++                "[Pokemon Loot] LOOT_DROPPED species={} pokemonUuid={} entityPresent=true wild={} eventPlayer={} cachedBattlePlayer={} killCredit={} resolvedPlayer={} battleContextAgeMs={} nativeDropsBefore={} nativeDropsAfter={} mode={} table={} source={} executionEnabled={}",
+                 pokemon.getSpecies().getResourceIdentifier(),
+                 pokemon.getUuid(),
+                 pokemon.isWild(),
+@@ -202,30 +229,19 @@
+                 playerName(vanillaKillCredit),
+                 playerName(resolvedPlayer),
+                 battleContextAge,
++                selectedNativeDropsBefore,
+                 event.getDrops().size(),
+-                configuredTable.get().location(),
++                selection.mode(),
++                selection.table().location(),
++                selection.source(),
+                 EXECUTE_LOOT_TABLES
+         );
+-
+-        if (!EXECUTE_LOOT_TABLES) {
+-            return;
+-        }
+-
+-        if (!(pokemonEntity.level()
+-                instanceof ServerLevel serverLevel)) {
+-            LegendaryDungeons.LOGGER.warn(
+-                    "[Pokemon Loot] Ignored loot execution outside a ServerLevel for species {}.",
+-                    pokemon.getSpecies().getResourceIdentifier()
+-            );
+-
+-            return;
+-        }
+ 
+         PokemonLootTableRunner.run(
+                 serverLevel,
+                 pokemonEntity,
+                 resolvedPlayer,
+-                configuredTable.get()
++                selection.table()
+         );
+     }
+ 
+diff --git a/common/src/main/resources/data/pp_legendarydungeons/pokemon_spawn_profiles/dungeon_enemy/advanced/ceruledge.json b/common/src/main/resources/data/pp_legendarydungeons/pokemon_spawn_profiles/dungeon_enemy/advanced/ceruledge.json
+new file mode 100644
+--- /dev/null
++++ b/common/src/main/resources/data/pp_legendarydungeons/pokemon_spawn_profiles/dungeon_enemy/advanced/ceruledge.json
+@@ -0,0 +1,42 @@
++{
++  "base_properties": "ceruledge ability=flashfire tera_type=ghost moves=swordsdance,lavaplume,incinerate,flamecharge",
++  "generation": {
++    "level": {
++      "min": 35,
++      "max": 40
++    },
++    "nature": {
++      "mode": "weighted_pool",
++      "entries": [
++        {
++          "id": "cobblemon:adamant",
++          "weight": 9
++        },
++        {
++          "id": "cobblemon:brave",
++          "weight": 1
++        },
++        {
++          "id": "cobblemon:rash",
++          "weight": 1
++        },
++        {
++          "id": "cobblemon:naughty",
++          "weight": 1
++        }
++      ]
++    },
++    "shiny": {
++      "mode": "one_in",
++      "denominator": 1024
++    },
++    "ivs": {
++      "mode": "default",
++      "minimum_perfect": 2
++    }
++  },
++  "entity": {
++    "persistent": true,
++    "counts_towards_spawn_cap": true
++  }
++}
+diff --git a/common/src/main/resources/data/pp_legendarydungeons/pokemon_spawn_profiles/dungeon_enemy/advanced/flutter_mane.json b/common/src/main/resources/data/pp_legendarydungeons/pokemon_spawn_profiles/dungeon_enemy/advanced/flutter_mane.json
+new file mode 100644
+--- /dev/null
++++ b/common/src/main/resources/data/pp_legendarydungeons/pokemon_spawn_profiles/dungeon_enemy/advanced/flutter_mane.json
+@@ -0,0 +1,42 @@
++{
++  "base_properties": "fluttermane ability=protosynthesis tera_type=ghost moves=dazzlinggleam,wish,memento,meanlook",
++  "generation": {
++    "level": {
++      "min": 35,
++      "max": 40
++    },
++    "nature": {
++      "mode": "weighted_pool",
++      "entries": [
++        {
++          "id": "cobblemon:adamant",
++          "weight": 9
++        },
++        {
++          "id": "cobblemon:brave",
++          "weight": 1
++        },
++        {
++          "id": "cobblemon:rash",
++          "weight": 1
++        },
++        {
++          "id": "cobblemon:naughty",
++          "weight": 1
++        }
++      ]
++    },
++    "shiny": {
++      "mode": "one_in",
++      "denominator": 1024
++    },
++    "ivs": {
++      "mode": "default",
++      "minimum_perfect": 2
++    }
++  },
++  "entity": {
++    "persistent": true,
++    "counts_towards_spawn_cap": true
++  }
++}
+diff --git a/common/src/main/resources/data/pp_legendarydungeons/pokemon_spawn_profiles/dungeon_enemy/advanced/mismagius.json b/common/src/main/resources/data/pp_legendarydungeons/pokemon_spawn_profiles/dungeon_enemy/advanced/mismagius.json
+new file mode 100644
+--- /dev/null
++++ b/common/src/main/resources/data/pp_legendarydungeons/pokemon_spawn_profiles/dungeon_enemy/advanced/mismagius.json
+@@ -0,0 +1,42 @@
++{
++  "base_properties": "mismagius ability=levitate tera_type=ghost moves=confusion,perishsong,meanlook,phantomforce",
++  "generation": {
++    "level": {
++      "min": 35,
++      "max": 40
++    },
++    "nature": {
++      "mode": "weighted_pool",
++      "entries": [
++        {
++          "id": "cobblemon:adamant",
++          "weight": 9
++        },
++        {
++          "id": "cobblemon:brave",
++          "weight": 1
++        },
++        {
++          "id": "cobblemon:rash",
++          "weight": 1
++        },
++        {
++          "id": "cobblemon:naughty",
++          "weight": 1
++        }
++      ]
++    },
++    "shiny": {
++      "mode": "one_in",
++      "denominator": 1024
++    },
++    "ivs": {
++      "mode": "default",
++      "minimum_perfect": 2
++    }
++  },
++  "entity": {
++    "persistent": true,
++    "counts_towards_spawn_cap": true
++  }
++}
+diff --git a/common/src/main/resources/data/pp_legendarydungeons/pokemon_spawn_profiles/dungeon_enemy/advanced/naganadel.json b/common/src/main/resources/data/pp_legendarydungeons/pokemon_spawn_profiles/dungeon_enemy/advanced/naganadel.json
+new file mode 100644
+--- /dev/null
++++ b/common/src/main/resources/data/pp_legendarydungeons/pokemon_spawn_profiles/dungeon_enemy/advanced/naganadel.json
+@@ -0,0 +1,42 @@
++{
++  "base_properties": "naganadel ability=beastboost tera_type=poison moves=venomdrench,venoshock,charm,fellstinger",
++  "generation": {
++    "level": {
++      "min": 35,
++      "max": 40
++    },
++    "nature": {
++      "mode": "weighted_pool",
++      "entries": [
++        {
++          "id": "cobblemon:adamant",
++          "weight": 9
++        },
++        {
++          "id": "cobblemon:brave",
++          "weight": 1
++        },
++        {
++          "id": "cobblemon:rash",
++          "weight": 1
++        },
++        {
++          "id": "cobblemon:naughty",
++          "weight": 1
++        }
++      ]
++    },
++    "shiny": {
++      "mode": "one_in",
++      "denominator": 1024
++    },
++    "ivs": {
++      "mode": "default",
++      "minimum_perfect": 2
++    }
++  },
++  "entity": {
++    "persistent": true,
++    "counts_towards_spawn_cap": true
++  }
++}
+diff --git a/common/src/main/resources/data/pp_legendarydungeons/dungeon_pokemon_profiles/example/advanced/ceruledge.json b/common/src/main/resources/data/pp_legendarydungeons/dungeon_pokemon_profiles/example/advanced/ceruledge.json
+new file mode 100644
+--- /dev/null
++++ b/common/src/main/resources/data/pp_legendarydungeons/dungeon_pokemon_profiles/example/advanced/ceruledge.json
+@@ -0,0 +1,58 @@
++{
++  "spawn_profile": "pp_legendarydungeons:dungeon_enemy/advanced/ceruledge",
++  "aggression": {
++    "enabled": true,
++    "target_players": true,
++    "exclude_creative": true,
++    "exclude_spectators": true,
++    "requires_active_dungeon_instance": false,
++    "detection_range": 16.0,
++    "chase_range": 28.0,
++    "home_radius": 12.0,
++    "return_speed": 1.0,
++    "update_interval_ticks": 10
++  },
++  "combat_effects": [
++    {
++      "effect": "minecraft:strength",
++      "amplifier": 0,
++      "duration_ticks": 80,
++      "refresh_interval_ticks": 20,
++      "ambient": false,
++      "show_particles": false,
++      "show_icon": false
++    },
++    {
++      "effect": "minecraft:wind_charged",
++      "amplifier": 1,
++      "duration_ticks": 80,
++      "refresh_interval_ticks": 20,
++      "ambient": false,
++      "show_particles": false,
++      "show_icon": false
++    },
++    {
++      "effect": "minecraft:fire_resistance",
++      "amplifier": 0,
++      "duration_ticks": 80,
++      "refresh_interval_ticks": 20,
++      "ambient": false,
++      "show_particles": false,
++      "show_icon": false
++    }
++  ],
++  "capture": {
++    "allowed": true,
++    "remove_dungeon_state": true
++  },
++  "loot": {
++    "mode": "default",
++    "table": "default"
++  },
++  "targets": [
++    {
++      "type": "player",
++      "value": ""
++    }
++  ]
++}
+diff --git a/common/src/main/resources/data/pp_legendarydungeons/dungeon_pokemon_profiles/example/advanced/flutter_mane.json b/common/src/main/resources/data/pp_legendarydungeons/dungeon_pokemon_profiles/example/advanced/flutter_mane.json
+new file mode 100644
+--- /dev/null
++++ b/common/src/main/resources/data/pp_legendarydungeons/dungeon_pokemon_profiles/example/advanced/flutter_mane.json
+@@ -0,0 +1,58 @@
++{
++  "spawn_profile": "pp_legendarydungeons:dungeon_enemy/advanced/flutter_mane",
++  "aggression": {
++    "enabled": true,
++    "target_players": true,
++    "exclude_creative": true,
++    "exclude_spectators": true,
++    "requires_active_dungeon_instance": false,
++    "detection_range": 16.0,
++    "chase_range": 28.0,
++    "home_radius": 12.0,
++    "return_speed": 1.0,
++    "update_interval_ticks": 10
++  },
++  "combat_effects": [
++    {
++      "effect": "minecraft:strength",
++      "amplifier": 2,
++      "duration_ticks": 80,
++      "refresh_interval_ticks": 20,
++      "ambient": false,
++      "show_particles": false,
++      "show_icon": false
++    },
++    {
++      "effect": "minecraft:fire_resistance",
++      "amplifier": 0,
++      "duration_ticks": 80,
++      "refresh_interval_ticks": 20,
++      "ambient": false,
++      "show_particles": false,
++      "show_icon": false
++    },
++    {
++      "effect": "minecraft:speed",
++      "amplifier": 1,
++      "duration_ticks": 80,
++      "refresh_interval_ticks": 20,
++      "ambient": false,
++      "show_particles": false,
++      "show_icon": false
++    }
++  ],
++  "capture": {
++    "allowed": true,
++    "remove_dungeon_state": true
++  },
++  "loot": {
++    "mode": "default",
++    "table": "default"
++  },
++  "targets": [
++    {
++      "type": "player",
++      "value": ""
++    }
++  ]
++}
+diff --git a/common/src/main/resources/data/pp_legendarydungeons/dungeon_pokemon_profiles/example/advanced/mismagius.json b/common/src/main/resources/data/pp_legendarydungeons/dungeon_pokemon_profiles/example/advanced/mismagius.json
+new file mode 100644
+--- /dev/null
++++ b/common/src/main/resources/data/pp_legendarydungeons/dungeon_pokemon_profiles/example/advanced/mismagius.json
+@@ -0,0 +1,58 @@
++{
++  "spawn_profile": "pp_legendarydungeons:dungeon_enemy/advanced/mismagius",
++  "aggression": {
++    "enabled": true,
++    "target_players": true,
++    "exclude_creative": true,
++    "exclude_spectators": true,
++    "requires_active_dungeon_instance": false,
++    "detection_range": 16.0,
++    "chase_range": 28.0,
++    "home_radius": 12.0,
++    "return_speed": 1.0,
++    "update_interval_ticks": 10
++  },
++  "combat_effects": [
++    {
++      "effect": "minecraft:fire_resistance",
++      "amplifier": 0,
++      "duration_ticks": 80,
++      "refresh_interval_ticks": 20,
++      "ambient": false,
++      "show_particles": false,
++      "show_icon": false
++    },
++    {
++      "effect": "minecraft:strength",
++      "amplifier": 2,
++      "duration_ticks": 80,
++      "refresh_interval_ticks": 20,
++      "ambient": false,
++      "show_particles": false,
++      "show_icon": false
++    },
++    {
++      "effect": "minecraft:speed",
++      "amplifier": 1,
++      "duration_ticks": 80,
++      "refresh_interval_ticks": 20,
++      "ambient": false,
++      "show_particles": false,
++      "show_icon": false
++    }
++  ],
++  "capture": {
++    "allowed": true,
++    "remove_dungeon_state": true
++  },
++  "loot": {
++    "mode": "default",
++    "table": "default"
++  },
++  "targets": [
++    {
++      "type": "player",
++      "value": ""
++    }
++  ]
++}
+diff --git a/common/src/main/resources/data/pp_legendarydungeons/dungeon_pokemon_profiles/example/advanced/naganadel.json b/common/src/main/resources/data/pp_legendarydungeons/dungeon_pokemon_profiles/example/advanced/naganadel.json
+new file mode 100644
+--- /dev/null
++++ b/common/src/main/resources/data/pp_legendarydungeons/dungeon_pokemon_profiles/example/advanced/naganadel.json
+@@ -0,0 +1,58 @@
++{
++  "spawn_profile": "pp_legendarydungeons:dungeon_enemy/advanced/naganadel",
++  "aggression": {
++    "enabled": true,
++    "target_players": true,
++    "exclude_creative": true,
++    "exclude_spectators": true,
++    "requires_active_dungeon_instance": false,
++    "detection_range": 16.0,
++    "chase_range": 28.0,
++    "home_radius": 12.0,
++    "return_speed": 1.0,
++    "update_interval_ticks": 10
++  },
++  "combat_effects": [
++    {
++      "effect": "minecraft:strength",
++      "amplifier": 3,
++      "duration_ticks": 80,
++      "refresh_interval_ticks": 20,
++      "ambient": false,
++      "show_particles": false,
++      "show_icon": false
++    },
++    {
++      "effect": "minecraft:oozing",
++      "amplifier": 1,
++      "duration_ticks": 80,
++      "refresh_interval_ticks": 20,
++      "ambient": false,
++      "show_particles": false,
++      "show_icon": false
++    },
++    {
++      "effect": "minecraft:fire_resistance",
++      "amplifier": 0,
++      "duration_ticks": 80,
++      "refresh_interval_ticks": 20,
++      "ambient": false,
++      "show_particles": false,
++      "show_icon": false
++    }
++  ],
++  "capture": {
++    "allowed": true,
++    "remove_dungeon_state": true
++  },
++  "loot": {
++    "mode": "default",
++    "table": "default"
++  },
++  "targets": [
++    {
++      "type": "player",
++      "value": ""
++    }
++  ]
++}
+diff --git a/docs/gameplay/DUNGEON_POKEMON_LOOT_AND_ADVANCED_EXAMPLES.md b/docs/gameplay/DUNGEON_POKEMON_LOOT_AND_ADVANCED_EXAMPLES.md
+new file mode 100644
+--- /dev/null
++++ b/docs/gameplay/DUNGEON_POKEMON_LOOT_AND_ADVANCED_EXAMPLES.md
+@@ -0,0 +1,115 @@
++# Dungeon Pokémon Loot Modes and Advanced Examples
++
++Dungeon Pokémon profiles can now choose whether a Minecraft loot table is
++supplemental or replaces the Pokémon's native Cobblemon drops.
++
++## Loot configuration
++
++Add this object to a file under
++`data/<namespace>/dungeon_pokemon_profiles/<path>.json`:
++
++```json
++"loot": {
++  "mode": "additional",
++  "table": "example:loot_injections/dungeon/ceruledge"
++}
++```
++
++Supported modes:
++
++- `default`: preserve the existing behavior. Cobblemon native drops remain, and
++  any existing species-level supplemental mapping (currently Klefki) can still
++  run.
++- `additional`: preserve Cobblemon native drops and run the configured
++  Minecraft loot table once.
++- `replace`: clear the native drops selected by Cobblemon and run the
++  configured Minecraft loot table once.
++
++Omitting `loot`, leaving `table` blank, or setting `table` to `default` all use
++default behavior. An explicit resource ID requires `mode` to be `additional` or
++`replace`.
++
++The configured table is used for both ordinary entity death and defeat through
++a Cobblemon battle. Battle defeat context is cached, but the custom table is
++executed only from the final loot-drop event, preventing duplicate rewards.
++
++## Advanced example profile IDs
++
++The included examples were reconstructed from the supplied structure NBT:
++
++| Pokémon | Dungeon profile ID |
++| --- | --- |
++| Ceruledge | `pp_legendarydungeons:example/advanced/ceruledge` |
++| Flutter Mane | `pp_legendarydungeons:example/advanced/flutter_mane` |
++| Mismagius | `pp_legendarydungeons:example/advanced/mismagius` |
++| Naganadel | `pp_legendarydungeons:example/advanced/naganadel` |
++
++The three supplied Ceruledge structures used the same Pokémon data, so they
++share one reusable profile.
++
++Each spawn profile includes:
++
++- Level 35–40.
++- One-in-1024 shiny odds.
++- At least two perfect IVs.
++- Persistent entities that count toward the spawn cap.
++- The NBT species, ability, Tera type, and four moves.
++- Weighted aggressive natures: Adamant has weight 9, while Brave, Rash, and
++  Naughty each have weight 1. This makes Adamant 75% and the other aggressive
++  natures 25% combined.
++
++Each dungeon profile:
++
++- Keeps player targeting/aggression enabled.
++- Preserves the potion effects found in the structure NBT.
++- Refreshes those effects only while the Pokémon has a valid target.
++- Hides both effect particles and HUD icons.
++- Uses native/default loot until a dungeon author selects another loot mode.
++- Leaves physical attack execution to Cobblemon or an installed AI addon.
++
++## Marker examples
++
++Ceruledge:
++
++```mcfunction
++/summon minecraft:armor_stand ~ ~ ~ {Invisible:1b,Marker:1b,NoGravity:1b,Tags:["pp_feature","pp_dungeon_pokemon"],CustomName:'{"text":"pp_legendarydungeons:example/advanced/ceruledge"}',CustomNameVisible:0b}
++```
++
++Flutter Mane:
++
++```mcfunction
++/summon minecraft:armor_stand ~ ~ ~ {Invisible:1b,Marker:1b,NoGravity:1b,Tags:["pp_feature","pp_dungeon_pokemon"],CustomName:'{"text":"pp_legendarydungeons:example/advanced/flutter_mane"}',CustomNameVisible:0b}
++```
++
++Mismagius:
++
++```mcfunction
++/summon minecraft:armor_stand ~ ~ ~ {Invisible:1b,Marker:1b,NoGravity:1b,Tags:["pp_feature","pp_dungeon_pokemon"],CustomName:'{"text":"pp_legendarydungeons:example/advanced/mismagius"}',CustomNameVisible:0b}
++```
++
++Naganadel:
++
++```mcfunction
++/summon minecraft:armor_stand ~ ~ ~ {Invisible:1b,Marker:1b,NoGravity:1b,Tags:["pp_feature","pp_dungeon_pokemon"],CustomName:'{"text":"pp_legendarydungeons:example/advanced/naganadel"}',CustomNameVisible:0b}
++```
++
++## Example: additional rewards
++
++```json
++"loot": {
++  "mode": "additional",
++  "table": "pp_legendarydungeons:loot_injections/dungeon/advanced_reward"
++}
++```
++
++## Example: full replacement
++
++```json
++"loot": {
++  "mode": "replace",
++  "table": "pp_legendarydungeons:loot_injections/dungeon/advanced_reward"
++}
++```
++
++Replacement affects only the Pokémon spawned with that dungeon profile. It
++does not globally replace the species' Cobblemon drops.

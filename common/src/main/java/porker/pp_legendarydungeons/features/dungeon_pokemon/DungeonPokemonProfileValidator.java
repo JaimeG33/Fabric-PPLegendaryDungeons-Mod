@@ -17,6 +17,11 @@ public final class DungeonPokemonProfileValidator {
             "scoreboard_team",
             "entity_type_tag"
     );
+    private static final Set<String> LOOT_MODES = Set.of(
+            "default",
+            "additional",
+            "replace"
+    );
 
     private DungeonPokemonProfileValidator() {
     }
@@ -93,6 +98,10 @@ public final class DungeonPokemonProfileValidator {
             }
         }
 
+        if (!validateLoot(fileId, profileId, profile.loot)) {
+            return false;
+        }
+
         if (profile.targets != null) {
             for (DungeonPokemonProfileJson.TargetRule target : profile.targets) {
                 if (target == null) {
@@ -126,6 +135,48 @@ public final class DungeonPokemonProfileValidator {
                     }
                 }
             }
+        }
+
+        return true;
+    }
+
+    private static boolean validateLoot(
+            ResourceLocation fileId,
+            ResourceLocation profileId,
+            DungeonPokemonProfileJson.Loot loot
+    ) {
+        if (loot == null) {
+            return true;
+        }
+
+        String mode = normalized(loot.mode);
+
+        if (mode.isBlank()) {
+            mode = "default";
+        }
+
+        if (!LOOT_MODES.contains(mode)) {
+            return invalid(fileId, profileId, "unknown loot mode: " + mode);
+        }
+
+        String table = loot.table == null ? "" : loot.table.trim();
+
+        if (table.isBlank() || table.equalsIgnoreCase("default")) {
+            return true;
+        }
+
+        if (mode.equals("default")) {
+            return invalid(
+                    fileId,
+                    profileId,
+                    "an explicit loot table requires mode additional or replace."
+            );
+        }
+
+        try {
+            ResourceLocation.parse(table);
+        } catch (Exception exception) {
+            return invalid(fileId, profileId, "invalid loot table ID: " + table);
         }
 
         return true;

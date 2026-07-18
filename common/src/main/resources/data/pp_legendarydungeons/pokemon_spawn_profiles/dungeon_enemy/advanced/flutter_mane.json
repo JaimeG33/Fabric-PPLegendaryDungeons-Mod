@@ -1,0 +1,42 @@
+{
+  "base_properties": "fluttermane ability=protosynthesis tera_type=ghost moves=dazzlinggleam,wish,memento,meanlook",
+  "generation": {
+    "level": {
+      "min": 35,
+      "max": 40
+    },
+    "nature": {
+      "mode": "weighted_pool",
+      "entries": [
+        {
+          "id": "cobblemon:adamant",
+          "weight": 9
+        },
+        {
+          "id": "cobblemon:brave",
+          "weight": 1
+        },
+        {
+          "id": "cobblemon:rash",
+          "weight": 1
+        },
+        {
+          "id": "cobblemon:naughty",
+          "weight": 1
+        }
+      ]
+    },
+    "shiny": {
+      "mode": "one_in",
+      "denominator": 1024
+    },
+    "ivs": {
+      "mode": "default",
+      "minimum_perfect": 2
+    }
+  },
+  "entity": {
+    "persistent": true,
+    "counts_towards_spawn_cap": true
+  }
+}
