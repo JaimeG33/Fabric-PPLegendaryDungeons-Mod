@@ -72,6 +72,7 @@ public final class DungeonPokemonManager {
 
         entity.addTag(MANAGED_ENTITY_TAG);
         entity.setPersistenceRequired();
+        DungeonPokemonDeathEffectBridge.resetForRegistration(entity);
 
         DungeonPokemonRecord record = new DungeonPokemonRecord(
                 entity.getUUID(),
@@ -103,6 +104,7 @@ public final class DungeonPokemonManager {
 
     public static void unregister(UUID entityUuid) {
         RECORDS.remove(entityUuid);
+        DungeonPokemonDeathEffectBridge.clear(entityUuid);
     }
 
     public static void onCaptured(
@@ -132,6 +134,7 @@ public final class DungeonPokemonManager {
                 }
             }
 
+            DungeonPokemonDeathEffectBridge.clear(record.entityUuid());
             iterator.remove();
         }
     }
@@ -149,6 +152,7 @@ public final class DungeonPokemonManager {
             ServerLevel level = server.getLevel(record.dimension());
 
             if (level == null) {
+                DungeonPokemonDeathEffectBridge.clear(record.entityUuid());
                 iterator.remove();
                 continue;
             }
@@ -160,6 +164,7 @@ public final class DungeonPokemonManager {
              * the NBT written on unload. The runtime record can be released now.
              */
             if (!(resolved instanceof PokemonEntity pokemon)) {
+                DungeonPokemonDeathEffectBridge.clear(record.entityUuid());
                 iterator.remove();
                 continue;
             }
@@ -168,19 +173,20 @@ public final class DungeonPokemonManager {
                     || pokemon.getOwnerUUID() != null) {
                 clearProfileEffects(pokemon, record.profileId());
                 CobblemonAggressionBridge.clearTarget(pokemon);
+                DungeonPokemonDeathEffectBridge.clear(record.entityUuid());
                 iterator.remove();
                 continue;
             }
 
             /*
-             * Cobblemon waits through its death animation before firing the final
-             * LOOT_DROPPED event. Keep both the dungeon record and active effects
-             * until that event so opted-in vanilla death callbacks can be invoked
-             * by DungeonPokemonDeathEffectBridge. Capture and ownership changes
-             * still clear effects without triggering death behavior.
+             * Cobblemon 1.7.3 normally generates drops at the beginning of its
+             * 60-tick death sequence. Observe dead managed entities every post
+             * server tick so armed callbacks execute at tick 59, immediately
+             * before Cobblemon removes the entity at tick 60.
              */
             if (!pokemon.isAlive()) {
                 CobblemonAggressionBridge.clearTarget(pokemon);
+                DungeonPokemonDeathEffectBridge.observeDeathAndTick(pokemon);
                 continue;
             }
 
@@ -189,6 +195,7 @@ public final class DungeonPokemonManager {
 
             if (profileOptional.isEmpty()) {
                 CobblemonAggressionBridge.clearTarget(pokemon);
+                DungeonPokemonDeathEffectBridge.clear(record.entityUuid());
                 iterator.remove();
                 continue;
             }
@@ -556,10 +563,18 @@ public final class DungeonPokemonManager {
 
             MobEffectInstance existing = pokemon.getEffect(effect.get());
 
-            if (existing != null
-                    && existing.getAmplifier() >= configuredAmplifier
-                    && existing.getDuration() > refreshInterval + 5) {
-                continue;
+            if (existing != null) {
+                DungeonPokemonDeathEffectBridge.armConfiguredEffect(
+                        pokemon,
+                        profileId,
+                        configured,
+                        configuredAmplifier
+                );
+
+                if (existing.getAmplifier() >= configuredAmplifier
+                        && existing.getDuration() > refreshInterval + 5) {
+                    continue;
+                }
             }
 
             boolean applied = pokemon.addEffect(new MobEffectInstance(
@@ -570,6 +585,15 @@ public final class DungeonPokemonManager {
                     configured.show_particles,
                     configured.show_icon
             ));
+
+            if (pokemon.getEffect(effect.get()) != null) {
+                DungeonPokemonDeathEffectBridge.armConfiguredEffect(
+                        pokemon,
+                        profileId,
+                        configured,
+                        configuredAmplifier
+                );
+            }
 
             String reportKey =
                     profileId + "|" + pokemon.getUUID() + "|" + configured.effect;
@@ -678,6 +702,7 @@ public final class DungeonPokemonManager {
         RECORDS.clear();
         REPORTED_EFFECT_LOOKUP_FAILURES.clear();
         REPORTED_EFFECT_APPLICATION_FAILURES.clear();
+        DungeonPokemonDeathEffectBridge.clearAll();
     }
 
     public static int loadedCount() {

@@ -195,14 +195,24 @@ none
 vanilla_killed
 ```
 
-`none` is the default. `vanilla_killed` invokes the active effect instance's own
-Minecraft removal callback once at Cobblemon's final `LOOT_DROPPED` stage. The
-bridge is restricted to managed dungeon Pokémon, does not hardcode species or
-effect implementations, and removes the processed effect afterward to prevent a
-second callback if another compatibility mod later supplies a killed removal.
+`none` is the default. `vanilla_killed` arms the effect after Minecraft accepts
+it on the managed dungeon Pokémon. The armed callback is independent of the
+remaining potion duration, allowing it to survive a long Cobblemon battle after
+the visible world effect expires.
 
-Use a duration long enough to remain active through Cobblemon's death animation.
-The built-in advanced examples use 80 ticks.
+When the Pokémon is defeated, the callback is queued and executed at death tick
+59, immediately before Cobblemon 1.7.3 removes the entity at tick 60. The bridge
+reconstructs a one-tick `MobEffectInstance` with the configured amplifier and
+invokes the registered effect implementation's own `KILLED` removal callback.
+It does not recreate Wind Charged, Oozing, or custom effect behavior itself.
+
+The bridge is restricted to managed dungeon Pokémon, does not hardcode species
+or effect implementations, and removes any still-active copy after processing to
+prevent a duplicate callback during Cobblemon's final killed removal.
+
+A death callback is only armed after the matching effect was successfully active
+at least once. Capturing, ownership changes, chunk unloading, or server shutdown
+clear runtime callback state without invoking it.
 
 ## Capture
 

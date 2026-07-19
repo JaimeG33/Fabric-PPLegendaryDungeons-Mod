@@ -167,14 +167,12 @@ public final class PokemonLootTableRegistrar {
         Pokemon pokemon = pokemonEntity.getPokemon();
 
         /*
-         * Cobblemon uses a custom faint/death lifecycle and may discard its entity
-         * without Minecraft's KILLED removal callback. Run explicitly opted-in
-         * callbacks at the shared direct-kill/battle-faint finalization point.
-         *
-         * This must happen before the custom-loot lookup because death callbacks
-         * do not require an additional or replacement loot table.
+         * Queue explicitly armed death callbacks before the custom-loot lookup.
+         * The dungeon manager executes them near the end of Cobblemon's death
+         * animation. If dropAfterDeathAnimation is enabled, this event itself
+         * occurs at the final death tick and the bridge executes immediately.
          */
-        DungeonPokemonDeathEffectBridge.triggerConfiguredDeathEffects(
+        DungeonPokemonDeathEffectBridge.queueConfiguredDeathEffects(
                 pokemonEntity
         );
 
