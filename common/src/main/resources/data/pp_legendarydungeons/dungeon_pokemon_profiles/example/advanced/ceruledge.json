@@ -19,17 +19,17 @@
       "duration_ticks": 80,
       "refresh_interval_ticks": 20,
       "ambient": false,
-      "show_particles": false,
-      "show_icon": false
+      "show_particles": true,
+      "show_icon": true
     },
     {
       "effect": "minecraft:wind_charged",
       "amplifier": 1,
       "duration_ticks": 80,
       "refresh_interval_ticks": 20,
-      "ambient": false,
+      "ambient": true,
       "show_particles": true,
-      "show_icon": false
+      "show_icon": true
     },
     {
       "effect": "minecraft:fire_resistance",
