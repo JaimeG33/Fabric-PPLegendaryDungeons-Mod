@@ -1,9 +1,9 @@
 {
-  "base_properties": "mismagius ability=levitate tera_type=ghost moves=confusion,perishsong,meanlook,phantomforce",
+  "base_properties": "gastly ability=levitate tera_type=poison moves=hypnosis,shadowball,hex,acidspray",
   "generation": {
     "level": {
-      "min": 36,
-      "max": 42
+      "min": 30,
+      "max": 35
     },
     "nature": {
       "mode": "weighted_pool",
@@ -28,11 +28,11 @@
     },
     "shiny": {
       "mode": "one_in",
-      "denominator": 1024
+      "denominator": 2048
     },
     "ivs": {
       "mode": "default",
-      "minimum_perfect": 2
+      "minimum_perfect": 1
     }
   },
   "entity": {

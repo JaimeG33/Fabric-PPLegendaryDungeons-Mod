@@ -1,5 +1,5 @@
 {
-  "base_properties": "mismagius ability=levitate tera_type=ghost moves=confusion,perishsong,meanlook,phantomforce",
+  "base_properties": "claydol moves=earthpower,extrasensory,cosmicpower,lightscreen",
   "generation": {
     "level": {
       "min": 36,

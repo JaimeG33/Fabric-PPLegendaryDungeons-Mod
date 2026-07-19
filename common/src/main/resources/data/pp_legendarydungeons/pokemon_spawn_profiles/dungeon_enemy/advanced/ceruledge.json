@@ -1,5 +1,5 @@
 {
-  "base_properties": "ceruledge ability=flashfire tera_type=ghost moves=swordsdance,lavaplume,incinerate,flamecharge",
+  "base_properties": "ceruledge ability=flashfire tera_type=ghost moves=swordsdance,willowisp,shadowclaw,flamecharge",
   "generation": {
     "level": {
       "min": 36,
