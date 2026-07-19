@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import porker.pp_legendarydungeons.LegendaryDungeons;
+import porker.pp_legendarydungeons.features.dungeon_pokemon.DungeonPokemonDeathEffectBridge;
 
 import java.util.Map;
 import java.util.Optional;
@@ -164,6 +165,18 @@ public final class PokemonLootTableRegistrar {
         }
 
         Pokemon pokemon = pokemonEntity.getPokemon();
+
+        /*
+         * Cobblemon uses a custom faint/death lifecycle and may discard its entity
+         * without Minecraft's KILLED removal callback. Run explicitly opted-in
+         * callbacks at the shared direct-kill/battle-faint finalization point.
+         *
+         * This must happen before the custom-loot lookup because death callbacks
+         * do not require an additional or replacement loot table.
+         */
+        DungeonPokemonDeathEffectBridge.triggerConfiguredDeathEffects(
+                pokemonEntity
+        );
 
         Optional<DungeonPokemonLootResolver.Selection> configuredLoot =
                 DungeonPokemonLootResolver.resolve(pokemon);

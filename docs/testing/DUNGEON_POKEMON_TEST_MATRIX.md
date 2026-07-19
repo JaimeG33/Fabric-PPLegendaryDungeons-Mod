@@ -59,6 +59,19 @@
 - Normal capture succeeds when allowed.
 - Captured Pokémon does not retain dungeon entity effects or hostility state.
 - `allowed: false` prevents capture.
+- Ceruledge with `wind_charged` produces one wind-charge death callback after a
+  direct overworld kill.
+- Ceruledge with `wind_charged` produces one callback after a battle defeat.
+- Naganadel with `oozing` produces one callback after direct and battle defeats.
+- `/kill`, player damage, projectile damage, and battle fainting never produce
+  more than one callback for the same entity.
+- Capturing, chunk unloading, or discarding a living dungeon Pokémon does not
+  trigger a configured death callback.
+- A profile can use a death callback without configuring supplemental loot.
+- Additional and replacement loot each still execute once alongside the death
+  callback.
+- A custom registered effect with `death_callback: vanilla_killed` can fail
+  without interrupting Cobblemon drops or dungeon loot.
 
 ## Optional Fight or Flight
 

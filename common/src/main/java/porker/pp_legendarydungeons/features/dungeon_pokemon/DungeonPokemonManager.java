@@ -174,11 +174,12 @@ public final class DungeonPokemonManager {
 
             /*
              * Cobblemon waits through its death animation before firing the final
-             * LOOT_DROPPED event. Keep the dungeon record until the entity is
-             * actually removed so profile-specific loot can still be resolved.
+             * LOOT_DROPPED event. Keep both the dungeon record and active effects
+             * until that event so opted-in vanilla death callbacks can be invoked
+             * by DungeonPokemonDeathEffectBridge. Capture and ownership changes
+             * still clear effects without triggering death behavior.
              */
             if (!pokemon.isAlive()) {
-                clearProfileEffects(pokemon, record.profileId());
                 CobblemonAggressionBridge.clearTarget(pokemon);
                 continue;
             }

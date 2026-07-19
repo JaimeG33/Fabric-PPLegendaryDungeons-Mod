@@ -98,8 +98,8 @@ Example:
 
 Dungeon Pokémon:
 
-- Call Minecraft's persistence API.
-- Do not count toward Cobblemon's ordinary wild spawn cap.
+- Call Minecraft's persistence API when requested by the spawn profile.
+- Respect the spawn profile's `counts_towards_spawn_cap` setting.
 - Save their profile ID, home position, and dungeon instance ID into their own
   Cobblemon entity NBT.
 - Re-register when their chunk or world reloads.
@@ -167,6 +167,42 @@ capture event can still resolve the entity.
 
 Ordinary Minecraft effects belong to the world entity and are not copied into
 the player's party Pokémon.
+
+### Death-triggered effects
+
+Cobblemon owns the Pokémon faint/death lifecycle and may remove a fainted entity
+without Minecraft's ordinary `KILLED` removal callback. Effects such as
+`minecraft:wind_charged` and `minecraft:oozing` therefore need an explicit,
+opt-in compatibility callback:
+
+```json
+{
+  "effect": "minecraft:wind_charged",
+  "amplifier": 1,
+  "duration_ticks": 80,
+  "refresh_interval_ticks": 20,
+  "ambient": true,
+  "show_particles": false,
+  "show_icon": false,
+  "death_callback": "vanilla_killed"
+}
+```
+
+Supported values are:
+
+```text
+none
+vanilla_killed
+```
+
+`none` is the default. `vanilla_killed` invokes the active effect instance's own
+Minecraft removal callback once at Cobblemon's final `LOOT_DROPPED` stage. The
+bridge is restricted to managed dungeon Pokémon, does not hardcode species or
+effect implementations, and removes the processed effect afterward to prevent a
+second callback if another compatibility mod later supplies a killed removal.
+
+Use a duration long enough to remain active through Cobblemon's death animation.
+The built-in advanced examples use 80 ticks.
 
 ## Capture
 

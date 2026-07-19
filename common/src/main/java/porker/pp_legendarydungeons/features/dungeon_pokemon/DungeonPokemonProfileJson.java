@@ -35,6 +35,15 @@ public final class DungeonPokemonProfileJson {
         public boolean ambient = false;
         public boolean show_particles = true;
         public boolean show_icon = true;
+
+        /**
+         * none or vanilla_killed.
+         *
+         * <p>vanilla_killed asks the dungeon compatibility bridge to invoke this
+         * active effect's ordinary Minecraft KILLED removal callback when
+         * Cobblemon reaches its final LOOT_DROPPED stage.</p>
+         */
+        public String death_callback = "none";
     }
 
     public static final class Capture {

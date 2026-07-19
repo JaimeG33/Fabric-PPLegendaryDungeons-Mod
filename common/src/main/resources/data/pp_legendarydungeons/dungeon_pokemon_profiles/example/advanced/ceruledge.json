@@ -29,7 +29,8 @@
       "refresh_interval_ticks": 20,
       "ambient": true,
       "show_particles": true,
-      "show_icon": true
+      "show_icon": true,
+      "death_callback": "vanilla_killed"
     },
     {
       "effect": "minecraft:fire_resistance",

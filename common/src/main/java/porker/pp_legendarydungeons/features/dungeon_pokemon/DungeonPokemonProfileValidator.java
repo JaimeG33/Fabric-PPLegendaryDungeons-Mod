@@ -22,6 +22,10 @@ public final class DungeonPokemonProfileValidator {
             "additional",
             "replace"
     );
+    private static final Set<String> DEATH_CALLBACKS = Set.of(
+            "none",
+            "vanilla_killed"
+    );
 
     private DungeonPokemonProfileValidator() {
     }
@@ -93,6 +97,20 @@ public final class DungeonPokemonProfileValidator {
                             fileId,
                             profileId,
                             "combat effects require amplifier >= 0 and positive durations."
+                    );
+                }
+
+                String deathCallback = normalized(effect.death_callback);
+
+                if (deathCallback.isBlank()) {
+                    deathCallback = "none";
+                }
+
+                if (!DEATH_CALLBACKS.contains(deathCallback)) {
+                    return invalid(
+                            fileId,
+                            profileId,
+                            "unknown combat-effect death_callback: " + deathCallback
                     );
                 }
             }
