@@ -3,7 +3,6 @@ package porker.pp_legendarydungeons.features.dungeon_pokemon;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -25,11 +24,13 @@ import porker.pp_legendarydungeons.dungeon_rules.instance.DungeonRuleSavedData;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -51,6 +52,10 @@ public final class DungeonPokemonManager {
 
     private static final Map<UUID, DungeonPokemonRecord> RECORDS =
             new HashMap<>();
+    private static final Set<String> REPORTED_EFFECT_LOOKUP_FAILURES =
+            new HashSet<>();
+    private static final Set<String> REPORTED_EFFECT_APPLICATION_FAILURES =
+            new HashSet<>();
 
     private DungeonPokemonManager() {
     }
@@ -228,8 +233,7 @@ public final class DungeonPokemonManager {
     ) {
         if (!aggression.enabled
                 || !instanceAllowsAggression(server, record, aggression)
-                || pokemon.isBattling()
-                || pokemon.isBusy()) {
+                || pokemon.isBattling()) {
             CobblemonAggressionBridge.clearTarget(pokemon);
             returnHomeIfNeeded(pokemon, record, aggression);
             return;
@@ -246,23 +250,28 @@ public final class DungeonPokemonManager {
         }
 
         if (target != null) {
-            if (pokemon.getTarget() != target) {
-                CobblemonAggressionBridge.setTarget(pokemon, target);
-            } else {
+            /*
+             * Combat effects are independent of whether Cobblemon or an optional
+             * AI mod currently marks the entity busy. Attack animations and move
+             * execution can hold a busy lock for most of an encounter, so gating
+             * effects on isBusy() can prevent them from ever being applied.
+             */
+            refreshCombatEffects(
+                    level,
+                    pokemon,
+                    record.profileId(),
+                    profile
+            );
+
+            if (!pokemon.isBusy()) {
                 /*
                  * Fight or Flight and other AI mods may clear only Brain memory
                  * while leaving the inherited target reference. Refreshing the
-                 * bridge at this bounded cadence keeps dungeon intent authoritative.
+                 * bridge at this bounded cadence keeps dungeon intent authoritative
+                 * without interrupting an active Cobblemon task.
                  */
                 CobblemonAggressionBridge.setTarget(pokemon, target);
             }
-
-            refreshCombatEffects(
-                    pokemon,
-                    profile,
-                    tickCount,
-                    record.entityUuid()
-            );
         } else {
             returnHomeIfNeeded(pokemon, record, aggression);
         }
@@ -510,12 +519,13 @@ public final class DungeonPokemonManager {
     }
 
     private static void refreshCombatEffects(
+            ServerLevel level,
             PokemonEntity pokemon,
-            DungeonPokemonProfileJson profile,
-            long tickCount,
-            UUID entityUuid
+            ResourceLocation profileId,
+            DungeonPokemonProfileJson profile
     ) {
-        if (profile.combat_effects == null) {
+        if (profile.combat_effects == null
+                || profile.combat_effects.isEmpty()) {
             return;
         }
 
@@ -530,15 +540,14 @@ public final class DungeonPokemonManager {
                     1,
                     1200
             );
-
-            int bucket = Math.floorMod(entityUuid.hashCode(), refreshInterval);
-
-            if (Math.floorMod(tickCount, refreshInterval) != bucket) {
-                continue;
-            }
+            int configuredAmplifier = clamp(
+                    configured.amplifier,
+                    0,
+                    255
+            );
 
             Optional<Holder.Reference<MobEffect>> effect =
-                    effectHolder(configured.effect);
+                    effectHolder(level, configured.effect);
 
             if (effect.isEmpty()) {
                 continue;
@@ -547,18 +556,40 @@ public final class DungeonPokemonManager {
             MobEffectInstance existing = pokemon.getEffect(effect.get());
 
             if (existing != null
+                    && existing.getAmplifier() >= configuredAmplifier
                     && existing.getDuration() > refreshInterval + 5) {
                 continue;
             }
 
-            pokemon.addEffect(new MobEffectInstance(
+            boolean applied = pokemon.addEffect(new MobEffectInstance(
                     effect.get(),
                     clamp(configured.duration_ticks, 1, 72_000),
-                    clamp(configured.amplifier, 0, 255),
+                    configuredAmplifier,
                     configured.ambient,
                     configured.show_particles,
                     configured.show_icon
             ));
+
+            String reportKey =
+                    profileId + "|" + pokemon.getUUID() + "|" + configured.effect;
+
+            if (applied) {
+                REPORTED_EFFECT_APPLICATION_FAILURES.remove(reportKey);
+                LegendaryDungeons.LOGGER.debug(
+                        "[Dungeon Pokemon Effects] Applied {} amplifier={} to entity={} profile={}.",
+                        configured.effect,
+                        configuredAmplifier,
+                        pokemon.getUUID(),
+                        profileId
+                );
+            } else if (REPORTED_EFFECT_APPLICATION_FAILURES.add(reportKey)) {
+                LegendaryDungeons.LOGGER.warn(
+                        "[Dungeon Pokemon Effects] Entity {} rejected effect {} for profile {}.",
+                        pokemon.getUUID(),
+                        configured.effect,
+                        profileId
+                );
+            }
         }
     }
 
@@ -566,6 +597,10 @@ public final class DungeonPokemonManager {
             PokemonEntity pokemon,
             ResourceLocation profileId
     ) {
+        if (!(pokemon.level() instanceof ServerLevel level)) {
+            return;
+        }
+
         DungeonPokemonProfileRegistry.get(profileId).ifPresent(profile -> {
             if (profile.combat_effects == null) {
                 return;
@@ -577,28 +612,49 @@ public final class DungeonPokemonManager {
                     continue;
                 }
 
-                effectHolder(configured.effect).ifPresent(pokemon::removeEffect);
+                effectHolder(level, configured.effect)
+                        .ifPresent(pokemon::removeEffect);
             }
         });
     }
 
     private static Optional<Holder.Reference<MobEffect>> effectHolder(
+            ServerLevel level,
             String effectId
     ) {
+        String reportKey =
+                effectId == null || effectId.isBlank()
+                        ? "<blank>"
+                        : effectId.trim();
+
         try {
-            ResourceLocation id = ResourceLocation.parse(effectId);
+            ResourceLocation id = ResourceLocation.parse(reportKey);
             Optional<Holder.Reference<MobEffect>> holder =
-                    BuiltInRegistries.MOB_EFFECT.getHolder(id);
+                    level.registryAccess()
+                            .registryOrThrow(Registries.MOB_EFFECT)
+                            .getHolder(id);
 
             if (holder.isEmpty()) {
-                LegendaryDungeons.LOGGER.warn(
-                        "[Dungeon Pokemon] Unknown mob effect {}.",
-                        effectId
-                );
+                if (REPORTED_EFFECT_LOOKUP_FAILURES.add(reportKey)) {
+                    LegendaryDungeons.LOGGER.warn(
+                            "[Dungeon Pokemon Effects] Unknown mob effect {} in the active server registry.",
+                            reportKey
+                    );
+                }
+            } else {
+                REPORTED_EFFECT_LOOKUP_FAILURES.remove(reportKey);
             }
 
             return holder;
         } catch (Exception exception) {
+            if (REPORTED_EFFECT_LOOKUP_FAILURES.add(reportKey)) {
+                LegendaryDungeons.LOGGER.warn(
+                        "[Dungeon Pokemon Effects] Failed to resolve mob effect {}: {}",
+                        reportKey,
+                        exception.toString()
+                );
+            }
+
             return Optional.empty();
         }
     }
@@ -619,6 +675,8 @@ public final class DungeonPokemonManager {
 
     public static void clear() {
         RECORDS.clear();
+        REPORTED_EFFECT_LOOKUP_FAILURES.clear();
+        REPORTED_EFFECT_APPLICATION_FAILURES.clear();
     }
 
     public static int loadedCount() {

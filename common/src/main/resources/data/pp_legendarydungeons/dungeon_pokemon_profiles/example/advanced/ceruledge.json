@@ -28,7 +28,7 @@
       "duration_ticks": 80,
       "refresh_interval_ticks": 20,
       "ambient": false,
-      "show_particles": false,
+      "show_particles": true,
       "show_icon": false
     },
     {
