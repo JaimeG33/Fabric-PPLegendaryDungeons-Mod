@@ -2,8 +2,8 @@
   "base_properties": "fluttermane ability=protosynthesis tera_type=ghost moves=dazzlinggleam,wish,memento,meanlook",
   "generation": {
     "level": {
-      "min": 35,
-      "max": 40
+      "min": 40,
+      "max": 45
     },
     "nature": {
       "mode": "weighted_pool",

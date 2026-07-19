@@ -77,6 +77,13 @@ public final class DungeonPokemonSpawner {
         PokemonEntity pokemon = spawned.get();
         pokemon.setPersistenceRequired();
 
+        DungeonPokemonSpawnOptions.apply(
+                context.level(),
+                pokemon,
+                dungeonProfileId,
+                dungeonProfile.get()
+        );
+
         /*
          * PokemonSpawnService already applied the spawn profile's
          * counts_towards_spawn_cap value. Do not overwrite it here.

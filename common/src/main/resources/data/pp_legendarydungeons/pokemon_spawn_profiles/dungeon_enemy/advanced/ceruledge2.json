@@ -2,8 +2,8 @@
   "base_properties": "ceruledge ability=flashfire tera_type=ghost moves=swordsdance,lavaplume,incinerate,flamecharge",
   "generation": {
     "level": {
-      "min": 36,
-      "max": 42
+      "min": 40,
+      "max": 45
     },
     "nature": {
       "mode": "weighted_pool",
@@ -28,11 +28,11 @@
     },
     "shiny": {
       "mode": "one_in",
-      "denominator": 1024
+      "denominator": 100
     },
     "ivs": {
       "mode": "default",
-      "minimum_perfect": 2
+      "minimum_perfect": 4
     }
   },
   "entity": {

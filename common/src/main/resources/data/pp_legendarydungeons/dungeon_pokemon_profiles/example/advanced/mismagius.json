@@ -1,5 +1,6 @@
 {
   "spawn_profile": "pp_legendarydungeons:dungeon_enemy/advanced/mismagius",
+  "scoreboard_team": "rayquaza_team",
   "aggression": {
     "enabled": true,
     "target_players": true,

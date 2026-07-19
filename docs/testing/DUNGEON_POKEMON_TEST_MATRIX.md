@@ -105,3 +105,20 @@ For each count, record:
 - Network behavior with two players.
 - Performance with and without Fight or Flight.
 - Simultaneous pathfinding after all Pokémon acquire targets.
+
+
+## Team and spawn-status options
+
+- `scoreboard_team: rayquaza_team` adds the Pokémon to that existing team.
+- A missing configured team is created once with default team settings.
+- Multiple Pokémon using the same configured team reuse it.
+- Team membership survives chunk unload/reload and disappears normally on death.
+- A one-entry Sleep pool always spawns the Pokémon asleep.
+- Sleeping Pokémon use Cobblemon's sleep behavior/pose and enter battle asleep.
+- Burn, Frozen, Paralysis, Poison, and Badly Poisoned enter battle with the
+  configured status even when no special overworld idle pose is visible.
+- A 6/2/2 Sleep/Paralysis/none pool statistically selects all three outcomes.
+- A namespaced custom persistent status resolves when its provider is installed.
+- An unavailable custom status logs a warning without crashing the server.
+- Invalid team names, blank statuses, zero/negative weights, and oversized total
+  weights reject only the malformed profile during datapack reload.

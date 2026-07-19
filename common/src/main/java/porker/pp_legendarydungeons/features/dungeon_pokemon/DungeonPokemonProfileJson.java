@@ -8,11 +8,30 @@ import java.util.List;
  */
 public final class DungeonPokemonProfileJson {
     public String spawn_profile = "";
+
+    /**
+     * Optional Minecraft scoreboard team. Missing teams are created on spawn.
+     */
+    public String scoreboard_team = "";
+
+    /**
+     * Weighted Cobblemon persistent status pool. Empty means no forced status.
+     */
+    public List<SpawnStatus> spawn_statuses = new ArrayList<>();
+
     public Aggression aggression = new Aggression();
     public List<CombatEffect> combat_effects = new ArrayList<>();
     public Capture capture = new Capture();
     public Loot loot = new Loot();
     public List<TargetRule> targets = new ArrayList<>();
+
+    public static final class SpawnStatus {
+        /**
+         * none, a built-in persistent status name, or a namespaced custom status.
+         */
+        public String status = "none";
+        public int weight = 1;
+    }
 
     public static final class Aggression {
         public boolean enabled = true;

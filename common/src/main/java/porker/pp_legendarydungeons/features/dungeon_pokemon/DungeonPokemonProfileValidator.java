@@ -55,6 +55,65 @@ public final class DungeonPokemonProfileValidator {
             );
         }
 
+
+        String scoreboardTeam = profile.scoreboard_team == null
+                ? ""
+                : profile.scoreboard_team.trim();
+
+        if (!scoreboardTeam.isBlank()
+                && !DungeonPokemonSpawnOptions.isValidTeamName(scoreboardTeam)) {
+            return invalid(
+                    fileId,
+                    profileId,
+                    "scoreboard_team must be 1-16 characters without whitespace or control characters."
+            );
+        }
+
+        if (profile.spawn_statuses != null) {
+            long totalWeight = 0L;
+
+            for (DungeonPokemonProfileJson.SpawnStatus configured :
+                    profile.spawn_statuses) {
+                if (configured == null
+                        || configured.status == null
+                        || configured.status.isBlank()) {
+                    return invalid(
+                            fileId,
+                            profileId,
+                            "spawn_statuses entries require a status."
+                    );
+                }
+
+                if (configured.weight < 1) {
+                    return invalid(
+                            fileId,
+                            profileId,
+                            "spawn_statuses weights must be positive."
+                    );
+                }
+
+                if (!DungeonPokemonSpawnOptions.isValidStatusName(
+                        configured.status
+                )) {
+                    return invalid(
+                            fileId,
+                            profileId,
+                            "invalid spawn status: " + configured.status
+                    );
+                }
+
+                totalWeight += configured.weight;
+
+                if (totalWeight > Integer.MAX_VALUE) {
+                    return invalid(
+                            fileId,
+                            profileId,
+                            "spawn_statuses total weight is too large."
+                    );
+                }
+            }
+        }
+
         DungeonPokemonProfileJson.Aggression aggression =
                 profile.aggression == null
                         ? new DungeonPokemonProfileJson.Aggression()

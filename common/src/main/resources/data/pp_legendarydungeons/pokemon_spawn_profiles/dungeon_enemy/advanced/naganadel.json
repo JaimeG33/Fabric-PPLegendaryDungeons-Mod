@@ -2,8 +2,8 @@
   "base_properties": "naganadel ability=beastboost tera_type=poison moves=venomdrench,venoshock,charm,fellstinger",
   "generation": {
     "level": {
-      "min": 35,
-      "max": 40
+      "min": 40,
+      "max": 45
     },
     "nature": {
       "mode": "weighted_pool",

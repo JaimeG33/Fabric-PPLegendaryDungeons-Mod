@@ -245,3 +245,88 @@ that instance is not active.
 
 Leave it false for standalone structures that do not use the dungeon rule
 controller.
+
+
+## Scoreboard team assignment
+
+Use the top-level `scoreboard_team` field to place the spawned Pokémon on a
+Minecraft scoreboard team:
+
+```json
+"scoreboard_team": "rayquaza_team",
+```
+
+The team is created with Minecraft's default team settings if it does not
+already exist. Existing team settings such as friendly fire, collision rules,
+name-tag visibility, and color are preserved. Team names must be at most 16
+characters and cannot contain whitespace or control characters.
+
+The Pokémon is added using its entity scoreboard name, so normal Minecraft team
+commands and `scoreboard_team` target rules can recognize it.
+
+## Spawn status conditions
+
+`spawn_statuses` is a weighted pool of Cobblemon persistent battle statuses. An
+empty or omitted list applies no forced status. A single entry creates a fixed
+status:
+
+```json
+"spawn_statuses": [
+  {
+    "status": "sleep",
+    "weight": 1
+  }
+],
+```
+
+A weighted example with a no-status chance is:
+
+```json
+"spawn_statuses": [
+  {
+    "status": "sleep",
+    "weight": 6
+  },
+  {
+    "status": "paralysis",
+    "weight": 2
+  },
+  {
+    "status": "none",
+    "weight": 2
+  }
+],
+```
+
+That example produces 60% Sleep, 20% Paralysis, and 20% no status. Weights are
+relative positive integers; they do not need to total 100.
+
+Canonical built-in names are:
+
+```text
+burn
+frozen
+paralysis
+poison
+poison_badly
+sleep
+none
+```
+
+Common Showdown-style aliases such as `brn`, `frz`, `par`, `psn`, `tox`, and
+`slp` are also accepted. A modded persistent status may be referenced with its
+full namespaced ID, for example `other_mod:custom_status`, if that status is
+registered with Cobblemon before datapack profiles load.
+
+Only one persistent status can exist on a Pokémon, so the pool selects exactly
+one entry. The selected status is stored on Cobblemon's Pokémon data and is
+present when battle begins. Sleep is visually special in the overworld because
+Cobblemon's entity AI and poses explicitly react to the Sleep status. Burn,
+Frozen, Paralysis, Poison, and Badly Poisoned generally have no equivalent sleep
+idle animation, but they still enter battle as real status conditions.
+
+The complete copyable example is:
+
+```text
+data/pp_legendarydungeons/dungeon_pokemon_profiles/example/advanced/team_status_ceruledge.json
+```
