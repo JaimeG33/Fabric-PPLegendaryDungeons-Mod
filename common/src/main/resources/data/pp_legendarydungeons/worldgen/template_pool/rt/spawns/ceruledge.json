@@ -3,11 +3,20 @@
 	"fallback": "minecraft:empty",
 	"elements": [
 		{
-			"weight": 1,
+			"weight": 9,
 			"element": {
 				"element_type": "minecraft:single_pool_element",
 				"projection": "rigid",
 				"location": "pp_legendarydungeons:rayquaza_tower/spawns_advanced/ceruledge",
+				"processors": "minecraft:empty"
+			}
+		},
+		{
+			"weight": 1,
+			"element": {
+				"element_type": "minecraft:single_pool_element",
+				"projection": "rigid",
+				"location": "pp_legendarydungeons:rayquaza_tower/spawns_advanced/ceruledge_eep",
 				"processors": "minecraft:empty"
 			}
 		}
