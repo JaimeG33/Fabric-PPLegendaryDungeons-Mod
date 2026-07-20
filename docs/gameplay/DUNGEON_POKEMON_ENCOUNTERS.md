@@ -38,6 +38,30 @@ Example:
 CustomName: pp_legendarydungeons:example/carbink_guard
 ```
 
+### Summoning a test marker
+
+For a quick in-game test, one armor stand can carry both the broad feature tag
+and the dungeon Pokémon marker tag:
+
+```mcfunction
+/summon minecraft:armor_stand ~ ~ ~ {Invisible:1b,Marker:1b,NoGravity:1b,Tags:["pp_feature","pp_dungeon_pokemon"],CustomName:'{"text":"pp_legendarydungeons:example/common/ariados"}',CustomNameVisible:0b}
+```
+
+Replace only the resource ID inside the `text` value to test another dungeon
+profile. For example:
+
+```text
+pp_legendarydungeons:example/common/gastly
+pp_legendarydungeons:example/common/honedge
+pp_legendarydungeons:example/common/mawile
+pp_legendarydungeons:example/advanced/ceruledge
+```
+
+Run the command from chat as one complete line. Do not add backslashes before
+the quotation marks. The marker is discarded after the Pokémon spawns and
+registers successfully. If the profile is missing or invalid, the armor stand
+remains and the server log reports the error.
+
 The same armor stand may carry both tags for a small test. In larger structures,
 one broad `pp_feature` marker can activate multiple nearby Pokémon markers.
 

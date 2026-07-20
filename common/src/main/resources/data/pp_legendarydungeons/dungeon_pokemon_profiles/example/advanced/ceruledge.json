@@ -20,8 +20,8 @@
       "duration_ticks": 80,
       "refresh_interval_ticks": 20,
       "ambient": false,
-      "show_particles": true,
-      "show_icon": true
+      "show_particles": false,
+      "show_icon": false
     },
     {
       "effect": "minecraft:wind_charged",
@@ -29,8 +29,8 @@
       "duration_ticks": 80,
       "refresh_interval_ticks": 20,
       "ambient": true,
-      "show_particles": true,
-      "show_icon": true,
+      "show_particles": false,
+      "show_icon": false,
       "death_callback": "vanilla_killed"
     },
     {
