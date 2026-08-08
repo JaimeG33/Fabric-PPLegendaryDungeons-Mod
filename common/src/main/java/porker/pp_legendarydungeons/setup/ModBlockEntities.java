@@ -47,7 +47,9 @@ public final class ModBlockEntities {
                     () -> BlockEntityType.Builder
                             .of(
                                     CrystalHeartBlockEntity::new,
-                                    ModBlocks.CRYSTAL_HEART.get()
+                                    ModBlocks.CRYSTAL_HEART.get(),
+                                    ModBlocks.CRYSTAL_HEART_B.get(),
+                                    ModBlocks.CRYSTAL_HEART_C.get()
                             )
                             .build(null)
             );

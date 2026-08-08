@@ -45,6 +45,18 @@ public final class ModBlocks {
                     () -> new CrystalHeartBlock(animatedDecorationProperties())
             );
 
+    public static final RegistrySupplier<CrystalHeartBlock> CRYSTAL_HEART_B =
+            BLOCKS.register(
+                    "crystal_heart_b",
+                    () -> new CrystalHeartBlock(animatedDecorationProperties())
+            );
+
+    public static final RegistrySupplier<CrystalHeartBlock> CRYSTAL_HEART_C =
+            BLOCKS.register(
+                    "crystal_heart_c",
+                    () -> new CrystalHeartBlock(animatedDecorationProperties())
+            );
+
     public static final RegistrySupplier<BlockItem> DUNGEON_RULE_PARENT_ITEM =
             ITEMS.register(
                     "dungeon_rule_parent",
@@ -68,6 +80,24 @@ public final class ModBlocks {
                     "crystal_heart",
                     () -> new BlockItem(
                             CRYSTAL_HEART.get(),
+                            new Item.Properties()
+                    )
+            );
+
+    public static final RegistrySupplier<BlockItem> CRYSTAL_HEART_B_ITEM =
+            ITEMS.register(
+                    "crystal_heart_b",
+                    () -> new BlockItem(
+                            CRYSTAL_HEART_B.get(),
+                            new Item.Properties()
+                    )
+            );
+
+    public static final RegistrySupplier<BlockItem> CRYSTAL_HEART_C_ITEM =
+            ITEMS.register(
+                    "crystal_heart_c",
+                    () -> new BlockItem(
+                            CRYSTAL_HEART_C.get(),
                             new Item.Properties()
                     )
             );

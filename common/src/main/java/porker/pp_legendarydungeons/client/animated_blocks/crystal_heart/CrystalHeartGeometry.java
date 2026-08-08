@@ -11,15 +11,20 @@ import org.joml.Vector3f;
  * -0.5..0.5 and Y spans 0..1. The renderer scales this normalized mesh to the
  * block entity's requested width and height, so no alternate model files are
  * needed for different sizes.</p>
+ *
+ * <p>The UVs use a narrower, center-weighted horizontal band of the texture
+ * instead of stretching the entire square across every face. The A/B/C test
+ * textures are intentionally vertically faceted, so this mapping should retain
+ * their gemstone structure better on the long triangular faces.</p>
  */
 public final class CrystalHeartGeometry {
-    private static final Vertex TOP = new Vertex(0.0F, 1.0F, 0.0F, 0.5F, 0.0F);
-    private static final Vertex BOTTOM = new Vertex(0.0F, 0.0F, 0.0F, 0.5F, 1.0F);
+    private static final Vertex TOP = new Vertex(0.0F, 1.0F, 0.0F, 0.50F, 0.02F);
+    private static final Vertex BOTTOM = new Vertex(0.0F, 0.0F, 0.0F, 0.50F, 0.98F);
 
-    private static final Vertex NORTH = new Vertex(0.0F, 0.46F, -0.5F, 0.0F, 0.5F);
-    private static final Vertex EAST = new Vertex(0.5F, 0.46F, 0.0F, 1.0F, 0.5F);
-    private static final Vertex SOUTH = new Vertex(0.0F, 0.46F, 0.5F, 0.0F, 0.5F);
-    private static final Vertex WEST = new Vertex(-0.5F, 0.46F, 0.0F, 1.0F, 0.5F);
+    private static final Vertex NORTH = new Vertex(0.0F, 0.46F, -0.5F, 0.22F, 0.50F);
+    private static final Vertex EAST = new Vertex(0.5F, 0.46F, 0.0F, 0.78F, 0.50F);
+    private static final Vertex SOUTH = new Vertex(0.0F, 0.46F, 0.5F, 0.22F, 0.50F);
+    private static final Vertex WEST = new Vertex(-0.5F, 0.46F, 0.0F, 0.78F, 0.50F);
 
     private CrystalHeartGeometry() {
     }

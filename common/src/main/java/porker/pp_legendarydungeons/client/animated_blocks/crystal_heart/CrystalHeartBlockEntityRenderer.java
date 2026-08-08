@@ -10,8 +10,11 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.block.Block;
 import porker.pp_legendarydungeons.LegendaryDungeons;
 import porker.pp_legendarydungeons.blocks.entity.animated_blocks.crystal_heart.CrystalHeartBlockEntity;
+import porker.pp_legendarydungeons.setup.ModBlocks;
 
 /**
  * Renders the Crystal Heart as a large, slowly rotating textured bipyramid.
@@ -20,13 +23,25 @@ import porker.pp_legendarydungeons.blocks.entity.animated_blocks.crystal_heart.C
  */
 public final class CrystalHeartBlockEntityRenderer
         implements BlockEntityRenderer<CrystalHeartBlockEntity> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(
+    private static final ResourceLocation TEXTURE_A = ResourceLocation.fromNamespaceAndPath(
             LegendaryDungeons.MOD_ID,
-            "textures/entity/animated_blocks/crystal_heart/crystal_heart.png"
+            "textures/entity/animated_blocks/crystal_heart/crystal_heart_a.png"
+    );
+    private static final ResourceLocation TEXTURE_B = ResourceLocation.fromNamespaceAndPath(
+            LegendaryDungeons.MOD_ID,
+            "textures/entity/animated_blocks/crystal_heart/crystal_heart_b.png"
+    );
+    private static final ResourceLocation TEXTURE_C = ResourceLocation.fromNamespaceAndPath(
+            LegendaryDungeons.MOD_ID,
+            "textures/entity/animated_blocks/crystal_heart/crystal_heart_c.png"
     );
 
     /** 0.5 degrees/tick = 10 degrees/second = one turn every 36 seconds. */
     private static final float DEGREES_PER_TICK = 0.5F;
+
+    /** Slow, subtle hover: roughly one full bob cycle every 7.85 seconds. */
+    private static final float BOB_RADIANS_PER_TICK = 0.04F;
+    private static final float BOB_AMPLITUDE_BLOCKS = 0.18F;
 
     /**
      * Keeps the bottom point slightly above the invisible anchor block's base,
@@ -53,11 +68,12 @@ public final class CrystalHeartBlockEntityRenderer
 
         float time = blockEntity.getLevel().getGameTime() + partialTick;
         float rotationDegrees = (time * DEGREES_PER_TICK) % 360.0F;
+        float bobOffset = Mth.sin(time * BOB_RADIANS_PER_TICK) * BOB_AMPLITUDE_BLOCKS;
 
         poseStack.pushPose();
 
-        // Center over the one-block anchor and lift the bottom point off the floor.
-        poseStack.translate(0.5D, BOTTOM_POINT_OFFSET, 0.5D);
+        // Center over the anchor, add the subtle hover, then rotate around Y.
+        poseStack.translate(0.5D, BOTTOM_POINT_OFFSET + bobOffset, 0.5D);
         poseStack.mulPose(Axis.YP.rotationDegrees(rotationDegrees));
 
         // One normalized mesh can now represent any width/height combination.
@@ -67,7 +83,9 @@ public final class CrystalHeartBlockEntityRenderer
                 blockEntity.getWidthBlocks()
         );
 
-        VertexConsumer consumer = bufferSource.getBuffer(RenderType.entityTranslucent(TEXTURE));
+        VertexConsumer consumer = bufferSource.getBuffer(
+                RenderType.entityTranslucent(resolveTexture(blockEntity.getBlockState().getBlock()))
+        );
 
         // Full-bright keeps the dungeon landmark readable in a dark crystal cave.
         CrystalHeartGeometry.render(
@@ -78,6 +96,18 @@ public final class CrystalHeartBlockEntityRenderer
         );
 
         poseStack.popPose();
+    }
+
+    private static ResourceLocation resolveTexture(Block block) {
+        if (block == ModBlocks.CRYSTAL_HEART_C.get()) {
+            return TEXTURE_C;
+        }
+
+        if (block == ModBlocks.CRYSTAL_HEART_B.get()) {
+            return TEXTURE_B;
+        }
+
+        return TEXTURE_A;
     }
 
     @Override
