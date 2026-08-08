@@ -12,16 +12,12 @@ import org.joml.Vector3f;
  * block entity's requested width and height, so no alternate model files are
  * needed for different sizes.</p>
  *
- * <p>Unlike the original proof-of-concept, geometry positions and texture UVs
- * are separate. Each of the eight triangular faces owns its own section of a
- * 4x2 face atlas. This avoids projecting one square image across every side of
- * the crystal and allows the artwork to be designed specifically for each
- * physical face.</p>
+ * <p>The upper four faces share one full-resolution triangular texture and the
+ * lower four faces share another. Alternate faces mirror the UVs and use subtle
+ * tint differences so the crystal keeps visible facet changes while rotating
+ * without forcing eight separate art files.</p>
  */
 public final class CrystalHeartGeometry {
-    private static final float ATLAS_WIDTH = 64.0F;
-    private static final float ATLAS_HEIGHT = 32.0F;
-
     private static final Position TOP = new Position(0.0F, 1.0F, 0.0F);
     private static final Position BOTTOM = new Position(0.0F, 0.0F, 0.0F);
 
@@ -30,95 +26,100 @@ public final class CrystalHeartGeometry {
     private static final Position SOUTH = new Position(0.0F, 0.46F, 0.5F);
     private static final Position WEST = new Position(-0.5F, 0.46F, 0.0F);
 
-    private static final Face[] FACES = new Face[] {
-            // Upper row: cells 0..3.
-            upperFace(0, TOP, EAST, NORTH, 255, 255, 255),
-            upperFace(1, TOP, SOUTH, EAST, 235, 255, 240),
-            upperFace(2, TOP, WEST, SOUTH, 210, 235, 218),
-            upperFace(3, TOP, NORTH, WEST, 242, 255, 246),
+    private static final Uv TOP_APEX = new Uv(0.50F, 0.015625F);
+    private static final Uv TOP_LEFT = new Uv(0.015625F, 0.984375F);
+    private static final Uv TOP_RIGHT = new Uv(0.984375F, 0.984375F);
 
-            // Lower row: cells 0..3.
-            lowerFace(0, BOTTOM, NORTH, EAST, 238, 255, 242),
-            lowerFace(1, BOTTOM, EAST, SOUTH, 220, 245, 228),
-            lowerFace(2, BOTTOM, SOUTH, WEST, 198, 225, 208),
-            lowerFace(3, BOTTOM, WEST, NORTH, 228, 250, 235)
+    private static final Uv BOTTOM_APEX = new Uv(0.50F, 0.984375F);
+    private static final Uv BOTTOM_LEFT = new Uv(0.015625F, 0.015625F);
+    private static final Uv BOTTOM_RIGHT = new Uv(0.984375F, 0.015625F);
+
+    private static final Face[] UPPER_FACES = new Face[] {
+            face(TOP, EAST, NORTH, false, 255, 255, 255),
+            face(TOP, SOUTH, EAST, true, 238, 255, 242),
+            face(TOP, WEST, SOUTH, false, 208, 232, 215),
+            face(TOP, NORTH, WEST, true, 244, 255, 247)
+    };
+
+    private static final Face[] LOWER_FACES = new Face[] {
+            face(BOTTOM, NORTH, EAST, false, 242, 255, 245),
+            face(BOTTOM, EAST, SOUTH, true, 222, 246, 229),
+            face(BOTTOM, SOUTH, WEST, false, 196, 222, 205),
+            face(BOTTOM, WEST, NORTH, true, 232, 251, 238)
     };
 
     private CrystalHeartGeometry() {
     }
 
-    public static void render(
+    public static void renderTop(
             PoseStack.Pose pose,
             VertexConsumer consumer,
             int packedLight,
             int packedOverlay
     ) {
-        for (Face face : FACES) {
-            renderTriangleAsQuad(pose, consumer, face, packedLight, packedOverlay);
+        for (Face face : UPPER_FACES) {
+            Uv left = face.mirrored ? TOP_RIGHT : TOP_LEFT;
+            Uv right = face.mirrored ? TOP_LEFT : TOP_RIGHT;
+
+            renderTriangleAsQuad(
+                    pose,
+                    consumer,
+                    face,
+                    TOP_APEX,
+                    right,
+                    left,
+                    packedLight,
+                    packedOverlay
+            );
         }
     }
 
-    private static Face upperFace(
-            int cell,
-            Position apex,
-            Position rightBase,
-            Position leftBase,
+    public static void renderBottom(
+            PoseStack.Pose pose,
+            VertexConsumer consumer,
+            int packedLight,
+            int packedOverlay
+    ) {
+        for (Face face : LOWER_FACES) {
+            Uv left = face.mirrored ? BOTTOM_RIGHT : BOTTOM_LEFT;
+            Uv right = face.mirrored ? BOTTOM_LEFT : BOTTOM_RIGHT;
+
+            renderTriangleAsQuad(
+                    pose,
+                    consumer,
+                    face,
+                    BOTTOM_APEX,
+                    left,
+                    right,
+                    packedLight,
+                    packedOverlay
+            );
+        }
+    }
+
+    private static Face face(
+            Position a,
+            Position b,
+            Position c,
+            boolean mirrored,
             int red,
             int green,
             int blue
     ) {
-        float x = cell * 16.0F;
-
-        return new Face(
-                apex,
-                rightBase,
-                leftBase,
-                uv(x + 8.0F, 1.0F),
-                uv(x + 15.0F, 15.0F),
-                uv(x + 1.0F, 15.0F),
-                red,
-                green,
-                blue
-        );
-    }
-
-    private static Face lowerFace(
-            int cell,
-            Position apex,
-            Position leftBase,
-            Position rightBase,
-            int red,
-            int green,
-            int blue
-    ) {
-        float x = cell * 16.0F;
-
-        return new Face(
-                apex,
-                leftBase,
-                rightBase,
-                uv(x + 8.0F, 31.0F),
-                uv(x + 1.0F, 17.0F),
-                uv(x + 15.0F, 17.0F),
-                red,
-                green,
-                blue
-        );
-    }
-
-    private static Uv uv(float pixelX, float pixelY) {
-        return new Uv(pixelX / ATLAS_WIDTH, pixelY / ATLAS_HEIGHT);
+        return new Face(a, b, c, mirrored, red, green, blue);
     }
 
     /**
      * Minecraft's entity-style RenderTypes use quad mode. A triangular crystal
-     * face is therefore emitted as a degenerate quad by repeating the third
-     * corner. Visually this is still one triangle.
+     * face is emitted as a degenerate quad by repeating the third corner.
      */
     private static void renderTriangleAsQuad(
             PoseStack.Pose pose,
             VertexConsumer consumer,
             Face face,
+            Uv uvA,
+            Uv uvB,
+            Uv uvC,
             int packedLight,
             int packedOverlay
     ) {
@@ -135,16 +136,16 @@ public final class CrystalHeartGeometry {
         Vector3f normal = ab.cross(ac).normalize();
 
         emitVertex(
-                pose, consumer, face.a, face.uvA, face, normal, packedLight, packedOverlay
+                pose, consumer, face.a, uvA, face, normal, packedLight, packedOverlay
         );
         emitVertex(
-                pose, consumer, face.b, face.uvB, face, normal, packedLight, packedOverlay
+                pose, consumer, face.b, uvB, face, normal, packedLight, packedOverlay
         );
         emitVertex(
-                pose, consumer, face.c, face.uvC, face, normal, packedLight, packedOverlay
+                pose, consumer, face.c, uvC, face, normal, packedLight, packedOverlay
         );
         emitVertex(
-                pose, consumer, face.c, face.uvC, face, normal, packedLight, packedOverlay
+                pose, consumer, face.c, uvC, face, normal, packedLight, packedOverlay
         );
     }
 
@@ -176,9 +177,7 @@ public final class CrystalHeartGeometry {
             Position a,
             Position b,
             Position c,
-            Uv uvA,
-            Uv uvB,
-            Uv uvC,
+            boolean mirrored,
             int red,
             int green,
             int blue

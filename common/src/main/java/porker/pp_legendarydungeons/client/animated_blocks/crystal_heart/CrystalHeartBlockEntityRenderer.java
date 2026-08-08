@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Block;
@@ -25,18 +24,9 @@ import porker.pp_legendarydungeons.setup.ModBlocks;
  */
 public final class CrystalHeartBlockEntityRenderer
         implements BlockEntityRenderer<CrystalHeartBlockEntity> {
-    private static final ResourceLocation TEXTURE_A = ResourceLocation.fromNamespaceAndPath(
-            LegendaryDungeons.MOD_ID,
-            "textures/entity/animated_blocks/crystal_heart/crystal_heart_a.png"
-    );
-    private static final ResourceLocation TEXTURE_B = ResourceLocation.fromNamespaceAndPath(
-            LegendaryDungeons.MOD_ID,
-            "textures/entity/animated_blocks/crystal_heart/crystal_heart_b.png"
-    );
-    private static final ResourceLocation TEXTURE_C = ResourceLocation.fromNamespaceAndPath(
-            LegendaryDungeons.MOD_ID,
-            "textures/entity/animated_blocks/crystal_heart/crystal_heart_c.png"
-    );
+    private static final TexturePair TEXTURES_A = texturePair("a");
+    private static final TexturePair TEXTURES_B = texturePair("b");
+    private static final TexturePair TEXTURES_C = texturePair("c");
 
     /** 0.5 degrees/tick = 10 degrees/second = one turn every 36 seconds. */
     private static final float DEGREES_PER_TICK = 0.5F;
@@ -51,13 +41,6 @@ public final class CrystalHeartBlockEntityRenderer
      * still making the rendered model read as floating.
      */
     private static final double BOTTOM_POINT_OFFSET = 0.25D;
-
-    /**
-     * Extra culling margin around the calculated visual bounds. The X/Z radius
-     * also accounts for the crystal rotating around Y.
-     */
-    private static final double RENDER_BOUNDS_MARGIN = 0.75D;
-    private static final double ROTATING_SQUARE_RADIUS_MULTIPLIER = Math.sqrt(2.0D);
 
     public CrystalHeartBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
     }
@@ -92,14 +75,29 @@ public final class CrystalHeartBlockEntityRenderer
                 blockEntity.getWidthBlocks()
         );
 
-        VertexConsumer consumer = bufferSource.getBuffer(
-                RenderType.entityCutoutNoCull(resolveTexture(blockEntity.getBlockState().getBlock()))
+        TexturePair textures = resolveTextures(blockEntity.getBlockState().getBlock());
+
+        /*
+         * Top and bottom halves deliberately use separate 128x128 textures.
+         * Each physical face can therefore sample an entire high-detail triangle
+         * instead of sharing a tiny cell in an eight-face atlas.
+         */
+        VertexConsumer topConsumer = bufferSource.getBuffer(
+                RenderType.entityCutoutNoCull(textures.top())
+        );
+        VertexConsumer bottomConsumer = bufferSource.getBuffer(
+                RenderType.entityCutoutNoCull(textures.bottom())
         );
 
-        // Full-bright keeps the dungeon landmark readable in a dark crystal cave.
-        CrystalHeartGeometry.render(
+        CrystalHeartGeometry.renderTop(
                 poseStack.last(),
-                consumer,
+                topConsumer,
+                LightTexture.FULL_BRIGHT,
+                packedOverlay
+        );
+        CrystalHeartGeometry.renderBottom(
+                poseStack.last(),
+                bottomConsumer,
                 LightTexture.FULL_BRIGHT,
                 packedOverlay
         );
@@ -107,67 +105,66 @@ public final class CrystalHeartBlockEntityRenderer
         poseStack.popPose();
     }
 
-    private static ResourceLocation resolveTexture(Block block) {
+    private static TexturePair resolveTextures(Block block) {
         if (block == ModBlocks.CRYSTAL_HEART_C.get()) {
-            return TEXTURE_C;
+            return TEXTURES_C;
         }
 
         if (block == ModBlocks.CRYSTAL_HEART_B.get()) {
-            return TEXTURE_B;
+            return TEXTURES_B;
         }
 
-        return TEXTURE_A;
+        return TEXTURES_A;
+    }
+
+    private static TexturePair texturePair(String variant) {
+        String base = "textures/entity/animated_blocks/crystal_heart/crystal_heart_"
+                + variant;
+
+        return new TexturePair(
+                ResourceLocation.fromNamespaceAndPath(
+                        LegendaryDungeons.MOD_ID,
+                        base + "_top.png"
+                ),
+                ResourceLocation.fromNamespaceAndPath(
+                        LegendaryDungeons.MOD_ID,
+                        base + "_bottom.png"
+                )
+        );
     }
 
     @Override
     public boolean shouldRenderOffScreen(CrystalHeartBlockEntity blockEntity) {
-        // The visual can be much larger than the invisible one-block anchor.
+        // Required because the visual can be far larger than the anchor section.
         return true;
     }
 
     /**
-     * NeoForge's BlockEntityRenderer interface inherits a render-bounds extension
-     * that calls this method. The common/Fabric compile does not declare that
-     * extension, so this intentionally has no @Override annotation.
+     * Diagnostic culling mode.
      *
-     * <p>The box describes the full rendered crystal rather than the one-block
-     * invisible anchor. This prevents camera-frustum culling from making the
-     * crystal disappear when the anchor itself leaves the view while part of
-     * the much larger crystal should still be visible.</p>
+     * <p>The previous calculated AABB did not eliminate the look-angle
+     * disappearance. The common source set cannot reference NeoForge's
+     * loader-added {@code AABB.INFINITE} constant, so this diagnostic uses a
+     * very large finite vanilla AABB instead. This does not load chunks and does
+     * not override
+     * {@link #getViewDistance()}; the block entity still has to exist client-side
+     * before it can render.</p>
+     *
+     * <p>The common/Fabric compile does not expose NeoForge's renderer extension,
+     * so this intentionally has no {@code @Override} annotation.</p>
      */
+    private static final AABB DIAGNOSTIC_RENDER_BOUNDS = new AABB(
+            -60_000_000.0D,
+            -60_000_000.0D,
+            -60_000_000.0D,
+            60_000_000.0D,
+            60_000_000.0D,
+            60_000_000.0D
+    );
+
+    @SuppressWarnings("unused")
     public AABB getRenderBoundingBox(CrystalHeartBlockEntity blockEntity) {
-        BlockPos pos = blockEntity.getBlockPos();
-
-        double centerX = pos.getX() + 0.5D;
-        double centerZ = pos.getZ() + 0.5D;
-
-        double horizontalRadius =
-                blockEntity.getWidthBlocks()
-                        * 0.5D
-                        * ROTATING_SQUARE_RADIUS_MULTIPLIER
-                        + RENDER_BOUNDS_MARGIN;
-
-        double minY =
-                pos.getY()
-                        + BOTTOM_POINT_OFFSET
-                        - BOB_AMPLITUDE_BLOCKS
-                        - RENDER_BOUNDS_MARGIN;
-
-        double maxY =
-                pos.getY()
-                        + BOTTOM_POINT_OFFSET
-                        + blockEntity.getHeightBlocks()
-                        + BOB_AMPLITUDE_BLOCKS
-                        + RENDER_BOUNDS_MARGIN;
-
-        return new AABB(
-                centerX - horizontalRadius,
-                minY,
-                centerZ - horizontalRadius,
-                centerX + horizontalRadius,
-                maxY,
-                centerZ + horizontalRadius
-        );
+        return DIAGNOSTIC_RENDER_BOUNDS;
     }
 
     @Override
@@ -177,11 +174,11 @@ public final class CrystalHeartBlockEntityRenderer
          * Minecraft's short default block-entity distance. This does NOT force
          * chunks to load; if the crystal's chunk is not rendered/loaded, the
          * block entity is not available to draw.
-         *
-         * A small margin keeps very large crystal geometry from disappearing
-         * exactly when the anchor reaches the edge of the player's view.
          */
         int renderDistanceChunks = Minecraft.getInstance().options.renderDistance().get();
         return Math.max(64, renderDistanceChunks * 16 + 32);
+    }
+
+    private record TexturePair(ResourceLocation top, ResourceLocation bottom) {
     }
 }

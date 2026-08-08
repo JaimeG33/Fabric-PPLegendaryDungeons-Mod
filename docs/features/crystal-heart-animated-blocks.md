@@ -54,24 +54,24 @@ Animation is client-side and is calculated from world time. The renderer current
 
 No server-side animation tick or per-frame network packet is required.
 
-## Per-face texture atlas variants
+## High-resolution top / bottom texture variants
 
-Three placeable variants currently exist so the final art direction can be tested directly in game:
+Three placeable variants still exist so the final art direction can be compared directly in game:
 
 - `pp_legendarydungeons:crystal_heart` -> Candidate A
 - `pp_legendarydungeons:crystal_heart_b` -> Candidate B
 - `pp_legendarydungeons:crystal_heart_c` -> Candidate C
 
-All three share the same block entity type, geometry, scale system, animation, and renderer. They differ only in which 64x32 face atlas is selected.
-
-Each atlas contains eight independent triangular face regions rather than one square image stretched around the whole crystal:
+Each candidate now uses two independent 128x128 textures:
 
 ```text
-upper 0 | upper 1 | upper 2 | upper 3
-lower 0 | lower 1 | lower 2 | lower 3
+crystal_heart_<variant>_top.png
+crystal_heart_<variant>_bottom.png
 ```
 
-Each atlas cell is 16x16 pixels. `CrystalHeartGeometry` maps one physical triangular face to each cell and applies a small per-face tint so neighboring facets remain visually distinct while the crystal rotates.
+The four upper physical faces share the top texture. The four lower physical faces share the bottom texture. Alternate sides mirror the UV coordinates and use subtle per-face tint differences so the rotating object still reads as a faceted gemstone.
+
+This replaces the previous 64x32 eight-face atlas approach. The older atlas PNGs are currently left in the asset folder for comparison/history, but the renderer no longer references them.
 
 Test commands:
 
@@ -87,21 +87,43 @@ The original `crystal_heart` id is deliberately retained as Candidate A so exist
 
 The renderer uses the player's configured chunk render distance rather than Minecraft's short default block-entity render distance. This does **not** force chunks to load; the crystal can only render when its chunk is available to the client.
 
-Because the visible crystal can be much larger than its one-block anchor, the renderer also calculates a render bounding box from the stored width and height. The horizontal radius includes a `sqrt(2)` allowance for Y-axis rotation, while the vertical bounds include the bobbing amplitude and a small safety margin.
+The earlier calculated bounding box did not eliminate the look-angle disappearance. The current diagnostic therefore returns a very large finite vanilla `AABB` from `getRenderBoundingBox()` while continuing to return `true` from `shouldRenderOffScreen()`.
 
-This prevents camera-frustum culling from treating the invisible one-block anchor as if it were the entire rendered object.
+NeoForge exposes an `AABB.INFINITE` helper for this kind of renderer diagnostic, but that constant is loader-added and cannot be referenced from the shared `common` source set because Fabric/common compilation only sees the vanilla `AABB` API. The large finite box gives us the same practical culling test while remaining compile-safe on both loaders.
+
+The diagnostic bounds do **not** force chunks to load and do not replace the renderer's configured view distance. If the look-angle disappearance remains after this change, the next investigation should focus on render-section/global block-entity handling rather than making the bounding box larger again.
 
 ## Texture / UV notes
 
-The original proof-of-concept texture was stretched across each long triangular face, which made it resemble an enlarged block texture. The current implementation separates geometry positions from UV coordinates so every face can use a purpose-built section of the atlas.
+The upper and lower textures are full-face assets rather than atlases. Each PNG dedicates almost the full 128x128 image to one triangular face, giving far more detail than the previous 16x16 atlas cells.
 
-The renderer also uses a cutout/no-cull render type rather than translucent blending. The crystal can still look luminous or glassy through its colors, highlights, and internal facet patterns without the depth-sorting artifacts that can appear on a very large translucent object.
+Current mapping:
 
-When editing an atlas:
+```text
+top texture:
+        apex
+         /\
+        /  \
+       /    \
+ left /______\ right
 
-- keep each face inside its 16x16 cell,
-- leave a small margin near the cell boundary to reduce texture sampling bleed,
-- review `CrystalHeartGeometry` whenever the atlas layout or crystal shape changes.
+bottom texture:
+ left ________ right
+       \    /
+        \  /
+         \/
+        apex
+```
+
+The renderer uses a cutout/no-cull render type rather than translucent blending. The crystal can still look luminous or glassy through its colors, highlights, and internal facet patterns without the depth-sorting artifacts that can appear on a very large translucent object.
+
+When editing one of the new textures:
+
+- keep the important artwork inside the triangular region,
+- keep edge highlights a few pixels away from the outermost texture border,
+- design the top and bottom as a visual pair,
+- remember that alternate sides mirror the texture horizontally,
+- review `CrystalHeartGeometry` if the crystal shape itself changes.
 
 ## Future expansion
 
