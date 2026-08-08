@@ -7,9 +7,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import porker.pp_legendarydungeons.LegendaryDungeons;
 import porker.pp_legendarydungeons.blocks.entity.DungeonRuleParentBlockEntity;
 import porker.pp_legendarydungeons.blocks.entity.DungeonRuleZoneBlockEntity;
+import porker.pp_legendarydungeons.blocks.entity.animated_blocks.crystal_heart.CrystalHeartBlockEntity;
 
 /**
- * Shared Architectury registration for dungeon controller block-entity types.
+ * Shared Architectury registration for block-entity types.
  */
 public final class ModBlockEntities {
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES =
@@ -36,6 +37,17 @@ public final class ModBlockEntities {
                             .of(
                                     DungeonRuleZoneBlockEntity::new,
                                     ModBlocks.DUNGEON_RULE_ZONE.get()
+                            )
+                            .build(null)
+            );
+
+    public static final RegistrySupplier<BlockEntityType<CrystalHeartBlockEntity>>
+            CRYSTAL_HEART = BLOCK_ENTITY_TYPES.register(
+                    "crystal_heart",
+                    () -> BlockEntityType.Builder
+                            .of(
+                                    CrystalHeartBlockEntity::new,
+                                    ModBlocks.CRYSTAL_HEART.get()
                             )
                             .build(null)
             );

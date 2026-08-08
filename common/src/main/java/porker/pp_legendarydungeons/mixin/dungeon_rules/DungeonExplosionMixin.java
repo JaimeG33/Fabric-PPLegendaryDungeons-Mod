@@ -3,7 +3,6 @@ package porker.pp_legendarydungeons.mixin.dungeon_rules;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Final;
@@ -23,54 +22,31 @@ public abstract class DungeonExplosionMixin {
 
     @Shadow
     @Final
-    private double x;
-
-    @Shadow
-    @Final
-    private double y;
-
-    @Shadow
-    @Final
-    private double z;
-
-    @Shadow
-    @Final
     private ObjectArrayList<BlockPos> toBlow;
 
     /**
-     * If the explosion itself starts inside a protected box, cancel the whole
-     * explosion before it can damage blocks or entities.
+     * Wind charges and similar non-destructive effects use TRIGGER_BLOCK so
+     * they can activate compatible buttons, levers, and other blocks. Their
+     * affected-block list must remain intact for those triggers to fire.
      */
-    @Inject(method = "explode", at = @At("HEAD"), cancellable = true)
-    private void ppLegendaryDungeons$blockDungeonExplosion(CallbackInfo callback) {
-        if (!(level instanceof ServerLevel serverLevel)) {
-            return;
-        }
-
-        BlockPos center = new BlockPos(
-                Mth.floor(x),
-                Mth.floor(y),
-                Mth.floor(z)
-        );
-
-        if (DungeonRuleManager.isRuleEnforced(
-                serverLevel,
-                center,
-                DungeonRule.EXPLOSIONS
-        )) {
-            callback.cancel();
-        }
+    private boolean ppLegendaryDungeons$isTriggerBlockExplosion() {
+        Explosion explosion = (Explosion) (Object) this;
+        return explosion.getBlockInteraction() == Explosion.BlockInteraction.TRIGGER_BLOCK;
     }
 
     /**
-     * An explosion can begin outside a protected box but still reach blocks
-     * inside it. Remove those protected block positions from the final list so
-     * the blast cannot destroy them. Entity damage from an outside-origin blast
-     * is intentionally left unchanged.
+     * Preserve the explosion's entity damage and knockback, but remove any
+     * affected block positions covered by an active EXPLOSIONS dungeon rule
+     * before Minecraft performs the later block-destruction phase.
+     *
+     * <p>This works whether the explosion begins inside or outside the dungeon.
+     * TRIGGER_BLOCK explosions are intentionally left unchanged so wind-charge
+     * redstone mechanics continue to work.</p>
      */
     @Inject(method = "explode", at = @At("RETURN"))
-    private void ppLegendaryDungeons$protectDungeonBlocksFromOutsideBlast(CallbackInfo callback) {
-        if (!(level instanceof ServerLevel serverLevel)) {
+    private void ppLegendaryDungeons$protectDungeonBlocks(CallbackInfo callback) {
+        if (!(level instanceof ServerLevel serverLevel)
+                || ppLegendaryDungeons$isTriggerBlockExplosion()) {
             return;
         }
 

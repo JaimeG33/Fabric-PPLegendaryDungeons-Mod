@@ -8,12 +8,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import porker.pp_legendarydungeons.LegendaryDungeons;
+import porker.pp_legendarydungeons.blocks.animated_blocks.crystal_heart.CrystalHeartBlock;
 import porker.pp_legendarydungeons.blocks.dungeon_rules.DungeonRuleParentBlock;
 import porker.pp_legendarydungeons.blocks.dungeon_rules.DungeonRuleZoneBlock;
 
 /**
- * Shared Architectury registration for the dungeon controller blocks and their
- * corresponding block items.
+ * Shared Architectury registration for the dungeon controller blocks, animated
+ * world objects, and their corresponding block items.
  *
  * <p>The public fields are registry suppliers rather than eagerly constructed
  * instances. Call sites must use {@link RegistrySupplier#get()} only after the
@@ -38,6 +39,12 @@ public final class ModBlocks {
                     () -> new DungeonRuleZoneBlock(controllerProperties())
             );
 
+    public static final RegistrySupplier<CrystalHeartBlock> CRYSTAL_HEART =
+            BLOCKS.register(
+                    "crystal_heart",
+                    () -> new CrystalHeartBlock(animatedDecorationProperties())
+            );
+
     public static final RegistrySupplier<BlockItem> DUNGEON_RULE_PARENT_ITEM =
             ITEMS.register(
                     "dungeon_rule_parent",
@@ -52,6 +59,15 @@ public final class ModBlocks {
                     "dungeon_rule_zone",
                     () -> new BlockItem(
                             DUNGEON_RULE_ZONE.get(),
+                            new Item.Properties()
+                    )
+            );
+
+    public static final RegistrySupplier<BlockItem> CRYSTAL_HEART_ITEM =
+            ITEMS.register(
+                    "crystal_heart",
+                    () -> new BlockItem(
+                            CRYSTAL_HEART.get(),
                             new Item.Properties()
                     )
             );
@@ -77,6 +93,14 @@ public final class ModBlocks {
     }
 
     private static BlockBehaviour.Properties controllerProperties() {
+        return BlockBehaviour.Properties.of()
+                .strength(-1.0F, 3_600_000.0F)
+                .noCollission()
+                .noOcclusion()
+                .noLootTable();
+    }
+
+    private static BlockBehaviour.Properties animatedDecorationProperties() {
         return BlockBehaviour.Properties.of()
                 .strength(-1.0F, 3_600_000.0F)
                 .noCollission()

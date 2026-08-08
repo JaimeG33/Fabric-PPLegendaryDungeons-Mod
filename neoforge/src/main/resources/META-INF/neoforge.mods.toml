@@ -47,7 +47,7 @@ side = "BOTH"
 [[dependencies.pp_legendarydungeons]]
 modId = "cobblemon"
 type = "required"
-versionRange = "[1.7.3,1.7.4)"
+versionRange = "[1.7.3,1.8.0]"
 ordering = "AFTER"
 side = "BOTH"
 
