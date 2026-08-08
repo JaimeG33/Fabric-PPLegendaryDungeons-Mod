@@ -30,17 +30,20 @@ common/src/main/java/porker/pp_legendarydungeons/
 
 This layout is intentionally reusable for future animated block entities.
 
-## Size control
+## Size and bobbing control
 
-Each Crystal Heart block entity stores two NBT values:
+Each Crystal Heart block entity stores three NBT values:
 
 - `CrystalWidth`
 - `CrystalHeight`
+- `BobAmplitude`
 
 Example:
 
 ```mcfunction
 /data merge block X Y Z {CrystalWidth:5.5f,CrystalHeight:12.0f}
+/data merge block X Y Z {BobAmplitude:0.85f}
+/data merge block X Y Z {CrystalWidth:3.0f,CrystalHeight:8.0f,BobAmplitude:0.4f}
 ```
 
 Structure blocks preserve block-entity NBT, so a dungeon structure can save its intended heart dimensions without another registered block/model combination.
@@ -62,7 +65,9 @@ Three placeable variants still exist so the final art direction can be compared 
 - `pp_legendarydungeons:crystal_heart_b` -> Candidate B
 - `pp_legendarydungeons:crystal_heart_c` -> Candidate C
 
-Each candidate now uses two independent 128x128 textures:
+Candidate A keeps the current texture family. Candidate B uses a smoother green texture inspired by the broad shading of a redstone block, while Candidate C uses a brighter, more crystalline green texture.
+
+Each candidate uses two independent 128x128 textures:
 
 ```text
 crystal_heart_<variant>_top.png
@@ -71,7 +76,13 @@ crystal_heart_<variant>_bottom.png
 
 The four upper physical faces share the top texture. The four lower physical faces share the bottom texture. Alternate sides mirror the UV coordinates and use subtle per-face tint differences so the rotating object still reads as a faceted gemstone.
 
-This replaces the previous 64x32 eight-face atlas approach. The older atlas PNGs are currently left in the asset folder for comparison/history, but the renderer no longer references them.
+The texture families are organized under:
+
+```text
+textures/entity/animated_blocks/crystal_heart/
+textures/entity/animated_blocks/crystal_heart2/
+textures/entity/animated_blocks/crystal_heart3/
+```
 
 Test commands:
 
@@ -124,6 +135,10 @@ When editing one of the new textures:
 - design the top and bottom as a visual pair,
 - remember that alternate sides mirror the texture horizontally,
 - review `CrystalHeartGeometry` if the crystal shape itself changes.
+
+## Creative tab
+
+The `PP Legendary Dungeons` creative tab contains the three Crystal Heart variants and the currently registered dungeon-rule block items. Its icon currently uses the existing Crystal Heart A inventory item.
 
 ## Future expansion
 

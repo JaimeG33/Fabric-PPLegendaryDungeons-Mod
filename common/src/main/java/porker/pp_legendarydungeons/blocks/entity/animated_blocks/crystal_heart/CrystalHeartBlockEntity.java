@@ -23,18 +23,23 @@ import porker.pp_legendarydungeons.setup.ModBlockEntities;
 public final class CrystalHeartBlockEntity extends BlockEntity {
     public static final String WIDTH_NBT_KEY = "CrystalWidth";
     public static final String HEIGHT_NBT_KEY = "CrystalHeight";
+    public static final String BOB_AMPLITUDE_NBT_KEY = "BobAmplitude";
 
     /** Matches the final floor-anchored datapack particle-heart proportions. */
     public static final float DEFAULT_WIDTH_BLOCKS = 5.5F;
     public static final float DEFAULT_HEIGHT_BLOCKS = 12.0F;
+    public static final float DEFAULT_BOB_AMPLITUDE_BLOCKS = 0.35F;
 
     public static final float MIN_WIDTH_BLOCKS = 0.25F;
     public static final float MAX_WIDTH_BLOCKS = 64.0F;
     public static final float MIN_HEIGHT_BLOCKS = 0.25F;
     public static final float MAX_HEIGHT_BLOCKS = 128.0F;
+    public static final float MIN_BOB_AMPLITUDE_BLOCKS = 0.0F;
+    public static final float MAX_BOB_AMPLITUDE_BLOCKS = 8.0F;
 
     private float widthBlocks = DEFAULT_WIDTH_BLOCKS;
     private float heightBlocks = DEFAULT_HEIGHT_BLOCKS;
+    private float bobAmplitudeBlocks = DEFAULT_BOB_AMPLITUDE_BLOCKS;
 
     public CrystalHeartBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.CRYSTAL_HEART.get(), pos, state);
@@ -46,6 +51,10 @@ public final class CrystalHeartBlockEntity extends BlockEntity {
 
     public float getHeightBlocks() {
         return heightBlocks;
+    }
+
+    public float getBobAmplitudeBlocks() {
+        return bobAmplitudeBlocks;
     }
 
     /**
@@ -71,6 +80,7 @@ public final class CrystalHeartBlockEntity extends BlockEntity {
         super.saveAdditional(tag, registries);
         tag.putFloat(WIDTH_NBT_KEY, widthBlocks);
         tag.putFloat(HEIGHT_NBT_KEY, heightBlocks);
+        tag.putFloat(BOB_AMPLITUDE_NBT_KEY, bobAmplitudeBlocks);
     }
 
     @Override
@@ -84,6 +94,10 @@ public final class CrystalHeartBlockEntity extends BlockEntity {
         heightBlocks = tag.contains(HEIGHT_NBT_KEY)
                 ? clampHeight(tag.getFloat(HEIGHT_NBT_KEY))
                 : DEFAULT_HEIGHT_BLOCKS;
+
+        bobAmplitudeBlocks = tag.contains(BOB_AMPLITUDE_NBT_KEY)
+                ? clampBobAmplitude(tag.getFloat(BOB_AMPLITUDE_NBT_KEY))
+                : DEFAULT_BOB_AMPLITUDE_BLOCKS;
     }
 
     @Override
@@ -110,5 +124,17 @@ public final class CrystalHeartBlockEntity extends BlockEntity {
         }
 
         return Mth.clamp(value, MIN_HEIGHT_BLOCKS, MAX_HEIGHT_BLOCKS);
+    }
+
+    private static float clampBobAmplitude(float value) {
+        if (!Float.isFinite(value)) {
+            return DEFAULT_BOB_AMPLITUDE_BLOCKS;
+        }
+
+        return Mth.clamp(
+                value,
+                MIN_BOB_AMPLITUDE_BLOCKS,
+                MAX_BOB_AMPLITUDE_BLOCKS
+        );
     }
 }

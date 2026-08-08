@@ -19,6 +19,7 @@ import porker.pp_legendarydungeons.pokemon.spawn.PokemonProfileReloadRegistrar;
 import porker.pp_legendarydungeons.server.ServerTickScheduler;
 import porker.pp_legendarydungeons.setup.ModBlockEntities;
 import porker.pp_legendarydungeons.setup.ModBlocks;
+import porker.pp_legendarydungeons.setup.ModCreativeTabs;
 import porker.pp_legendarydungeons.setup.ModScoreboards;
 import porker.pp_legendarydungeons.setup.ModStructureTypes;
 import porker.pp_legendarydungeons.summon.dungeon_completion.DungeonCompletionRegistry;
@@ -51,6 +52,7 @@ public final class LegendaryDungeons {
         ModStructureTypes.register();
         ModBlocks.register();
         ModBlockEntities.register();
+        ModCreativeTabs.register();
 
         /*
          * Shared Architectury networking and event boundaries.

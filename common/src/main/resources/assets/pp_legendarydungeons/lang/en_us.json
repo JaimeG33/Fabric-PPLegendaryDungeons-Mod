@@ -4,5 +4,6 @@
   "block.pp_legendarydungeons.dungeon_rule_zone": "Dungeon Rule Zone",
   "block.pp_legendarydungeons.crystal_heart": "Crystal Heart A",
   "block.pp_legendarydungeons.crystal_heart_b": "Crystal Heart B",
-  "block.pp_legendarydungeons.crystal_heart_c": "Crystal Heart C"
+  "block.pp_legendarydungeons.crystal_heart_c": "Crystal Heart C",
+  "itemGroup.pp_legendarydungeons.main": "PP Legendary Dungeons"
 }

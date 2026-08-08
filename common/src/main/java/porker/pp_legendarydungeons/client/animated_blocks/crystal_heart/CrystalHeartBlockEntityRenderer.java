@@ -24,16 +24,24 @@ import porker.pp_legendarydungeons.setup.ModBlocks;
  */
 public final class CrystalHeartBlockEntityRenderer
         implements BlockEntityRenderer<CrystalHeartBlockEntity> {
-    private static final TexturePair TEXTURES_A = texturePair("a");
-    private static final TexturePair TEXTURES_B = texturePair("b");
-    private static final TexturePair TEXTURES_C = texturePair("c");
+    private static final TexturePair TEXTURES_A = texturePair(
+            "crystal_heart",
+            "crystal_heart_a"
+    );
+    private static final TexturePair TEXTURES_B = texturePair(
+            "crystal_heart2",
+            "crystal_heart_b"
+    );
+    private static final TexturePair TEXTURES_C = texturePair(
+            "crystal_heart3",
+            "crystal_heart_c"
+    );
 
     /** 0.5 degrees/tick = 10 degrees/second = one turn every 36 seconds. */
     private static final float DEGREES_PER_TICK = 0.5F;
 
     /** Slow, subtle hover: roughly one full bob cycle every 7.85 seconds. */
     private static final float BOB_RADIANS_PER_TICK = 0.04F;
-    private static final float BOB_AMPLITUDE_BLOCKS = 0.18F;
 
     /**
      * Keeps the bottom point slightly above the invisible anchor block's base,
@@ -60,7 +68,8 @@ public final class CrystalHeartBlockEntityRenderer
 
         float time = blockEntity.getLevel().getGameTime() + partialTick;
         float rotationDegrees = (time * DEGREES_PER_TICK) % 360.0F;
-        float bobOffset = Mth.sin(time * BOB_RADIANS_PER_TICK) * BOB_AMPLITUDE_BLOCKS;
+        float bobOffset = Mth.sin(time * BOB_RADIANS_PER_TICK)
+                * blockEntity.getBobAmplitudeBlocks();
 
         poseStack.pushPose();
 
@@ -119,9 +128,8 @@ public final class CrystalHeartBlockEntityRenderer
         return TEXTURES_A;
     }
 
-    private static TexturePair texturePair(String variant) {
-        String base = "textures/entity/animated_blocks/crystal_heart/crystal_heart_"
-                + variant;
+    private static TexturePair texturePair(String folder, String baseName) {
+        String base = "textures/entity/animated_blocks/" + folder + "/" + baseName;
 
         return new TexturePair(
                 ResourceLocation.fromNamespaceAndPath(
