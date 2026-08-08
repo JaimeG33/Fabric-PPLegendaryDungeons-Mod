@@ -9,9 +9,11 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.phys.AABB;
 import porker.pp_legendarydungeons.LegendaryDungeons;
 import porker.pp_legendarydungeons.blocks.entity.animated_blocks.crystal_heart.CrystalHeartBlockEntity;
 import porker.pp_legendarydungeons.setup.ModBlocks;
@@ -50,6 +52,13 @@ public final class CrystalHeartBlockEntityRenderer
      */
     private static final double BOTTOM_POINT_OFFSET = 0.25D;
 
+    /**
+     * Extra culling margin around the calculated visual bounds. The X/Z radius
+     * also accounts for the crystal rotating around Y.
+     */
+    private static final double RENDER_BOUNDS_MARGIN = 0.75D;
+    private static final double ROTATING_SQUARE_RADIUS_MULTIPLIER = Math.sqrt(2.0D);
+
     public CrystalHeartBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
     }
 
@@ -84,7 +93,7 @@ public final class CrystalHeartBlockEntityRenderer
         );
 
         VertexConsumer consumer = bufferSource.getBuffer(
-                RenderType.entityTranslucent(resolveTexture(blockEntity.getBlockState().getBlock()))
+                RenderType.entityCutoutNoCull(resolveTexture(blockEntity.getBlockState().getBlock()))
         );
 
         // Full-bright keeps the dungeon landmark readable in a dark crystal cave.
@@ -114,6 +123,51 @@ public final class CrystalHeartBlockEntityRenderer
     public boolean shouldRenderOffScreen(CrystalHeartBlockEntity blockEntity) {
         // The visual can be much larger than the invisible one-block anchor.
         return true;
+    }
+
+    /**
+     * NeoForge's BlockEntityRenderer interface inherits a render-bounds extension
+     * that calls this method. The common/Fabric compile does not declare that
+     * extension, so this intentionally has no @Override annotation.
+     *
+     * <p>The box describes the full rendered crystal rather than the one-block
+     * invisible anchor. This prevents camera-frustum culling from making the
+     * crystal disappear when the anchor itself leaves the view while part of
+     * the much larger crystal should still be visible.</p>
+     */
+    public AABB getRenderBoundingBox(CrystalHeartBlockEntity blockEntity) {
+        BlockPos pos = blockEntity.getBlockPos();
+
+        double centerX = pos.getX() + 0.5D;
+        double centerZ = pos.getZ() + 0.5D;
+
+        double horizontalRadius =
+                blockEntity.getWidthBlocks()
+                        * 0.5D
+                        * ROTATING_SQUARE_RADIUS_MULTIPLIER
+                        + RENDER_BOUNDS_MARGIN;
+
+        double minY =
+                pos.getY()
+                        + BOTTOM_POINT_OFFSET
+                        - BOB_AMPLITUDE_BLOCKS
+                        - RENDER_BOUNDS_MARGIN;
+
+        double maxY =
+                pos.getY()
+                        + BOTTOM_POINT_OFFSET
+                        + blockEntity.getHeightBlocks()
+                        + BOB_AMPLITUDE_BLOCKS
+                        + RENDER_BOUNDS_MARGIN;
+
+        return new AABB(
+                centerX - horizontalRadius,
+                minY,
+                centerZ - horizontalRadius,
+                centerX + horizontalRadius,
+                maxY,
+                centerZ + horizontalRadius
+        );
     }
 
     @Override
