@@ -85,9 +85,6 @@ public final class CrystalHeartBlockEntityRenderer
         VertexConsumer topConsumer = bufferSource.getBuffer(
                 RenderType.entityCutoutNoCull(textures.top())
         );
-        VertexConsumer bottomConsumer = bufferSource.getBuffer(
-                RenderType.entityCutoutNoCull(textures.bottom())
-        );
 
         CrystalHeartGeometry.renderTop(
                 poseStack.last(),
@@ -95,6 +92,11 @@ public final class CrystalHeartBlockEntityRenderer
                 LightTexture.FULL_BRIGHT,
                 packedOverlay
         );
+
+        VertexConsumer bottomConsumer = bufferSource.getBuffer(
+                RenderType.entityCutoutNoCull(textures.bottom())
+        );
+
         CrystalHeartGeometry.renderBottom(
                 poseStack.last(),
                 bottomConsumer,
