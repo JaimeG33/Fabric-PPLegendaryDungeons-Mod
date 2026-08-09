@@ -15,10 +15,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.AABB;
 import porker.pp_legendarydungeons.LegendaryDungeons;
 import porker.pp_legendarydungeons.blocks.entity.animated_blocks.crystal_heart.CrystalHeartBlockEntity;
+import porker.pp_legendarydungeons.blocks.entity.animated_blocks.crystal_heart.CrystalHeartPreset;
 import porker.pp_legendarydungeons.setup.ModBlocks;
 
+import java.util.EnumMap;
+import java.util.Map;
+
 /**
- * Renders the Crystal Heart as a large, slowly rotating textured bipyramid.
+ * Renders the Crystal Heart as a large, slowly rotating textured crystal.
  * Animation is derived from client world time and requires no server ticking or
  * per-tick network packets.
  */
@@ -36,6 +40,14 @@ public final class CrystalHeartBlockEntityRenderer
             "crystal_heart3",
             "crystal_heart_c"
     );
+
+    /**
+     * Presets currently all point to the active original/A artwork. Keeping this
+     * mapping preset-driven means a future shape can receive dedicated art by
+     * changing CrystalHeartPreset instead of rewriting renderer logic.
+     */
+    private static final Map<CrystalHeartPreset, TexturePair> PRESET_TEXTURES =
+            createPresetTextures();
 
     /** 0.5 degrees/tick = 10 degrees/second = one turn every 36 seconds. */
     private static final float DEGREES_PER_TICK = 0.5F;
@@ -70,6 +82,7 @@ public final class CrystalHeartBlockEntityRenderer
         float rotationDegrees = (time * DEGREES_PER_TICK) % 360.0F;
         float bobOffset = Mth.sin(time * BOB_RADIANS_PER_TICK)
                 * blockEntity.getBobAmplitudeBlocks();
+        CrystalHeartPreset preset = blockEntity.getPreset();
 
         poseStack.pushPose();
 
@@ -77,14 +90,17 @@ public final class CrystalHeartBlockEntityRenderer
         poseStack.translate(0.5D, BOTTOM_POINT_OFFSET + bobOffset, 0.5D);
         poseStack.mulPose(Axis.YP.rotationDegrees(rotationDegrees));
 
-        // One normalized mesh can now represent any width/height combination.
+        // Every normalized preset still uses the same width/height NBT scaling.
         poseStack.scale(
                 blockEntity.getWidthBlocks(),
                 blockEntity.getHeightBlocks(),
                 blockEntity.getWidthBlocks()
         );
 
-        TexturePair textures = resolveTextures(blockEntity.getBlockState().getBlock());
+        TexturePair textures = resolveTextures(
+                blockEntity.getBlockState().getBlock(),
+                preset
+        );
 
         /*
          * Top and bottom halves deliberately use separate 128x128 textures.
@@ -98,6 +114,7 @@ public final class CrystalHeartBlockEntityRenderer
         CrystalHeartGeometry.renderTop(
                 poseStack.last(),
                 topConsumer,
+                preset,
                 LightTexture.FULL_BRIGHT,
                 packedOverlay
         );
@@ -109,6 +126,7 @@ public final class CrystalHeartBlockEntityRenderer
         CrystalHeartGeometry.renderBottom(
                 poseStack.last(),
                 bottomConsumer,
+                preset,
                 LightTexture.FULL_BRIGHT,
                 packedOverlay
         );
@@ -116,7 +134,22 @@ public final class CrystalHeartBlockEntityRenderer
         poseStack.popPose();
     }
 
-    private static TexturePair resolveTextures(Block block) {
+    private static Map<CrystalHeartPreset, TexturePair> createPresetTextures() {
+        EnumMap<CrystalHeartPreset, TexturePair> textures =
+                new EnumMap<>(CrystalHeartPreset.class);
+
+        for (CrystalHeartPreset preset : CrystalHeartPreset.values()) {
+            textures.put(
+                    preset,
+                    texturePair(preset.textureFolder(), preset.textureBaseName())
+            );
+        }
+
+        return textures;
+    }
+
+    private static TexturePair resolveTextures(Block block, CrystalHeartPreset preset) {
+        // Keep the B/C registered blocks working as legacy texture test variants.
         if (block == ModBlocks.CRYSTAL_HEART_C.get()) {
             return TEXTURES_C;
         }
@@ -125,7 +158,7 @@ public final class CrystalHeartBlockEntityRenderer
             return TEXTURES_B;
         }
 
-        return TEXTURES_A;
+        return PRESET_TEXTURES.getOrDefault(preset, TEXTURES_A);
     }
 
     private static TexturePair texturePair(String folder, String baseName) {

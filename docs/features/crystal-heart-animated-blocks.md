@@ -30,23 +30,31 @@ common/src/main/java/porker/pp_legendarydungeons/
 
 This layout is intentionally reusable for future animated block entities.
 
-## Size and bobbing control
+## Shape, size, and bobbing control
 
-Each Crystal Heart block entity stores three NBT values:
+Each Crystal Heart block entity stores four NBT values:
 
+- `CrystalPreset`
 - `CrystalWidth`
 - `CrystalHeight`
 - `BobAmplitude`
 
-Example:
+Available shape presets:
+
+- `base` - the existing Crystal Heart silhouette and compatibility fallback.
+- `long_point` - a short upper cap with a much longer lower point.
+- `spire` - a taller crystal profile intended to be paired with a narrower width.
+
+Examples:
 
 ```mcfunction
-/data merge block X Y Z {CrystalWidth:5.5f,CrystalHeight:12.0f}
+/data merge block X Y Z {CrystalPreset:"base",CrystalWidth:5.5f,CrystalHeight:12.0f}
+/data merge block X Y Z {CrystalPreset:"long_point",CrystalWidth:5.5f,CrystalHeight:12.0f}
+/data merge block X Y Z {CrystalPreset:"spire",CrystalWidth:3.5f,CrystalHeight:12.0f}
 /data merge block X Y Z {BobAmplitude:0.85f}
-/data merge block X Y Z {CrystalWidth:3.0f,CrystalHeight:8.0f,BobAmplitude:0.4f}
 ```
 
-Structure blocks preserve block-entity NBT, so a dungeon structure can save its intended heart dimensions without another registered block/model combination.
+Missing or invalid `CrystalPreset` values fall back to `base`, so existing structures keep the current shape. Width, height, and bobbing remain independent of the preset and structure blocks preserve all four values.
 
 ## Animation
 
@@ -65,7 +73,7 @@ Three placeable variants still exist so the final art direction can be compared 
 - `pp_legendarydungeons:crystal_heart_b` -> Candidate B
 - `pp_legendarydungeons:crystal_heart_c` -> Candidate C
 
-Candidate A keeps the current texture family. Candidate B uses a smoother green texture inspired by the broad shading of a redstone block, while Candidate C uses a brighter, more crystalline green texture.
+Candidate A / the original `crystal_heart` texture family is the active baseline. Candidate B and Candidate C remain registered as legacy texture-test blocks for comparison.
 
 Each candidate uses two independent 128x128 textures:
 
@@ -92,7 +100,9 @@ Test commands:
 /give @s pp_legendarydungeons:crystal_heart_c
 ```
 
-The original `crystal_heart` id is deliberately retained as Candidate A so existing structures/worlds using that id are not renamed.
+The original `crystal_heart` id is deliberately retained as the baseline so existing structures/worlds using that id are not renamed. Its `base`, `long_point`, and `spire` presets currently all reuse the same A top/bottom texture pair. The B/C block ids continue to override that choice with their legacy test textures.
+
+Preset texture paths are declared in `CrystalHeartPreset`, so a future shape can be given dedicated art without changing the renderer's selection logic. No shape-specific texture folders are created until a preset actually needs different artwork.
 
 ## Render distance and culling
 
@@ -134,7 +144,7 @@ When editing one of the new textures:
 - keep edge highlights a few pixels away from the outermost texture border,
 - design the top and bottom as a visual pair,
 - remember that alternate sides mirror the texture horizontally,
-- review `CrystalHeartGeometry` if the crystal shape itself changes.
+- review `CrystalHeartPreset` and `CrystalHeartGeometry` if the crystal shape itself changes.
 
 ## Creative tab
 

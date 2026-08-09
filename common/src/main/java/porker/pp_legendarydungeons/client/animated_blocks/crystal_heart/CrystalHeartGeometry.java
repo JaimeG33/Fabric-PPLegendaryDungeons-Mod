@@ -3,28 +3,25 @@ package porker.pp_legendarydungeons.client.animated_blocks.crystal_heart;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import org.joml.Vector3f;
+import porker.pp_legendarydungeons.blocks.entity.animated_blocks.crystal_heart.CrystalHeartPreset;
+
+import java.util.EnumMap;
+import java.util.Map;
 
 /**
- * Loader-neutral normalized mesh for the Crystal Heart.
+ * Loader-neutral normalized meshes for the Crystal Heart shape presets.
  *
- * <p>The mesh is a square bipyramid (an elongated plumbob/diamond). X/Z span
- * -0.5..0.5 and Y spans 0..1. The renderer scales this normalized mesh to the
- * block entity's requested width and height, so no alternate model files are
- * needed for different sizes.</p>
+ * <p>Every mesh keeps X/Z in -0.5..0.5 and Y in 0..1. The renderer then scales
+ * the selected normalized mesh to the block entity's requested width and height,
+ * so every preset keeps the same NBT sizing controls.</p>
  *
  * <p>The upper four faces share one full-resolution triangular texture and the
- * lower four faces share another. Alternate faces mirror the UVs and use subtle
- * tint differences so the crystal keeps visible facet changes while rotating
- * without forcing eight separate art files.</p>
+ * lower four faces share another. Changing the waist position changes the model
+ * silhouette without requiring a resized texture.</p>
  */
 public final class CrystalHeartGeometry {
     private static final Position TOP = new Position(0.0F, 1.0F, 0.0F);
     private static final Position BOTTOM = new Position(0.0F, 0.0F, 0.0F);
-
-    private static final Position NORTH = new Position(0.0F, 0.46F, -0.5F);
-    private static final Position EAST = new Position(0.5F, 0.46F, 0.0F);
-    private static final Position SOUTH = new Position(0.0F, 0.46F, 0.5F);
-    private static final Position WEST = new Position(-0.5F, 0.46F, 0.0F);
 
     private static final Uv TOP_APEX = new Uv(0.50F, 0.015625F);
     private static final Uv TOP_LEFT = new Uv(0.015625F, 0.984375F);
@@ -34,19 +31,7 @@ public final class CrystalHeartGeometry {
     private static final Uv BOTTOM_LEFT = new Uv(0.015625F, 0.015625F);
     private static final Uv BOTTOM_RIGHT = new Uv(0.984375F, 0.015625F);
 
-    private static final Face[] UPPER_FACES = new Face[] {
-            face(TOP, EAST, NORTH, false, 255, 255, 255),
-            face(TOP, SOUTH, EAST, true, 238, 255, 242),
-            face(TOP, WEST, SOUTH, false, 208, 232, 215),
-            face(TOP, NORTH, WEST, true, 244, 255, 247)
-    };
-
-    private static final Face[] LOWER_FACES = new Face[] {
-            face(BOTTOM, NORTH, EAST, false, 242, 255, 245),
-            face(BOTTOM, EAST, SOUTH, true, 222, 246, 229),
-            face(BOTTOM, SOUTH, WEST, false, 196, 222, 205),
-            face(BOTTOM, WEST, NORTH, true, 232, 251, 238)
-    };
+    private static final Map<CrystalHeartPreset, Mesh> MESHES = createMeshes();
 
     private CrystalHeartGeometry() {
     }
@@ -54,10 +39,11 @@ public final class CrystalHeartGeometry {
     public static void renderTop(
             PoseStack.Pose pose,
             VertexConsumer consumer,
+            CrystalHeartPreset preset,
             int packedLight,
             int packedOverlay
     ) {
-        for (Face face : UPPER_FACES) {
+        for (Face face : meshFor(preset).upperFaces()) {
             Uv left = face.mirrored ? TOP_RIGHT : TOP_LEFT;
             Uv right = face.mirrored ? TOP_LEFT : TOP_RIGHT;
 
@@ -77,10 +63,11 @@ public final class CrystalHeartGeometry {
     public static void renderBottom(
             PoseStack.Pose pose,
             VertexConsumer consumer,
+            CrystalHeartPreset preset,
             int packedLight,
             int packedOverlay
     ) {
-        for (Face face : LOWER_FACES) {
+        for (Face face : meshFor(preset).lowerFaces()) {
             Uv left = face.mirrored ? BOTTOM_RIGHT : BOTTOM_LEFT;
             Uv right = face.mirrored ? BOTTOM_LEFT : BOTTOM_RIGHT;
 
@@ -95,6 +82,44 @@ public final class CrystalHeartGeometry {
                     packedOverlay
             );
         }
+    }
+
+    private static Map<CrystalHeartPreset, Mesh> createMeshes() {
+        EnumMap<CrystalHeartPreset, Mesh> meshes = new EnumMap<>(CrystalHeartPreset.class);
+
+        for (CrystalHeartPreset preset : CrystalHeartPreset.values()) {
+            meshes.put(preset, createMesh(preset.waistY()));
+        }
+
+        return meshes;
+    }
+
+    private static Mesh createMesh(float waistY) {
+        Position north = new Position(0.0F, waistY, -0.5F);
+        Position east = new Position(0.5F, waistY, 0.0F);
+        Position south = new Position(0.0F, waistY, 0.5F);
+        Position west = new Position(-0.5F, waistY, 0.0F);
+
+        Face[] upperFaces = new Face[] {
+                face(TOP, east, north, false, 255, 255, 255),
+                face(TOP, south, east, true, 238, 255, 242),
+                face(TOP, west, south, false, 208, 232, 215),
+                face(TOP, north, west, true, 244, 255, 247)
+        };
+
+        Face[] lowerFaces = new Face[] {
+                face(BOTTOM, north, east, false, 242, 255, 245),
+                face(BOTTOM, east, south, true, 222, 246, 229),
+                face(BOTTOM, south, west, false, 196, 222, 205),
+                face(BOTTOM, west, north, true, 232, 251, 238)
+        };
+
+        return new Mesh(upperFaces, lowerFaces);
+    }
+
+    private static Mesh meshFor(CrystalHeartPreset preset) {
+        Mesh mesh = MESHES.get(preset);
+        return mesh != null ? mesh : MESHES.get(CrystalHeartPreset.BASE);
     }
 
     private static Face face(
@@ -182,5 +207,8 @@ public final class CrystalHeartGeometry {
             int green,
             int blue
     ) {
+    }
+
+    private record Mesh(Face[] upperFaces, Face[] lowerFaces) {
     }
 }

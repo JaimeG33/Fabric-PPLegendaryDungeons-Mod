@@ -15,12 +15,13 @@ import porker.pp_legendarydungeons.setup.ModBlockEntities;
 /**
  * Persistent per-instance settings for a Crystal Heart.
  *
- * <p>Width and height are stored independently in NBT so one registered block
- * can represent many differently sized hearts. Structure blocks preserve this
- * NBT, so a dungeon can save a specific size without requiring another block
- * variant or model.</p>
+ * <p>Shape, width, height, and bobbing are stored independently in NBT so one
+ * registered block can represent many differently proportioned hearts.
+ * Structure blocks preserve this NBT, so a dungeon can save a specific preset
+ * and size without requiring another block variant or model.</p>
  */
 public final class CrystalHeartBlockEntity extends BlockEntity {
+    public static final String PRESET_NBT_KEY = "CrystalPreset";
     public static final String WIDTH_NBT_KEY = "CrystalWidth";
     public static final String HEIGHT_NBT_KEY = "CrystalHeight";
     public static final String BOB_AMPLITUDE_NBT_KEY = "BobAmplitude";
@@ -37,12 +38,17 @@ public final class CrystalHeartBlockEntity extends BlockEntity {
     public static final float MIN_BOB_AMPLITUDE_BLOCKS = 0.0F;
     public static final float MAX_BOB_AMPLITUDE_BLOCKS = 8.0F;
 
+    private CrystalHeartPreset preset = CrystalHeartPreset.BASE;
     private float widthBlocks = DEFAULT_WIDTH_BLOCKS;
     private float heightBlocks = DEFAULT_HEIGHT_BLOCKS;
     private float bobAmplitudeBlocks = DEFAULT_BOB_AMPLITUDE_BLOCKS;
 
     public CrystalHeartBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.CRYSTAL_HEART.get(), pos, state);
+    }
+
+    public CrystalHeartPreset getPreset() {
+        return preset;
     }
 
     public float getWidthBlocks() {
@@ -60,24 +66,24 @@ public final class CrystalHeartBlockEntity extends BlockEntity {
     /**
      * Future gameplay code can use this instead of editing NBT directly.
      */
+    public void setPreset(CrystalHeartPreset preset) {
+        this.preset = preset == null ? CrystalHeartPreset.BASE : preset;
+        markChangedAndSync();
+    }
+
+    /**
+     * Future gameplay code can use this instead of editing NBT directly.
+     */
     public void setDimensions(float widthBlocks, float heightBlocks) {
         this.widthBlocks = clampWidth(widthBlocks);
         this.heightBlocks = clampHeight(heightBlocks);
-        setChanged();
-
-        if (level != null && !level.isClientSide) {
-            level.sendBlockUpdated(
-                    worldPosition,
-                    getBlockState(),
-                    getBlockState(),
-                    Block.UPDATE_CLIENTS
-            );
-        }
+        markChangedAndSync();
     }
 
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
+        tag.putString(PRESET_NBT_KEY, preset.id());
         tag.putFloat(WIDTH_NBT_KEY, widthBlocks);
         tag.putFloat(HEIGHT_NBT_KEY, heightBlocks);
         tag.putFloat(BOB_AMPLITUDE_NBT_KEY, bobAmplitudeBlocks);
@@ -86,6 +92,10 @@ public final class CrystalHeartBlockEntity extends BlockEntity {
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
+
+        preset = tag.contains(PRESET_NBT_KEY)
+                ? CrystalHeartPreset.fromId(tag.getString(PRESET_NBT_KEY))
+                : CrystalHeartPreset.BASE;
 
         widthBlocks = tag.contains(WIDTH_NBT_KEY)
                 ? clampWidth(tag.getFloat(WIDTH_NBT_KEY))
@@ -108,6 +118,19 @@ public final class CrystalHeartBlockEntity extends BlockEntity {
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    private void markChangedAndSync() {
+        setChanged();
+
+        if (level != null && !level.isClientSide) {
+            level.sendBlockUpdated(
+                    worldPosition,
+                    getBlockState(),
+                    getBlockState(),
+                    Block.UPDATE_CLIENTS
+            );
+        }
     }
 
     private static float clampWidth(float value) {
