@@ -16,6 +16,7 @@ common/src/main/java/porker/pp_legendarydungeons/
 │  └─ CrystalHeartBlock.java
 ├─ blocks/entity/animated_blocks/crystal_heart/
 │  ├─ CrystalHeartBlockEntity.java
+│  ├─ CrystalHeartMiningMode.java
 │  └─ CrystalHeartPreset.java
 ├─ client/animated_blocks/
 │  ├─ AnimatedBlockEntityRenderers.java
@@ -64,7 +65,7 @@ The block entity stores the per-instance visual settings. The BER reads those se
 
 ## NBT settings
 
-The block entity currently stores four persistent values:
+The block entity currently stores seven persistent values:
 
 | NBT key | Purpose | Default |
 |---|---|---:|
@@ -72,8 +73,11 @@ The block entity currently stores four persistent values:
 | `CrystalWidth` | Total rendered X/Z width in blocks | `5.5` |
 | `CrystalHeight` | Total rendered Y height in blocks | `12.0` |
 | `BobAmplitude` | Vertical bob distance in blocks | `0.35` |
+| `MiningEnabled` | Whether survival players may mine the heart | `0b` / false |
+| `MiningMode` | Drop behavior when mining is enabled | `silk_self_else_loot` |
+| `MiningLootTable` | Loot table rolled for normal mining | `pp_legendarydungeons:blocks/default_ch_drop` |
 
-Width, height, and bobbing are clamped by `CrystalHeartBlockEntity` before use. Missing or invalid preset names fall back to `base`.
+Width, height, and bobbing are clamped by `CrystalHeartBlockEntity` before use. Missing or invalid preset names fall back to `base`. Invalid mining modes fall back to `silk_self_else_loot`, and invalid loot-table IDs fall back to the built-in default table.
 
 Examples:
 
@@ -86,10 +90,35 @@ Examples:
 /data merge block X Y Z {BobAmplitude:0.85f}
 /data merge block X Y Z {CrystalPreset:"spire",CrystalWidth:3.5f,CrystalHeight:12.0f,BobAmplitude:0.35f}
 
+# Mining examples
+/data merge block X Y Z {MiningEnabled:1b}
+/data merge block X Y Z {MiningEnabled:1b,MiningMode:"self"}
+/data merge block X Y Z {MiningEnabled:1b,MiningMode:"loot"}
+/data merge block X Y Z {MiningEnabled:1b,MiningMode:"silk_self_else_loot"}
+/data merge block X Y Z {MiningLootTable:"minecraft:chests/simple_dungeon"}
+/data merge block X Y Z {MiningLootTable:"pp_legendarydungeons:blocks/default_ch_drop"}
+/data merge block X Y Z {MiningEnabled:0b}
+
 /data get block X Y Z
 ```
 
-Structure blocks preserve this block-entity NBT, so different dungeon structures can save different shapes and dimensions while still using the same registered block.
+Structure blocks preserve this block-entity NBT, so different dungeon structures can save different shapes, dimensions, and mining rules while still using the same registered block.
+
+## Mining and drops
+
+The Crystal Heart is survival-unmineable by default. Creative players can still remove the anchor for development. When `MiningEnabled:1b` is set, any pickaxe may mine it; non-pickaxe tools receive no mining progress.
+
+`MiningMode` supports exactly three values:
+
+- `self` - always drop the registered Crystal Heart block item.
+- `loot` - always roll `MiningLootTable`, including when the tool has Silk Touch.
+- `silk_self_else_loot` - Silk Touch drops the heart item; other pickaxes roll `MiningLootTable`. This is the default enabled-mode behavior.
+
+The built-in table is `pp_legendarydungeons:blocks/default_ch_drop`, stored at `data/pp_legendarydungeons/loot_table/blocks/default_ch_drop.json`. It drops 16-64 emeralds. When that exact built-in table is rolled, `CrystalHeartBlock` also awards 20-40 experience points.
+
+Changing `MiningLootTable` replaces the built-in normal-mining reward. Custom tables do not automatically receive the built-in XP bonus. The selected table should be compatible with a block loot context.
+
+All three retained Crystal Heart registry IDs are included in the vanilla `mineable/pickaxe` block tag for compatibility, although new content should continue to use `pp_legendarydungeons:crystal_heart`.
 
 ## Shape presets
 

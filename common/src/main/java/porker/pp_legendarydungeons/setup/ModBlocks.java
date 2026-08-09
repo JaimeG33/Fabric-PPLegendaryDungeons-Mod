@@ -132,7 +132,9 @@ public final class ModBlocks {
 
     private static BlockBehaviour.Properties animatedDecorationProperties() {
         return BlockBehaviour.Properties.of()
-                .strength(-1.0F, 3_600_000.0F)
+                // Per-instance NBT can still make the heart effectively unbreakable.
+                .strength(5.0F, 3_600_000.0F)
+                .requiresCorrectToolForDrops()
                 .noCollission()
                 .noOcclusion()
                 .noLootTable();

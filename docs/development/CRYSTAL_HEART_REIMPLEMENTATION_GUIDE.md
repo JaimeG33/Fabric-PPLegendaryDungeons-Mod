@@ -40,6 +40,7 @@ common/src/main/java/porker/pp_legendarydungeons/
 
 Persistent instance data
   blocks/entity/animated_blocks/crystal_heart/CrystalHeartBlockEntity.java
+  blocks/entity/animated_blocks/crystal_heart/CrystalHeartMiningMode.java
   blocks/entity/animated_blocks/crystal_heart/CrystalHeartPreset.java
 
 Client rendering
@@ -66,9 +67,15 @@ assets/<your_mod_id>/
 ├─ blockstates/crystal_heart.json
 ├─ models/block/crystal_heart.json
 ├─ models/item/crystal_heart.json
-└─ textures/entity/animated_blocks/crystal_heart/
-   ├─ crystal_heart_a_top.png
-   └─ crystal_heart_a_bottom.png
+├─ textures/entity/animated_blocks/crystal_heart/
+│  ├─ crystal_heart_a_top.png
+│  └─ crystal_heart_a_bottom.png
+
+data/<your_mod_id>/loot_table/blocks/
+└─ default_ch_drop.json
+
+data/minecraft/tags/block/mineable/
+└─ pickaxe.json
 ```
 
 You may rename every Java package, registry ID, and texture path for the destination mod. Keep the relationships between the pieces the same.
@@ -100,6 +107,8 @@ The reference implementation deliberately keeps a normal one-block selection sha
 
 Register the block and, if desired, a normal `BlockItem` for development/creative placement.
 
+For the optional mining behavior, give the block a normal positive destroy time, require the correct tool for drops, put the block in `minecraft:mineable/pickaxe`, and override destroy progress so survival players can only mine it when the block entity has `MiningEnabled:1b` and the held item is a pickaxe.
+
 ## Step 2: register the block entity type
 
 Register a `BlockEntityType<CrystalHeartBlockEntity>` and associate it with the Crystal Heart anchor block.
@@ -122,19 +131,25 @@ Make sure block registration happens before code resolves the block supplier for
 The reference block entity stores:
 
 ```text
-CrystalPreset   string
-CrystalWidth    float
-CrystalHeight   float
-BobAmplitude    float
+CrystalPreset     string
+CrystalWidth      float
+CrystalHeight     float
+BobAmplitude      float
+MiningEnabled     boolean
+MiningMode        string
+MiningLootTable   string/resource location
 ```
 
 Reference defaults:
 
 ```text
-preset        = base
-width         = 5.5 blocks
-height        = 12.0 blocks
-bob amplitude = 0.35 blocks
+preset            = base
+width             = 5.5 blocks
+height            = 12.0 blocks
+bob amplitude     = 0.35 blocks
+mining enabled    = false
+mining mode       = silk_self_else_loot
+mining loot table = <your_mod_id>:blocks/default_ch_drop
 ```
 
 Reference clamp ranges:
@@ -145,7 +160,25 @@ height:        0.25 .. 128.0
 bob amplitude: 0.0  .. 8.0
 ```
 
-Implement the standard block-entity NBT methods for your mappings/version and save all four values.
+Implement the standard block-entity NBT methods for your mappings/version and save all seven values. Invalid or missing mining modes should fall back to `silk_self_else_loot`; invalid loot-table identifiers should fall back to the default table.
+
+### Mining/drop behavior
+
+The reference implementation supports:
+
+```text
+self                 -> always drop the block item
+loot                 -> always roll MiningLootTable
+silk_self_else_loot  -> Silk Touch drops the block item; otherwise roll MiningLootTable
+```
+
+`MiningEnabled` is separate and defaults to false, so newly placed hearts remain survival-unmineable unless their NBT explicitly enables mining.
+
+The reference block disables its ordinary block loot table and handles enabled mining drops server-side from `playerDestroy(...)`. For a loot-table drop, create a block loot context containing the origin, block state, tool, player/block entity where available, and player luck, then roll the resource location stored in `MiningLootTable`.
+
+The reference default table is `<your_mod_id>:blocks/default_ch_drop`. In this project it drops 16-64 emeralds. The block code additionally awards 20-40 XP when that exact built-in table is selected. Custom loot-table overrides replace that built-in reward behavior.
+
+For Silk Touch, look up `Enchantments.SILK_TOUCH` from the server enchantment registry and test the held tool before choosing between the self-drop and loot-table branches.
 
 Also provide the normal block-entity client synchronization path, equivalent to:
 
@@ -383,6 +416,13 @@ Place the anchor and test:
 /data merge block X Y Z {CrystalPreset:"spire"}
 
 /data merge block X Y Z {CrystalWidth:5.5f,CrystalHeight:12.0f,BobAmplitude:0.35f}
+/data merge block X Y Z {MiningEnabled:1b}
+/data merge block X Y Z {MiningEnabled:1b,MiningMode:"self"}
+/data merge block X Y Z {MiningEnabled:1b,MiningMode:"loot"}
+/data merge block X Y Z {MiningEnabled:1b,MiningMode:"silk_self_else_loot"}
+/data merge block X Y Z {MiningLootTable:"minecraft:chests/simple_dungeon"}
+/data merge block X Y Z {MiningLootTable:"<your_mod_id>:blocks/default_ch_drop"}
+/data merge block X Y Z {MiningEnabled:0b}
 /data get block X Y Z
 ```
 
