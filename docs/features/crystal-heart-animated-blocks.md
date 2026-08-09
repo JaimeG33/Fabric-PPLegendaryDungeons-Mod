@@ -118,6 +118,21 @@ The built-in table is `pp_legendarydungeons:blocks/default_ch_drop`, stored at `
 
 Changing `MiningLootTable` replaces the built-in normal-mining reward. Custom tables do not automatically receive the built-in XP bonus. The selected table should be compatible with a block loot context.
 
+### Minecraft 1.21.1 loot-table lookup detail
+
+`MiningLootTable` is persisted in block-entity NBT as a resource-location string because that is convenient to edit with `/data merge`. In Minecraft 1.21.1, however, `reloadableRegistries().getLootTable(...)` expects a `ResourceKey<LootTable>`, not a raw `ResourceLocation`. Convert the stored ID at lookup time:
+
+```java
+LootTable lootTable = level.getServer()
+        .reloadableRegistries()
+        .getLootTable(ResourceKey.create(
+                Registries.LOOT_TABLE,
+                heart.getMiningLootTable()
+        ));
+```
+
+Keeping the NBT-facing value as a `ResourceLocation` still allows arbitrary datapack loot-table IDs while the runtime lookup uses the type required by 1.21.1.
+
 All three retained Crystal Heart registry IDs are included in the vanilla `mineable/pickaxe` block tag for compatibility, although new content should continue to use `pp_legendarydungeons:crystal_heart`.
 
 ## Shape presets

@@ -174,7 +174,20 @@ silk_self_else_loot  -> Silk Touch drops the block item; otherwise roll MiningLo
 
 `MiningEnabled` is separate and defaults to false, so newly placed hearts remain survival-unmineable unless their NBT explicitly enables mining.
 
-The reference block disables its ordinary block loot table and handles enabled mining drops server-side from `playerDestroy(...)`. For a loot-table drop, create a block loot context containing the origin, block state, tool, player/block entity where available, and player luck, then roll the resource location stored in `MiningLootTable`.
+The reference block disables its ordinary block loot table and handles enabled mining drops server-side from `playerDestroy(...)`. For a loot-table drop, create a block loot context containing the origin, block state, tool, player/block entity where available, and player luck, then roll the ID stored in `MiningLootTable`.
+
+For Minecraft 1.21.1 with Mojang mappings, keep the editable NBT value as a `ResourceLocation`, but convert it to a `ResourceKey<LootTable>` before calling `getLootTable(...)`:
+
+```java
+LootTable lootTable = level.getServer()
+        .reloadableRegistries()
+        .getLootTable(ResourceKey.create(
+                Registries.LOOT_TABLE,
+                heart.getMiningLootTable()
+        ));
+```
+
+Passing the `ResourceLocation` directly to `getLootTable(...)` does not compile on this target because the method expects `ResourceKey<LootTable>`. Other Minecraft versions/mappings may expose a different lookup signature, so use the destination project's actual API.
 
 The reference default table is `<your_mod_id>:blocks/default_ch_drop`. In this project it drops 16-64 emeralds. The block code additionally awards 20-40 XP when that exact built-in table is selected. Custom loot-table overrides replace that built-in reward behavior.
 
@@ -435,13 +448,20 @@ Verify all of the following:
 - the crystal remains visible while looking upward/downward at steep angles,
 - saving/loading the world preserves NBT,
 - structure blocks preserve the settings,
+- a default heart cannot be mined in survival,
+- `MiningEnabled:1b` allows any pickaxe to make mining progress while non-pickaxes do not,
+- `self` always drops the block item,
+- `loot` always uses the configured loot table, including with Silk Touch,
+- `silk_self_else_loot` gives the block item with Silk Touch and configured loot otherwise,
+- the built-in default table gives 16-64 emeralds plus 20-40 XP,
+- a `MiningLootTable` override rolls the replacement table without the built-in XP bonus,
 - dedicated server startup does not load client-only renderer classes.
 
 ## Step 12: copy the heart into structure templates
 
 Once the block entity is working, place it at the intended anchor position, apply the desired NBT, and save the surrounding build with a structure block.
 
-Because the visual settings live in block-entity NBT, the structure template stores the selected preset and dimensions with the anchor. No command needs to resize the Crystal Heart after world generation unless dynamic behavior is desired.
+Because the instance settings live in block-entity NBT, the structure template stores the selected preset, dimensions, and mining/drop rules with the anchor. No command needs to resize or reconfigure the Crystal Heart after world generation unless dynamic behavior is desired.
 
 ## Adding new shapes later
 
@@ -467,6 +487,10 @@ A destination mod needs all of these concepts wired together:
 - [ ] client-only renderer registration
 - [ ] top and bottom PNG assets
 - [ ] blockstate/item model assets
-- [ ] in-game NBT and structure-block testing
+- [ ] pickaxe mineable tag and per-instance mining gate
+- [ ] `MiningMode` branching for self / loot / Silk Touch behavior
+- [ ] default block loot table plus optional NBT loot-table override
+- [ ] Minecraft-version-correct loot-table registry lookup (`ResourceKey<LootTable>` on the reference 1.21.1 target)
+- [ ] in-game NBT, mining/drop, and structure-block testing
 
 For exact implementation details, use the source files listed at the beginning of this document as the canonical reference.
