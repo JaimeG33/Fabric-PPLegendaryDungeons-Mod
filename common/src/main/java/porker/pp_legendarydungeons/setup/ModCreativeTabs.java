@@ -31,8 +31,6 @@ public final class ModCreativeTabs {
                         ));
                         builder.displayItems((parameters, output) -> {
                             output.accept(ModBlocks.CRYSTAL_HEART_ITEM.get());
-                            output.accept(ModBlocks.CRYSTAL_HEART_B_ITEM.get());
-                            output.accept(ModBlocks.CRYSTAL_HEART_C_ITEM.get());
                             output.accept(ModBlocks.DUNGEON_RULE_PARENT_ITEM.get());
                             output.accept(ModBlocks.DUNGEON_RULE_ZONE_ITEM.get());
                         });

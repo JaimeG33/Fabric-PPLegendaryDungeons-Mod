@@ -1,162 +1,223 @@
 # Crystal Heart animated block system
 
-## Purpose
+## Current purpose
 
-The Crystal Heart is an animated block-entity landmark intended for large dungeon set pieces such as the Crystal Cave heart chamber. It borrows the visual idea of an End Crystal without inheriting End Crystal gameplay behavior.
+The Crystal Heart is a large animated dungeon landmark implemented as an **invisible anchor block + block entity + custom block-entity renderer (BER)**. The anchor can be saved inside normal Minecraft structure files while the renderer draws a crystal that is much larger than one block.
 
-It is implemented as a **block + block entity + block-entity renderer** rather than a standalone entity. The placed block acts as an invisible anchor while the client renderer draws the large floating crystal.
+The system is loader-neutral in `common` except for the normal Fabric/NeoForge client bootstrap that eventually calls the shared renderer-registration boundary.
 
-## Why a block entity
+The Crystal Heart itself does not depend on Cobblemon behavior. Another mod can recreate the same rendering system with vanilla Minecraft client/block-entity APIs plus that mod's preferred registration API.
 
-A normal block model is not a good fit because the Crystal Heart:
-
-- is much larger than one block,
-- needs smooth continuous rotation,
-- needs a subtle hover/bob animation,
-- supports different dimensions without creating a new model for every size.
-
-A full custom entity is also unnecessary at this stage because the heart is a fixed dungeon landmark rather than a moving or combat-capable creature/object.
-
-## Code organization
+## Current source layout
 
 ```text
 common/src/main/java/porker/pp_legendarydungeons/
 ├─ blocks/animated_blocks/crystal_heart/
+│  └─ CrystalHeartBlock.java
 ├─ blocks/entity/animated_blocks/crystal_heart/
+│  ├─ CrystalHeartBlockEntity.java
+│  └─ CrystalHeartPreset.java
 ├─ client/animated_blocks/
+│  ├─ AnimatedBlockEntityRenderers.java
 │  └─ crystal_heart/
+│     ├─ CrystalHeartBlockEntityRenderer.java
+│     └─ CrystalHeartGeometry.java
 └─ setup/
+   ├─ ModBlocks.java
+   └─ ModBlockEntities.java
 ```
 
-This layout is intentionally reusable for future animated block entities.
+The active runtime textures are:
 
-## Shape, size, and bobbing control
+```text
+common/src/main/resources/assets/pp_legendarydungeons/
+└─ textures/entity/animated_blocks/crystal_heart/
+   ├─ crystal_heart_a_top.png
+   └─ crystal_heart_a_bottom.png
+```
 
-Each Crystal Heart block entity stores four NBT values:
+Old B/C texture experiments and the former `crystal_heart2` / `crystal_heart3` texture trees are no longer part of the active renderer. Git history can be used if those experiments ever need to be recovered for reference.
 
-- `CrystalPreset`
-- `CrystalWidth`
-- `CrystalHeight`
-- `BobAmplitude`
+## Registered block IDs
 
-Available shape presets:
+`pp_legendarydungeons:crystal_heart` is the canonical block used for new content.
 
-- `base` - the existing Crystal Heart silhouette and compatibility fallback.
-- `long_point` - a short upper cap with a much longer lower point.
-- `spire` - a taller crystal profile intended to be paired with a narrower width.
+The older IDs below remain registered only for world/structure compatibility:
+
+- `pp_legendarydungeons:crystal_heart_b`
+- `pp_legendarydungeons:crystal_heart_c`
+
+They are no longer exposed in the mod creative tab and no longer select separate B/C texture families. They render through the same NBT preset system as the canonical block.
+
+Do not remove those registry IDs casually if existing worlds or structure NBT may still contain them.
+
+## How the block works
+
+`CrystalHeartBlock` extends `BaseEntityBlock` and acts only as an anchor:
+
+- `RenderShape.INVISIBLE` prevents the normal block model from drawing in-world.
+- collision is empty so players can move through the anchor.
+- the selection/outline shape remains a full block so the anchor can still be targeted while developing.
+- `newBlockEntity(...)` creates `CrystalHeartBlockEntity`.
+
+The block entity stores the per-instance visual settings. The BER reads those settings every frame and renders the normalized geometry above the anchor.
+
+## NBT settings
+
+The block entity currently stores four persistent values:
+
+| NBT key | Purpose | Default |
+|---|---|---:|
+| `CrystalPreset` | Shape preset ID | `base` |
+| `CrystalWidth` | Total rendered X/Z width in blocks | `5.5` |
+| `CrystalHeight` | Total rendered Y height in blocks | `12.0` |
+| `BobAmplitude` | Vertical bob distance in blocks | `0.35` |
+
+Width, height, and bobbing are clamped by `CrystalHeartBlockEntity` before use. Missing or invalid preset names fall back to `base`.
 
 Examples:
 
 ```mcfunction
-/data merge block X Y Z {CrystalPreset:"base",CrystalWidth:5.5f,CrystalHeight:12.0f}
-/data merge block X Y Z {CrystalPreset:"long_point",CrystalWidth:5.5f,CrystalHeight:12.0f}
-/data merge block X Y Z {CrystalPreset:"spire",CrystalWidth:3.5f,CrystalHeight:12.0f}
+/data merge block X Y Z {CrystalPreset:"base"}
+/data merge block X Y Z {CrystalPreset:"long_point"}
+/data merge block X Y Z {CrystalPreset:"spire"}
+
+/data merge block X Y Z {CrystalWidth:5.5f,CrystalHeight:12.0f}
 /data merge block X Y Z {BobAmplitude:0.85f}
+/data merge block X Y Z {CrystalPreset:"spire",CrystalWidth:3.5f,CrystalHeight:12.0f,BobAmplitude:0.35f}
+
+/data get block X Y Z
 ```
 
-Missing or invalid `CrystalPreset` values fall back to `base`, so existing structures keep the current shape. Width, height, and bobbing remain independent of the preset and structure blocks preserve all four values.
+Structure blocks preserve this block-entity NBT, so different dungeon structures can save different shapes and dimensions while still using the same registered block.
 
-## Animation
+## Shape presets
 
-Animation is client-side and is calculated from world time. The renderer currently provides:
+`CrystalHeartPreset` currently defines:
 
-- slow Y-axis rotation,
-- subtle sine-wave vertical bobbing.
+| Preset | Waist Y in normalized mesh | Intended silhouette |
+|---|---:|---|
+| `base` | `0.46` | Current/original Crystal Heart |
+| `long_point` | `0.72` | Short upper cap with a long lower point |
+| `spire` | `0.60` | Taller/slimmer crystal profile |
 
-No server-side animation tick or per-frame network packet is required.
+All meshes use normalized coordinates:
 
-## High-resolution top / bottom texture variants
+- X/Z: `-0.5` to `+0.5`
+- Y: `0.0` to `1.0`
 
-Three placeable variants still exist so the final art direction can be compared directly in game:
+The renderer then scales that normalized mesh using `CrystalWidth` and `CrystalHeight`. This is why one preset can be reused at many sizes without creating another block or model file.
 
-- `pp_legendarydungeons:crystal_heart` -> Candidate A
-- `pp_legendarydungeons:crystal_heart_b` -> Candidate B
-- `pp_legendarydungeons:crystal_heart_c` -> Candidate C
+Changing the waist Y changes the relative length of the top and bottom halves. A future preset can add more geometry parameters if a silhouette can no longer be represented by the same square-bipyramid topology.
 
-Candidate A / the original `crystal_heart` texture family is the active baseline. Candidate B and Candidate C remain registered as legacy texture-test blocks for comparison.
+## Geometry and UV mapping
 
-Each candidate uses two independent 128x128 textures:
+`CrystalHeartGeometry` creates eight triangular faces:
+
+- four upper faces from the top point to the waist ring,
+- four lower faces from the waist ring to the bottom point.
+
+Minecraft's entity-style render buffer is quad-oriented, so each triangle is emitted as a degenerate quad by repeating the third vertex.
+
+All four upper faces share one 128x128 top texture and all four lower faces share one 128x128 bottom texture. Alternate faces mirror their U coordinates and use slight tint differences so rotation still shows visible facets.
+
+Expected UV triangle positions:
 
 ```text
-crystal_heart_<variant>_top.png
-crystal_heart_<variant>_bottom.png
+top texture (128x128)
+        apex ≈ (64, 2)
+              /\
+             /  \
+            /    \
+  ≈ (2,126)______≈ (126,126)
+
+bottom texture (128x128)
+  ≈ (2,2)________≈ (126,2)
+            \    /
+             \  /
+              \/
+        apex ≈ (64,126)
 ```
 
-The four upper physical faces share the top texture. The four lower physical faces share the bottom texture. Alternate sides mirror the UV coordinates and use subtle per-face tint differences so the rotating object still reads as a faceted gemstone.
+Pixels outside the triangle should be transparent. Avoid transparent holes inside the triangle unless an actual hole in the rendered crystal is desired.
 
-The texture families are organized under:
+The current presets all reuse the same active texture pair. A future shape only needs dedicated textures if the shared artwork stretches poorly on that geometry.
+
+## Renderer behavior
+
+`CrystalHeartBlockEntityRenderer` performs the following operations each frame:
+
+1. Read world time and the block entity's NBT-backed settings.
+2. Calculate slow Y-axis rotation at `0.5` degrees/tick.
+3. Calculate sine-wave bobbing at `0.04` radians/tick.
+4. Translate to the center of the anchor block and slightly above its base.
+5. Rotate around Y.
+6. Scale the normalized mesh by `CrystalWidth`, `CrystalHeight`, `CrystalWidth`.
+7. Resolve the texture pair from `CrystalHeartPreset`.
+8. Render the upper four faces.
+9. Request the bottom texture buffer only after the top half has been emitted, then render the lower four faces.
+
+That top-then-bottom buffer ordering is intentional. Requesting both `VertexConsumer`s before finishing the first texture previously caused a `BufferBuilder: Not building!` crash.
+
+Rendering currently uses:
 
 ```text
-textures/entity/animated_blocks/crystal_heart/
-textures/entity/animated_blocks/crystal_heart2/
-textures/entity/animated_blocks/crystal_heart3/
+RenderType.entityCutoutNoCull(...)
+LightTexture.FULL_BRIGHT
 ```
 
-Test commands:
+This keeps the large pixel-art texture crisp, avoids translucent depth-sorting problems, and gives the heart its luminous appearance.
 
-```mcfunction
-/give @s pp_legendarydungeons:crystal_heart
-/give @s pp_legendarydungeons:crystal_heart_b
-/give @s pp_legendarydungeons:crystal_heart_c
-```
+## Animation and networking
 
-The original `crystal_heart` id is deliberately retained as the baseline so existing structures/worlds using that id are not renamed. Its `base`, `long_point`, and `spire` presets currently all reuse the same A top/bottom texture pair. The B/C block ids continue to override that choice with their legacy test textures.
+Rotation and bobbing are derived from client world time, so there is no server animation tick and no per-frame network traffic.
 
-Preset texture paths are declared in `CrystalHeartPreset`, so a future shape can be given dedicated art without changing the renderer's selection logic. No shape-specific texture folders are created until a preset actually needs different artwork.
+NBT changes still need normal block-entity synchronization. `CrystalHeartBlockEntity` therefore supplies an update tag/update packet and its setters call `sendBlockUpdated(...)` on the server.
 
 ## Render distance and culling
 
-The renderer uses the player's configured chunk render distance rather than Minecraft's short default block-entity render distance. This does **not** force chunks to load; the crystal can only render when its chunk is available to the client.
+Because the visual extends far outside its one-block anchor, the renderer currently:
 
-The earlier calculated bounding box did not eliminate the look-angle disappearance. The current diagnostic therefore returns a very large finite vanilla `AABB` from `getRenderBoundingBox()` while continuing to return `true` from `shouldRenderOffScreen()`.
+- returns `true` from `shouldRenderOffScreen(...)`,
+- uses the player's configured render distance for `getViewDistance()`,
+- keeps a very large finite render bounding box as a cross-loader culling workaround/diagnostic.
 
-NeoForge exposes an `AABB.INFINITE` helper for this kind of renderer diagnostic, but that constant is loader-added and cannot be referenced from the shared `common` source set because Fabric/common compilation only sees the vanilla `AABB` API. The large finite box gives us the same practical culling test while remaining compile-safe on both loaders.
+The finite vanilla `AABB` is deliberate. A prior attempt to reference NeoForge's loader-added `AABB.INFINITE` from `common` broke common/Fabric compilation.
 
-The diagnostic bounds do **not** force chunks to load and do not replace the renderer's configured view distance. If the look-angle disappearance remains after this change, the next investigation should focus on render-section/global block-entity handling rather than making the bounding box larger again.
+The render-distance code does not force chunks to load. The anchor's chunk still has to be available to the client before its block entity can render.
 
-## Texture / UV notes
+## Client registration
 
-The upper and lower textures are full-face assets rather than atlases. Each PNG dedicates almost the full 128x128 image to one triangular face, giving far more detail than the previous 16x16 atlas cells.
+The shared renderer registration occurs in `AnimatedBlockEntityRenderers`:
 
-Current mapping:
-
-```text
-top texture:
-        apex
-         /\
-        /  \
-       /    \
- left /______\ right
-
-bottom texture:
- left ________ right
-       \    /
-        \  /
-         \/
-        apex
+```java
+BlockEntityRendererRegistry.register(
+        ModBlockEntities.CRYSTAL_HEART.get(),
+        CrystalHeartBlockEntityRenderer::new
+);
 ```
 
-The renderer uses a cutout/no-cull render type rather than translucent blending. The crystal can still look luminous or glassy through its colors, highlights, and internal facet patterns without the depth-sorting artifacts that can appear on a very large translucent object.
+`LegendaryDungeonsClient.init()` calls that shared registration method.
 
-When editing one of the new textures:
+Fabric calls `LegendaryDungeonsClient.init()` from its `ClientModInitializer`.
 
-- keep the important artwork inside the triangular region,
-- keep edge highlights a few pixels away from the outermost texture border,
-- design the top and bottom as a visual pair,
-- remember that alternate sides mirror the texture horizontally,
-- review `CrystalHeartPreset` and `CrystalHeartGeometry` if the crystal shape itself changes.
+NeoForge defers the same call until `FMLClientSetupEvent` and uses `event.enqueueWork(...)`. Do not resolve the block-entity registry supplier too early from the NeoForge mod constructor; that previously caused a registry-object-not-present startup failure.
 
-## Creative tab
+## Adding another shape
 
-The `PP Legendary Dungeons` creative tab contains the three Crystal Heart variants and the currently registered dungeon-rule block items. Its icon currently uses the existing Crystal Heart A inventory item.
+For another square-bipyramid-style silhouette:
 
-## Future expansion
+1. Add a value to `CrystalHeartPreset`.
+2. Give it a unique lowercase NBT ID.
+3. Choose its normalized `waistY`.
+4. Reuse the base texture path initially.
+5. Test with `/data merge block ... {CrystalPreset:"new_id"}`.
+6. Only add a dedicated texture pair if the existing art no longer maps well.
 
-Potential later additions include:
+No new block registration, block entity type, blockstate, or item is required for an NBT-only shape preset.
 
-- activation/inactive states,
-- custom aura particles,
-- dungeon progression hooks,
-- Diancie-related interactions,
-- lighting effects,
-- other animated dungeon landmarks using the same folder/registration pattern.
+## Related porting guide
+
+For a self-contained guide intended for another mod author, including the files to copy/recreate and the loader-registration steps, see:
+
+[`../development/CRYSTAL_HEART_REIMPLEMENTATION_GUIDE.md`](../development/CRYSTAL_HEART_REIMPLEMENTATION_GUIDE.md)

@@ -202,6 +202,8 @@ Additional guides:
 - [`development/WTRADER_JSON_SCHEMA.md`](development/WTRADER_JSON_SCHEMA.md)
 - [`development/POKEMON_SPAWN_PROFILE_SCHEMA.md`](development/POKEMON_SPAWN_PROFILE_SCHEMA.md)
 - [`development/SERVER_TICK_SCHEDULER.md`](development/SERVER_TICK_SCHEDULER.md)
+- [`development/CRYSTAL_HEART_REIMPLEMENTATION_GUIDE.md`](development/CRYSTAL_HEART_REIMPLEMENTATION_GUIDE.md)
+- [`features/crystal-heart-animated-blocks.md`](features/crystal-heart-animated-blocks.md)
 - `development/DEVELOPMENT_MEMORY_AND_BUILD_PERFORMANCE.md`
 - `gameplay/MAPS.md`
 - `gameplay/LOOT_INJECTIONS.md`

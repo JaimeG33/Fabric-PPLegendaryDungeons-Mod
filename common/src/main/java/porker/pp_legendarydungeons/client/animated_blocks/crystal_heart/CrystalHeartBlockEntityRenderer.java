@@ -11,12 +11,10 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.AABB;
 import porker.pp_legendarydungeons.LegendaryDungeons;
 import porker.pp_legendarydungeons.blocks.entity.animated_blocks.crystal_heart.CrystalHeartBlockEntity;
 import porker.pp_legendarydungeons.blocks.entity.animated_blocks.crystal_heart.CrystalHeartPreset;
-import porker.pp_legendarydungeons.setup.ModBlocks;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -28,23 +26,10 @@ import java.util.Map;
  */
 public final class CrystalHeartBlockEntityRenderer
         implements BlockEntityRenderer<CrystalHeartBlockEntity> {
-    private static final TexturePair TEXTURES_A = texturePair(
-            "crystal_heart",
-            "crystal_heart_a"
-    );
-    private static final TexturePair TEXTURES_B = texturePair(
-            "crystal_heart2",
-            "crystal_heart_b"
-    );
-    private static final TexturePair TEXTURES_C = texturePair(
-            "crystal_heart3",
-            "crystal_heart_c"
-    );
-
     /**
-     * Presets currently all point to the active original/A artwork. Keeping this
-     * mapping preset-driven means a future shape can receive dedicated art by
-     * changing CrystalHeartPreset instead of rewriting renderer logic.
+     * Texture selection is preset-driven. All current presets point to the active
+     * original/base artwork; a future shape can opt into dedicated art by changing
+     * CrystalHeartPreset without adding block-ID-specific renderer branches.
      */
     private static final Map<CrystalHeartPreset, TexturePair> PRESET_TEXTURES =
             createPresetTextures();
@@ -97,10 +82,7 @@ public final class CrystalHeartBlockEntityRenderer
                 blockEntity.getWidthBlocks()
         );
 
-        TexturePair textures = resolveTextures(
-                blockEntity.getBlockState().getBlock(),
-                preset
-        );
+        TexturePair textures = resolveTextures(preset);
 
         /*
          * Top and bottom halves deliberately use separate 128x128 textures.
@@ -148,17 +130,11 @@ public final class CrystalHeartBlockEntityRenderer
         return textures;
     }
 
-    private static TexturePair resolveTextures(Block block, CrystalHeartPreset preset) {
-        // Keep the B/C registered blocks working as legacy texture test variants.
-        if (block == ModBlocks.CRYSTAL_HEART_C.get()) {
-            return TEXTURES_C;
-        }
-
-        if (block == ModBlocks.CRYSTAL_HEART_B.get()) {
-            return TEXTURES_B;
-        }
-
-        return PRESET_TEXTURES.getOrDefault(preset, TEXTURES_A);
+    private static TexturePair resolveTextures(CrystalHeartPreset preset) {
+        TexturePair textures = PRESET_TEXTURES.get(preset);
+        return textures != null
+                ? textures
+                : PRESET_TEXTURES.get(CrystalHeartPreset.BASE);
     }
 
     private static TexturePair texturePair(String folder, String baseName) {
