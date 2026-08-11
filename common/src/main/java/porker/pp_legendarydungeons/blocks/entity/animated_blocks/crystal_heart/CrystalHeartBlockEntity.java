@@ -8,6 +8,8 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -197,6 +199,18 @@ public final class CrystalHeartBlockEntity extends BlockEntity {
         tag.putBoolean(MINING_ENABLED_NBT_KEY, miningEnabled);
         tag.putString(MINING_MODE_NBT_KEY, miningMode.id());
         tag.putString(MINING_LOOT_TABLE_NBT_KEY, miningLootTable.toString());
+    }
+
+    /**
+     * Stores this exact configured heart on a dropped BlockItem. Minecraft's
+     * BlockItem placement path reapplies the saved block-entity data when the
+     * item is placed again.
+     */
+    @Override
+    public void saveToItem(ItemStack stack, HolderLookup.Provider registries) {
+        CompoundTag tag = new CompoundTag();
+        saveAdditional(tag, registries);
+        BlockItem.setBlockEntityData(stack, getType(), tag);
     }
 
     @Override

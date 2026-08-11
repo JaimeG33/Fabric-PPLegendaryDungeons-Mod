@@ -134,21 +134,27 @@ public final class CrystalHeartBlock extends BaseEntityBlock {
         CrystalHeartMiningMode mode = heart.getMiningMode();
 
         if (mode == CrystalHeartMiningMode.SELF) {
-            dropSelf(serverLevel, pos);
+            dropSelf(serverLevel, pos, heart);
             return;
         }
 
         if (mode == CrystalHeartMiningMode.SILK_SELF_ELSE_LOOT
                 && hasSilkTouch(serverLevel, tool)) {
-            dropSelf(serverLevel, pos);
+            dropSelf(serverLevel, pos, heart);
             return;
         }
 
         dropConfiguredLoot(serverLevel, player, pos, state, heart, tool);
     }
 
-    private void dropSelf(ServerLevel level, BlockPos pos) {
-        popResource(level, pos, new ItemStack(asItem()));
+    private void dropSelf(
+            ServerLevel level,
+            BlockPos pos,
+            CrystalHeartBlockEntity heart
+    ) {
+        ItemStack stack = new ItemStack(asItem());
+        heart.saveToItem(stack, level.registryAccess());
+        popResource(level, pos, stack);
     }
 
     private static void dropConfiguredLoot(

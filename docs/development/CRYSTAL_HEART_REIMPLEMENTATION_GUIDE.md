@@ -184,12 +184,47 @@ Implement the standard block-entity NBT methods for your mappings/version and sa
 The reference implementation supports:
 
 ```text
-self                 -> always drop the block item
+self                 -> always drop the configured block item
 loot                 -> always roll MiningLootTable
-silk_self_else_loot  -> Silk Touch drops the block item; otherwise roll MiningLootTable
+silk_self_else_loot  -> Silk Touch drops the configured block item; otherwise roll MiningLootTable
 ```
 
 `MiningEnabled` is separate and defaults to false, so newly placed hearts remain survival-unmineable unless their NBT explicitly enables mining.
+
+The two self-drop paths preserve the Crystal Heart's block-entity configuration on the dropped item. A simple implementation is:
+
+```java
+private void dropSelf(
+        ServerLevel level,
+        BlockPos pos,
+        CrystalHeartBlockEntity heart
+) {
+    ItemStack stack = new ItemStack(asItem());
+    heart.saveToItem(stack, level.registryAccess());
+    popResource(level, pos, stack);
+}
+```
+
+The reference block entity explicitly serializes its persistent fields into the vanilla block-entity item data:
+
+```java
+@Override
+public void saveToItem(ItemStack stack, HolderLookup.Provider registries) {
+    CompoundTag tag = new CompoundTag();
+    saveAdditional(tag, registries);
+    BlockItem.setBlockEntityData(stack, getType(), tag);
+}
+```
+
+On Minecraft 1.21.1 this stores the block-entity payload on the `ItemStack` through the vanilla block-entity-data component. `BlockItem` applies that data to the newly created block entity when the stack is placed. As a result, all eleven Crystal Heart settings survive a `self` drop or a Silk Touch self-drop:
+
+```text
+CrystalPreset, CrystalWidth, CrystalHeight, BobAmplitude,
+LightLevel, CrystalColorMode, CrystalColorPreset, CrystalColor,
+MiningEnabled, MiningMode, MiningLootTable
+```
+
+Because `LightLevel` is among the restored NBT values, the newly placed block entity mirrors it back into the hidden `light_level` BlockState property and the surrounding vanilla light is restored as well.
 
 The reference block disables its ordinary block loot table and handles enabled mining drops server-side from `playerDestroy(...)`. For a loot-table drop, create a block loot context containing the origin, block state, tool, player/block entity where available, and player luck, then roll the ID stored in `MiningLootTable`.
 
@@ -472,6 +507,43 @@ The reference project uses a simple placeholder block model for inventory repres
 
 ## Step 11: verify NBT control in game
 
+For builders/testers, the most useful commands are:
+
+```mcfunction
+# Inspect everything
+/data get block X Y Z
+
+# Shape
+/data merge block X Y Z {CrystalPreset:"base"}
+/data merge block X Y Z {CrystalPreset:"long_point"}
+/data merge block X Y Z {CrystalPreset:"spire"}
+
+# Dimensions / bob
+/data merge block X Y Z {CrystalWidth:5.5f,CrystalHeight:12.0f,BobAmplitude:0.35f}
+
+# Vanilla environmental light, 0..15
+/data merge block X Y Z {LightLevel:0}
+/data merge block X Y Z {LightLevel:15}
+
+# Original green artwork
+/data merge block X Y Z {CrystalColorMode:"preset",CrystalColorPreset:"green"}
+
+# Arbitrary RGB tint examples
+/data merge block X Y Z {CrystalColorMode:"custom",CrystalColor:16711680}
+/data merge block X Y Z {CrystalColorMode:"custom",CrystalColor:255}
+/data merge block X Y Z {CrystalColorMode:"custom",CrystalColor:11141375}
+/data merge block X Y Z {CrystalColorMode:"custom",CrystalColor:0}
+
+# Mining / drops
+/data merge block X Y Z {MiningEnabled:1b,MiningMode:"self"}
+/data merge block X Y Z {MiningEnabled:1b,MiningMode:"loot"}
+/data merge block X Y Z {MiningEnabled:1b,MiningMode:"silk_self_else_loot"}
+/data merge block X Y Z {MiningLootTable:"<your_mod_id>:blocks/default_ch_drop"}
+/data merge block X Y Z {MiningEnabled:0b}
+```
+
+The reference project's feature documentation contains a longer command-by-command builder reference, including more RGB examples and explanations of each setting.
+
 Place the anchor and test:
 
 ```mcfunction
@@ -510,9 +582,11 @@ Verify all of the following:
 - structure blocks preserve the shape, light, color, and mining settings,
 - a default heart cannot be mined in survival,
 - `MiningEnabled:1b` allows any pickaxe to make mining progress while non-pickaxes do not,
-- `self` always drops the block item,
+- `self` always drops the configured block item,
 - `loot` always uses the configured loot table, including with Silk Touch,
-- `silk_self_else_loot` gives the block item with Silk Touch and configured loot otherwise,
+- `silk_self_else_loot` gives the configured block item with Silk Touch and configured loot otherwise,
+- mining a configured heart through either self-drop path and placing the dropped item again restores all eleven persistent settings,
+- a restored nonzero `LightLevel` resynchronizes the hidden `light_level` BlockState and surrounding block light,
 - the built-in default table gives 16-64 emeralds plus 20-40 XP,
 - a `MiningLootTable` override rolls the replacement table without the built-in XP bonus,
 - dedicated server startup does not load client-only renderer classes.
@@ -522,6 +596,8 @@ Verify all of the following:
 Once the block entity is working, place it at the intended anchor position, apply the desired NBT, and save the surrounding build with a structure block.
 
 Because the instance settings live in block-entity NBT, the structure template stores the selected shape preset, dimensions, light level, color configuration, and mining/drop rules with the anchor. The mirrored `light_level` BlockState is saved alongside it. No command needs to resize or reconfigure the Crystal Heart after world generation unless dynamic behavior is desired.
+
+The same persistent configuration is also copied onto self-dropped/Silk-Touch-dropped Crystal Heart items through vanilla block-entity item data, so a builder can move a configured heart without rebuilding its NBT after placement.
 
 ## Adding new shapes later
 
@@ -552,6 +628,7 @@ A destination mod needs all of these concepts wired together:
 - [ ] blockstate/item model assets
 - [ ] pickaxe mineable tag and per-instance mining gate
 - [ ] `MiningMode` branching for self / loot / Silk Touch behavior
+- [ ] self/Silk Touch item drops serialize block-entity settings with `saveToItem(...)` / `BlockItem.setBlockEntityData(...)`
 - [ ] default block loot table plus optional NBT loot-table override
 - [ ] Minecraft-version-correct loot-table registry lookup (`ResourceKey<LootTable>` on the reference 1.21.1 target)
 - [ ] custom-color neutral facet shading without the original green bias

@@ -65,7 +65,7 @@ Do not remove those registry IDs casually if existing worlds or structure NBT ma
 - the selection/outline shape remains a full block so the anchor can still be targeted while developing.
 - `newBlockEntity(...)` creates `CrystalHeartBlockEntity`.
 
-The block entity stores the per-instance visual settings. The BER reads those settings every frame and renders the normalized geometry above the anchor.
+The block entity stores the per-instance visual and gameplay configuration. The BER reads the rendering-related settings every frame and renders normalized geometry above the anchor, while the block uses the same stored data for environmental light, mining rules, loot behavior, and configuration-preserving self drops.
 
 ## NBT settings
 
@@ -121,7 +121,131 @@ Examples:
 /data get block X Y Z
 ```
 
-Structure blocks preserve this block-entity NBT, so different dungeon structures can save different shapes, dimensions, light levels, color settings, and mining rules while still using the same registered block.
+Structure blocks preserve this block-entity NBT, so different dungeon structures can save different shapes, dimensions, light levels, color settings, and mining rules while still using the same registered block. The `self` mining path and the Silk Touch branch of `silk_self_else_loot` also copy the same configuration into the dropped Crystal Heart item so placing it again recreates the configured heart.
+
+## Builder and testing command reference
+
+Replace `X Y Z` with the coordinates of the invisible Crystal Heart anchor block. The easiest way to confirm a change is to run `/data get block X Y Z` after editing it.
+
+### Inspect the heart
+
+```mcfunction
+/data get block X Y Z
+```
+
+Shows the complete block-entity data currently stored by that Crystal Heart.
+
+### Shape
+
+```mcfunction
+/data merge block X Y Z {CrystalPreset:"base"}
+/data merge block X Y Z {CrystalPreset:"long_point"}
+/data merge block X Y Z {CrystalPreset:"spire"}
+```
+
+- `base` is the original/current silhouette.
+- `long_point` moves the waist upward and creates a longer lower point.
+- `spire` uses the taller/slimmer preset.
+
+### Width, height, and bobbing
+
+```mcfunction
+/data merge block X Y Z {CrystalWidth:5.5f,CrystalHeight:12.0f}
+/data merge block X Y Z {BobAmplitude:0.0f}
+/data merge block X Y Z {BobAmplitude:0.85f}
+```
+
+`CrystalWidth` controls total X/Z width, `CrystalHeight` controls total Y height, and `BobAmplitude` controls how far the crystal moves vertically while hovering. Width is clamped to `0.25..64`, height to `0.25..128`, and bob amplitude to `0..8`.
+
+### Environmental light
+
+```mcfunction
+/data merge block X Y Z {LightLevel:0}
+/data merge block X Y Z {LightLevel:7}
+/data merge block X Y Z {LightLevel:15}
+```
+
+`LightLevel` controls real vanilla block light around the anchor. `0` emits no environmental light and `15` is the vanilla maximum, comparable to glowstone. The rendered crystal itself remains full-bright even at `0`.
+
+### Original green artwork
+
+```mcfunction
+/data merge block X Y Z {CrystalColorMode:"preset",CrystalColorPreset:"green"}
+```
+
+Uses the authored green top/bottom textures exactly rather than recoloring the grayscale custom-color textures.
+
+### Custom RGB colors
+
+Custom colors must use `CrystalColorMode:"custom"` and a decimal 24-bit RGB integer in `CrystalColor`.
+
+```mcfunction
+# White
+/data merge block X Y Z {CrystalColorMode:"custom",CrystalColor:16777215}
+
+# Red
+/data merge block X Y Z {CrystalColorMode:"custom",CrystalColor:16711680}
+
+# Green
+/data merge block X Y Z {CrystalColorMode:"custom",CrystalColor:65280}
+
+# Blue
+/data merge block X Y Z {CrystalColorMode:"custom",CrystalColor:255}
+
+# Purple
+/data merge block X Y Z {CrystalColorMode:"custom",CrystalColor:11141375}
+
+# Cyan
+/data merge block X Y Z {CrystalColorMode:"custom",CrystalColor:65535}
+
+# Yellow / gold
+/data merge block X Y Z {CrystalColorMode:"custom",CrystalColor:16766720}
+
+# Orange
+/data merge block X Y Z {CrystalColorMode:"custom",CrystalColor:16744192}
+
+# Black
+/data merge block X Y Z {CrystalColorMode:"custom",CrystalColor:0}
+
+# Very dark gray
+/data merge block X Y Z {CrystalColorMode:"custom",CrystalColor:2105376}
+```
+
+The integer format is the same general 24-bit `0xRRGGBB` representation used for dyed-leather colors. A decimal RGB value copied from a leather-color picker such as MCStacker can therefore be pasted into `CrystalColor`; the general hue will match, although the crystal's grayscale artwork and facet shading can make perceived brightness differ from leather armor.
+
+### Mining and drops
+
+```mcfunction
+# Enable mining with the default behavior:
+# Silk Touch -> configured Crystal Heart item
+# normal pickaxe -> configured loot table
+/data merge block X Y Z {MiningEnabled:1b,MiningMode:"silk_self_else_loot"}
+
+# Always drop this configured Crystal Heart item
+/data merge block X Y Z {MiningEnabled:1b,MiningMode:"self"}
+
+# Always roll the configured loot table, even with Silk Touch
+/data merge block X Y Z {MiningEnabled:1b,MiningMode:"loot"}
+
+# Change the normal-mining loot table
+/data merge block X Y Z {MiningLootTable:"minecraft:chests/simple_dungeon"}
+
+# Restore the built-in Crystal Heart reward
+/data merge block X Y Z {MiningLootTable:"pp_legendarydungeons:blocks/default_ch_drop"}
+
+# Disable survival mining
+/data merge block X Y Z {MiningEnabled:0b}
+```
+
+When a mining mode returns the Crystal Heart item itself, the dropped item carries the current block-entity configuration. Replacing that item restores its shape, dimensions, bobbing, light level, color mode/color, mining enabled state, mining mode, and mining loot table.
+
+### Combined example
+
+```mcfunction
+/data merge block X Y Z {CrystalPreset:"spire",CrystalWidth:4.0f,CrystalHeight:18.0f,BobAmplitude:0.6f,LightLevel:15,CrystalColorMode:"custom",CrystalColor:11141375,MiningEnabled:1b,MiningMode:"silk_self_else_loot",MiningLootTable:"pp_legendarydungeons:blocks/default_ch_drop"}
+```
+
+This produces a tall purple, glowing, bobbing heart that can be mined with a pickaxe; Silk Touch returns the configured heart while an ordinary pickaxe uses the built-in reward.
 
 ## Mining and drops
 
@@ -129,9 +253,11 @@ The Crystal Heart is survival-unmineable by default. Creative players can still 
 
 `MiningMode` supports exactly three values:
 
-- `self` - always drop the registered Crystal Heart block item.
+- `self` - always drop the configured Crystal Heart block item, preserving the current block-entity settings for re-placement.
 - `loot` - always roll `MiningLootTable`, including when the tool has Silk Touch.
-- `silk_self_else_loot` - Silk Touch drops the heart item; other pickaxes roll `MiningLootTable`. This is the default enabled-mode behavior.
+- `silk_self_else_loot` - Silk Touch drops the configured heart item with its current block-entity settings; other pickaxes roll `MiningLootTable`. This is the default enabled-mode behavior.
+
+For either self-drop path, `CrystalHeartBlock` creates the block `ItemStack` and calls `CrystalHeartBlockEntity.saveToItem(...)`. The block entity writes all eleven persistent settings and stores them on the stack through vanilla `BlockItem.setBlockEntityData(...)`. Minecraft then reapplies that block-entity data when the item is placed again. This means a heart configured with `MiningMode:"self"` remains configured that way after being mined, picked up, and placed again; the same is true for its shape, size, bobbing, light, color, and loot-table settings.
 
 The built-in table is `pp_legendarydungeons:blocks/default_ch_drop`, stored at `data/pp_legendarydungeons/loot_table/blocks/default_ch_drop.json`. It drops 16-64 emeralds. When that exact built-in table is rolled, `CrystalHeartBlock` also awards 20-40 experience points.
 
