@@ -27,6 +27,8 @@ The result is a large floating crystal that can:
 - be many blocks larger than its anchor,
 - change width and height through NBT,
 - change silhouette through an NBT preset,
+- emit configurable vanilla block light,
+- use the original green artwork or an arbitrary custom RGB tint,
 - be saved inside normal Minecraft structure templates.
 
 ## Files in the reference implementation
@@ -40,6 +42,8 @@ common/src/main/java/porker/pp_legendarydungeons/
 
 Persistent instance data
   blocks/entity/animated_blocks/crystal_heart/CrystalHeartBlockEntity.java
+  blocks/entity/animated_blocks/crystal_heart/CrystalHeartColorMode.java
+  blocks/entity/animated_blocks/crystal_heart/CrystalHeartColorPreset.java
   blocks/entity/animated_blocks/crystal_heart/CrystalHeartMiningMode.java
   blocks/entity/animated_blocks/crystal_heart/CrystalHeartPreset.java
 
@@ -69,7 +73,9 @@ assets/<your_mod_id>/
 ├─ models/item/crystal_heart.json
 ├─ textures/entity/animated_blocks/crystal_heart/
 │  ├─ crystal_heart_a_top.png
-│  └─ crystal_heart_a_bottom.png
+│  ├─ crystal_heart_a_bottom.png
+│  ├─ crystal_heart_blank_top.png
+│  └─ crystal_heart_blank_bottom.png
 
 data/<your_mod_id>/loot_table/blocks/
 └─ default_ch_drop.json
@@ -109,6 +115,8 @@ Register the block and, if desired, a normal `BlockItem` for development/creativ
 
 For the optional mining behavior, give the block a normal positive destroy time, require the correct tool for drops, put the block in `minecraft:mineable/pickaxe`, and override destroy progress so survival players can only mine it when the block entity has `MiningEnabled:1b` and the held item is a pickaxe.
 
+For configurable environmental light, add an integer BlockState property such as `light_level` with a `0..15` range and make the block's `BlockBehaviour.Properties.lightLevel(...)` read it. Keep the editable value in block-entity NBT as `LightLevel`, then mirror the NBT value into the BlockState whenever it changes. This bridge is necessary because vanilla environmental block lighting is state-driven.
+
 ## Step 2: register the block entity type
 
 Register a `BlockEntityType<CrystalHeartBlockEntity>` and associate it with the Crystal Heart anchor block.
@@ -131,25 +139,33 @@ Make sure block registration happens before code resolves the block supplier for
 The reference block entity stores:
 
 ```text
-CrystalPreset     string
-CrystalWidth      float
-CrystalHeight     float
-BobAmplitude      float
-MiningEnabled     boolean
-MiningMode        string
-MiningLootTable   string/resource location
+CrystalPreset       string
+CrystalWidth        float
+CrystalHeight       float
+BobAmplitude        float
+LightLevel          int
+CrystalColorMode    string
+CrystalColorPreset  string
+CrystalColor        int / 24-bit RGB
+MiningEnabled       boolean
+MiningMode          string
+MiningLootTable     string/resource location
 ```
 
 Reference defaults:
 
 ```text
-preset            = base
-width             = 5.5 blocks
-height            = 12.0 blocks
-bob amplitude     = 0.35 blocks
-mining enabled    = false
-mining mode       = silk_self_else_loot
-mining loot table = <your_mod_id>:blocks/default_ch_drop
+preset             = base
+width              = 5.5 blocks
+height             = 12.0 blocks
+bob amplitude      = 0.35 blocks
+light level        = 0
+color mode         = preset
+color preset       = green
+custom RGB color   = 0xFFFFFF / 16777215
+mining enabled     = false
+mining mode        = silk_self_else_loot
+mining loot table  = <your_mod_id>:blocks/default_ch_drop
 ```
 
 Reference clamp ranges:
@@ -158,9 +174,10 @@ Reference clamp ranges:
 width:         0.25 .. 64.0
 height:        0.25 .. 128.0
 bob amplitude: 0.0  .. 8.0
+light level:   0    .. 15
 ```
 
-Implement the standard block-entity NBT methods for your mappings/version and save all seven values. Invalid or missing mining modes should fall back to `silk_self_else_loot`; invalid loot-table identifiers should fall back to the default table.
+Implement the standard block-entity NBT methods for your mappings/version and save all eleven values. Invalid or missing color modes should fall back to `preset`, authored color presets should fall back to `green`, mining modes should fall back to `silk_self_else_loot`, and invalid loot-table identifiers should fall back to the default table. Normalize `CrystalColor` to the low 24 bits so it remains a `0xRRGGBB` value.
 
 ### Mining/drop behavior
 
@@ -192,6 +209,40 @@ Passing the `ResourceLocation` directly to `getLootTable(...)` does not compile 
 The reference default table is `<your_mod_id>:blocks/default_ch_drop`. In this project it drops 16-64 emeralds. The block code additionally awards 20-40 XP when that exact built-in table is selected. Custom loot-table overrides replace that built-in reward behavior.
 
 For Silk Touch, look up `Enchantments.SILK_TOUCH` from the server enchantment registry and test the held tool before choosing between the self-drop and loot-table branches.
+
+### Environmental light behavior
+
+Minecraft's vanilla light engine does not read arbitrary block-entity NBT directly. The reference implementation therefore keeps `LightLevel` in the block entity for structure/NBT configurability but mirrors it into a hidden `IntegerProperty` on `CrystalHeartBlock`.
+
+Use `0` for no environmental light and clamp to vanilla's maximum of `15` (glowstone-level block light). The BER can remain `FULL_BRIGHT`; renderer brightness and environmental emission are intentionally independent.
+
+When `LightLevel` changes through a setter or `/data merge block`, update the same block's state with the new property value. A structure template then preserves both the block state and the block-entity NBT.
+
+### Color/tint behavior
+
+Keep shape and color as separate concepts.
+
+```text
+CrystalColorMode:"preset"
+    + CrystalColorPreset:"green"
+    -> original authored green top/bottom textures
+
+CrystalColorMode:"custom"
+    + CrystalColor:<24-bit RGB integer>
+    -> neutral grayscale top/bottom textures + vertex RGB tint
+```
+
+Create the neutral textures by converting the active green artwork to grayscale while preserving alpha and pixel luminance. Do not replace the current green preset with a tint if exact visual compatibility matters.
+
+For custom colors, decode the NBT integer as:
+
+```java
+int red = (color >> 16) & 0xFF;
+int green = (color >> 8) & 0xFF;
+int blue = color & 0xFF;
+```
+
+The reference geometry's original face colors are slightly green-biased. In custom mode, first convert each face tint to a neutral brightness multiplier, then multiply the requested RGB channels by that brightness. This keeps the faceted appearance without adding a green cast to arbitrary colors.
 
 Also provide the normal block-entity client synchronization path, equivalent to:
 
@@ -429,6 +480,11 @@ Place the anchor and test:
 /data merge block X Y Z {CrystalPreset:"spire"}
 
 /data merge block X Y Z {CrystalWidth:5.5f,CrystalHeight:12.0f,BobAmplitude:0.35f}
+/data merge block X Y Z {LightLevel:0}
+/data merge block X Y Z {LightLevel:15}
+/data merge block X Y Z {CrystalColorMode:"preset",CrystalColorPreset:"green"}
+/data merge block X Y Z {CrystalColorMode:"custom",CrystalColor:16711680}
+/data merge block X Y Z {CrystalColorMode:"custom",CrystalColor:255}
 /data merge block X Y Z {MiningEnabled:1b}
 /data merge block X Y Z {MiningEnabled:1b,MiningMode:"self"}
 /data merge block X Y Z {MiningEnabled:1b,MiningMode:"loot"}
@@ -444,10 +500,14 @@ Verify all of the following:
 - preset changes update the silhouette,
 - width and height work on every preset,
 - bob amplitude updates on the client,
+- `LightLevel:0` emits no environmental block light while the rendered heart remains full-bright,
+- `LightLevel:15` emits maximum vanilla block light and updates immediately after `/data merge block`,
+- preset/green mode looks identical to the existing authored green heart,
+- custom mode preserves the grayscale texture pattern while tinting red, blue, purple, and other RGB values cleanly,
 - the top/bottom seam has no holes,
 - the crystal remains visible while looking upward/downward at steep angles,
 - saving/loading the world preserves NBT,
-- structure blocks preserve the settings,
+- structure blocks preserve the shape, light, color, and mining settings,
 - a default heart cannot be mined in survival,
 - `MiningEnabled:1b` allows any pickaxe to make mining progress while non-pickaxes do not,
 - `self` always drops the block item,
@@ -461,7 +521,7 @@ Verify all of the following:
 
 Once the block entity is working, place it at the intended anchor position, apply the desired NBT, and save the surrounding build with a structure block.
 
-Because the instance settings live in block-entity NBT, the structure template stores the selected preset, dimensions, and mining/drop rules with the anchor. No command needs to resize or reconfigure the Crystal Heart after world generation unless dynamic behavior is desired.
+Because the instance settings live in block-entity NBT, the structure template stores the selected shape preset, dimensions, light level, color configuration, and mining/drop rules with the anchor. The mirrored `light_level` BlockState is saved alongside it. No command needs to resize or reconfigure the Crystal Heart after world generation unless dynamic behavior is desired.
 
 ## Adding new shapes later
 
@@ -478,6 +538,9 @@ A destination mod needs all of these concepts wired together:
 - [ ] registered invisible anchor block
 - [ ] registered block entity type
 - [ ] block entity NBT persistence and update packets
+- [ ] NBT `LightLevel` plus a `0..15` BlockState light-property bridge
+- [ ] preset/custom color mode and 24-bit RGB persistence
+- [ ] authored green and neutral grayscale top/bottom texture pairs
 - [ ] named preset lookup with a safe fallback
 - [ ] normalized geometry builder
 - [ ] top/bottom UV mapping
@@ -491,6 +554,7 @@ A destination mod needs all of these concepts wired together:
 - [ ] `MiningMode` branching for self / loot / Silk Touch behavior
 - [ ] default block loot table plus optional NBT loot-table override
 - [ ] Minecraft-version-correct loot-table registry lookup (`ResourceKey<LootTable>` on the reference 1.21.1 target)
-- [ ] in-game NBT, mining/drop, and structure-block testing
+- [ ] custom-color neutral facet shading without the original green bias
+- [ ] in-game NBT, light, color, mining/drop, and structure-block testing
 
 For exact implementation details, use the source files listed at the beginning of this document as the canonical reference.

@@ -16,6 +16,8 @@ common/src/main/java/porker/pp_legendarydungeons/
 │  └─ CrystalHeartBlock.java
 ├─ blocks/entity/animated_blocks/crystal_heart/
 │  ├─ CrystalHeartBlockEntity.java
+│  ├─ CrystalHeartColorMode.java
+│  ├─ CrystalHeartColorPreset.java
 │  ├─ CrystalHeartMiningMode.java
 │  └─ CrystalHeartPreset.java
 ├─ client/animated_blocks/
@@ -34,7 +36,9 @@ The active runtime textures are:
 common/src/main/resources/assets/pp_legendarydungeons/
 └─ textures/entity/animated_blocks/crystal_heart/
    ├─ crystal_heart_a_top.png
-   └─ crystal_heart_a_bottom.png
+   ├─ crystal_heart_a_bottom.png
+   ├─ crystal_heart_blank_top.png
+   └─ crystal_heart_blank_bottom.png
 ```
 
 Old B/C texture experiments and the former `crystal_heart2` / `crystal_heart3` texture trees are no longer part of the active renderer. Git history can be used if those experiments ever need to be recovered for reference.
@@ -65,7 +69,7 @@ The block entity stores the per-instance visual settings. The BER reads those se
 
 ## NBT settings
 
-The block entity currently stores seven persistent values:
+The block entity currently stores eleven persistent values:
 
 | NBT key | Purpose | Default |
 |---|---|---:|
@@ -73,11 +77,15 @@ The block entity currently stores seven persistent values:
 | `CrystalWidth` | Total rendered X/Z width in blocks | `5.5` |
 | `CrystalHeight` | Total rendered Y height in blocks | `12.0` |
 | `BobAmplitude` | Vertical bob distance in blocks | `0.35` |
+| `LightLevel` | Environmental block-light emission | `0` |
+| `CrystalColorMode` | Authored preset texture or custom RGB tint | `preset` |
+| `CrystalColorPreset` | Authored color preset used in preset mode | `green` |
+| `CrystalColor` | 24-bit `0xRRGGBB` integer used in custom mode | `16777215` / white |
 | `MiningEnabled` | Whether survival players may mine the heart | `0b` / false |
 | `MiningMode` | Drop behavior when mining is enabled | `silk_self_else_loot` |
 | `MiningLootTable` | Loot table rolled for normal mining | `pp_legendarydungeons:blocks/default_ch_drop` |
 
-Width, height, and bobbing are clamped by `CrystalHeartBlockEntity` before use. Missing or invalid preset names fall back to `base`. Invalid mining modes fall back to `silk_self_else_loot`, and invalid loot-table IDs fall back to the built-in default table.
+Width, height, bobbing, and `LightLevel` are clamped by `CrystalHeartBlockEntity` before use. `LightLevel` is limited to vanilla's `0..15` block-light range. Missing or invalid shape/color preset names fall back to `base` / `green`, invalid color modes fall back to `preset`, invalid mining modes fall back to `silk_self_else_loot`, and invalid loot-table IDs fall back to the built-in default table. `CrystalColor` is normalized to the low 24 RGB bits.
 
 Examples:
 
@@ -89,6 +97,17 @@ Examples:
 /data merge block X Y Z {CrystalWidth:5.5f,CrystalHeight:12.0f}
 /data merge block X Y Z {BobAmplitude:0.85f}
 /data merge block X Y Z {CrystalPreset:"spire",CrystalWidth:3.5f,CrystalHeight:12.0f,BobAmplitude:0.35f}
+
+# Environmental light examples
+/data merge block X Y Z {LightLevel:0}
+/data merge block X Y Z {LightLevel:7}
+/data merge block X Y Z {LightLevel:15}
+
+# Color examples
+/data merge block X Y Z {CrystalColorMode:"preset",CrystalColorPreset:"green"}
+/data merge block X Y Z {CrystalColorMode:"custom",CrystalColor:16711680}
+/data merge block X Y Z {CrystalColorMode:"custom",CrystalColor:255}
+/data merge block X Y Z {CrystalColorMode:"custom",CrystalColor:11141375}
 
 # Mining examples
 /data merge block X Y Z {MiningEnabled:1b}
@@ -102,7 +121,7 @@ Examples:
 /data get block X Y Z
 ```
 
-Structure blocks preserve this block-entity NBT, so different dungeon structures can save different shapes, dimensions, and mining rules while still using the same registered block.
+Structure blocks preserve this block-entity NBT, so different dungeon structures can save different shapes, dimensions, light levels, color settings, and mining rules while still using the same registered block.
 
 ## Mining and drops
 
@@ -134,6 +153,51 @@ LootTable lootTable = level.getServer()
 Keeping the NBT-facing value as a `ResourceLocation` still allows arbitrary datapack loot-table IDs while the runtime lookup uses the type required by 1.21.1.
 
 All three retained Crystal Heart registry IDs are included in the vanilla `mineable/pickaxe` block tag for compatibility, although new content should continue to use `pp_legendarydungeons:crystal_heart`.
+
+## Environmental light
+
+`LightLevel` controls real environmental block light independently from the renderer's visual brightness.
+
+- `0` emits no block light and is the default.
+- `1..14` emit progressively more vanilla block light.
+- `15` is the vanilla maximum, equal to glowstone-level emission.
+
+The renderer still uses `LightTexture.FULL_BRIGHT`, so the crystal graphic remains visually luminous even when `LightLevel:0`.
+
+Vanilla environmental light is derived from `BlockState`, not arbitrary block-entity NBT. The Crystal Heart therefore mirrors its NBT `LightLevel` into a hidden integer `light_level` BlockState property. `ModBlocks` reads that property through `BlockBehaviour.Properties.lightLevel(...)`. When NBT is reloaded in-world (including `/data merge block`), the block entity synchronizes the property so Minecraft's lighting engine recalculates the surrounding light.
+
+## Color modes and custom tinting
+
+Color is independent from the geometry preset.
+
+`CrystalColorMode:"preset"` uses an authored texture/color preset. The only current authored preset is:
+
+```text
+CrystalColorPreset:"green"
+```
+
+`green` uses the existing `crystal_heart_a_top.png` and `crystal_heart_a_bottom.png` artwork and preserves the current green face shading exactly.
+
+`CrystalColorMode:"custom"` instead uses:
+
+```text
+crystal_heart_blank_top.png
+crystal_heart_blank_bottom.png
+```
+
+These are grayscale copies of the active artwork: the same transparency, highlights, shadows, and pixel pattern are retained, but the green hue is removed. The renderer then applies `CrystalColor` as a 24-bit RGB tint (`0xRRGGBB`). Examples:
+
+| Color | RGB hex | NBT integer |
+|---|---:|---:|
+| White | `FFFFFF` | `16777215` |
+| Red | `FF0000` | `16711680` |
+| Green | `00FF00` | `65280` |
+| Blue | `0000FF` | `255` |
+| Purple | `AA00FF` | `11141375` |
+
+Custom mode converts the existing per-face authored tint into neutral brightness before applying the requested RGB value. This preserves visible facets without contaminating custom red/blue/purple colors with the original green-biased face tint.
+
+`CrystalColorPreset` is ignored while custom mode is active, and `CrystalColor` is ignored while preset mode is active. Keeping those values separate allows additional authored presets to be added later without tying color choices to `CrystalPreset`.
 
 ## Shape presets
 
@@ -197,9 +261,10 @@ The current presets all reuse the same active texture pair. A future shape only 
 4. Translate to the center of the anchor block and slightly above its base.
 5. Rotate around Y.
 6. Scale the normalized mesh by `CrystalWidth`, `CrystalHeight`, `CrystalWidth`.
-7. Resolve the texture pair from `CrystalHeartPreset`.
-8. Render the upper four faces.
-9. Request the bottom texture buffer only after the top half has been emitted, then render the lower four faces.
+7. Resolve the texture pair from the shape preset plus `CrystalColorMode` / `CrystalColorPreset`.
+8. In custom mode, apply the NBT `CrystalColor` tint using neutral facet brightness.
+9. Render the upper four faces.
+10. Request the bottom texture buffer only after the top half has been emitted, then render the lower four faces.
 
 That top-then-bottom buffer ordering is intentional. Requesting both `VertexConsumer`s before finishing the first texture previously caused a `BufferBuilder: Not building!` crash.
 

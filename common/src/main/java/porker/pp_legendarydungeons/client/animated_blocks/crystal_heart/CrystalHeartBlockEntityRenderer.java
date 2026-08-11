@@ -14,6 +14,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import porker.pp_legendarydungeons.LegendaryDungeons;
 import porker.pp_legendarydungeons.blocks.entity.animated_blocks.crystal_heart.CrystalHeartBlockEntity;
+import porker.pp_legendarydungeons.blocks.entity.animated_blocks.crystal_heart.CrystalHeartColorMode;
+import porker.pp_legendarydungeons.blocks.entity.animated_blocks.crystal_heart.CrystalHeartColorPreset;
 import porker.pp_legendarydungeons.blocks.entity.animated_blocks.crystal_heart.CrystalHeartPreset;
 
 import java.util.EnumMap;
@@ -33,6 +35,13 @@ public final class CrystalHeartBlockEntityRenderer
      */
     private static final Map<CrystalHeartPreset, TexturePair> PRESET_TEXTURES =
             createPresetTextures();
+
+    /**
+     * Neutral copy of the active artwork. Custom RGB colors tint these textures
+     * while preserving the original highlight/shadow pattern.
+     */
+    private static final TexturePair CUSTOM_TEXTURES =
+            texturePair("crystal_heart", "crystal_heart_blank");
 
     /** 0.5 degrees/tick = 10 degrees/second = one turn every 36 seconds. */
     private static final float DEGREES_PER_TICK = 0.5F;
@@ -68,6 +77,10 @@ public final class CrystalHeartBlockEntityRenderer
         float bobOffset = Mth.sin(time * BOB_RADIANS_PER_TICK)
                 * blockEntity.getBobAmplitudeBlocks();
         CrystalHeartPreset preset = blockEntity.getPreset();
+        CrystalHeartColorMode colorMode = blockEntity.getColorMode();
+        CrystalHeartColorPreset colorPreset = blockEntity.getColorPreset();
+        boolean customTint = colorMode == CrystalHeartColorMode.CUSTOM;
+        int tintColor = customTint ? blockEntity.getCrystalColor() : 0xFFFFFF;
 
         poseStack.pushPose();
 
@@ -82,7 +95,7 @@ public final class CrystalHeartBlockEntityRenderer
                 blockEntity.getWidthBlocks()
         );
 
-        TexturePair textures = resolveTextures(preset);
+        TexturePair textures = resolveTextures(preset, colorMode, colorPreset);
 
         /*
          * Top and bottom halves deliberately use separate 128x128 textures.
@@ -97,6 +110,8 @@ public final class CrystalHeartBlockEntityRenderer
                 poseStack.last(),
                 topConsumer,
                 preset,
+                tintColor,
+                customTint,
                 LightTexture.FULL_BRIGHT,
                 packedOverlay
         );
@@ -109,6 +124,8 @@ public final class CrystalHeartBlockEntityRenderer
                 poseStack.last(),
                 bottomConsumer,
                 preset,
+                tintColor,
+                customTint,
                 LightTexture.FULL_BRIGHT,
                 packedOverlay
         );
@@ -130,11 +147,24 @@ public final class CrystalHeartBlockEntityRenderer
         return textures;
     }
 
-    private static TexturePair resolveTextures(CrystalHeartPreset preset) {
-        TexturePair textures = PRESET_TEXTURES.get(preset);
-        return textures != null
-                ? textures
-                : PRESET_TEXTURES.get(CrystalHeartPreset.BASE);
+    private static TexturePair resolveTextures(
+            CrystalHeartPreset preset,
+            CrystalHeartColorMode colorMode,
+            CrystalHeartColorPreset colorPreset
+    ) {
+        if (colorMode == CrystalHeartColorMode.CUSTOM) {
+            return CUSTOM_TEXTURES;
+        }
+
+        // GREEN is currently the only authored color preset.
+        if (colorPreset == CrystalHeartColorPreset.GREEN) {
+            TexturePair textures = PRESET_TEXTURES.get(preset);
+            return textures != null
+                    ? textures
+                    : PRESET_TEXTURES.get(CrystalHeartPreset.BASE);
+        }
+
+        return PRESET_TEXTURES.get(CrystalHeartPreset.BASE);
     }
 
     private static TexturePair texturePair(String folder, String baseName) {

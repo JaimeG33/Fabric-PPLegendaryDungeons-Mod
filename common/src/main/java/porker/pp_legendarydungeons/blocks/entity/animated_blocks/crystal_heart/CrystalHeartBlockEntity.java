@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import porker.pp_legendarydungeons.LegendaryDungeons;
+import porker.pp_legendarydungeons.blocks.animated_blocks.crystal_heart.CrystalHeartBlock;
 import porker.pp_legendarydungeons.setup.ModBlockEntities;
 
 /**
@@ -29,11 +30,21 @@ public final class CrystalHeartBlockEntity extends BlockEntity {
     public static final String MINING_ENABLED_NBT_KEY = "MiningEnabled";
     public static final String MINING_MODE_NBT_KEY = "MiningMode";
     public static final String MINING_LOOT_TABLE_NBT_KEY = "MiningLootTable";
+    public static final String LIGHT_LEVEL_NBT_KEY = "LightLevel";
+    public static final String COLOR_MODE_NBT_KEY = "CrystalColorMode";
+    public static final String COLOR_PRESET_NBT_KEY = "CrystalColorPreset";
+    public static final String CRYSTAL_COLOR_NBT_KEY = "CrystalColor";
 
     /** Matches the final floor-anchored datapack particle-heart proportions. */
     public static final float DEFAULT_WIDTH_BLOCKS = 5.5F;
     public static final float DEFAULT_HEIGHT_BLOCKS = 12.0F;
     public static final float DEFAULT_BOB_AMPLITUDE_BLOCKS = 0.35F;
+    public static final int DEFAULT_LIGHT_LEVEL = 0;
+    public static final CrystalHeartColorMode DEFAULT_COLOR_MODE =
+            CrystalHeartColorMode.PRESET;
+    public static final CrystalHeartColorPreset DEFAULT_COLOR_PRESET =
+            CrystalHeartColorPreset.GREEN;
+    public static final int DEFAULT_CRYSTAL_COLOR = 0xFFFFFF;
 
     public static final boolean DEFAULT_MINING_ENABLED = false;
     public static final CrystalHeartMiningMode DEFAULT_MINING_MODE =
@@ -50,11 +61,17 @@ public final class CrystalHeartBlockEntity extends BlockEntity {
     public static final float MAX_HEIGHT_BLOCKS = 128.0F;
     public static final float MIN_BOB_AMPLITUDE_BLOCKS = 0.0F;
     public static final float MAX_BOB_AMPLITUDE_BLOCKS = 8.0F;
+    public static final int MIN_LIGHT_LEVEL = 0;
+    public static final int MAX_LIGHT_LEVEL = 15;
 
     private CrystalHeartPreset preset = CrystalHeartPreset.BASE;
     private float widthBlocks = DEFAULT_WIDTH_BLOCKS;
     private float heightBlocks = DEFAULT_HEIGHT_BLOCKS;
     private float bobAmplitudeBlocks = DEFAULT_BOB_AMPLITUDE_BLOCKS;
+    private int lightLevel = DEFAULT_LIGHT_LEVEL;
+    private CrystalHeartColorMode colorMode = DEFAULT_COLOR_MODE;
+    private CrystalHeartColorPreset colorPreset = DEFAULT_COLOR_PRESET;
+    private int crystalColor = DEFAULT_CRYSTAL_COLOR;
     private boolean miningEnabled = DEFAULT_MINING_ENABLED;
     private CrystalHeartMiningMode miningMode = DEFAULT_MINING_MODE;
     private ResourceLocation miningLootTable = DEFAULT_MINING_LOOT_TABLE;
@@ -77,6 +94,22 @@ public final class CrystalHeartBlockEntity extends BlockEntity {
 
     public float getBobAmplitudeBlocks() {
         return bobAmplitudeBlocks;
+    }
+
+    public int getLightLevel() {
+        return lightLevel;
+    }
+
+    public CrystalHeartColorMode getColorMode() {
+        return colorMode;
+    }
+
+    public CrystalHeartColorPreset getColorPreset() {
+        return colorPreset;
+    }
+
+    public int getCrystalColor() {
+        return crystalColor;
     }
 
     public boolean isMiningEnabled() {
@@ -112,6 +145,27 @@ public final class CrystalHeartBlockEntity extends BlockEntity {
         markChangedAndSync();
     }
 
+    public void setLightLevel(int lightLevel) {
+        this.lightLevel = clampLightLevel(lightLevel);
+        syncLightLevelToBlockState();
+        markChangedAndSync();
+    }
+
+    public void setColorMode(CrystalHeartColorMode colorMode) {
+        this.colorMode = colorMode == null ? DEFAULT_COLOR_MODE : colorMode;
+        markChangedAndSync();
+    }
+
+    public void setColorPreset(CrystalHeartColorPreset colorPreset) {
+        this.colorPreset = colorPreset == null ? DEFAULT_COLOR_PRESET : colorPreset;
+        markChangedAndSync();
+    }
+
+    public void setCrystalColor(int crystalColor) {
+        this.crystalColor = normalizeColor(crystalColor);
+        markChangedAndSync();
+    }
+
     public void setMiningEnabled(boolean miningEnabled) {
         this.miningEnabled = miningEnabled;
         markChangedAndSync();
@@ -136,6 +190,10 @@ public final class CrystalHeartBlockEntity extends BlockEntity {
         tag.putFloat(WIDTH_NBT_KEY, widthBlocks);
         tag.putFloat(HEIGHT_NBT_KEY, heightBlocks);
         tag.putFloat(BOB_AMPLITUDE_NBT_KEY, bobAmplitudeBlocks);
+        tag.putInt(LIGHT_LEVEL_NBT_KEY, lightLevel);
+        tag.putString(COLOR_MODE_NBT_KEY, colorMode.id());
+        tag.putString(COLOR_PRESET_NBT_KEY, colorPreset.id());
+        tag.putInt(CRYSTAL_COLOR_NBT_KEY, crystalColor);
         tag.putBoolean(MINING_ENABLED_NBT_KEY, miningEnabled);
         tag.putString(MINING_MODE_NBT_KEY, miningMode.id());
         tag.putString(MINING_LOOT_TABLE_NBT_KEY, miningLootTable.toString());
@@ -161,6 +219,22 @@ public final class CrystalHeartBlockEntity extends BlockEntity {
                 ? clampBobAmplitude(tag.getFloat(BOB_AMPLITUDE_NBT_KEY))
                 : DEFAULT_BOB_AMPLITUDE_BLOCKS;
 
+        lightLevel = tag.contains(LIGHT_LEVEL_NBT_KEY)
+                ? clampLightLevel(tag.getInt(LIGHT_LEVEL_NBT_KEY))
+                : DEFAULT_LIGHT_LEVEL;
+
+        colorMode = tag.contains(COLOR_MODE_NBT_KEY)
+                ? CrystalHeartColorMode.fromId(tag.getString(COLOR_MODE_NBT_KEY))
+                : DEFAULT_COLOR_MODE;
+
+        colorPreset = tag.contains(COLOR_PRESET_NBT_KEY)
+                ? CrystalHeartColorPreset.fromId(tag.getString(COLOR_PRESET_NBT_KEY))
+                : DEFAULT_COLOR_PRESET;
+
+        crystalColor = tag.contains(CRYSTAL_COLOR_NBT_KEY)
+                ? normalizeColor(tag.getInt(CRYSTAL_COLOR_NBT_KEY))
+                : DEFAULT_CRYSTAL_COLOR;
+
         miningEnabled = tag.contains(MINING_ENABLED_NBT_KEY)
                 ? tag.getBoolean(MINING_ENABLED_NBT_KEY)
                 : DEFAULT_MINING_ENABLED;
@@ -172,6 +246,13 @@ public final class CrystalHeartBlockEntity extends BlockEntity {
         miningLootTable = tag.contains(MINING_LOOT_TABLE_NBT_KEY)
                 ? parseMiningLootTable(tag.getString(MINING_LOOT_TABLE_NBT_KEY))
                 : DEFAULT_MINING_LOOT_TABLE;
+
+        /*
+         * /data merge block reloads the block entity NBT while it is already in
+         * the world. Mirror LightLevel into BlockState immediately so vanilla's
+         * lighting engine sees the new emission value.
+         */
+        syncLightLevelToBlockState();
     }
 
     @Override
@@ -197,9 +278,36 @@ public final class CrystalHeartBlockEntity extends BlockEntity {
         }
     }
 
+    private void syncLightLevelToBlockState() {
+        if (level == null || level.isClientSide) {
+            return;
+        }
+
+        BlockState state = getBlockState();
+        if (!(state.getBlock() instanceof CrystalHeartBlock)
+                || !state.hasProperty(CrystalHeartBlock.LIGHT_LEVEL)
+                || state.getValue(CrystalHeartBlock.LIGHT_LEVEL) == lightLevel) {
+            return;
+        }
+
+        level.setBlock(
+                worldPosition,
+                state.setValue(CrystalHeartBlock.LIGHT_LEVEL, lightLevel),
+                Block.UPDATE_ALL
+        );
+    }
+
     private static ResourceLocation parseMiningLootTable(String value) {
         ResourceLocation parsed = ResourceLocation.tryParse(value);
         return parsed == null ? DEFAULT_MINING_LOOT_TABLE : parsed;
+    }
+
+    private static int clampLightLevel(int value) {
+        return Mth.clamp(value, MIN_LIGHT_LEVEL, MAX_LIGHT_LEVEL);
+    }
+
+    private static int normalizeColor(int value) {
+        return value & 0x00FFFFFF;
     }
 
     private static float clampWidth(float value) {

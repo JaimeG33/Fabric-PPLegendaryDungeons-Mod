@@ -135,6 +135,7 @@ public final class ModBlocks {
                 // Per-instance NBT can still make the heart effectively unbreakable.
                 .strength(5.0F, 3_600_000.0F)
                 .requiresCorrectToolForDrops()
+                .lightLevel(state -> state.getValue(CrystalHeartBlock.LIGHT_LEVEL))
                 .noCollission()
                 .noOcclusion()
                 .noLootTable();

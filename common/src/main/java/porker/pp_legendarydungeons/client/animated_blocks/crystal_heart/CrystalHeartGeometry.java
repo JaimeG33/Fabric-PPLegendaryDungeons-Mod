@@ -40,6 +40,8 @@ public final class CrystalHeartGeometry {
             PoseStack.Pose pose,
             VertexConsumer consumer,
             CrystalHeartPreset preset,
+            int tintColor,
+            boolean customTint,
             int packedLight,
             int packedOverlay
     ) {
@@ -54,6 +56,8 @@ public final class CrystalHeartGeometry {
                     TOP_APEX,
                     right,
                     left,
+                    tintColor,
+                    customTint,
                     packedLight,
                     packedOverlay
             );
@@ -64,6 +68,8 @@ public final class CrystalHeartGeometry {
             PoseStack.Pose pose,
             VertexConsumer consumer,
             CrystalHeartPreset preset,
+            int tintColor,
+            boolean customTint,
             int packedLight,
             int packedOverlay
     ) {
@@ -78,6 +84,8 @@ public final class CrystalHeartGeometry {
                     BOTTOM_APEX,
                     left,
                     right,
+                    tintColor,
+                    customTint,
                     packedLight,
                     packedOverlay
             );
@@ -145,6 +153,8 @@ public final class CrystalHeartGeometry {
             Uv uvA,
             Uv uvB,
             Uv uvC,
+            int tintColor,
+            boolean customTint,
             int packedLight,
             int packedOverlay
     ) {
@@ -161,16 +171,20 @@ public final class CrystalHeartGeometry {
         Vector3f normal = ab.cross(ac).normalize();
 
         emitVertex(
-                pose, consumer, face.a, uvA, face, normal, packedLight, packedOverlay
+                pose, consumer, face.a, uvA, face, normal,
+                tintColor, customTint, packedLight, packedOverlay
         );
         emitVertex(
-                pose, consumer, face.b, uvB, face, normal, packedLight, packedOverlay
+                pose, consumer, face.b, uvB, face, normal,
+                tintColor, customTint, packedLight, packedOverlay
         );
         emitVertex(
-                pose, consumer, face.c, uvC, face, normal, packedLight, packedOverlay
+                pose, consumer, face.c, uvC, face, normal,
+                tintColor, customTint, packedLight, packedOverlay
         );
         emitVertex(
-                pose, consumer, face.c, uvC, face, normal, packedLight, packedOverlay
+                pose, consumer, face.c, uvC, face, normal,
+                tintColor, customTint, packedLight, packedOverlay
         );
     }
 
@@ -181,15 +195,39 @@ public final class CrystalHeartGeometry {
             Uv uv,
             Face face,
             Vector3f normal,
+            int tintColor,
+            boolean customTint,
             int packedLight,
             int packedOverlay
     ) {
+        int red = face.red;
+        int green = face.green;
+        int blue = face.blue;
+
+        if (customTint) {
+            /*
+             * Convert the authored facet tint into neutral brightness, then
+             * multiply the selected RGB color by that brightness. This preserves
+             * facet contrast without carrying the original green bias into
+             * arbitrary red/blue/purple colors.
+             */
+            int brightness =
+                    (face.red * 54 + face.green * 183 + face.blue * 19 + 128) >> 8;
+            red = scaleChannel((tintColor >> 16) & 0xFF, brightness);
+            green = scaleChannel((tintColor >> 8) & 0xFF, brightness);
+            blue = scaleChannel(tintColor & 0xFF, brightness);
+        }
+
         consumer.addVertex(pose, position.x, position.y, position.z)
-                .setColor(face.red, face.green, face.blue, 255)
+                .setColor(red, green, blue, 255)
                 .setUv(uv.u, uv.v)
                 .setOverlay(packedOverlay)
                 .setLight(packedLight)
                 .setNormal(pose, normal.x(), normal.y(), normal.z());
+    }
+
+    private static int scaleChannel(int channel, int brightness) {
+        return (channel * brightness + 127) / 255;
     }
 
     private record Position(float x, float y, float z) {

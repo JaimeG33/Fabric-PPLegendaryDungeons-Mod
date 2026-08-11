@@ -14,9 +14,12 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -44,12 +47,28 @@ public final class CrystalHeartBlock extends BaseEntityBlock {
     public static final MapCodec<CrystalHeartBlock> CODEC =
             simpleCodec(CrystalHeartBlock::new);
 
+    /**
+     * Vanilla block lighting is state-driven, so the block entity mirrors its
+     * NBT LightLevel into this otherwise invisible BlockState property.
+     */
+    public static final IntegerProperty LIGHT_LEVEL =
+            IntegerProperty.create("light_level", 0, 15);
+
     /** XP is tied to the built-in default reward table, not arbitrary overrides. */
     private static final int DEFAULT_MINING_XP_MIN = 20;
     private static final int DEFAULT_MINING_XP_MAX = 40;
 
     public CrystalHeartBlock(Properties properties) {
         super(properties);
+        registerDefaultState(stateDefinition.any().setValue(LIGHT_LEVEL, 0));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(
+            StateDefinition.Builder<Block, BlockState> builder
+    ) {
+        super.createBlockStateDefinition(builder);
+        builder.add(LIGHT_LEVEL);
     }
 
     @Override
