@@ -1,0 +1,53 @@
+{
+  "spawn_profile": "pp_legendarydungeons:dungeon_enemy/common/ariados",
+  "faction": "pp_legendarydungeons:pirate_raiders",
+  "player_relation": "hostile",
+  "aggression": {
+    "enabled": true,
+    "target_players": true,
+    "exclude_creative": true,
+    "exclude_spectators": true,
+    "requires_active_dungeon_instance": false,
+    "detection_range": 20.0,
+    "chase_range": 28.0,
+    "home_radius": 16.0,
+    "return_speed": 1.0,
+    "update_interval_ticks": 10
+  },
+  "combat_effects": [
+    {
+      "effect": "minecraft:infested",
+      "amplifier": 0,
+      "duration_ticks": 80,
+      "refresh_interval_ticks": 20,
+      "ambient": true,
+      "show_particles": false,
+      "show_icon": false,
+      "death_callback": "vanilla_killed"
+    },
+    {
+      "effect": "minecraft:weaving",
+      "amplifier": 1,
+      "duration_ticks": 80,
+      "refresh_interval_ticks": 20,
+      "ambient": true,
+      "show_particles": false,
+      "show_icon": false,
+      "death_callback": "vanilla_killed"
+    }
+  ],
+  "capture": {
+    "allowed": true,
+    "remove_dungeon_state": true
+  },
+  "loot": {
+    "mode": "default",
+    "table": "default"
+  },
+  "targets": [
+    {
+      "type": "player",
+      "value": ""
+    }
+  ]
+}

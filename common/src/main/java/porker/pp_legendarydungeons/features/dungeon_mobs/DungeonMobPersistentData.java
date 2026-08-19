@@ -42,6 +42,22 @@ public record DungeonMobPersistentData(
         aggression = aggression == null ? Aggression.defaults() : aggression;
     }
 
+    /**
+     * Returns an equivalent immutable snapshot with a resolved encounter home.
+     * Used when command-spawn NBT is read before Minecraft applies the final
+     * summon coordinates.
+     */
+    public DungeonMobPersistentData withHomePosition(BlockPos resolvedHome) {
+        return new DungeonMobPersistentData(
+                profileId,
+                resolvedHome,
+                factionId,
+                playerRelation,
+                instanceId,
+                aggression
+        );
+    }
+
     public CompoundTag save() {
         CompoundTag root = new CompoundTag();
         root.putString("Profile", profileId.toString());

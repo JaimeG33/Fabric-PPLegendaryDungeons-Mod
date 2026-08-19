@@ -81,6 +81,11 @@
 
 ## Vanilla dungeon mobs — Step 2
 
+- A manual `/summon` with no `Home` resolves home on the first real server tick
+  to the mob's final summon position rather than `(0, 0, 0)`.
+- An already-saved explicit `Home` remains unchanged after reload/restart.
+- `/team list` is **not** expected to contain `pirate_raiders` or
+  `kyogre_defenders`; encounter factions are datapack IDs, not scoreboard teams.
 - A managed Pillager using `pirate_raiders` can acquire a managed
   `kyogre_defenders` Pokémon inside its detection/chase bounds.
 - Managed Drowned and Guardians using `kyogre_defenders` can acquire managed
@@ -95,6 +100,9 @@
   encounter targets in Step 2.
 - Managed vanilla mobs do not intentionally select same-faction managed
   Pokémon or vanilla mobs.
+- A manager-assigned live target is not immediately cleared by the mob's native
+  target selector between bounded manager updates.
+- Native AI can still replace the retained target with another valid target.
 - Pillagers still use native crossbow behavior after the manager assigns a
   Pokémon target.
 - Drowned still use native melee/trident behavior after target assignment.

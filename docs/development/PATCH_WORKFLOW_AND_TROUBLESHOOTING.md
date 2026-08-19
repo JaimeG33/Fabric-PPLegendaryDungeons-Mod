@@ -219,8 +219,16 @@ The patch applies and builds, but Minecraft or Cobblemon behaves differently
 than expected. AI can overwrite targets, entities can unload, battle state can
 pause behavior, and events may fire at a different stage than assumed.
 
+Command-driven tests also need lifecycle scrutiny. For example, `/summon` can
+read custom mob NBT before the command finishes applying the entity's final
+coordinates. A fallback based on `mob.blockPosition()` during NBT load can
+therefore capture `(0, 0, 0)` even though the mob later appears at `~ ~ ~`.
+
 Reduction strategy: add a focused test matrix and test the smallest possible
-scene before distributing the feature through production structures.
+scene before distributing the feature through production structures. When code
+depends on entity position, UUID, owner, dimension, or other construction-time
+state, verify **when** that value becomes final rather than assuming the NBT
+read hook is late enough.
 
 ### Data/resource mismatch
 

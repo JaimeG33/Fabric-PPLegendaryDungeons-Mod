@@ -121,9 +121,17 @@ Conceptual shape:
 ```
 
 The shared `Mob` mixin writes this compound during normal Minecraft entity save
-and reads it during normal entity load. If `Home` is absent during initial
-manual testing, the mob's current block position becomes its home and the next
-save writes that resolved position.
+and reads it during normal entity load. When `Home` is present, that saved value
+is preserved. When `Home` is absent (the normal manual `/summon` test case), the
+mixin now defers registration until the mob's first real server tick and then
+uses the mob's final placed block position as home.
+
+This deferral is important because `/summon` reads custom entity NBT before the
+command has finished applying the requested `~ ~ ~` coordinates. Earlier Step 2
+builds therefore resolved a missing home as `(0, 0, 0)` and caused every managed
+mob to reject nearby targets and navigate toward world origin. Existing test
+mobs that already saved `Home:{X:0,Y:0,Z:0}` should be removed and resummoned
+after applying the Step 2 hotfix.
 
 `Profile` is already reserved in Step 2 even though Step 3 is where actual
 `dungeon_mob_profiles` become datapack resources. Manual Step 2 registrations
@@ -154,6 +162,14 @@ Pokémon continue using their existing `legacy`, `hostile`, `neutral`, and
 `faction_retaliatory` profile values. `vanilla` is specifically useful for
 ordinary Minecraft mobs whose built-in player aggression should remain intact.
 
+### Factions are not scoreboard teams
+
+`pp_legendarydungeons:pirate_raiders` and
+`pp_legendarydungeons:kyogre_defenders` are datapack faction IDs handled by
+`DungeonFactionService`. They are intentionally **not** created by `/team` and
+will not appear in `/team list`. Existing Minecraft scoreboard teams remain a
+separate compatibility/content feature and are not required for this encounter.
+
 ## Current testing method before Step 3
 
 Step 3 will provide `pp_dungeon_mob` structure markers and datapackable mob
@@ -177,12 +193,42 @@ profiles. Until then, Step 2 can be tested directly with summon NBT.
 /summon minecraft:guardian ~ ~ ~ {PersistenceRequired:1b,"pp_legendarydungeons:DungeonMob":{Faction:"pp_legendarydungeons:kyogre_defenders",PlayerRelation:"vanilla",Aggression:{DetectionRange:32.0d,ChaseRange:48.0d,HomeRadius:32.0d,ReturnSpeed:1.0d,UpdateIntervalTicks:10}}}
 ```
 
-Place opposing managed Pokémon nearby to verify reciprocal targeting. Step 2 is
-considered behaviorally validated only after Pillager crossbow logic, Drowned
-combat, and Guardian beam logic are each observed attacking a valid hostile
-Pokémon target. If one native attack goal rejects `PokemonEntity` despite
-`Mob#setTarget` accepting it, fix that specific mob with the narrowest possible
-compatibility bridge rather than replacing all vanilla combat AI.
+After summoning a mob, wait at least one tick and verify its resolved home:
+
+```mcfunction
+/data get entity @e[tag=pp_dungeon_mob,sort=nearest,limit=1] "pp_legendarydungeons:DungeonMob".Home
+```
+
+The coordinates should match the mob's actual summon area, not `(0, 0, 0)`
+unless it was deliberately summoned there.
+
+Step 2 also includes two dedicated Pokémon faction-test profiles:
+
+```text
+pp_legendarydungeons:example/faction_test/pirate_ariados
+pp_legendarydungeons:example/faction_test/defender_gastly
+```
+
+Spawn either through the normal `pp_dungeon_pokemon` marker system. For example:
+
+```mcfunction
+/summon minecraft:armor_stand ~ ~ ~ {Invisible:1b,Marker:1b,NoGravity:1b,Tags:["pp_feature","pp_dungeon_pokemon"],CustomName:'{"text":"pp_legendarydungeons:example/faction_test/pirate_ariados"}',CustomNameVisible:0b}
+```
+
+```mcfunction
+/summon minecraft:armor_stand ~ ~ ~ {Invisible:1b,Marker:1b,NoGravity:1b,Tags:["pp_feature","pp_dungeon_pokemon"],CustomName:'{"text":"pp_legendarydungeons:example/faction_test/defender_gastly"}',CustomNameVisible:0b}
+```
+
+The manager retains an encounter-assigned target between its bounded update
+ticks. Native AI may still replace it with another valid target, but a vanilla
+target selector cannot immediately erase the retained target, and a managed mob
+cannot intentionally select a same-faction managed entity.
+
+Step 2 is considered behaviorally validated only after Pillager crossbow logic,
+Drowned combat, and Guardian beam logic are each observed attacking a valid
+hostile Pokémon target. If one attack implementation still cannot act on a
+retained `PokemonEntity` target, document that exact mob and add only the
+narrowest compatibility bridge required for that mob.
 
 ## Persistence tests
 

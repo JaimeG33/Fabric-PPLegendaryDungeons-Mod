@@ -95,6 +95,7 @@ public final class DungeonMobManager {
 
     public static void unregister(UUID entityUuid) {
         RECORDS.remove(entityUuid);
+        VanillaMobAggressionBridge.forget(entityUuid);
     }
 
     public static void tick(MinecraftServer server, long tickCount) {
@@ -107,12 +108,14 @@ public final class DungeonMobManager {
             ServerLevel level = server.getLevel(record.dimension());
 
             if (level == null) {
+                VanillaMobAggressionBridge.forget(record.entityUuid());
                 iterator.remove();
                 continue;
             }
 
             Entity resolved = level.getEntity(record.entityUuid());
             if (!(resolved instanceof Mob mob) || mob instanceof PokemonEntity) {
+                VanillaMobAggressionBridge.forget(record.entityUuid());
                 iterator.remove();
                 continue;
             }
@@ -377,6 +380,7 @@ public final class DungeonMobManager {
         // Do not erase persistent entity NBT during shutdown. The runtime index
         // is rebuilt by the Mob load mixin when entities return.
         RECORDS.clear();
+        VanillaMobAggressionBridge.clearAll();
         reportedMissingMixin = false;
     }
 
