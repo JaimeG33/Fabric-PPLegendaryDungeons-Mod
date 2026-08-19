@@ -208,9 +208,9 @@ For any non-`legacy` value, `player_relation` takes precedence over old player
 target settings. This makes profile migration explicit while keeping omitted
 fields backward-compatible.
 
-### What Step 1 can and cannot do
+### What Steps 1 and 2 can and cannot do
 
-After Step 1:
+After Step 2:
 
 - managed dungeon Pokémon can recognize other managed dungeon Pokémon by
   faction;
@@ -218,17 +218,23 @@ After Step 1:
 - same-faction managed dungeon Pokémon are excluded from automatic targeting;
 - old `entity_tag`, `scoreboard_team`, and `entity_type_tag` targeting still
   works for ordinary mobs;
-- an ordinary pillager/drowned/guardian is **not yet a true faction member**;
+- a vanilla mob carrying managed dungeon-mob state is a true faction member,
+  so Pokémon can recognize it through the same faction service;
+- managed Pillagers, Drowned, and Guardians can reciprocally target hostile
+  faction Pokémon while keeping their native attack implementation;
 - same-faction damage is **not yet globally cancelled**;
 - `faction_retaliatory` does **not yet share anger**.
 
-The vanilla-mob manager is Step 2, datapackable vanilla mob markers/profiles are
-Step 3, and friendly-fire plus shared retaliation are Step 4. The complete
-technical roadmap is documented in:
+The vanilla-mob manager is now implemented in Step 2. Datapackable vanilla mob
+markers/profiles are Step 3, and friendly-fire plus shared retaliation are Step
+4. The complete technical roadmap is documented in:
 
 ```text
 docs/development/DUNGEON_FACTION_AND_RAID_PLAN.md
 ```
+
+The vanilla-mob behavior, persistent NBT format, and Step 2 manual test commands
+are documented in `docs/gameplay/DUNGEON_MOB_ENCOUNTERS.md`.
 
 ### Conceptual Kyogre encounter
 
@@ -276,10 +282,10 @@ Examples:
 
 These legacy rules still make the Pokémon target matching entities. Faction
 hostility is now an additional non-player target source for managed dungeon
-Pokémon. Step 1 still does not automatically make an ordinary illager target the
-Pokémon. The planned `DungeonMobManager` in Step 2 will provide the reciprocal
-vanilla-mob targeting boundary rather than replacing each mob's native attack
-implementation.
+Pokémon. Step 2 extends faction identity to managed vanilla mobs, so an ordinary
+Pillager, Drowned, Guardian, or other `Mob` becomes a reciprocal faction target
+when it carries dungeon-mob encounter state. `DungeonMobManager` assigns the
+vanilla mob's target without replacing its native attack implementation.
 
 ## Combat effects
 

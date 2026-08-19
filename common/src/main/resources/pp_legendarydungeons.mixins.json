@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "dungeon_rules.DungeonExplosionMixin",
+    "dungeon_mobs.DungeonMobPersistenceMixin",
     "trades.NaturalWanderingTraderMixin",
     "worldgen.FixedJigsawRotationMixin",
     "worldgen.IceSpikeFeatureMixin",

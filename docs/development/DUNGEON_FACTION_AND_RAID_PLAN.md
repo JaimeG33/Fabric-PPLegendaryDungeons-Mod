@@ -290,7 +290,7 @@ Validation goals:
 
 ### Step 2 — vanilla dungeon mob manager and targeting bridge
 
-**Status: planned.**
+**Status: implemented by the Step 2 patch; runtime combat validation still required.**
 
 Add/change:
 
@@ -311,9 +311,9 @@ Add/change:
   otherwise-valid Pokémon targets.
 - Give the vanilla manager the same bounded detection/chase/home scheduling
   principles as the Pokémon manager.
-- Add a future `vanilla` player-relation option for mob profiles so drowned and
-  guardians can retain ordinary player hostility while sharing the defender
-  faction.
+- Add a `vanilla` player-relation option for managed vanilla mobs so drowned
+  and guardians can retain ordinary player hostility while sharing the defender
+  faction. Step 3 will expose the same option through datapackable mob profiles.
 
 Validation goals:
 
@@ -322,6 +322,25 @@ Validation goals:
 - vanilla mobs still use their own combat style;
 - no global all-entity scan is introduced;
 - faction membership survives unload/restart.
+
+Implementation notes:
+
+- Step 2 stores managed vanilla-mob state under the entity NBT root
+  `pp_legendarydungeons:DungeonMob`.
+- The persistent snapshot includes reserved profile ID, home position, faction,
+  player relation, dungeon instance ID, and bounded aggression settings.
+- `DungeonMobPersistenceMixin` injects into vanilla `Mob` save/load so the
+  runtime UUID index can be rebuilt without a world-wide entity scan.
+- `DungeonMobManager` and `DungeonPokemonManager` both delegate faction identity
+  and hostility to `DungeonFactionService`.
+- `VanillaMobAggressionBridge` only calls the vanilla target API; it does not
+  replace Pillager crossbow, Drowned melee/trident, or Guardian beam goals.
+- Before Step 3 exists, developers can create managed Pillagers, Drowned, and
+  Guardians with the documented summon-NBT commands in
+  `docs/gameplay/DUNGEON_MOB_ENCOUNTERS.md`.
+- Native attack-goal compatibility with `PokemonEntity` is a required runtime
+  test. A narrow mob-specific compatibility patch should be added only if one of
+  the native goals refuses an otherwise-valid Pokémon target.
 
 ### Step 3 — datapackable vanilla mob profiles and structure markers
 

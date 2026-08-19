@@ -10,6 +10,7 @@ import porker.pp_legendarydungeons.dungeon_rules.events.DungeonRuleInteractionEv
 import porker.pp_legendarydungeons.dungeon_rules.network.DungeonRuleNetworking;
 import porker.pp_legendarydungeons.dungeon_rules.preset.DungeonRulePresetRegistry;
 import porker.pp_legendarydungeons.features.dungeon_factions.DungeonFactionReloadRegistrar;
+import porker.pp_legendarydungeons.features.dungeon_mobs.DungeonMobManager;
 import porker.pp_legendarydungeons.features.dungeon_pokemon.DungeonPokemonEventRegistrar;
 import porker.pp_legendarydungeons.features.dungeon_pokemon.DungeonPokemonManager;
 import porker.pp_legendarydungeons.features.wtraders.json.WTraderJsonReloadRegistrar;
@@ -99,6 +100,7 @@ public final class LegendaryDungeons {
             DungeonRuleManager.clear();
             DungeonRulePreviewManager.clear();
             DungeonPokemonManager.clear();
+            DungeonMobManager.clear();
 
             /*
              * Clears temporary battle-faint context used by Pokémon loot

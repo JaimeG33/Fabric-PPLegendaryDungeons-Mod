@@ -75,6 +75,34 @@ Do not reconstruct a large existing file from isolated snippets when avoidable.
 Read the complete current versions of files that will be modified, especially
 central managers, registrars, schemas, and documentation indexes.
 
+#### Do not treat an excerpt as a complete file
+
+A ranged fetch, search result, truncated tool response, or copied excerpt is not
+a valid replacement for the complete source file when generating or validating
+a patch. In particular, do not write a mid-file excerpt into a synthetic
+checkout starting at line 1 and then use that same synthetic file to prove that
+`git apply --check` succeeds. That only proves the patch matches the synthetic
+excerpt, not the real repository file.
+
+If the complete file cannot be retrieved in one response:
+
+- fetch line-preserving ranges from the exact base commit;
+- preserve their real source positions when generating localized hunks;
+- use enough unchanged context around every edited region to identify it
+  uniquely;
+- for existing files, prefer unchanged context on both sides of a replacement
+  hunk (normally at least three lines when practical) instead of ending the
+  hunk immediately after the changed paragraph;
+- confirm the file's actual beginning, blob SHA, or another independent marker
+  so an excerpt is not accidentally mistaken for the whole file; and
+- whenever possible, validate the final patch against a baseline reconstructed
+  independently from the data used to generate the diff.
+
+Documentation files need the same rigor as Java files. Large Markdown documents
+are especially easy to mishandle because a section heading returned by a tool
+can look like the beginning of a standalone document even when it is hundreds
+of lines into the real file.
+
 ### 3. Make changes in a real/synthetic checkout
 
 Prefer editing files in a checkout of the exact baseline and generating the
@@ -152,10 +180,17 @@ Common causes:
 - local uncommitted edits;
 - manually reconstructed hunk context does not exactly match whitespace;
 - stale snippets were used instead of the full current file;
+- a mid-file excerpt was treated as though it began at line 1;
+- patch validation reused the same incomplete synthetic excerpt that generated
+  the bad diff, creating a false-positive `git apply --check`;
+- a hunk header's declared line counts do not match the actual added/removed
+  lines, which can leave intended trailing patch text unapplied;
 - a large first patch changed too many unrelated regions at once.
 
-Reduction strategy: lock the base SHA, use complete current files, generate the
-diff mechanically, and run a real `git apply --check` against that baseline.
+Reduction strategy: lock the base SHA, use complete current files or
+line-preserving ranges, generate the diff mechanically, verify hunk counts, and
+run `git apply --check` against a baseline reconstructed independently from the
+patch-generation excerpts whenever possible.
 
 ### Compile/API mismatch
 
@@ -186,3 +221,50 @@ pause behavior, and events may fire at a different stage than assumed.
 
 Reduction strategy: add a focused test matrix and test the smallest possible
 scene before distributing the feature through production structures.
+
+### Data/resource mismatch
+
+JSON may be syntactically valid but use an invalid resource ID, unsupported
+field, missing referenced profile, wrong datapack directory, or incorrect
+reload assumption.
+
+Reduction strategy: validate each resource independently, test `/reload`, and
+ensure one malformed datapack file does not invalidate unrelated definitions.
+
+## Verification labels for future patch handoffs
+
+When practical, patch handoffs should state which gates were actually checked:
+
+```text
+[x] exact repository/branch/base SHA identified
+[x] complete affected files or line-preserving ranges reviewed
+[x] patch syntax/hunk counts parsed
+[x] git apply --check against an independent exact touched baseline
+[ ] Java compilation
+[ ] Fabric build
+[ ] NeoForge build
+[ ] in-game/runtime test
+```
+
+Do not describe a syntax/stat check, or a check against the same incomplete
+snippet used to generate the patch, as proof that a patch applies to the real
+repository. If a tool/environment prevents one of the checks, state that
+limitation explicitly so the next local test is clear.
+
+## Scope strategy for large first patches
+
+Large architectural changes are more reliable when internally staged even if
+they are ultimately delivered as one patch. For example:
+
+```text
+data model / reload layer
+profile/schema integration
+manager behavior
+built-in data
+documentation and tests
+```
+
+Validate each layer before stacking the next one. Follow-up fixes are often
+more reliable because a compiler/runtime error narrows the problem; the goal of
+this workflow is to give first patches that same level of grounding before
+delivery.

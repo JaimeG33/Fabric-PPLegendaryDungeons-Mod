@@ -3,6 +3,7 @@ package porker.pp_legendarydungeons.server;
 import dev.architectury.event.events.common.TickEvent;
 import net.minecraft.server.MinecraftServer;
 import porker.pp_legendarydungeons.features.FeatureTicker;
+import porker.pp_legendarydungeons.features.dungeon_mobs.DungeonMobManager;
 import porker.pp_legendarydungeons.features.dungeon_pokemon.DungeonPokemonManager;
 import porker.pp_legendarydungeons.items.ItemGimmickTicker;
 import porker.pp_legendarydungeons.secrets.SecretTicker;
@@ -35,12 +36,13 @@ public final class ServerTickScheduler {
         tickCount++;
 
         /*
-         * Preserve the existing subsystem order, then update only the loaded
-         * Pokémon explicitly registered with the dungeon encounter manager.
+         * Preserve the existing subsystem order, then update only loaded
+         * entities explicitly registered with the dungeon encounter managers.
          */
         EntityLegendarySummonTicker.tick(server, tickCount);
         FeatureTicker.tick(server, tickCount);
         DungeonPokemonManager.tick(server, tickCount);
+        DungeonMobManager.tick(server, tickCount);
         ItemGimmickTicker.tick(server, tickCount);
         SecretTicker.tick(server, tickCount);
     }

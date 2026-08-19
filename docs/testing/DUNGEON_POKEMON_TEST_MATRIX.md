@@ -79,6 +79,40 @@
   yet; reciprocal vanilla-mob faction targeting remains a Step 2 test.
 - Same-faction damage cancellation and shared provocation remain Step 4 tests.
 
+## Vanilla dungeon mobs — Step 2
+
+- A managed Pillager using `pirate_raiders` can acquire a managed
+  `kyogre_defenders` Pokémon inside its detection/chase bounds.
+- Managed Drowned and Guardians using `kyogre_defenders` can acquire managed
+  `pirate_raiders` Pokémon.
+- The reciprocal Pokémon manager recognizes managed vanilla mobs through
+  `DungeonFactionService` without adding separate mob-specific target rules.
+- `player_relation: hostile` makes a managed vanilla mob proactively target an
+  eligible Survival player.
+- `player_relation: vanilla` does not add players to the manager candidate list,
+  but preserves a valid player target chosen by the mob's normal AI.
+- `player_relation: neutral` and `faction_retaliatory` do not accept players as
+  encounter targets in Step 2.
+- Managed vanilla mobs do not intentionally select same-faction managed
+  Pokémon or vanilla mobs.
+- Pillagers still use native crossbow behavior after the manager assigns a
+  Pokémon target.
+- Drowned still use native melee/trident behavior after target assignment.
+- Guardians still use their native beam behavior after target assignment.
+- If one native attack goal rejects `PokemonEntity`, document the exact mob and
+  add only a narrow compatibility bridge for that mob.
+- Detection, chase, home radius, return speed, and update interval remain
+  bounded by the manager.
+- Chunk unload/reload restores the runtime record from
+  `pp_legendarydungeons:DungeonMob` entity NBT.
+- Save/server restart restores faction, home position, player relation,
+  aggression settings, and dungeon instance ID.
+- The vanilla-mob manager does not scan every entity in every dimension and does
+  not force chunks to remain loaded.
+- Step 3 still owns `pp_dungeon_mob` structure markers and datapackable mob
+  profiles; Step 2 manual testing uses persistent summon NBT.
+- Same-faction damage cancellation and shared player provocation remain Step 4.
+
 ## Effects and capture
 
 - Combat effects appear only while a valid target exists.

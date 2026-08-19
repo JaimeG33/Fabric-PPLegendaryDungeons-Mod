@@ -10,39 +10,43 @@ large class:
 EntityLegendarySummonTicker
 FeatureTicker
 DungeonPokemonManager
+DungeonMobManager
 ItemGimmickTicker
 SecretTicker
 ```
 
 Each subsystem owns its interval, indexes, state, and cleanup.
 
-## Dungeon Pokémon scaling
+## Dungeon encounter scaling
 
-`DungeonPokemonManager` tracks only entities created or restored by the dungeon
-Pokémon system.
+`DungeonPokemonManager` tracks only Pokémon created or restored by the dungeon
+Pokémon system. `DungeonMobManager` separately tracks only vanilla mobs that
+carry managed dungeon-mob state.
 
 It does not:
 
 - Scan all entities in every dimension.
-- Scan all Pokémon near every player.
+- Scan all Pokémon or vanilla mobs near every player.
 - Force chunks to remain loaded.
 - Reapply effects every game tick.
-- Register one tick listener per Pokémon.
+- Register one tick listener per Pokémon or vanilla mob.
 
-Each record is assigned a deterministic update bucket from its UUID. This
-spreads work across ticks while preserving each profile's configured update
-interval.
+Each managed Pokémon or vanilla-mob record is assigned a deterministic update
+bucket from its UUID. This spreads encounter work across ticks while preserving
+the configured update interval.
 
 Target searches are:
 
 - Bounded by `detection_range`.
-- Performed only for loaded managed Pokémon.
+- Performed only for loaded managed encounter entities.
 - Reused while the current target remains valid.
-- Split between the level player list and one bounded living-entity query for
-  non-player target rules.
+- Split between the level player list and bounded living-entity queries only
+  when a manager needs non-player faction or legacy targets.
 
-Entity persistence is event-driven through Cobblemon save/load events. Captures
-are cleaned up through `POKEMON_CAPTURED`.
+Pokémon persistence is event-driven through Cobblemon save/load events. Vanilla
+dungeon mobs persist their encounter state in the entity's normal NBT through a
+shared `Mob` mixin, then re-register when that NBT is read. Neither manager
+forces chunks to stay loaded.
 
 ## Adding another scheduled system
 
