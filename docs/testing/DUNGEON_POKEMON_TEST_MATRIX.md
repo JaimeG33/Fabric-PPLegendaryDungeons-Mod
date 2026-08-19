@@ -52,6 +52,33 @@
 - Battle or busy state pauses overworld targeting.
 - Dungeon completion/inactive instance pauses profiles that require it.
 
+## Factions and player relations — Step 1
+
+- Built-in `kyogre_defenders` and `pirate_raiders` faction resources load.
+- `/reload` replaces faction definitions without duplicate listener
+  registration.
+- An outside datapack can add a new `dungeon_factions` resource.
+- An invalid self-hostile, duplicate, blank, or malformed faction definition is
+  rejected without blocking valid factions.
+- A dungeon Pokémon profile with no `faction` and no `player_relation` behaves
+  exactly as it did before the faction patch.
+- `player_relation: legacy` still respects `target_players` and explicit
+  `player` target rules.
+- `player_relation: hostile` can target an eligible Survival player even when
+  the old `target_players` flag is false.
+- `player_relation: neutral` does not proactively target an eligible Survival
+  player even when an old player target entry remains in the profile.
+- `player_relation: faction_retaliatory` behaves as neutral in Step 1.
+- Two managed dungeon Pokémon in opposing built-in factions acquire each other
+  when inside detection/chase limits.
+- Two managed dungeon Pokémon in the same faction do not automatically target
+  each other, including when a broad legacy non-player rule would match both.
+- Legacy `entity_tag`, `scoreboard_team`, and `entity_type_tag` rules still
+  target ordinary vanilla mobs.
+- Ordinary pillagers, drowned, and guardians are not treated as faction members
+  yet; reciprocal vanilla-mob faction targeting remains a Step 2 test.
+- Same-faction damage cancellation and shared provocation remain Step 4 tests.
+
 ## Effects and capture
 
 - Combat effects appear only while a valid target exists.

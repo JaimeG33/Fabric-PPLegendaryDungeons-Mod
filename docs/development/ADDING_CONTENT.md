@@ -106,6 +106,58 @@ loot-table destination without a matching resolver target.
 5. Use a loader client adapter only when a shared client API is unavailable.
 6. Test placement, save/restart, dedicated-server startup, and both loaders.
 
+## Add a dungeon encounter faction
+
+1. Create a server-data resource under:
+
+   ```text
+   common/src/main/resources/data/<namespace>/dungeon_factions/<path>.json
+   ```
+
+2. The relative file path becomes the namespaced faction ID.
+3. List hostile faction IDs in `hostile_factions`.
+4. Remember that hostility is directional. If A and B should fight each other,
+   both definitions should list the other.
+5. Do not use scoreboard-team names as the canonical faction identifier.
+6. Test `/reload` and confirm malformed definitions reject independently.
+7. For Step 1, remember that true faction membership is resolved only for
+   managed dungeon Pokémon. Managed vanilla mobs are added in later roadmap
+   steps.
+
+Example:
+
+```json
+{
+  "hostile_factions": [
+    "pp_legendarydungeons:pirate_raiders"
+  ]
+}
+```
+
+## Add faction-aware dungeon Pokémon
+
+1. Keep generation/species information in the reusable Pokémon spawn profile.
+2. Put encounter membership on the dungeon Pokémon profile:
+
+   ```json
+   "faction": "pp_legendarydungeons:kyogre_defenders",
+   "player_relation": "neutral"
+   ```
+
+3. Use `legacy` when an existing profile should preserve its old
+   `target_players`/`targets` semantics.
+4. Use `hostile` for proactive player hostility and `neutral` for no proactive
+   player targeting from the dungeon manager.
+5. `faction_retaliatory` is accepted in Step 1 but remains neutral until the
+   shared provocation work in Step 4 is implemented.
+6. Keep legacy `entity_tag`, `scoreboard_team`, and `entity_type_tag` targets
+   when they are still useful; faction hostility is additive for non-player
+   targeting.
+7. Test same-faction and opposing-faction Pokémon together before placing the
+   profile into a production structure.
+8. Read `DUNGEON_FACTION_AND_RAID_PLAN.md` before extending this system to
+   vanilla mobs or raid movement.
+
 ## Add networking
 
 1. Define the payload and handler in common.

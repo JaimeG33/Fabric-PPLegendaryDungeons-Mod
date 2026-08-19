@@ -10,6 +10,21 @@ public final class DungeonPokemonProfileJson {
     public String spawn_profile = "";
 
     /**
+     * Optional encounter faction resource ID. Blank keeps this Pokémon outside
+     * the faction relationship system.
+     */
+    public String faction = "";
+
+    /**
+     * legacy, hostile, neutral, or faction_retaliatory.
+     *
+     * <p>legacy preserves the pre-faction target_players/targets behavior.
+     * faction_retaliatory remains neutral until Step 4 adds shared provocation
+     * state for the dungeon instance.</p>
+     */
+    public String player_relation = "legacy";
+
+    /**
      * Optional Minecraft scoreboard team. Missing teams are created on spawn.
      */
     public String scoreboard_team = "";

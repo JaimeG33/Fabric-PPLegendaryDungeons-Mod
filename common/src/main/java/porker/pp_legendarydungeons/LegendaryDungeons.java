@@ -9,6 +9,7 @@ import porker.pp_legendarydungeons.dungeon_rules.events.DungeonRuleBlockEvents;
 import porker.pp_legendarydungeons.dungeon_rules.events.DungeonRuleInteractionEvents;
 import porker.pp_legendarydungeons.dungeon_rules.network.DungeonRuleNetworking;
 import porker.pp_legendarydungeons.dungeon_rules.preset.DungeonRulePresetRegistry;
+import porker.pp_legendarydungeons.features.dungeon_factions.DungeonFactionReloadRegistrar;
 import porker.pp_legendarydungeons.features.dungeon_pokemon.DungeonPokemonEventRegistrar;
 import porker.pp_legendarydungeons.features.dungeon_pokemon.DungeonPokemonManager;
 import porker.pp_legendarydungeons.features.wtraders.json.WTraderJsonReloadRegistrar;
@@ -63,6 +64,7 @@ public final class LegendaryDungeons {
         DungeonRuleBlockEvents.register();
 
         WTraderJsonReloadRegistrar.register();
+        DungeonFactionReloadRegistrar.register();
         PokemonProfileReloadRegistrar.register();
 
         /*

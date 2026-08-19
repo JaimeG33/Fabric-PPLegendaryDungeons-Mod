@@ -20,6 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import porker.pp_legendarydungeons.LegendaryDungeons;
 import porker.pp_legendarydungeons.dungeon_rules.instance.DungeonRuleSavedData;
+import porker.pp_legendarydungeons.features.dungeon_factions.DungeonFactionService;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -249,7 +250,14 @@ public final class DungeonPokemonManager {
 
         LivingEntity target = pokemon.getTarget();
 
-        if (!isValidTarget(level, target, record, profile, aggression)) {
+        if (!isValidTarget(
+                level,
+                pokemon,
+                target,
+                record,
+                profile,
+                aggression
+        )) {
             if (target != null) {
                 CobblemonAggressionBridge.clearTarget(pokemon);
             }
@@ -324,7 +332,7 @@ public final class DungeonPokemonManager {
 
         List<LivingEntity> candidates = new ArrayList<>();
 
-        if (aggression.target_players || hasPlayerRule(profile)) {
+        if (DungeonFactionService.shouldTargetPlayer(profile, aggression)) {
             for (ServerPlayer player : level.players()) {
                 if (isValidPlayer(player, aggression)
                         && withinDetection(pokemon, player, detectionRange)
@@ -337,7 +345,8 @@ public final class DungeonPokemonManager {
         List<DungeonPokemonProfileJson.TargetRule> nonPlayerRules =
                 nonPlayerRules(profile);
 
-        if (!nonPlayerRules.isEmpty()) {
+        if (!nonPlayerRules.isEmpty()
+                || DungeonFactionService.hasFactionEnemies(profile)) {
             AABB box = pokemon.getBoundingBox().inflate(detectionRange);
 
             candidates.addAll(level.getEntitiesOfClass(
@@ -346,7 +355,12 @@ public final class DungeonPokemonManager {
                     candidate ->
                             candidate != pokemon
                                     && candidate.isAlive()
-                                    && matchesAnyNonPlayerRule(candidate, nonPlayerRules)
+                                    && !DungeonFactionService.areAllies(pokemon, candidate)
+                                    && (matchesAnyNonPlayerRule(candidate, nonPlayerRules)
+                                            || DungeonFactionService.isHostileTo(
+                                                    profile,
+                                                    candidate
+                                            ))
                                     && withinChaseHome(candidate, record, aggression)
             ));
         }
@@ -358,6 +372,7 @@ public final class DungeonPokemonManager {
 
     private static boolean isValidTarget(
             ServerLevel level,
+            PokemonEntity pokemon,
             LivingEntity target,
             DungeonPokemonRecord record,
             DungeonPokemonProfileJson profile,
@@ -371,11 +386,13 @@ public final class DungeonPokemonManager {
         }
 
         if (target instanceof ServerPlayer player) {
-            return (aggression.target_players || hasPlayerRule(profile))
+            return DungeonFactionService.shouldTargetPlayer(profile, aggression)
                     && isValidPlayer(player, aggression);
         }
 
-        return matchesAnyNonPlayerRule(target, nonPlayerRules(profile));
+        return !DungeonFactionService.areAllies(pokemon, target)
+                && (matchesAnyNonPlayerRule(target, nonPlayerRules(profile))
+                        || DungeonFactionService.isHostileTo(profile, target));
     }
 
     private static boolean isValidPlayer(

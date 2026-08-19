@@ -17,6 +17,12 @@ public final class DungeonPokemonProfileValidator {
             "scoreboard_team",
             "entity_type_tag"
     );
+    private static final Set<String> PLAYER_RELATIONS = Set.of(
+            "legacy",
+            "hostile",
+            "neutral",
+            "faction_retaliatory"
+    );
     private static final Set<String> LOOT_MODES = Set.of(
             "default",
             "additional",
@@ -52,6 +58,36 @@ public final class DungeonPokemonProfileValidator {
                     fileId,
                     profileId,
                     "spawn_profile " + spawnProfile + " is not loaded."
+            );
+        }
+
+        String configuredFaction = profile.faction == null
+                ? ""
+                : profile.faction.trim();
+
+        if (!configuredFaction.isBlank()) {
+            try {
+                ResourceLocation.parse(configuredFaction);
+            } catch (Exception exception) {
+                return invalid(
+                        fileId,
+                        profileId,
+                        "faction is not a valid resource ID: " + configuredFaction
+                );
+            }
+        }
+
+        String playerRelation = normalized(profile.player_relation);
+
+        if (playerRelation.isBlank()) {
+            playerRelation = "legacy";
+        }
+
+        if (!PLAYER_RELATIONS.contains(playerRelation)) {
+            return invalid(
+                    fileId,
+                    profileId,
+                    "unknown player_relation: " + playerRelation
             );
         }
 

@@ -201,6 +201,8 @@ Additional guides:
 
 - [`development/WTRADER_JSON_SCHEMA.md`](development/WTRADER_JSON_SCHEMA.md)
 - [`development/POKEMON_SPAWN_PROFILE_SCHEMA.md`](development/POKEMON_SPAWN_PROFILE_SCHEMA.md)
+- [`development/DUNGEON_FACTION_AND_RAID_PLAN.md`](development/DUNGEON_FACTION_AND_RAID_PLAN.md)
+- [`development/PATCH_WORKFLOW_AND_TROUBLESHOOTING.md`](development/PATCH_WORKFLOW_AND_TROUBLESHOOTING.md)
 - [`development/SERVER_TICK_SCHEDULER.md`](development/SERVER_TICK_SCHEDULER.md)
 - [`development/CRYSTAL_HEART_REIMPLEMENTATION_GUIDE.md`](development/CRYSTAL_HEART_REIMPLEMENTATION_GUIDE.md)
 - [`features/crystal-heart-animated-blocks.md`](features/crystal-heart-animated-blocks.md)

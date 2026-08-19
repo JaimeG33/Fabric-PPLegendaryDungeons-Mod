@@ -145,6 +145,101 @@ The manager refreshes the inherited target plus the registered
 `ATTACK_TARGET` and `ANGRY_AT` Brain memories. This bridge is intentionally
 isolated so Cobblemon 1.8 compatibility changes remain localized.
 
+## Factions and player relations
+
+Dungeon Pokémon can optionally join a datapack-defined encounter faction:
+
+```json
+"faction": "pp_legendarydungeons:kyogre_defenders",
+"player_relation": "faction_retaliatory"
+```
+
+Faction definitions load from:
+
+```text
+data/<namespace>/dungeon_factions/<path>.json
+```
+
+For example, the built-in Kyogre defender definition is conceptually:
+
+```json
+{
+  "hostile_factions": [
+    "pp_legendarydungeons:pirate_raiders"
+  ]
+}
+```
+
+The built-in Step 1 faction IDs are:
+
+```text
+pp_legendarydungeons:kyogre_defenders
+pp_legendarydungeons:pirate_raiders
+```
+
+The two definitions list one another as hostile, so managed dungeon Pokémon in
+those factions can acquire each other as targets without every Pokémon profile
+duplicating explicit scoreboard-team target rules.
+
+Faction hostility and player hostility are separate concepts. This is needed
+for the planned Kyogre encounter: drowned, guardians, and defender Pokémon can
+eventually share one faction while still having different behavior toward the
+player.
+
+Supported Pokémon `player_relation` values are:
+
+```text
+legacy
+hostile
+neutral
+faction_retaliatory
+```
+
+- `legacy` is the default and preserves the old `target_players` plus explicit
+  `player` target-rule behavior.
+- `hostile` lets the aggression manager proactively select eligible players.
+- `neutral` prevents proactive player selection by this manager.
+- `faction_retaliatory` is reserved for Piglin-like shared retaliation. In
+  **Step 1 it behaves as neutral**. The planned Step 4 will make it become
+  hostile after the player attacks a member of that faction in the same dungeon
+  instance.
+
+For any non-`legacy` value, `player_relation` takes precedence over old player
+target settings. This makes profile migration explicit while keeping omitted
+fields backward-compatible.
+
+### What Step 1 can and cannot do
+
+After Step 1:
+
+- managed dungeon Pokémon can recognize other managed dungeon Pokémon by
+  faction;
+- opposing factions can target each other;
+- same-faction managed dungeon Pokémon are excluded from automatic targeting;
+- old `entity_tag`, `scoreboard_team`, and `entity_type_tag` targeting still
+  works for ordinary mobs;
+- an ordinary pillager/drowned/guardian is **not yet a true faction member**;
+- same-faction damage is **not yet globally cancelled**;
+- `faction_retaliatory` does **not yet share anger**.
+
+The vanilla-mob manager is Step 2, datapackable vanilla mob markers/profiles are
+Step 3, and friendly-fire plus shared retaliation are Step 4. The complete
+technical roadmap is documented in:
+
+```text
+docs/development/DUNGEON_FACTION_AND_RAID_PLAN.md
+```
+
+### Conceptual Kyogre encounter
+
+The finished encounter is intended to feel like the player arrived during an
+ongoing assault rather than triggering a normal village Raid. Pirate raiders
+will fight both the player and the Kyogre defenders. Kyogre defender Pokémon
+will fight raiders but initially tolerate the player. Attacking a defender will
+eventually provoke the defender Pokémon for that dungeon instance. Drowned and
+guardians may keep their ordinary hostile behavior toward players even though
+they belong to the same defender faction.
+
 ## Target rules
 
 Supported target types:
@@ -179,9 +274,12 @@ Examples:
 }
 ```
 
-These rules make the Pokémon target matching entities. They do not
-automatically make illagers target the Pokémon. A future raid feature must add a
-reciprocal target goal or bounded controller to tagged dungeon raiders.
+These legacy rules still make the Pokémon target matching entities. Faction
+hostility is now an additional non-player target source for managed dungeon
+Pokémon. Step 1 still does not automatically make an ordinary illager target the
+Pokémon. The planned `DungeonMobManager` in Step 2 will provide the reciprocal
+vanilla-mob targeting boundary rather than replacing each mob's native attack
+implementation.
 
 ## Combat effects
 

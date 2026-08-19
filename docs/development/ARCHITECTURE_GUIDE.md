@@ -165,6 +165,37 @@ Avoid:
 - Replace reloadable registries atomically after successful parsing.
 - Make reload and initialization logic idempotent.
 
+## Dungeon encounter faction boundary
+
+Mixed Pokémon/vanilla dungeon encounters must keep relationship policy out of
+entity-specific combat implementations.
+
+The shared faction boundary is:
+
+```text
+features/dungeon_factions/DungeonFactionService
+```
+
+`DungeonPokemonManager` may ask that service whether a candidate is allied,
+hostile, or player-eligible, but it should not become the canonical owner of
+faction-to-faction relationships. Likewise, the planned vanilla
+`DungeonMobManager` should reuse the same service instead of implementing a
+second faction table.
+
+Faction definitions are reloadable server data under `dungeon_factions`.
+Individual encounter profiles own player relation because two members of one
+faction can intentionally treat players differently. Dungeon instance state is
+the required scope for future shared provocation.
+
+Read:
+
+```text
+docs/development/DUNGEON_FACTION_AND_RAID_PLAN.md
+```
+
+before adding reciprocal vanilla-mob aggression, friendly-fire rules,
+provocation, or raid-objective movement.
+
 ## Persistence and compatibility
 
 The following should be treated as public compatibility surfaces:
